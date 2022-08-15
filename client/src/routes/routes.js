@@ -1,5 +1,5 @@
 import Home from '@/pages/Home';
-import LoginScreen from '@/pages/LoginScreen';
+import { Login, SignUp, ForgotPassword, ResetPassword } from '@/pages/Auth';
 
 import AdminRecipe from '@/pages/Admin/AdminRecipe';
 import AdminMap from '@/pages/Admin/AdminMap';
@@ -7,28 +7,30 @@ import AdminMap from '@/pages/Admin/AdminMap';
 import Setting from '@/pages/Profile/Setting';
 import RecipeProfile from '@/pages/Profile/RecipeProfile';
 
+const routesAuth = [
+  {
+    path: '/ingreso',
+    element: Login,
+  },
+  {
+    path: '/registro',
+    element: SignUp,
+  },
+  {
+    path: '/password-perdida',
+    element: ForgotPassword,
+  },
+  {
+    path: '/cambiar-password/:resetToken',
+    element: ResetPassword,
+  },
+];
 
 const routesPages = [
   {
     path: '/',
     element: Home,
   },
-  {
-    path: '/login',
-    element: LoginScreen,
-  },
-  // {
-  //   path: '/registro',
-  //   element: About,
-  // },
-  // {
-  //   path: '/forgot-password',
-  //   element: About,
-  // },
-  // {
-  //   path: '/reset-password/:resetToken',
-  //   element: About,
-  // },
 ];
 
 
@@ -57,6 +59,7 @@ const routesProfile = [
 
 
 export {
+  routesAuth,
   routesPages,
   routesAdmin,
   routesProfile,
