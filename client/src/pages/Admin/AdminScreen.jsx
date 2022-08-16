@@ -1,12 +1,12 @@
-import React from 'react';
-import { Outlet } from "react-router-dom";
+import { Outlet } from 'react-router-dom';
 
 const AdminScreen = () => {
-  return (
-    <div>AdminScreen
-      <Outlet />
-    </div>
-  )
-}
+	return (
+		<div>
+			AdminScreen
+			<Outlet />
+		</div>
+	);
+};
 
-export default AdminScreen
+export default AdminScreen;

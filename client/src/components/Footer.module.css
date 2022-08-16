@@ -1,31 +1,31 @@
 .container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  height: 90px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	height: 90px;
 }
 
 .footer {
-  background: #0d58ba;
-  font-family: Sora, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+	background: #0d58ba;
+	font-family: Sora, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .copyright {
-  text-align: center;
-  color: #f1f7ff;
+	text-align: center;
+	color: #f1f7ff;
 }
 
 .credits {
-  text-align: center;
-  font-size: 12px;
-  color: #f1f7ff;
+	text-align: center;
+	font-size: 12px;
+	color: #f1f7ff;
 }
 
 .link {
-  color: #bfddfe;
+	color: #bfddfe;
 }
 
 .link:hover {
-  color: #f1f7ff;
+	color: #f1f7ff;
 }

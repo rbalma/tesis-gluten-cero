@@ -1,9 +1,6 @@
-import React from 'react'
 
 const RecipeProfile = () => {
-  return (
-    <div>RecipeProfile</div>
-  )
-}
+	return <div>RecipeProfile</div>;
+};
 
-export default RecipeProfile
+export default RecipeProfile;
