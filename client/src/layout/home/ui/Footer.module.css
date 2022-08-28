@@ -4,9 +4,7 @@
 	align-items: center;
 	flex-direction: column;
 	height: 90px;
-}
-
-.footer {
+	margin-top: auto;
 	background: #0d58ba;
 	font-family: Sora, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }

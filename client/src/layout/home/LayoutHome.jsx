@@ -1,8 +1,8 @@
 import { BackTop } from 'antd';
 import { ArrowUpOutlined } from '@ant-design/icons';
-import { Outlet } from 'react-router-dom';
-import Navbar from '@/components/NavBar';
-import Footer from '@/components/Footer';
+import { Outlet, useLocation } from 'react-router-dom';
+import Navbar from './ui/TopBar/NavBar';
+import Footer from './ui/Footer';
 
 const BackTopStyle = {
 	height: 40,
@@ -15,16 +15,17 @@ const BackTopStyle = {
 	fontSize: 14,
 };
 
-export const Main = () => {
+export const LayoutHome = () => {
+	const location = useLocation();
+
 	return (
 		<>
 			<Navbar />
+			<div style={{ minHeight: 'calc(100vh - 170px)', height: '100%' }}>
+				<Outlet />
+			</div>
 
-			<Outlet />
-
-			{/* {history.location.pathname !== "/mapa" && <Footer />} */}
-
-			<Footer />
+			{location.pathname !== '/mapa' && <Footer />}
 
 			<BackTop>
 				<div style={BackTopStyle}>

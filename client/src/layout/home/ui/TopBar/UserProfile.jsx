@@ -7,14 +7,18 @@ import {
 	LogoutOutlined,
 } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
+import useAuthStore from '@/store/authStore';
 
-export const UserProfile = ({ user }) => {
-	const { id, role } = user;
+export const UserProfile = () => {
+	const {
+		userProfile: user,
+		removeUser,
+	} = useAuthStore();
 	const [avatar, setAvatar] = useState('');
 
 	useEffect(() => {
 		if (user?.avatar) {
-			setAvatar(server + user.avatarUrl);
+			setAvatar(import.meta.env.VITE_API_URL + user.avatarUrl);
 		}
 		if (user?.google) {
 			setAvatar(user.avatarUrl);
@@ -22,20 +26,19 @@ export const UserProfile = ({ user }) => {
 	}, [user]);
 
 	const logoutUser = () => {
-		logout();
-		window.location.href = '/';
+		removeUser();
 	};
 
 	const menuPerfil = (
 		<Menu style={{ fontFamily: 'Sora, Verdana' }}>
 			<Menu.Item key='1' icon={<IdcardFilled />}>
-				<Link to={`/perfil/${id}`}>Perfil</Link>
+				<Link to={`/perfil/${user.id}`}>Perfil</Link>
 			</Menu.Item>
 			<Menu.Item key='2' icon={<SettingFilled />}>
-				<Link to={`/perfil/${id}/configuracion/datos`}>Configuración</Link>
+				<Link to={`/perfil/${user.id}/configuracion/datos`}>Configuración</Link>
 			</Menu.Item>
 
-			{role === 'admin' && (
+			{user.role === 'admin' && (
 				<Menu.Item key='4' icon={<LockFilled />}>
 					<Link to='/admin'>Panel Admin</Link>
 				</Menu.Item>
@@ -52,7 +55,7 @@ export const UserProfile = ({ user }) => {
 		<Dropdown
 			overlay={menuPerfil}
 			trigger={['click']}
-			placement='bottomCenter'
+			placement='bottom'
 			arrow
 		>
 			<Avatar
