@@ -4,10 +4,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Arvo&display=swap');
 
 .page_404 {
-	padding: 80px 0;
+	padding: 30px 0;
 	background: #fff;
 	font-family: 'Arvo', serif;
-	height: 100vh;
+	height: calc(100vh - 80px);
+	display: flex;
+	text-align: center;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 
 .page_404 img {
@@ -18,12 +23,12 @@
 	display: flex;
 	text-align: center;
 	flex-direction: column;
-	height: 100%;
+	width: 100%;
 }
 
 .four_zero_four_bg {
 	background-image: url(https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif);
-	height: 500px;
+	height: 450px;
 	background-position: center;
 	background-repeat: no-repeat;
 }
@@ -40,7 +45,6 @@
 	color: #fff !important;
 	padding: 10px 20px;
 	background: #39ac31;
-	margin: 20px 0;
 	display: inline-block;
 }
 .contant_box_404 {
