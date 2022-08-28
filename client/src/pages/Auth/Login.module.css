@@ -37,7 +37,7 @@
 	max-width: 100%;
 }
 
-.logo {
+.divLogo {
 	margin-bottom: 1rem;
 	align-items: center;
 	justify-content: center;
@@ -92,22 +92,15 @@
 .footer {
 	display: flex;
 	flex-direction: column;
-	font-weight: 500;
 	font-size: 14px;
 	text-align: center;
 	padding-top: 14px;
-	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* dotted border */
 .dotted {
 	border-top: 1px dotted #bbb;
 	margin-bottom: 10px;
-}
-
-.link {
-	color: #696969;
-	text-decoration: none;
 }
 
 @media screen and (max-width: 768px) {

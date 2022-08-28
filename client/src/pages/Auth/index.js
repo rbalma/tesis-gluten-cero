@@ -1,4 +1,4 @@
 export * from './Login';
 export * from './SignUp';
-export * from './ForgotPassword';
-export * from './ResetPassword';
+export * from './PasswordForm/ForgotPassword';
+export * from './PasswordForm/ResetPassword';

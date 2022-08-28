@@ -1,22 +1,33 @@
 import { Form, Input } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Logo from '@/assets/images/logoGlutenCero.png';
+import useAuthStore from '@/store/authStore';
+import useCrud from '@/hooks/useCrud';
 
 import styles from './Login.module.css';
 
 export const Login = () => {
+	const { userProfile, addUser } = useAuthStore();
+	const navigate = useNavigate();
+	const { 2: postLogin } = useCrud('/sign-in');
+
 	const onSubmit = async values => {
-		setIsLoading(true);
+		//setIsLoading(true);
 		// await sleep(1000);
-		console.log({ values });
+		const data = await postLogin({...values});
+		//console.log({data})
+		addUser(data.user);
+		navigate('/');
 	};
 
 	return (
 		<div className={styles.container}>
 			<div className={styles.box}>
 				<div className={styles.form}>
-					<div className={styles.logo}>
-						<img src={Logo} alt='glutenCeroLogo' width={180} />
+					<div className={styles.divLogo}>
+						<Link to={'/'}>
+							<img src={Logo} alt='glutenCeroLogo' width={180} />
+						</Link>
 					</div>
 
 					<p className={styles.title}>Ingresa tus datos:</p>
@@ -27,9 +38,13 @@ export const Login = () => {
 						requiredMark={false}
 						validateTrigger='onSubmit'
 						autoComplete='off'
+						initialValues={{
+							email: 'balmarodrigo@hotmail.com',
+							password: 'T@lleres2020',
+						}}
 					>
 						<Form.Item
-							name='usuario'
+							name='email'
 							rules={[
 								{
 									required: true,
@@ -71,14 +86,14 @@ export const Login = () => {
 								{/* {isLoading ? "Ingresando..." : "Ingresar"} */}
 								Ingresar con Google
 							</button>
-							<small>
-								<Link to={'/password-perdida'} className={styles.link}>
+							<small className='gx-mt-2'>
+								<Link to={'/password-perdida'}>
 									¿Olvidaste tu contraseña?
 								</Link>
 							</small>
 							<small>
 								¿Eres nuevo en Gluten Cero?{' '}
-								<Link to={'/registro'} className={styles.link}>
+								<Link to={'/registro'}>
 									Únete ahora{' '}
 								</Link>
 							</small>

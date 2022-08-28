@@ -10,12 +10,13 @@
 		"lint": "eslint --fix . --ext .js,.jsx"
 	},
 	"dependencies": {
-		"@ant-design/icons": "^4.7.0",
 		"antd": "^4.21.6",
 		"axios": "^0.27.2",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
-		"react-router-dom": "^6.3.0"
+		"react-router-dom": "^6.3.0",
+		"react-toastify": "^9.0.8",
+		"zustand": "^4.1.0"
 	},
 	"devDependencies": {
 		"@types/react": "^18.0.15",

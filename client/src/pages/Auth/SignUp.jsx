@@ -18,8 +18,10 @@ export const SignUp = () => {
 
 			<div className={styles.box}>
 				<div className={styles.form}>
-					<div className={styles.logo}>
-						<img src={Logo} alt='glutenCeroLogo' width={180} />
+					<div className={styles.divLogo}>
+						<Link to={'/'}>
+							<img src={Logo} alt='glutenCeroLogo' width={180} />
+						</Link>
 					</div>
 
 					<p className={styles.title}>Crea una cuenta:</p>
@@ -90,7 +92,7 @@ export const SignUp = () => {
 						<Form.Item
 							name='password'
 							hasFeedback
-							extra='Debe contener número, letra mayúscula y al menos 8 caracteres'
+							extra='Entre 8 y 30 caracteres. Como mínimo una letra minúscula, una letra mayúscula y un número.'
 							rules={[
 								{
 									required: true,
