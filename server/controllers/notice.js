@@ -175,7 +175,7 @@ function getNotices(req, res) {
       if(!noticesStored){
         res.status(404).send({ code: 404, message:"No se ha encontrado ninguna noticia"})
       } else {
-        res.status(200).send({ code: 200, notice: noticesStored });
+        res.status(200).send({ code: 200, data: noticesStored.docs });
       }
     }
   });

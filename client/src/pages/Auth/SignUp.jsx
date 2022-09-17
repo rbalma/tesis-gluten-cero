@@ -99,7 +99,7 @@ export const SignUp = () => {
 									message: 'La contraseña es obligatoria',
 								},
 								{
-									pattern: /^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,}$/,
+									pattern: /^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,30}$/,
 									message: 'La contraseña no respeta los requisitos:',
 								},
 							]}

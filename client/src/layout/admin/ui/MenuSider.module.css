@@ -1,0 +1,11 @@
+.adminSider {
+	top: 65px;
+	padding-top: 10px;
+	max-height: calc(100vh - 65px);
+}
+
+@media (max-width: 960px) {
+	.adminSider {
+		display: none;
+	}
+}

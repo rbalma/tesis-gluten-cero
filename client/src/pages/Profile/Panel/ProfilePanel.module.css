@@ -1,0 +1,12 @@
+.mainP {
+	margin-left: 6rem;
+	margin-right: 4rem;
+	padding: 1rem;
+}
+
+/* Small screens */
+@media only screen and (max-width: 600px) {
+	.mainP {
+		margin: 0;
+	}
+}

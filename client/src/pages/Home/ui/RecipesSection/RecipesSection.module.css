@@ -1,0 +1,19 @@
+.title {
+	text-align: center;
+	font-family: 'Sora', sans-serif;
+	margin-top: 35px;
+}
+
+.cardGrid {
+	padding: 50px 10%;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	grid-gap: 30px;
+	margin: 22px 0 50px;
+}
+
+@media screen and (max-width: 1613px) and (min-width: 1200px) {
+	.lastRecipe {
+		display: none;
+	}
+}

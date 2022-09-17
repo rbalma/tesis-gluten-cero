@@ -1,6 +1,6 @@
 const Recipe = require('../models/recipe');
 const Comment = require('../models/comments');
-const User = require("../models/user");
+const User = require("../models/User");
 const multer = require('multer');
 const shortid = require('shortid');
 const path = require("path");

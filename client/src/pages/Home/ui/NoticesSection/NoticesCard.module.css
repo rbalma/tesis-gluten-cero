@@ -1,0 +1,63 @@
+.card {
+	align-items: flex-end;
+	background-position: center;
+	background-size: cover;
+	border-radius: 15px;
+	border: 3px solid #999;
+	box-sizing: border-box;
+	display: flex;
+	height: 400px;
+	line-height: 1.3;
+	margin: 20px 0;
+	position: relative;
+	text-decoration: none;
+	width: 280px;
+}
+
+.inner {
+	height: auto;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: start;
+	align-items: start;
+	background: rgba(0, 0, 0, 0.3);
+	box-sizing: border-box;
+	padding: 20px;
+}
+
+.title {
+	font-size: 18px;
+	font-family: 'Sora', sans-serif;
+	font-weight: 500;
+	line-height: 1.4;
+	color: #fff;
+	position: relative;
+	margin: 0 0 5px 0;
+	text-align: start;
+	text-transform: uppercase;
+}
+
+.subtitle {
+	font-size: 12px;
+	color: #aaa;
+}
+
+.openNotice {
+	margin-top: 15px;
+	text-decoration: none;
+	font-size: 11px;
+	text-transform: uppercase;
+	color: #fff;
+	outline: 1px solid #fff;
+	padding: 5px 10px;
+	position: relative;
+	overflow: hidden;
+	cursor: pointer;
+	transition: color 500ms ease-in-out, background-color 500ms ease-in-out;
+}
+
+.openNotice:hover {
+	color: #000;
+	background-color: #fff;
+}

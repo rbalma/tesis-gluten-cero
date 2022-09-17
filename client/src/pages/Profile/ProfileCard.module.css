@@ -1,0 +1,95 @@
+.cardProfile {
+	font-family: 'Sora', sans-serif;
+	width: 300px;
+	overflow: hidden;
+	background-color: #fff;
+	box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1);
+	margin: auto;
+	height: 310px;
+	border-radius: 20px;
+}
+
+.cardHeader {
+	height: 150px;
+	position: relative;
+}
+
+.wavesContainer {
+	height: 100%;
+}
+
+.wave {
+	position: absolute;
+	width: 650px;
+	height: 650px;
+	background-image: linear-gradient(to bottom left, #8aafff, #5b86e5);
+	transform: translateX(-50%);
+}
+
+.wave1 {
+	border-radius: 50%;
+	top: -330%;
+	left: 50%;
+	animation: spin 12s linear infinite;
+}
+
+.wave2 {
+	border-radius: 46%;
+	top: -332%;
+	left: 48%;
+	opacity: 0.5;
+	animation: spin 16s linear infinite;
+}
+
+.wave3 {
+	border-radius: 40%;
+	top: -328%;
+	left: 52%;
+	opacity: 0.2;
+	animation: spin 16s linear infinite;
+}
+
+@keyframes spin {
+	to {
+		transform: translateX(-50%) rotate(360deg);
+	}
+}
+
+.imgProfile {
+	margin: 0 auto;
+	width: 100px;
+	border-radius: 50%;
+	position: absolute;
+	top: 40%;
+	left: 50%;
+	transform: translate(-50%, 50%);
+}
+
+.cardBody {
+	margin-top: 70px;
+	text-align: center;
+	padding: 0 20px;
+}
+
+.cardProfile .cardBody h2 {
+	text-transform: capitalize;
+	color: rgb(82, 82, 82);
+}
+
+@media screen and (max-width: 580px) {
+	.cardProfile {
+		width: 95%;
+	}
+}
+
+@media screen and (max-width: 400px) {
+	.imgProfile {
+		width: 100px;
+		height: 100px;
+		transform: translate(-50%, 80%);
+	}
+
+	.cardProfile .cardBody h2 {
+		font-size: 25px;
+	}
+}

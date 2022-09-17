@@ -1,0 +1,44 @@
+.sliderReact {
+	width: 80%;
+	margin: 3rem auto;
+	height: auto;
+	position: relative;
+}
+
+.slickSlider {
+	margin: 30px auto 50px;
+	width: auto;
+}
+
+.slide {
+	transform: scale(0.5);
+	transition: transform 300ms;
+	opacity: 0.5;
+}
+
+.activeSlide {
+	transform: scale(1);
+	opacity: 1;
+}
+
+.arrow {
+	position: absolute;
+	cursor: pointer;
+	z-index: 1;
+	font-size: 50px;
+	transition: color 500ms ease-in-out;
+}
+
+.arrow:hover {
+	color: #595959;
+}
+
+.next {
+	right: 0%;
+	top: 50%;
+}
+
+.prev {
+	left: 0%;
+	top: 50%;
+}

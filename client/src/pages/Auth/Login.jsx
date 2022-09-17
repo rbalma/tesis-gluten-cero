@@ -11,10 +11,10 @@ export const Login = () => {
 	const navigate = useNavigate();
 	const { 2: postLogin } = useCrud('/sign-in');
 
-	const onSubmit = async values => {
+	const onSubmit = async (values) => {
 		//setIsLoading(true);
 		// await sleep(1000);
-		const data = await postLogin({...values});
+		const data = await postLogin({ ...values });
 		//console.log({data})
 		addUser(data.user);
 		navigate('/');
@@ -49,6 +49,10 @@ export const Login = () => {
 								{
 									required: true,
 									message: 'El correo es obligatorio',
+								},
+								{
+									type: 'email',
+									message: 'Debe ingresar un correo válido',
 								},
 							]}
 						>
@@ -87,15 +91,11 @@ export const Login = () => {
 								Ingresar con Google
 							</button>
 							<small className='gx-mt-2'>
-								<Link to={'/password-perdida'}>
-									¿Olvidaste tu contraseña?
-								</Link>
+								<Link to={'/password-perdida'}>¿Olvidaste tu contraseña?</Link>
 							</small>
 							<small>
 								¿Eres nuevo en Gluten Cero?{' '}
-								<Link to={'/registro'}>
-									Únete ahora{' '}
-								</Link>
+								<Link to={'/registro'}>Únete ahora </Link>
 							</small>
 						</div>
 					</Form>

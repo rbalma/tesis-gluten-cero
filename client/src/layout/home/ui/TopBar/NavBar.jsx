@@ -9,7 +9,7 @@ import './NavBar.css';
 
 const NavBar = () => {
 	const navigate = useNavigate();
-	const { userProfile: user, removeUser } = useAuthStore();
+	const { userProfile: user } = useAuthStore();
 	const [openMenu, setOpenMenu] = useState(false);
 
 	const handleChangeMenu = () => {

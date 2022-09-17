@@ -12,10 +12,14 @@
 	"dependencies": {
 		"antd": "^4.21.6",
 		"axios": "^0.27.2",
+		"date-fns": "^2.29.2",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
 		"react-router-dom": "^6.3.0",
+		"react-slick": "^0.29.0",
 		"react-toastify": "^9.0.8",
+		"slick-carousel": "^1.8.1",
+		"underscore": "^1.13.4",
 		"zustand": "^4.1.0"
 	},
 	"devDependencies": {

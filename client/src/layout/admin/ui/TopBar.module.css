@@ -1,0 +1,17 @@
+.menuTop {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	padding: 0px 3%;
+	background-color: #002140;
+}
+
+.btnMenu {
+	margin-top: 15px;
+}
+
+@media (min-width: 960px) {
+	.btnMenu {
+		display: none !important;
+	}
+}

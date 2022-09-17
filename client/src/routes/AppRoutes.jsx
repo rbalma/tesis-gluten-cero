@@ -1,9 +1,9 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { routesAuth, routesPages, routesAdmin, routesProfile } from './routes';
-import AdminScreen from '@/pages/Admin/AdminScreen';
-import Profile from '@/pages/Profile';
+import LayoutHome from '../layout/home/LayoutHome';
+import AdminScreen from '../layout/admin/LayoutAdmin';
 import NotFoundScreen from '@/pages/NotFound/NotFoundScreen';
-import { Main } from '../layout/Main';
+
 
 const AppRoutes = () => {
 	return (
@@ -17,7 +17,7 @@ const AppRoutes = () => {
 					/>
 				))}
 
-				<Route path='/' element={<Main />}>
+				<Route path='/' element={<LayoutHome />}>
 					{routesPages.map(route => (
 						<Route
 							key={route.path}
@@ -25,8 +25,10 @@ const AppRoutes = () => {
 							element={<route.element />}
 						/>
 					))}
+				<Route path='*' element={<NotFoundScreen />} />
 				</Route>
 
+				{/* PANEL ADMIN */}
 				<Route path='admin' element={<AdminScreen />}>
 					{routesAdmin.map(route => (
 						<Route
@@ -37,8 +39,8 @@ const AppRoutes = () => {
 					))}
 				</Route>
 
-				{/* SACAR DE ACÁ */}
-				<Route path='/perfil/:id' element={<Profile />}>
+				{/* SACAR DE ACÁ
+				<Route path='/perfil/:id' element={<ProfilePage />}>
 					{routesProfile.map(route => (
 						<Route
 							key={route.path}
@@ -46,7 +48,7 @@ const AppRoutes = () => {
 							element={<route.element />}
 						/>
 					))}
-				</Route>
+				</Route> */}
 
 				<Route path='*' element={<NotFoundScreen />} />
 			</Routes>

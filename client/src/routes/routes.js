@@ -1,11 +1,13 @@
-import Home from '@/pages/Home';
+import HomePage from '@/pages/Home/HomePage';
 import { Login, SignUp, ForgotPassword, ResetPassword } from '@/pages/Auth';
 
-import AdminRecipe from '@/pages/Admin/AdminRecipe';
-import AdminMap from '@/pages/Admin/AdminMap';
+import {AdminRecipe, AdminRecipeCategories, AdminMap, AdminNotice, AdminProducts, AdminStatistics, AdminForo, AdminUser } from '@/pages/Admin';
 
-import Setting from '@/pages/Profile/Setting';
-import RecipeProfile from '@/pages/Profile/RecipeProfile';
+import ProfilePanel from '@/pages/Profile/Panel/ProfilePanel';
+import { ProfileMap, ProfileTheards, ProfileRecipes, ProfileSetting } from '@/pages/Profile/Panel/items';
+import NotFoundScreen from '@/pages/NotFound/NotFoundScreen';
+import { ProfilePage } from '@/pages/Profile/ProfilePage';
+import { ProductsPage } from '@/pages/Products/ProductsPage';
 
 const routesAuth = [
 	{
@@ -29,29 +31,77 @@ const routesAuth = [
 const routesPages = [
 	{
 		path: '/',
-		element: Home,
+		element: HomePage,
 	},
+	{
+		path: '/listado-productos',
+		element: ProductsPage,
+	},
+	{
+		path: '/perfil/:id',
+		element: ProfilePage
+	},
+	{
+		path: '/perfil/:id/panel/*',
+		element: ProfilePanel
+	}
 ];
 
 const routesAdmin = [
+	{
+		path: 'estadisticas',
+		element: AdminStatistics,
+	},
+	{
+		path: 'usuarios',
+		element: AdminUser,
+	},
 	{
 		path: 'recetas',
 		element: AdminRecipe,
 	},
 	{
+		path: 'recetas-categorias',
+		element: AdminRecipeCategories,
+	},
+	{
+		path: 'noticias',
+		element: AdminNotice,
+	},
+	{
 		path: 'mapa',
 		element: AdminMap,
+	},
+	{
+		path: 'foro',
+		element: AdminForo
+	},
+	{
+		path: 'productos',
+		element: AdminProducts
 	},
 ];
 
 const routesProfile = [
 	{
 		path: 'configuracion',
-		element: Setting,
+		element: ProfileSetting,
 	},
 	{
-		path: 'recetas/:id',
-		element: RecipeProfile,
+		path: 'recetas',
+		element: ProfileRecipes,
+	},
+	{
+		path: 'mapa',
+		element: ProfileMap,
+	},
+	{
+		path: 'foro',
+		element: ProfileTheards,
+	},
+	{
+		path: '*',
+		element: NotFoundScreen,
 	},
 ];
 
