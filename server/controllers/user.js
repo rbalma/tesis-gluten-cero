@@ -222,14 +222,14 @@ exports.getFavRecipes = async (req, res, next) => {
   const { userId } = req.params;
 
   try {
-    const user = await User.findById(userId).select('_id').populate({
+    const favRecipes = await User.findById(userId).select('_id').populate({
       path: "favRecipes",
       select: "title category image",
     });
 
     if (!user) return next(new ErrorResponse("El usuario no existe"));
 
-    res.json({ ok: true, data: user, count: user.length });
+    res.json({ ok: true, data: favRecipes, count: favRecipes.length });
   } catch (error) {
     next(error);
   }
@@ -262,6 +262,58 @@ exports.deleteFavRecipe = async (req, res, next) => {
 
   try {
     await User.findByIdAndUpdate(userId, { $pull: { favRecipes: recipeId } });
+    res.json({ ok: true });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+// @desc Obtiene el detalle de los marcadores favoritos de un usuario
+// @route /api/fav-markets/:userId
+// @access Private
+exports.getFavMarkets = async (req, res, next) => {
+  const { userId } = req.params;
+
+  try {
+    const favMarkets = await User.findById(userId).select('_id').populate({
+      path: "favMarkets",
+      select: "name type image",
+    });
+    if (!favMarkets) return next(new ErrorResponse("El usuario no existe"));
+
+    res.json({ ok: true, data: favMarkets, count: favMarkets.length });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+// @desc agrega un marcador como favorito de un usuario
+// @route /api/fav-markets/:userId
+// @access Private
+exports.addFavMarkets = async (req, res, next) => {
+  const { userId } = req.params;
+  const { marketId } = req.body;
+
+  try {
+    await User.findByIdAndUpdate(userId, { $push: { favMarkets: marketId } });
+    res.json({ ok: true });
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+// @desc elimina un marcador como favorito de un usuario
+// @route /api/fav-markets/:userId
+// @access Private
+exports.deleteFavMarkets = async (req, res, next) => {
+  const { userId } = req.params;
+  const { marketId } = req.query;
+
+  try {
+    await User.findByIdAndUpdate(userId, { $pull: { favMarkets: marketId } });
     res.json({ ok: true });
   } catch (error) {
     next(error);

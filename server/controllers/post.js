@@ -14,7 +14,6 @@ exports.addPost = async (req, res, next) => {
     post.thread = threadId;
 
     const postDB = await post.save();
-    await Thread.findByIdAndUpdate(threadId, { lastPost: postDB._id });
 
     res.json({
       ok: true,
@@ -133,7 +132,7 @@ exports.deletePost = async (req, res, next) => {
     const post = await Post.findById(postId);
     if (!post) return next(new ErrorResponse('No existe el posteo', 404));
 
-    await Post.findByIdAndDelete(postId);
+    await post.remove();
     res.json({ ok: true, data: postId, message: 'Posteo eliminado' });
   } catch (error) {
     next(error);

@@ -3,15 +3,11 @@ const mongoosePaginate = require("mongoose-paginate-v2");
 
 const Schema = mongoose.Schema;
 
-const threadSchema = new Schema({
+const ThreadSchema = new Schema({
   title: {
     type: String,
     required: [true, 'Debe ingresar un título'],
     trim: true,
-  },
-  content: {
-    type: String,
-    required: [true, 'Debe ingresar un descripción del hilo'],
   },
   status: {
     type: String,
@@ -29,16 +25,16 @@ const threadSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
   },
-  lastPost: {
+  posts: [{
     type: Schema.Types.ObjectId,
     ref: "Post",
-  },
+  }],
   isUpdated: {
     type: Boolean,
     default: false,
   },
 });
 
-threadSchema.plugin(mongoosePaginate);
+ThreadSchema.plugin(mongoosePaginate);
 
-module.exports = mongoose.model("Thread", threadSchema);
+module.exports = mongoose.model("Thread", ThreadSchema);

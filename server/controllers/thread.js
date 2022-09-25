@@ -8,10 +8,18 @@ const ErrorResponse = require("../utils/errorResponse");
 exports.addThread = async (req, res, next) => {
   try {
     const thread = new Thread(req.body);
+    const post = new Post(req.body);
+
     thread.user = req.id;
 
     const threadDB = await thread.save();
     if (!threadDB) return next(new ErrorResponse("El Hilo ya existe", 400));
+
+    post.content = req.body.content;
+    post.user = req.id;
+    post.thread = threadDB._id;
+    const postDB = await post.save();
+    if (!postDB) return next(new ErrorResponse("El posteo no se pudo crear", 400));
 
     res.json({ ok: true, data: threadDB, message: 'Hilo agregado' });
   } catch (error) {
@@ -35,8 +43,10 @@ exports.getThread = async (req, res, next) => {
         select: "name lastname",
       },
       {
-        path: "lastPost",
+        path: "posts",
         select: "date user",
+        sort: { date: -1 },
+        limit: 1,
         populate: { path: "user", select: "name lastname" },
       },
     ],
