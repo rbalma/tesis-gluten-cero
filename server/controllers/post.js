@@ -1,164 +1,141 @@
-const Post = require('../models/post');
+const Post = require('../models/Post');
+const Thread = require('../models/Thread');
+const ErrorResponse = require('../utils/errorResponse');
 
-const addPost = async(req, res) => {
+// @desc Agregar un nuevo posteo
+// @route POST /api/posts
+// @access Private
+exports.addPost = async (req, res, next) => {
+  const { threadId } = req.body;
+  const post = new Post(req.body);
 
-    const post = new Post( req.body );
+  try {
+    post.user = req.id;
+    post.thread = threadId;
 
-    try {
-        post.user = req.user.id;
-        post.thread = req.params.id;
+    const postDB = await post.save();
+    await Thread.findByIdAndUpdate(threadId, { lastPost: postDB._id });
 
-        const postDB = await post.save();
+    res.json({
+      ok: true,
+      post: postDB,
+      message: 'Posteo agregado',
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
-        res.json({
-            ok: true,
-            post: postDB
-        });
+// @desc Obtiene los posteos paginados
+// @route GET /api/posts
+// @access Public
+exports.getPosts = async (req, res, next) => {
+  const { page = 1, limit = 10, user, threadId } = req.query;
 
-    } catch (error) {
-        res.status(500).json({
-            ok: false,
-            message: 'Hable con el administrador'
-        });
-    }
-}
-
-
-const getPosts = async(req, res) => {
-    const idThread = req.params.id;
-    const { page = 1, limit = 10} = req.query;
-
-    const options = {
+  const options = {
     page,
     limit: parseInt(limit),
-    sort: { created: 1 },
-    populate: 'user',
+    sort: { date: 1 },
+    populate: [
+      {
+        path: 'user',
+        select: 'name lastname avatar',
+      },
+      {
+        path: 'postMother',
+        select: 'content date user',
+        populate: {
+          path: 'user',
+          select: 'name lastname',
+        },
+      },
+    ],
+  };
+
+  let filters = {};
+  if (threadId) filters = { thread: threadId };
+  if (user) filters = { ...filters, user };
+
+  try {
+    const posts = await Post.paginate({ ...filters }, options);
+
+    res.json({
+      ok: true,
+      data: posts.docs,
+      totalPages: posts.totalPages,
+      count: posts.totalDocs,
+    });
+  } catch (error) {
+    next(error);
   }
+};
 
-    const posts = await Post.paginate({thread: idThread}, options);
-    res.json({
-        ok: true,
-        posts
+// @desc Obtiene un posteo
+// @route GET /api/posts/:postId
+// @access Private
+exports.getPostById = async (req, res, next) => {
+  const { postId } = req.params;
+
+  try {
+    const post = await Post.findById(postId);
+    if (!post) return next(new ErrorResponse('No existe el posteo', 404));
+
+    return res.json({ ok: true, data: post });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc Actualiza un posteo
+// @route UPDATE /api/posts/:postId
+// @access Private
+exports.updatePost = async (req, res, next) => {
+  const { postId } = req.params.idPost;
+
+  try {
+    const post = await Post.findById(postId);
+    if (!post) return next(new ErrorResponse('No existe el posteo', 404));
+
+    // Verifica que solo el usuario que creó el post pueda actualizarlo
+    if (post.user.toString() !== req.id)
+      return next(
+        new ErrorResponse('No tiene privilegios para editar este posteo', 404)
+      );
+
+    const newPost = {
+      ...req.body,
+      user: req.id,
+      thread: threadId,
+      isUpdated: true,
+    };
+
+    const updatePost = await Post.findByIdAndUpdate(postId, newPost, {
+      new: true,
     });
 
-}
-
-
-const getLastPost = async(req, res) => {
-    const idThread = req.params.id;
-    const posts = await Post.findOne({thread: idThread}).sort({ created: -1 }).populate('user', 'name lastname avatar');
-    if(!posts){
-       return res.json({
-            ok: false
-        });
-    }
     res.json({
-        ok: true,
-        posts
+      ok: true,
+      data: updatePost,
+      message: 'Posteo actualizado',
     });
-}
+  } catch (error) {
+    next(error);
+  }
+};
 
+// @desc Elimina un posteo
+// @route DELETE /api/posts/:postId
+// @access Private
+exports.deletePost = async (req, res, next) => {
+  const { postId } = req.params;
 
-const getPostById = async(req, res) => {
-    const { idPost } = req.params;
-    const post = await Post.findById(idPost);
-    res.json({
-        ok: true,
-        post
-    });
+  try {
+    const post = await Post.findById(postId);
+    if (!post) return next(new ErrorResponse('No existe el posteo', 404));
 
-}
-
-
-const getPostsByUser = async(req, res) => {
-    const { idUser } = req.params;
-    const posts = await Post.find({ user: idUser });
-    res.json({
-        ok: true,
-        posts
-    });
-
-}
-
-
-const updatePost = async(req, res) => {
-    const postId = req.params.idPost;
-    const threadId = req.params.id;
-
-    try {
-        const post = await Post.findById( postId );
-        if(!post){
-           return res.status(404).json({
-                ok: false,
-                message: 'Post no existe por ese id'
-            });
-        }
-
-        // Verifica que solo el usuario que creó el post pueda actualizarlo
-        if(post.user.toString() !== req.user.id){
-            return res.status(401).json({
-                ok: false,
-                message: 'No tiene privilegios para editar este post'
-            });
-        }
-
-        // En el body de la petición no viene el id del user
-        const newPost = {
-            ...req.body,
-            user: req.user.id,
-            thread: threadId
-        }
-
-        // new : true es para que me devuelve el post con los datos actualizados
-        const updatePost = await Post.findByIdAndUpdate( postId, newPost, { new: true });
-
-        res.json({
-            ok: true,
-            post: updatePost
-        })
-        
-    } catch (error) {
-        console.log(error);
-       return res.status(500).json({
-            ok: false,
-            message: 'Hable con el administrador'
-        });
-    }
-
-}
-
-
-const deletePost = async(req, res) => {
-    const { idPost } = req.params;
-  
-    try {
-        const post = await Post.findById( idPost );
-        if(!post){
-           return res.status(404).json({
-                ok: false,
-                message: 'Post no existe por ese id'
-            });
-        }
-
-        await Post.findByIdAndDelete( idPost );
-        res.json({ ok: true });
-
-    } catch (error) {
-        console.log(error);
-       return res.status(500).json({
-            ok: false,
-            message: 'Hable con el administrador'
-        });
-    }
-
-}
-
-module.exports = {
-    addPost,
-    getPosts,
-    getLastPost,
-    getPostById,
-    getPostsByUser,
-    updatePost,
-    deletePost
-}
+    await Post.findByIdAndDelete(postId);
+    res.json({ ok: true, data: postId, message: 'Posteo eliminado' });
+  } catch (error) {
+    next(error);
+  }
+};

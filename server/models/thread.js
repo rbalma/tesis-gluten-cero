@@ -1,32 +1,44 @@
-const mongoose = require('mongoose');
-const mongoosePaginate = require('mongoose-paginate-v2');
+const mongoose = require("mongoose");
+const mongoosePaginate = require("mongoose-paginate-v2");
 
 const Schema = mongoose.Schema;
 
 const threadSchema = new Schema({
-    title: {
-        type: String,
-        required: true,
-        trim: true
+  title: {
+    type: String,
+    required: [true, 'Debe ingresar un título'],
+    trim: true,
+  },
+  content: {
+    type: String,
+    required: [true, 'Debe ingresar un descripción del hilo'],
+  },
+  status: {
+    type: String,
+    enum: {
+      values: ["open", "closed", "locked", "solved"],
+      message: "{VALUE} no es un estado válido",
     },
-    content: {
-        type: String,
-        required: true
-    },
-    status: {
-        type: String,
-        default: 'open'
-    },
-    created: {
-        type: Date,
-        default: Date.now()
-    },
-    user:{
-            type: Schema.Types.ObjectId,
-            ref: 'User'
-    }
+    default: "open",
+  },
+  date: {
+    type: Date,
+    default: Date.now,
+  },
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
+  lastPost: {
+    type: Schema.Types.ObjectId,
+    ref: "Post",
+  },
+  isUpdated: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 threadSchema.plugin(mongoosePaginate);
 
-module.exports = mongoose.model('Thread', threadSchema);
+module.exports = mongoose.model("Thread", threadSchema);

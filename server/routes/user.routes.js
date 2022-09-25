@@ -1,5 +1,5 @@
 const express = require('express');
-const { addUsers, getUsers, getUserById, updateUser, deleteUser, getFavRecipes, addFavRecipe, deleteFavRecipe } = require('../controllers/user');
+const { addUsers, activeUserAccount, getUsers, getUserById, updateUser, deleteUser, getFavRecipes, addFavRecipe, deleteFavRecipe } = require('../controllers/user');
 
 const { validateJWT } = require('../middlewares/validateJwt');
 const { uploadFile } = require('../middlewares/uploadAvatar');
@@ -14,6 +14,8 @@ router.route('/users/:id')
         .get(validateJWT, getUserById)
         .put(validateJWT, uploadFile, updateUser)
         .delete(validateJWT, deleteUser);
+
+router.route('/active-account/:userId').put(activeUserAccount);
 
 router.route('/fav-recipes/:userId')
         .get(validateJWT, getFavRecipes)

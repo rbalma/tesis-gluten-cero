@@ -1,17 +1,12 @@
 const express = require('express');
-const commentController = require('../controllers/comment');
+const { addComment, addCommentReply, getComments, deleteComment } = require('../controllers/comment');
 const { validateJWT } = require('../middlewares/validateJwt');
 
-const api = express.Router();
+const router = express.Router();
 
+router.add('/comments', validateJWT, addComment);
+router.add('/comments-reply/:commentId', validateJWT, addCommentReply);
+router.get('/comments/:recipeId', getComments);
+router.delete('/comments/:commentId', validateJWT, deleteComment);
 
-
-api.post('/comments', validateJWT, commentController.addComment);
-//api.post('/comments-reply/:id', validateJWT, commentController.addCommentReply);
-api.get('/comments', commentController.getComments);
-api.get('/comments/user/:idUser', commentController.getCommentsByUser);
-api.get('/comments/recipe/:idRecipe', commentController.getCommentsByRecipe);
-api.delete('/comments/:id', validateJWT, commentController.deleteComment);
-
-
-module.exports = api;
+module.exports = router;

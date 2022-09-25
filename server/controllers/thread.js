@@ -1,175 +1,143 @@
-const Post = require('../models/post');
-const Thread = require('../models/thread');
+const Post = require("../models/Post");
+const Thread = require("../models/Thread");
+const ErrorResponse = require("../utils/errorResponse");
 
-
-
-const newThread = async (req, res) => {
-  const thread = new Thread();
-
-  const { title, content } = req.body;
-  thread.title = title;
-  thread.content = content;
-
+// @desc Agregar un nuevo hilo
+// @route POST /api/threads
+// @access Private
+exports.addThread = async (req, res, next) => {
   try {
-    thread.user = req.user.id;
-
-    if (!title || !content) {
-      return res.status(401).json({ ok: false, message: "Todos los campos son obligatorios" });
-    }
+    const thread = new Thread(req.body);
+    thread.user = req.id;
 
     const threadDB = await thread.save();
+    if (!threadDB) return next(new ErrorResponse("El Hilo ya existe", 400));
 
-    if (!threadDB) {
-      return res.status(400).json({ ok: false, message: "El Hilo ya existe" });
-    }
-
-    res.json({ ok: true, thread: threadDB });
+    res.json({ ok: true, data: threadDB, message: 'Hilo agregado' });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      ok: false,
-      message: "Hable con el administrador",
-    });
+    next(error);
   }
 };
 
+// @desc Obtiene los hilos paginados
+// @route GET /api/threads
+// @access Public
+exports.getThread = async (req, res, next) => {
+  const { page = 1, limit = 15, search = "", status, user } = req.query;
 
-const getThread = async(req, res) => {
-    const { page = 1, limit = 10} = req.query;
-
-    const options = {
+  const options = {
     page,
     limit: parseInt(limit),
-    sort: { created: 1 },
-    populate: 'user',
-  }
+    sort: { date: 1 },
+    populate: [
+      {
+        path: "user",
+        select: "name lastname",
+      },
+      {
+        path: "lastPost",
+        select: "date user",
+        populate: { path: "user", select: "name lastname" },
+      },
+    ],
+  };
 
-  
-    const threads = await Thread.paginate({}, options);
+  let filters = {};
+  if (status) filters = { status };
+  if (user) filters = { ...filters, user };
+
+  try {
+    if (search) {
+      const threads = await Thread.paginate(
+        {
+          ...filters,
+          title: { $regex: search, $options: "i" },
+        },
+        options
+      );
+      return res.json({ ok: true, data: threads.docs });
+    }
+
+    const threads = await Thread.paginate({ ...filters }, options);
     res.json({
-        ok: true,
-        threads
+      ok: true,
+      data: threads.docs,
+      totalPages: threads.totalPages,
+      count: threads.totalDocs,
     });
-}
+  } catch (error) {
+    next(error);
+  }
+};
 
-
-const deleteThread = async(req, res) => {
-    const threadId = req.params.id;
+// @desc Obtiene un hilo
+// @route GET /api/thread/:threadId
+// @access Public
+exports.getThreadById = async (req, res, next) => {
+    const { threadId } = req.params;
   
     try {
-        const thread = await Thread.findById( threadId );
-        if(!thread){
-           return res.status(404).json({
-                ok: false,
-                message: 'Hilo no existe por ese id'
-            });
-        }
-
-        await Thread.findByIdAndDelete( threadId );
-        await Post.deleteMany({thread: threadId});
-        res.json({ ok: true });
-
+      const thread = await Thread.findById(threadId)
+        .populate('user', 'name lastname');
+      if (!thread) return next(new ErrorResponse('No existe el hilo', 404));
+  
+      return res.json({ ok: true, data: thread });
     } catch (error) {
-        console.log(error);
-       return res.status(500).json({
-            ok: false,
-            message: 'Hable con el administrador'
-        });
+      next(error);
     }
-}
+  };
 
-
-
-const updateThread = async(req, res) => {
-    const threadId = req.params.id;
-
+// @desc Actualiza un hilo
+// @route PUT /api/threads/:threadId
+// @access Private
+exports.updateThread = async (req, res, next) => {
+    const { threadId } = req.params;
+  
     try {
-        const thread = await Thread.findById( threadId );
-        if(!thread){
-           return res.status(404).json({
-                ok: false,
-                message: 'Hilo no existe por ese id'
-            });
-        }
-
-        // Verifica que solo el usuario que creó el hilo pueda actualizarlo
-        if(thread.user.toString() !== req.user.id){
-            return res.status(401).json({
-                ok: false,
-                message: 'No tiene privilegios para editar este hilo'
-            });
-        }
-
-        // En el body de la petición no viene el id del user
-        const newThread = {
-            ...req.body,
-            user: req.user.id
-        }
-
-        // new : true es para que me devuelve el hilo con los datos actualizados
-        const updateThread = await Thread.findByIdAndUpdate( threadId, newThread, { new: true });
-
-        res.json({
-            ok: true,
-            thread: updateThread
-        })
-        
+      const thread = await Thread.findById(threadId);
+      if (!thread) return next(new ErrorResponse('No existe el hilo', 404));
+  
+      // Verifica que solo el usuario que creó el hilo pueda actualizarlo
+      if (thread.user.toString() !== req.id)
+        return next(
+          new ErrorResponse("No tiene privilegios para editar este hilo", 401)
+        );
+  
+      const newThread = {
+        ...req.body,
+        user: req.id,
+        date: Date.now(),
+        isUpdated: true
+      };
+  
+      const updateThread = await Thread.findByIdAndUpdate(threadId, newThread, {
+        new: true,
+      });
+  
+      res.json({
+        ok: true,
+        thread: updateThread,
+        message: 'Hilo actualizado'
+      });
     } catch (error) {
-        console.log(error);
-       return res.status(500).json({
-            ok: false,
-            message: 'Hable con el administrador'
-        });
+      next(error);
     }
+};
 
-}
+// @desc Elimina un hilo
+// @route DELETE /api/threads/threadId
+// @access Private
+exports.deleteThread = async (req, res, next) => {
+  const { threadId } = req.params;
 
+  try {
+    const thread = await Thread.findById(threadId);
+    if (!thread) return next(new ErrorResponse("No existe el hilo", 404));
 
-const getThreadByUser = async(req, res) => {
-
-    const userId = req.params.user;
-    try {
-        const threads = await Thread.find({user: userId});
-        res.json({
-            ok: true,
-            threads
-        });
-    } catch (error) {
-        console.log(error);
-       return res.status(500).json({
-            ok: false,
-            message: 'Hable con el administrador'
-        });
-    }
-
-}
-
-
-const getThreadById = async(req, res) => {
-
-    const threadId = req.params.id;
-    try {
-        const thread = await Thread.findById(threadId).populate('user', 'name lastname avatar');
-        res.json({
-            ok: true,
-            thread
-        });
-    } catch (error) {
-        console.log(error);
-       return res.status(500).json({
-            ok: false,
-            message: 'Hable con el administrador'
-        });
-    }
-
-}
-
-
-module.exports = {
-    newThread,
-    getThread,
-    updateThread,
-    deleteThread,
-    getThreadByUser,
-    getThreadById
-}
+    await Thread.findByIdAndDelete(threadId);
+    await Post.deleteMany({ thread: threadId });
+    res.json({ ok: true, data: threadId, message: 'Hilo eliminado' });
+  } catch (error) {
+    next(error);
+  }
+};

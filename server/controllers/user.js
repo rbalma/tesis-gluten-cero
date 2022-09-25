@@ -1,13 +1,15 @@
+const { URL_FRONT } = process.env;
 const User = require("../models/User");
 const ErrorResponse = require("../utils/errorResponse");
 const { fsUnlink } = require("../utils/fsUnlink");
+const sendEmail = require('../services/sendEmail');
 
 
 // @desc Agregar un nuevo usuario
-// @route /users
+// @route /api/users
 // @access Public
 exports.addUsers = async (req, res, next) => {
-  const { name, lastname, email, password, role = "user" } = req.body;
+  const { name, lastname, email, password, role, active } = req.body;
 
   try {
     const newUser = {
@@ -16,13 +18,68 @@ exports.addUsers = async (req, res, next) => {
       email,
       password,
       role,
+      active
     };
 
     const user = await User.create(newUser);
 
-    return res
-      .status(201)
-      .json({ ok: true, data: user, message: "Usuario creado" });
+    const confirmUrl = `${URL_FRONT}/confirmar/${user._id}`;
+
+    const message = `
+      <h1 style='
+      text-align: center;
+      font-family: Arial, Helvetica;
+      '>Confirma tu Cuenta</h1>
+      <p style='font-family: Arial, Helvetica;'>Ya estás a un solo paso de convertirte en miembro de Gluten Cero. Solo debes presionar el siguiente botón: </p>
+      <a style='
+      display: block;
+      font-family: Arial, Helvetica;
+      padding: 1rem;
+      background-color: #00C897;
+      color: white;
+      text-transform: uppercase;
+      text-align: center;
+      text-decoration: none;
+      'href=${resetUrl}>Confirmar cuenta</a>
+      <p style='font-family: Arial, Helvetica;'>Si no puedes acceder a este enlace, vísita : ${confirmUrl}</p>
+    `;
+
+    try {
+      const result = await sendEmail({
+        to: user.email,
+        subject: 'Activar cuenta de Gluten Cero',
+        text: message,
+      });
+
+      if(result) return res.status(201).json({ ok: true, data: user, message: 'Usuario creado y correo enviado' });
+      
+    } catch (error) {
+      return next(new ErrorResponse('El correo no pudo ser enviado', 500));
+    }
+
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+// @desc Activar la cuenta de un usuario registrado
+// @route /api/active-account/:userId
+// @access Private
+exports.activeUserAccount = async (req, res, next) => {
+  const { userId } = req.params;
+
+  try {
+    const user = await User.findById({ _id: userId });
+    if (!user) return next(new ErrorResponse('No existe el usuario', 404));
+
+    user.active = 1;
+    await user.save();
+
+    res.json({
+      data: true,
+      message: "Cuenta activada",
+    });
   } catch (error) {
     next(error);
   }
@@ -30,14 +87,14 @@ exports.addUsers = async (req, res, next) => {
 
 
 // @desc Obtener un usuario
-// @route /users/:id
+// @route /api/users/:id
 // @access Private
 exports.getUserById = async (req, res, next) => {
-  const params = req.params;
+  const { id } = req.params;
 
   try {
-    const user = await User.findById({ _id: params.id });
-    if (!user) return next(new ErrorResponse("No existe el usuario", 404));
+    const user = await User.findById({ _id: id });
+    if (!user) return next(new ErrorResponse('No existe el usuario', 404));
 
     return res.json({ ok: true, data: user });
   } catch (error) {
@@ -47,7 +104,7 @@ exports.getUserById = async (req, res, next) => {
 
 
 // @desc Obtener los usuarios paginados
-// @route /users
+// @route /api/users
 // @access Private
 exports.getUsers = async (req, res, next) => {
   const { page = 1, limit = 15, search = "", active } = req.query;
@@ -103,7 +160,7 @@ exports.getUsers = async (req, res, next) => {
 
 
 // @desc Actualizar un usuario
-// @route /users/:id
+// @route /api/users/:id
 // @access Private
 exports.updateUser = async (req, res, next) => {
   const { id } = req.params;
@@ -114,7 +171,7 @@ exports.updateUser = async (req, res, next) => {
 
     if (req.file) {
       req.body.avatar = req.file.filename;
-      user.avatar && fsUnlink(user.avatar);
+      user.avatar && fsUnlink(`/avatar/${user.avatar}`);
     }
 
     if (req.body?.password) {
@@ -131,14 +188,14 @@ exports.updateUser = async (req, res, next) => {
       message: "Usuario actualizado",
     });
   } catch (error) {
-    if (req.file) fsUnlink(req.file.filename);
+    if (req.file) fsUnlink(`/avatar/${req.file.filename}`);
     next(error);
   }
 };
 
 
 // @desc Eliminar un usuario
-// @route /users/:id
+// @route /api/users/:id
 // @access Private
 exports.deleteUser = async (req, res, next) => {
   const { id } = req.params;
@@ -159,7 +216,7 @@ exports.deleteUser = async (req, res, next) => {
 
 
 // @desc Obtiene el detalle de las recetas favoritas de un usuario
-// @route /fav-recipes/:userId
+// @route /api/fav-recipes/:userId
 // @access Private
 exports.getFavRecipes = async (req, res, next) => {
   const { userId } = req.params;
@@ -180,7 +237,7 @@ exports.getFavRecipes = async (req, res, next) => {
 
 
 // @desc agrega una receta como favorita de un usuario
-// @route /fav-recipes/:userId
+// @route /api/fav-recipes/:userId
 // @access Private
 exports.addFavRecipe = async (req, res, next) => {
   const { userId } = req.params;
@@ -197,7 +254,7 @@ exports.addFavRecipe = async (req, res, next) => {
 
 
 // @desc elimina una receta como favorita de un usuario
-// @route /fav-recipes/:userId
+// @route /api/fav-recipes/:userId
 // @access Private
 exports.deleteFavRecipe = async (req, res, next) => {
   const { userId } = req.params;

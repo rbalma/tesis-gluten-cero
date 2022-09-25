@@ -34,6 +34,7 @@ const UserSchema = new mongoose.Schema({
   role: {
     type: String,
     enum: { values: ['admin', 'user'], message: '{VALUE} no es un tipo de rol' },
+    default: 'user'
   },
   active: {
     type: Boolean,

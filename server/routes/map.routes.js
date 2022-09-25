@@ -1,18 +1,13 @@
 const express = require('express');
 const router = express.Router();
 
-const mapController = require('../controllers/map');
+const { marketsByLocation, getMarkets, getMarketById, addMarket, activateMarket, updateMarket, deleteMarket } = require('../controllers/map');
 const { validateJWT } = require('../middlewares/validateJwt');
+const { uploadFile } = require("../middlewares/uploadMarket");
 
-const md_upload = require("../middlewares/uploadMarket");
-
-router.get('/markets', mapController.getMarkets);
-router.get('/markets/:id', mapController.getMarketById);
-router.get('/markets-picture/:picture', mapController.getPictureMarket);
-router.post('/markets', [ validateJWT, md_upload.subirArchivo ], mapController.addMarket);
-router.get('/search/markets', mapController.findMarkets);
-//router.put('/map/places/:id', [md_auth], mapController.subirArchivo );
-//router.delete('/map/places/:id', [md_auth], mapController);
-
+router.get('/map', marketsByLocation);
+router.route('/markets').get(getMarkets).post([validateJWT, uploadFile], addMarket);
+router.route('/active-market/:marketId').put(validateJWT, activateMarket);
+router.route('/markets/:marketId').get(validateJWT, getMarketById).put([validateJWT, uploadFile], updateMarket).delete(validateJWT, deleteMarket);
 
 module.exports = router;

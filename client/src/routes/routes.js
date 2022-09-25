@@ -1,5 +1,5 @@
 import HomePage from '@/pages/Home/HomePage';
-import { Login, SignUp, ForgotPassword, ResetPassword } from '@/pages/Auth';
+import { Login, SignUp, ForgotPassword, ResetPassword, ActiveAccount } from '@/pages/Auth';
 
 import {AdminRecipe, AdminRecipeCategories, AdminMap, AdminNotice, AdminProducts, AdminStatistics, AdminForo, AdminUser } from '@/pages/Admin';
 
@@ -17,6 +17,10 @@ const routesAuth = [
 	{
 		path: '/registro',
 		element: SignUp,
+	},
+	{
+		path: '/confirmar/:userId',
+		element: ActiveAccount,
 	},
 	{
 		path: '/password-perdida',

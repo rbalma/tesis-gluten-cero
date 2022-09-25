@@ -1,11 +1,12 @@
 const express = require('express');
-const productsController = require('../controllers/products');
+const { getProducts, addFileExcel } = require('../controllers/products');
 const { validateJWT } = require('../middlewares/validateJwt');
 
-const api = express.Router();
+const router = express.Router();
 
+router
+  .route('/products-anmat')
+  .get(getProducts)
+  .post(validateJWT, addFileExcel);
 
-api.get('/products-anmat', productsController.getProducts);
-api.post('/products-anmat', validateJWT, productsController.subirArchivo );
-
-module.exports = api;
+module.exports = router;

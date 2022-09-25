@@ -6,17 +6,22 @@ const Schema = mongoose.Schema;
 const noticesSchema = new Schema ({
     title : {
         type: String,
-        trim: true
+        trim: true,
+        required: [true, 'Debe ingresar un título'],
+        unique: true,
     },
     date : {
-        type: Date
+        type: Date,
+        default: Date.now
     },
     description : {
         type: String,
-        trim: true
+        trim: true,
+        required: [true, 'Debe ingresar una descripción'],
     },
     image: {
-        type: String
+        type: String,
+        required: [true, 'Debe ingresar una imagen'],
     }
 });
 

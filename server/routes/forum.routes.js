@@ -1,34 +1,42 @@
 const express = require('express');
-const threadsController = require('../controllers/thread');
-const postController = require('../controllers/post');
-
+const {
+  addThread,
+  getThread,
+  getThreadById,
+  updateThread,
+  deleteThread,
+} = require('../controllers/thread');
+const {
+  addPost,
+  getPosts,
+  getPostById,
+  updatePost,
+  deletePost,
+} = require('../controllers/post');
 const { validateJWT } = require('../middlewares/validateJwt');
 
-const api = express.Router();
-
-//api.use(md_auth.ensureAuth);
+const router = express.Router();
 
 /*
     THREADS
 */
-api.post("/threads", validateJWT, threadsController.newThread);
-api.get("/threads", threadsController.getThread);
-api.put("/threads/:id", validateJWT, threadsController.updateThread);
-api.delete("/threads/:id", validateJWT, threadsController.deleteThread);
-api.get("/threads/user/:user", validateJWT, threadsController.getThreadByUser);
-api.get("/threads/:id", threadsController.getThreadById);
 
+router.route('/threads').get(getThread).post(validateJWT, addThread);
+router
+  .route('/threads/:threadId')
+  .get(validateJWT, getThreadById)
+  .put(validateJWT, updateThread)
+  .delete(validateJWT, deleteThread);
 
 /*
     POSTS
 */
-api.post("/threads/:id/posts", validateJWT, postController.addPost);
-api.get("/threads/:id/posts", postController.getPosts);
-api.get("/threads/:id/last-post", postController.getLastPost);
-api.get("/posts/:idPost", postController.getPostById);
-api.get("/posts/user/:idUser", validateJWT, postController.getPostsByUser);
-api.put("/threads/:id/posts/:idPost", validateJWT, postController.updatePost);
-api.delete("/posts/:idPost", validateJWT, postController.deletePost);
 
+router.route('/posts').get(getPosts).post(validateJWT, addPost);
+router
+  .route('/posts/:postId')
+  .get(validateJWT, getPostById)
+  .put(validateJWT, updatePost)
+  .delete(validateJWT, deletePost);
 
-module.exports = api;
+module.exports = router;

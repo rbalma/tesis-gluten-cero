@@ -1,98 +1,225 @@
-const Market = require('../models/market');
+const Market = require('../models/Market');
+const ErrorResponse = require('../utils/errorResponse');
+const { fsUnlink } = require('../utils/fsUnlink');
 
-// @ desc Get all Markets
-// @ route GET /api/v1/map/markets
-// @ access public
-exports.getMarkets = async (req, res) => {
-    try {
-        const markets = await Market.find();
-        return res.json({ ok: true, markets, count: markets.length })        
-    } catch (error) {
-        console.err(error.message);
-        res.status(500).json({ ok: false, error: 'Server error' });
+// @desc Obtener los marcadores cercanos a una ubicación
+// @route /api/map
+// @access Public
+exports.marketsByLocation = async (req, res) => {
+  let { lng, lat, mts } = req.query;
+
+  lng = parseFloat(lng);
+  lat = parseFloat(lat);
+  mts = parseInt(mts);
+
+  try {
+    const markets = await Market.find({
+      location: {
+        $near: {
+          $geometry: {
+            type: 'Point',
+            coordinates: [lng, lat],
+          },
+          $maxDistance: mts,
+        },
+      },
+    });
+
+    res.json({ ok: true, data: markets });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc Agrega un nuevo marcador al mapa
+// @route GET /api/markets
+// @access public
+exports.getMarkets = async (req, res, next) => {
+  const {
+    page = 1,
+    limit = 10,
+    search = '',
+    active,
+    category,
+    user,
+    type,
+  } = req.query;
+
+  const options = {
+    page,
+    limit: parseInt(limit),
+    sort: { date: 'desc' },
+    populate: [
+      {
+        path: 'user',
+        select: 'name lastname',
+      },
+    ],
+  };
+
+  let filters = {};
+  if (active) filters = { active };
+  if (category) filters = { ...filters, category };
+  if (user) filters = { ...filters, user };
+  if (type) filters = { ...filters, type };
+
+  try {
+    if (search) {
+      const markets = await Market.paginate(
+        {
+          ...filters,
+          name: { $regex: search, $options: 'i' },
+        },
+        options
+      );
+      return res.json({ ok: true, data: markets.docs });
     }
-}
 
+    const markets = await Market.paginate({ ...filters }, options);
+    res.json({
+      ok: true,
+      data: markets.docs,
+      totalPages: markets.totalPages,
+      count: markets.totalDocs,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
-exports.getMarketById = (req, res) => {
-    
-}
+// @desc Obtiene un marcador del mapa
+// @route GET /api/markets/:marketId
+// @access private
+exports.getMarketById = async (req, res, next) => {
+  const { marketId } = req.params;
 
-exports.getPictureMarket = (req, res) => {
-    
-}
+  try {
+    const market = await Market.findById(marketId).populate(
+      'user',
+      'name lastname'
+    );
+    if (!market) return next(new ErrorResponse('No existe el marcador', 404));
 
+    return res.json({ ok: true, data: market });
+  } catch (error) {
+    next(error);
+  }
+};
 
-// @ desc Create a market
-// @ route POST /api/v1/markets
-// @ access privade
+// @desc Agrega un nuevo marcador al mapa
+// @route POST /api/markets
+// @access private
 exports.addMarket = async (req, res) => {
-    const { name, direction, type, longitude, latitude } = req.body;
-    const lng = parseFloat(longitude);
-    const lat = parseFloat(latitude);
+  const { type, longitude, latitude } = req.body;
+  const lng = parseFloat(longitude);
+  const lat = parseFloat(latitude);
 
-    try {
-        if (!name || !direction || !type ) 
-          return res.status(401).json({ ok: false, message: "Todos los campos son obligatorios" });
+  try {
 
-        if (!req.file ) 
-          return res.status(401).json({ ok: false, message: "Debe subir una foto" });
+    if (!req.file) return next(new ErrorResponse('Debe subir una foto', 404));
 
-        const location = { type: 'Point', coordinates: [ lng, lat ] };
-        
-        const newMarket = {
-            ...req.body,
-            user: req.user.id,
-            type: parseInt(type),
-            imgUrl: `/api/v1/markets-picture/${req.file.filename}`,
-            image: req.file.filename,
-            location: location
-        }      
-       
-        const marketDB = await Market.create( newMarket );
-    
-        if (!marketDB) 
-          return res.status(400).json({ ok: false, message: "No se puedo crear el marcador" });
-        
-          res.json({ ok: true, market: marketDB, message: 'Marcador creado' });
+    const location = { type: 'Point', coordinates: [lng, lat] };
 
-      } catch (error) {
-        console.error(error.message);
-        res.status(500).json({ ok: false,
-          message: "Hable con el administrador",
-        });
-      }
-} 
+    const newMarket = {
+      ...req.body,
+      user: req.id,
+      type: parseInt(type),
+      image: req.file.filename,
+      location: location,
+    };
 
+    const marketDB = await Market.create(newMarket);
+    res.json({ ok: true, market: marketDB, message: 'Marcador creado' });
 
-exports.findMarkets = async (req, res) => {
-    let { lng, lat, mts } = req.query;
+  } catch (error) {
+    next(error);
+  }
+};
 
-    lng = parseFloat(lng);
-    lat = parseFloat(lat);
-    mts = parseInt(mts);
+// @desc Habilitar el marcador para que se vea en el mapa
+// @route PUT /api/active-market/:marketId
+// @access Private
+exports.activateMarket = async (req, res, next) => {
+  const { marketId } = req.params;
+  const { active } = req.body;
 
-    try {
+  try {
+    const market = await Market.findByIdAndUpdate(
+      marketId,
+      { active },
+      { new: true }
+    );
+    if (!market) return next(new ErrorResponse('No existe el marcador', 404));
 
-        const markets = await Market.find( { location: {
-            $near: {
-                $geometry: {
-                    type: "Point",
-                    coordinates: [ lng, lat ]
-                },
-                $maxDistance: mts
-            }
-        } } );
+    return res.json({
+      ok: true,
+      data: market,
+      message: active ? 'Marcador activado' : 'Marcador desactivado',
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
-        res.json({ ok: true, markets })
+// @desc Actualizar un marcador
+// @route /api/markets/:marketId
+// @access Private
+exports.updateMarket = async (req, res, next) => {
+  const { marketId } = req.params;
 
-        
-    } catch (error) {
-        console.error(error.message);
-        res.status(500).json({ ok: false,
-          message: "Hable con el administrador",
-        });
+  try {
+    const market = await Market.findById(marketId);
+    if (!market) return next(new ErrorResponse('No existe el marcador', 404));
+
+    // Verifica que solo el usuario que creó el marcador pueda actualizarlo
+    if (market.user.toString() !== req.id)
+      return next(
+        new ErrorResponse('No tiene privilegios para editar este marcador', 401)
+      );
+
+    const newMarket = {
+      ...req.body,
+      user: req.id,
+      date: Date.now(),
+      active: false,
+    };
+
+    if (req.file) {
+      newMarket.image = req.file.filename;
+      fsUnlink(`/markets/${market.image}`);
     }
 
-}
+    const updateMarket = await Market.findByIdAndUpdate(marketId, newMarket, {
+      new: true,
+    });
 
+    res.json({
+      ok: true,
+      data: updateMarket,
+      message: 'Marcador actualizado',
+    });
+  } catch (error) {
+    if (req.file) fsUnlink(`/markets/${req.file.filename}`);
+    next(error);
+  }
+};
+
+// @desc Eliminar un marcador
+// @route /api/markets/:marketId
+// @access Private
+exports.deleteMarket = async (req, res, next) => {
+  const { marketId } = req.params;
+
+  try {
+    const market = await Market.findById(marketId);
+    if (!market) return next(new ErrorResponse('No existe el marcador', 404));
+
+    await Market.findByIdAndDelete(marketId);
+
+    if (market.image) fsUnlink(`/markets/${market.image}`);
+
+    res.json({ ok: true, data: marketId, message: 'Marcador eliminado' });
+  } catch (error) {
+    next(error);
+  }
+};

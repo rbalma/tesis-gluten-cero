@@ -6,20 +6,28 @@ const Schema = mongoose.Schema;
 const postSchema = new Schema({
     content: {
         type: String,
-        required: true
+        required: [true, 'Debe escribir el posteo']
     },
     user:{
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
-    created: {
+    date: {
         type: Date,
-        default: Date.now()
+        default: Date.now
     },
     thread: {
         type: Schema.Types.ObjectId,
         ref: 'Thread'
-    }
+    },
+    isUpdated: {
+        type: Boolean,
+        default: false,
+      },
+     postMother: {
+        type: Schema.Types.ObjectId,
+        ref: 'Post'
+    },
 });
 
 postSchema.plugin(mongoosePaginate);

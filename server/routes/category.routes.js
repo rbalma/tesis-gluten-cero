@@ -1,14 +1,18 @@
 const express = require('express');
-const categoryController = require('../controllers/category');
+const {
+  addCategory,
+  getCategory,
+  updateCategory,
+  deleteCategory,
+} = require('../controllers/category');
 const { validateJWT } = require('../middlewares/validateJwt');
 
-const api = express.Router();
+const router = express.Router();
 
+router.route('/categories').get(getCategory).post(validateJWT, addCategory);
+router
+  .route('/categories/:categoryId')
+  .put(validateJWT, updateCategory)
+  .delete(validateJWT, deleteCategory);
 
-api.post('/category', validateJWT, categoryController.newCategory);
-api.get('/category', categoryController.getCategory);
-api.get('/category-pagination', categoryController.getCategoryByPagination);
-api.delete('/category/:id', validateJWT, categoryController.deleteCategory);
-
-
-module.exports = api;
+module.exports = router;

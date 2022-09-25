@@ -21,6 +21,14 @@ app.use(
   '/api/user-avatar',
   express.static(path.join(__dirname, '/uploads/avatar/'))
 );
+app.use(
+  '/api/notice-image',
+  express.static(path.join(__dirname, '/uploads/notices/'))
+);
+app.use(
+  '/api/recipe-image',
+  express.static(path.join(__dirname, '/uploads/recipes/'))
+);
 
 
 // Router Basic

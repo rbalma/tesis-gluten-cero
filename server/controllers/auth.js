@@ -1,4 +1,4 @@
-const { URL_RESET_PASS, JWT_SECRET } = process.env;
+const { URL_FRONT, JWT_SECRET } = process.env;
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const User = require('../models/User');
@@ -64,7 +64,7 @@ exports.renewToken = (req, res) => {
   res.json({ ok: true, data: { user, token } });
 };
 
-
+//! REVISAR
 // @desc Autenticación con Google
 // @route /api/login-google
 // @access Public
@@ -82,7 +82,7 @@ exports.googleSignIn = async (req, res, next) => {
       name: given_name,
       lastname: family_name,
       email,
-      avatarUrl: picture,
+      avatar: picture,
       google: true,
     };
 
@@ -90,7 +90,7 @@ exports.googleSignIn = async (req, res, next) => {
       //Tengo que crearlo
       data = {
         ...data,
-        password: 'XD**********',
+        password: 'XD**********??',
       };
       user = new User(data);
       await user.save();
@@ -98,17 +98,16 @@ exports.googleSignIn = async (req, res, next) => {
       if (!user.google) {
         //El usuario se registró en gluten cero.
         //opcional: actualizar sus datos ->
-        user = await User.findByIdAndUpdate(user._id, data, { new: true });
-        //return res.status(401).json({ ok: false, message: 'El usuario ya está registrado. Use el logueo de GLuten Cero'});
+       // user = await User.findByIdAndUpdate(user._id, data, { new: true });
+        return next(new ErrorResponse('El usuario ya está registrado. Use el logueo de Gluten Cero', 401));
       }
     }
 
     // Si user active es false
-    if (!user.active)
-      return next(new ErrorResponse('¡Usuario Bloqueado!', 401));
+    //if (!user.active) return next(new ErrorResponse('El usuario está inactivo', 401));
 
     // Generar el JWT
-    const token = user.getSignedJwtToken(payload);
+   // const token = user.getSignedJwtToken(payload);
 
     res.json({ ok: true, data: { user, token } });
   } catch (error) {
@@ -132,14 +131,14 @@ exports.forgotPassword = async (req, res, next) => {
 
     await user.save();
 
-    const resetUrl = `${URL_RESET_PASS}/cambiar-password/${resetToken}`;
+    const resetUrl = `${URL_FRONT}/cambiar-password/${resetToken}`;
 
     const message = `
       <h1 style='
       text-align: center;
       font-family: Arial, Helvetica;
-      '>Confirmar tu Cuenta</h1>
-      <p style='font-family: Arial, Helvetica;'>Usted ha solicitado un cambio de contraseña. Tiene diez minutos para realizar el cambio ingresando al siguiente enlace: </p>
+      '>Reestablecer contraseña</h1>
+      <p style='font-family: Arial, Helvetica;'>Usted ha solicitado un cambio de contraseña. Puede realizar el cambio ingresando al siguiente enlace: </p>
       <a style='
       display: block;
       font-family: Arial, Helvetica;
@@ -151,6 +150,7 @@ exports.forgotPassword = async (req, res, next) => {
       text-decoration: none;
       'href=${resetUrl}>Cambiar contraseña</a>
       <p style='font-family: Arial, Helvetica;'>Sino puedes acceder a este enlace, vísita : ${resetUrl}</p>
+      <p style='font-family: Arial, Helvetica;'><b>Este enlace es temporal, si se vence vuelve a solicitarlo.</b></p>
       <p style='font-family: Arial, Helvetica;'>Si no solicitaste este e-mail puedes ignorarlo</p>
     `;
 

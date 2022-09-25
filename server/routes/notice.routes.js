@@ -1,16 +1,26 @@
 const express = require('express');
-const noticeController = require('../controllers/notice');
+const {
+  addNotice,
+  getNotices,
+  getNoticeById,
+  updateNotice,
+  deleteNotice,
+} = require('../controllers/notice');
+
 const { validateJWT } = require('../middlewares/validateJwt');
+const { uploadFile } = require('../middlewares/uploadAvatar');
 
-const api = express.Router();
+const router = express.Router();
 
+router
+  .route('/notices')
+  .post([validateJWT, uploadFile], addNotice)
+  .get(getNotices);
+  
+router
+  .route('/notices/:noticeId')
+  .get(getNoticeById)
+  .put([validateJWT, uploadFile], updateNotice)
+  .delete(validateJWT, deleteNotice);
 
-api.post("/new-notice", validateJWT, noticeController.subirArchivo, noticeController.newNotice);
-api.get("/get-image/:imageName", noticeController.getImage);
-api.put("/update-notice/:id", validateJWT, noticeController.subirArchivo, noticeController.updateNotice);
-api.delete("/delete-notice/:id", validateJWT, noticeController.deleteNotice);
-api.get("/notices", noticeController.getNotices);
-api.get("/get-notice/:id", validateJWT, noticeController.getNoticeById);
-
-
-module.exports = api;
+module.exports = router;
