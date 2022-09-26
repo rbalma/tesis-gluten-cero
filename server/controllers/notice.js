@@ -8,8 +8,8 @@ const { fsUnlink } = require("../utils/fsUnlink");
 // @access Private
 exports.addNotice = async (req, res, next) => {
   try {
-    if (req.file) req.body.image = req.file.filename;
-
+    if (req.file) //req.body.image = req.file.filename;
+    return res.json({ file: req.file })
     const notice = await Notice.create(req.body);
     res.json({ ok: true, data: notice, message: "Noticia creada" });
   } catch (error) {

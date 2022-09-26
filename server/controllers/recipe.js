@@ -1,6 +1,9 @@
 const Recipe = require('../models/Recipe');
+const Comment = require('../models/Comment');
 const ErrorResponse = require('../utils/errorResponse');
-const { fsUnlink } = require('../utils/fsUnlink');
+const { uploadImage, deleteImage } = require('../services/cloudinary');
+const fs = require('fs-extra');
+ //https://github.com/telegraf/telegraf/discussions/1450
 
 // @desc Agregar una nuevo receta
 // @route /api/recipes
@@ -9,8 +12,16 @@ exports.addRecipes = async (req, res, next) => {
   const recipe = new Recipe(req.body);
 
   try {
-    recipe.user = req.user.id;
-    if (req.file) recipe.image = req.file.filename;
+    recipe.user = req.id;
+
+    if (!req.file) return next(new ErrorResponse('Debe subir una foto', 404));
+
+    const result = await uploadImage(req.file.path, 'recipes');
+    recipe.image = {
+      public_id: result.public_id,
+      secure_url: result.secure_url
+    };
+    await fs.unlink(req.file.path);
 
     const recipeDB = await recipe.save();
 
@@ -19,8 +30,9 @@ exports.addRecipes = async (req, res, next) => {
       data: recipeDB,
       message: 'Receta creada',
     });
+
   } catch (error) {
-    if (req.file) fsUnlink(`/recipes/${req.file.filename}`);
+    if (req.file) await fs.unlink(req.file.path);
     next(error);
   }
 };
@@ -153,11 +165,15 @@ exports.updateRecipe = async (req, res, next) => {
     };
 
     if (req.file) {
-      newRecipe.image = req.file.filename;
-      fsUnlink(`/recipes/${recipe.image}`);
+      const result = await uploadImage(req.file.path, 'recipes');
+      newRecipe.image = {
+        public_id: result.public_id,
+        secure_url: result.secure_url
+      };
+      await fs.unlink(req.file.path);
+      if (recipe.image?.public_id) await deleteImage(recipe.image.public_id);
     }
 
-    // new : true es para que me devuelve la receta con los datos actualizados
     const updateRecipe = await Recipe.findByIdAndUpdate(recipeId, newRecipe, {
       new: true,
     });
@@ -168,7 +184,7 @@ exports.updateRecipe = async (req, res, next) => {
       message: 'Receta actualizada',
     });
   } catch (error) {
-    if (req.file) fsUnlink(`/recipes/${req.file.filename}`);
+    if (req.file) await fs.unlink(req.file.path);
     next(error);
   }
 };
@@ -184,12 +200,12 @@ exports.deleteRecipe = async (req, res, next) => {
     if (!recipe) return next(new ErrorResponse('No existe la receta', 404));
 
     await Recipe.findByIdAndDelete(recipeId);
-    await Comment.deleteMany({ recipe: id });
+    if (recipe.image?.public_id) await deleteImage(recipe.image.public_id);
+    await Comment.deleteMany({ recipe: recipeId });
     // await User.updateMany({}, { $pull: { favRecipes: id } });
 
-    if (recipe.image) fsUnlink(`/recipes/${recipe.image}`);
 
-    res.json({ ok: true, data: recipeId, message: 'receta eliminada' });
+    res.json({ ok: true, data: recipeId, message: 'Receta eliminada' });
   } catch (error) {
     next(error);
   }

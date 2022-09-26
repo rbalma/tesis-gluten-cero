@@ -6,7 +6,7 @@ const errorHandler = (err, req, res, next) => {
     error.message = err.message;
 
     if(err.code === 11000) {
-        const message = `Valor duplicado para ${JSON.stringify( error.keyValue ) }`;
+        const message = `Ya se encuentra registrado: ${JSON.stringify( error.keyValue ) }`;
         error = new ErrorResponse(message, 400);
     }
 

@@ -4,8 +4,8 @@ const { validateJWT } = require('../middlewares/validateJwt');
 
 const router = express.Router();
 
-router.add('/comments', validateJWT, addComment);
-router.add('/comments-reply/:commentId', validateJWT, addCommentReply);
+router.post('/comments', validateJWT, addComment);
+router.post('/comments-reply/:commentId', validateJWT, addCommentReply);
 router.get('/comments/:recipeId', getComments);
 router.delete('/comments/:commentId', validateJWT, deleteComment);
 

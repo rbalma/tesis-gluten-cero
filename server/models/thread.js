@@ -8,6 +8,7 @@ const ThreadSchema = new Schema({
     type: String,
     required: [true, 'Debe ingresar un título'],
     trim: true,
+    unique: true,
   },
   status: {
     type: String,

@@ -7,6 +7,7 @@ const marketSchema = new Schema({
   name: {
     type: String,
     trim: true,
+    unique: true,
   },
   direction: {
     type: String,
@@ -41,7 +42,10 @@ const marketSchema = new Schema({
     type: String,
     trim: true,
   },
-  image: String,
+  image: {
+    public_id: String,
+    secure_url: String
+  },
   user: {
     type: Schema.Types.ObjectId,
     ref: "User",

@@ -6,14 +6,14 @@ const ErrorResponse = require('../utils/errorResponse');
 // @route /api/categories
 // @access Private
 exports.addCategory = async (req, res, next) => {
-  const { name, color } = req.body;
+  const category = new Category(req.body);
 
   try {
-    const category = await Category.save({ name, color });
-    if (!category)
+    const categoryDB = await category.save();
+    if (!categoryDB)
       return next(new ErrorResponse('La categoría no se pudo crear', 404));
 
-    res.json({ ok: true, data: category, message: 'Categoría agregada' });
+    res.json({ ok: true, data: categoryDB, message: 'Categoría agregada' });
   } catch (error) {
     next(error);
   }

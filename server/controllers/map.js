@@ -1,6 +1,7 @@
 const Market = require('../models/Market');
 const ErrorResponse = require('../utils/errorResponse');
-const { fsUnlink } = require('../utils/fsUnlink');
+const { uploadImage, deleteImage } = require('../services/cloudinary');
+const fs = require('fs-extra');
 
 // @desc Obtener los marcadores cercanos a una ubicación
 // @route /api/map
@@ -120,11 +121,17 @@ exports.addMarket = async (req, res) => {
 
     const location = { type: 'Point', coordinates: [lng, lat] };
 
+    const result = await uploadImage(req.file.path, 'markets');
+    await fs.unlink(req.file.path);
+
     const newMarket = {
       ...req.body,
       user: req.id,
       type: parseInt(type),
-      image: req.file.filename,
+      image: {
+        public_id: result.public_id,
+        secure_url: result.secure_url
+      },
       location: location,
     };
 
@@ -185,8 +192,13 @@ exports.updateMarket = async (req, res, next) => {
     };
 
     if (req.file) {
-      newMarket.image = req.file.filename;
-      fsUnlink(`/markets/${market.image}`);
+      const result = await uploadImage(req.file.path, 'markets');
+      newMarket.image = {
+        public_id: result.public_id,
+        secure_url: result.secure_url
+      };
+      await fs.unlink(req.file.path);
+      if (market.image?.public_id) await deleteImage(market.image.public_id);
     }
 
     const updateMarket = await Market.findByIdAndUpdate(marketId, newMarket, {
@@ -199,7 +211,7 @@ exports.updateMarket = async (req, res, next) => {
       message: 'Marcador actualizado',
     });
   } catch (error) {
-    if (req.file) fsUnlink(`/markets/${req.file.filename}`);
+    if (req.file) await fs.unlink(req.file.path);
     next(error);
   }
 };
@@ -216,7 +228,7 @@ exports.deleteMarket = async (req, res, next) => {
 
     await Market.findByIdAndDelete(marketId);
 
-    if (market.image) fsUnlink(`/markets/${market.image}`);
+    if (market.image?.public_id) await deleteImage(market.image.public_id);
 
     res.json({ ok: true, data: marketId, message: 'Marcador eliminado' });
   } catch (error) {

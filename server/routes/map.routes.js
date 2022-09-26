@@ -5,7 +5,7 @@ const { marketsByLocation, getMarkets, getMarketById, addMarket, activateMarket,
 const { validateJWT } = require('../middlewares/validateJwt');
 const { uploadFile } = require("../middlewares/uploadMarket");
 
-router.get('/map', marketsByLocation);
+router.get('/searching-map', marketsByLocation);
 router.route('/markets').get(getMarkets).post([validateJWT, uploadFile], addMarket);
 router.route('/active-market/:marketId').put(validateJWT, activateMarket);
 router.route('/markets/:marketId').get(validateJWT, getMarketById).put([validateJWT, uploadFile], updateMarket).delete(validateJWT, deleteMarket);

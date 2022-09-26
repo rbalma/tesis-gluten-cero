@@ -12,7 +12,7 @@ connectDB();
 
 app.use(cors());
 
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 
@@ -25,11 +25,6 @@ app.use(
   '/api/notice-image',
   express.static(path.join(__dirname, '/uploads/notices/'))
 );
-app.use(
-  '/api/recipe-image',
-  express.static(path.join(__dirname, '/uploads/recipes/'))
-);
-
 
 // Router Basic
 app.use(`/api`, require('./routes/auth.routes'));
