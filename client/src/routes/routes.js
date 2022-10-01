@@ -8,6 +8,9 @@ import { ProfileMap, ProfileTheards, ProfileRecipes, ProfileSetting } from '@/pa
 import NotFoundScreen from '@/pages/NotFound/NotFoundScreen';
 import { ProfilePage } from '@/pages/Profile/ProfilePage';
 import { ProductsPage } from '@/pages/Products/ProductsPage';
+import { RecipeDetail, RecipeForm, RecipeSearch } from '@/pages/Recipes';
+import { MapForm, MapSearch } from '@/pages/Map';
+import { PostsList, ThreadForm, ThreadsList } from '@/pages/Forum';
 
 const routesAuth = [
 	{
@@ -38,7 +41,39 @@ const routesPages = [
 		element: HomePage,
 	},
 	{
-		path: '/listado-productos',
+		path: '/recetas-busqueda',
+		element: RecipeSearch,
+	},
+	{
+		path: '/receta-formulario',
+		element: RecipeForm,
+	},
+	{
+		path: '/receta/:recetaId',
+		element: RecipeDetail,
+	},
+	{
+		path: '/mapa-busqueda',
+		element: MapSearch,
+	},
+	{
+		path: '/mapa-formulario',
+		element: MapForm,
+	},
+	{
+		path: '/foro',
+		element: ThreadsList,
+	},
+	{
+		path: '/foro-formulario',
+		element: ThreadForm,
+	},
+	{
+		path: '/foro/:hiloId',
+		element: PostsList,
+	},
+	{
+		path: '/productos',
 		element: ProductsPage,
 	},
 	{

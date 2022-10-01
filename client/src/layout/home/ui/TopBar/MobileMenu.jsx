@@ -33,7 +33,7 @@ export const MobileMenu = ({ open, closeMenu }) => {
 				</li>
 				<li className={styles.menuli} onClick={handleSelectItemMenu}>
 					<NavLink
-						to='/recetas'
+						to='/recetas-busqueda'
 						className={styles.item}
 						style={{ '--color': '#9684A1' }}
 						data-text='&nbsp;Recetas&nbsp;'
@@ -43,7 +43,7 @@ export const MobileMenu = ({ open, closeMenu }) => {
 				</li>
 				<li className={styles.menuli} onClick={handleSelectItemMenu}>
 					<NavLink
-						to='/mapa'
+						to='/mapa-busqueda'
 						className={styles.item}
 						style={{ '--color': '#638475' }}
 						data-text='&nbsp;Mapa&nbsp;'
@@ -63,7 +63,7 @@ export const MobileMenu = ({ open, closeMenu }) => {
 				</li>
 				<li className={styles.menuli} onClick={handleSelectItemMenu}>
 					<NavLink
-						to='/listado-productos'
+						to='/productos'
 						className={styles.item}
 						style={{ '--color': '#B6C9BB' }}
 						data-text='&nbsp;Productos&nbsp;'

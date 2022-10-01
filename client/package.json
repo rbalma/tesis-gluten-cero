@@ -11,10 +11,13 @@
 	},
 	"dependencies": {
 		"antd": "^4.21.6",
+		"antd-img-crop": "^4.2.5",
 		"axios": "^0.27.2",
 		"date-fns": "^2.29.2",
+		"leaflet": "^1.9.1",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",
+		"react-leaflet": "2.8.0",
 		"react-router-dom": "^6.3.0",
 		"react-slick": "^0.29.0",
 		"react-toastify": "^9.0.8",

@@ -9,7 +9,7 @@ import styles from './Login.module.css';
 export const Login = () => {
 	const { userProfile, addUser } = useAuthStore();
 	const navigate = useNavigate();
-	const { 2: postLogin } = useCrud('/sign-in');
+	const { 2: postLogin } = useCrud('/login');
 
 	const onSubmit = async (values) => {
 		//setIsLoading(true);
@@ -40,7 +40,7 @@ export const Login = () => {
 						autoComplete='off'
 						initialValues={{
 							email: 'balmarodrigo@hotmail.com',
-							password: 'T@lleres2020',
+							password: 'Talleres2022',
 						}}
 					>
 						<Form.Item

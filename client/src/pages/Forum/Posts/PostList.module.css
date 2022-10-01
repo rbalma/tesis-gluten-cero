@@ -1,0 +1,76 @@
+.btnPost {
+	font-family: 'Roboto', sans-serif;
+	font-weight: 500;
+	font-size: 14px;
+	letter-spacing: 1px;
+	display: inline-block;
+	padding: 8px 15px;
+	border-radius: 4px;
+	transition: color 0.5s, background 0.5s;
+	color: #fff;
+	background: #18b178;
+	width: 220px;
+}
+
+.btnPost:hover {
+	background: #18b179e8;
+	color: #fff;
+}
+
+.noLogin {
+	width: 1100px;
+	max-width: 100%;
+	margin: 50px auto;
+	background-color: #fff;
+	border: 1px solid #18b178;
+	padding: 25px;
+	text-align: center;
+}
+
+.noLoginTitle {
+	font-family: 'Open Sans', sans-serif;
+	font-size: 24px;
+	font-weight: bold;
+	margin-bottom: 5px;
+	text-align: center;
+}
+
+.noLoginSubtitle {
+	font-family: 'Monserrat', sans-serif;
+	font-size: 14px;
+	color: #718096;
+	margin-bottom: 15px;
+	text-align: center;
+}
+
+.buttonGroup {
+	display: flex;
+	justify-content: space-around;
+	flex-wrap: wrap;
+	gap: 20px;
+}
+
+.noLoginSection {
+	text-align: center;
+	width: 400px;
+}
+
+.noLoginButtonTitle {
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 700;
+	font-size: 14px;
+}
+
+@media screen and (max-width: 576px) {
+	.noLoginTitle {
+		font-size: 16px;
+	}
+
+	.noLoginSubtitle {
+		font-size: 12px;
+	}
+
+	.noLoginButtonTitle {
+		font-size: 12px;
+	}
+}

@@ -1,0 +1,74 @@
+.contenidoRecetas {
+	min-height: 100vh;
+	background-color: #ebecf0; /* #212121 */
+}
+
+.search-recipe {
+	margin-top: 20px;
+	width: 350px;
+}
+
+/*  */
+
+#single-page-slider {
+	padding-top: 10px;
+	width: 100%;
+	height: 20vh;
+	background: url('../../../assets/img/section-recipe.jpg') top left;
+	background-size: cover;
+	position: relative;
+}
+
+#single-page-slider:before {
+	content: '';
+	background: rgba(41, 39, 39, 0.7);
+	position: absolute;
+	bottom: 0;
+	top: 0;
+	left: 0;
+	right: 0;
+}
+
+#single-page-slider .container {
+	position: relative;
+}
+
+@media (max-width: 992px) {
+	#single-page-slider .container {
+		padding-top: 58px;
+	}
+}
+
+#single-page-slider h1 {
+	margin: 0;
+	padding-top: 40px;
+	font-size: 40px;
+	font-weight: 700;
+	line-height: 56px;
+	text-align: center;
+	color: #fff;
+	font-family: 'Montserrat', sans-serif;
+}
+
+@media (min-width: 1024px) {
+	#single-page-slider {
+		background-attachment: fixed;
+	}
+}
+
+@media (max-width: 768px) {
+	#single-page-slider {
+		height: 25vh;
+	}
+	#single-page-slider h1 {
+		font-size: 28px;
+		line-height: 36px;
+		padding-top: 10px;
+	}
+}
+
+@media (max-height: 500px) {
+	#single-page-slider {
+		height: 25vh;
+	}
+}

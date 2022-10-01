@@ -1,19 +1,64 @@
 @import '../../../../node_modules/react-toastify/dist/ReactToastify.css';
 
+/*
+https://stackoverflow.com/questions/60849448/how-can-i-change-the-styles-of-the-react-toastify-popup-message
+*/
+
 @font-face {
-	font-family: Notification;
-	src: url(fonts/notification.eot?s3g3t9);
-	src: url(fonts/notification.eot?#iefixs3g3t9) format('embedded-opentype'),
-		url(fonts/notification.woff?s3g3t9) format('woff'),
-		url(fonts/notification.ttf?s3g3t9) format('truetype'),
-		url(fonts/notification.svg?s3g3t9#notification) format('svg');
+	font-family: 'Montserrat';
+	src: url('./fonts/') format('embedded-opentype'),
+		url('./fonts/montserrat-v25-latin-regular.woff') format('woff'),
+		url('./fonts/montserrat-v25-latin-regular.woff2') format('woff2');
 	font-weight: 400;
 	font-style: normal;
 }
 
-:root {
-	--toastify-font-family: Notification, sans-serif;
+@font-face {
+	font-family: 'Montserrat';
+	src: url('./fonts/montserrat-v25-latin-500.eot?#iefix')
+			format('embedded-opentype'),
+		url('./fonts/montserrat-v25-latin-500.woff') format('woff'),
+		url('./fonts/montserrat-v25-latin-500.woff2') format('woff2');
+	font-weight: 500;
+	font-style: normal;
 }
+
+@font-face {
+	font-family: 'Montserrat';
+	src: url('./fonts/montserrat-v25-latin-600.eot?#iefix')
+			format('embedded-opentype'),
+		url('./fonts/montserrat-v25-latin-600.woff') format('woff'),
+		url('./fonts/montserrat-v25-latin-600.woff2') format('woff2');
+	font-weight: 600;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Montserrat';
+	src: url('./fonts/montserrat-v25-latin-700.eot?#iefix')
+			format('embedded-opentype'),
+		url('./fonts/montserrat-v25-latin-700.woff') format('woff'),
+		url('./fonts/montserrat-v25-latin-700.woff2') format('woff2');
+	font-weight: 700;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Montserrat';
+	src: url('./fonts/montserrat-v25-latin-800.eot?#iefix')
+			format('embedded-opentype'),
+		url('./fonts/montserrat-v25-latin-800.woff') format('woff'),
+		url('./fonts/montserrat-v25-latin-800.woff2') format('woff2');
+	font-weight: 800;
+	font-style: normal;
+}
+
+.Toastify__toast-body {
+	font-family: 'NoirPro', 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
+		'Lucida Sans', Arial, sans-serif;
+	font-size: 16px;
+}
+
 /* 
 .notification-container {
 	position: fixed;
