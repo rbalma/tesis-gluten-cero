@@ -23,7 +23,7 @@ import Footer from '@/layout/Home/ui/Footer';
 import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css"; 
 
-import styles from './mapSearch.module.css';
+import styles from './MapSearch.module.css';
 
 export const MapSearch = () => {
 	const navigate = useNavigate();

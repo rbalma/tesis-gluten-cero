@@ -3,7 +3,7 @@ import { Col, Row, Button, AutoComplete, Input } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { Spinner } from '@/components/Loader/Spinner';
 import { Link, useNavigate } from 'react-router-dom';
-import * as underscore from 'underscore';
+import debounce from 'underscore/modules/debounce.js';
 import useCrud from '@/hooks/useCrud';
 
 import styles from './RecipeSearch.module.css';
@@ -11,7 +11,7 @@ import { RecipeCard } from './Card/RecipeCard';
 
 export const RecipeSearch = () => {
 	const [resultData, setResultData] = useState([]);
-	const { 0: loading, 3: getRecipesData } = useCrud('/recipes');
+	const { 0: loading, 2: getRecipesData } = useCrud('/recipes');
 	const navigate = useNavigate();
 
 	const onSearchRecipes = async (value) => {
@@ -28,7 +28,7 @@ export const RecipeSearch = () => {
 	};
 
 	const onSearch = useRef(
-		underscore.debounce((value) => onSearchRecipes(value), 500)
+		debounce((value) => onSearchRecipes(value), 500)
 	).current;
 
 	const navigateToRecipe = (recipeId) => {

@@ -3,7 +3,6 @@ import { toast } from 'react-toastify';
 import axios from '../utils/axiosInstance';
 
 const useCrud = endpoint => {
-	const [errors, setErrors] = useState(null);
 	const [loading, setLoading] = useState(false);
 
 	const createData = async (dataForm, config = {}) => {
@@ -13,7 +12,6 @@ const useCrud = endpoint => {
 			return data.data;
 		} catch (error) {
 			console.log('Error: ', error.message);
-			setErrors(error);
       error.response?.data && toast.success(error.response.data.message );
 		} finally {
 			setLoading(false);
@@ -28,7 +26,6 @@ const useCrud = endpoint => {
 			return data.data;
 		} catch (error) {
 			console.log('Error', error.message);
-			setErrors(error);
 		} finally {
 			setLoading(false);
 		}
@@ -42,7 +39,6 @@ const useCrud = endpoint => {
 			return data.data;
 		} catch (error) {
 			console.log('Error: ', error.message);
-			setErrors(error);
 		} finally {
 			setLoading(false);
 		}
@@ -58,13 +54,12 @@ const useCrud = endpoint => {
 			return data.data;
 		} catch (error) {
 			console.log('Error: ', error.message);
-			setErrors(error);
 		} finally {
 			setLoading(false);
 		}
 	};
 
-	return [errors, loading, createData, readData, updateData, deleteData];
+	return [loading, createData, readData, updateData, deleteData];
 };
 
 export default useCrud;

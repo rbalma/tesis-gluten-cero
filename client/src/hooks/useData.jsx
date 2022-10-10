@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import * as underscore from 'underscore';
+import debounce from 'underscore/modules/debounce.js';
 import axios from '../utils/axiosInstance';
 
 const useData = (endpoint, filters) => {
@@ -81,7 +81,7 @@ const useData = (endpoint, filters) => {
 	};
 
 	const debounceHandleSearch = useRef(
-		underscore.debounce(searchInput => handleSearch(searchInput), 600)
+		debounce(searchInput => handleSearch(searchInput), 600)
 	).current;
 
 	useEffect(() => {
