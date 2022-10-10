@@ -64,7 +64,7 @@ exports.getRecipes = async (req, res, next) => {
     limit = 20,
     search = '',
     sort = { date: 1 },
-    active,
+    active = true,
     category,
     user,
   } = req.query;

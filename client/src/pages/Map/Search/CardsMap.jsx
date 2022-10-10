@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import picture from '@/assets/images/map.jpg';
 // import { FaRegHeart, FaHeart } from 'react-icons/fa';
+import { HeartOutlined, HeartFilled } from '@ant-design/icons';
 
 import styles from './CardsMap.module.css';
 
@@ -31,7 +32,7 @@ export const CardsMap = () => {
 					className={`${styles.likeMap} ${fav && styles.likeMapActive}`}
 					onClick={addFav}
 				>
-					{/* {!fav ? <FaRegHeart /> : <FaHeart className='likedicon__map' />} */}
+					{!fav ? <HeartOutlined /> : <HeartFilled className={styles.likediconMap} />}
 				</span>
 			</section>
 		</div>

@@ -9,8 +9,7 @@ const useCrud = endpoint => {
 	const createData = async (dataForm, config = {}) => {
 		try {
 			setLoading(true);
-			const {data} = await axios.post(endpoint, dataForm, config);
-			toast.success(data?.message || 'Carga exitosa');
+			const data = await axios.post(endpoint, dataForm, config);
 			return data.data;
 		} catch (error) {
 			console.log('Error: ', error.message);
@@ -25,7 +24,7 @@ const useCrud = endpoint => {
 		try {
 			let params = { ...filters };
 			setLoading(true);
-			const { data } = await axios.get(endpoint, { params });
+			const data = await axios.get(endpoint, { params });
 			return data.data;
 		} catch (error) {
 			console.log('Error', error.message);

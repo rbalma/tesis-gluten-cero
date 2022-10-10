@@ -5,7 +5,7 @@
 	justify-content: space-around;
 	align-items: baseline;
 	padding: 0.5rem 0;
-	z-index: 10;
+	z-index: 30;
 	font-family: Sora, sans-serif; /* lato poppins Oswald */
 	position: sticky;
 	top: 0;

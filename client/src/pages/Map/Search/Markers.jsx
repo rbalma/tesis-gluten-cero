@@ -1,6 +1,6 @@
 import { Marker, Popup } from "react-leaflet";
 import { IconLocation } from "./IconLocation";
-import Foto from "@/assets/img/patio-olmos.jpg";
+import Foto from "@/assets/images/patio-olmos.jpg";
 
 import "./map.css";
 

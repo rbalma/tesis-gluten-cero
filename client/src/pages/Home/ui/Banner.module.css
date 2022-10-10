@@ -99,7 +99,7 @@
 	}
 
 	#hero {
-		background: url('@/assets/img/hero-bgr.jpg') top right;
+		background: url('@/assets/images/hero-bgr.jpg') top right;
 	}
 
 	#hero:before {

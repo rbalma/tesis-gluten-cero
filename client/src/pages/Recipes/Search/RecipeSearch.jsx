@@ -1,59 +1,80 @@
-import { useState, useEffect } from 'react';
-import { Col, Row, Button, AutoComplete } from 'antd';
+import { useState, useEffect, useRef } from 'react';
+import { Col, Row, Button, AutoComplete, Input } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { Spinner } from '@/components/Loader/Spinner';
-import {Link} from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import * as underscore from 'underscore';
+import useCrud from '@/hooks/useCrud';
 
 import styles from './RecipeSearch.module.css';
+import { RecipeCard } from './Card/RecipeCard';
 
 export const RecipeSearch = () => {
+	const [resultData, setResultData] = useState([]);
+	const { 0: loading, 3: getRecipesData } = useCrud('/recipes');
+	const navigate = useNavigate();
+
+	const onSearchRecipes = async (value) => {
+		if (!value) return;
+
+		const recipes = await getRecipesData({ search: value });
+		if (recipes?.ok) {
+			const newResp = recipes.data.map((r) => ({
+				value: r._id,
+				label: r.title,
+			}));
+			setResultData(newResp);
+		}
+	};
+
+	const onSearch = useRef(
+		underscore.debounce((value) => onSearchRecipes(value), 500)
+	).current;
+
+	const navigateToRecipe = (recipeId) => {
+		navigate(`/receta/${recipeId}`);
+	};
+
 	return (
-		<div className='contenidoRecetas'>
-			<section id='single-page-slider'>
-				<Row justify='center' style={{ padding: '2rem 0' }} className='mb-4'>
-					<Col span={8}>
+		<div className={styles.container}>
+			<section className={styles.banner}>
+				<Row justify='center' className={styles.divAutocomplete}>
+					<Col xs={20} sm={10}>
 						<AutoComplete
+							notFoundContent={loading}
 							style={{ width: '100%' }}
-							options={titlesData}
-							placeholder='Escribe la receta que buscas...'
-							filterOption={(inputValue, option) =>
-								option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !==
-								-1
-							}
-							onSelect={searchRecipeByTitle}
-							onSearch={clearSearch}
-							onChange={(e) => setRecipeTitle(e)}
-							allowClear
-						/>
+							options={resultData}
+							onSearch={onSearch}
+							onSelect={navigateToRecipe}
+						>
+							<Input
+								suffix={<SearchOutlined />}
+								size='large'
+								placeholder='Escribe la receta que buscas...'
+							/>
+						</AutoComplete>
 					</Col>
-					<Button type='primary' onClick={filterByTitle}>
+					{/* <Button type='primary' onClick={filterByTitle}>
 						<SearchOutlined /> Buscar
-					</Button>
+					</Button> */}
 				</Row>
 			</section>
 
-			<div className='container justify-content-center align-items-center'>
-				<Link to={'/recetas/nueva'} className='btn btn-primary'>
-					Nueva Receta
-				</Link>
+			<div className={styles.divBtn}>
+				<Button
+					className='gx-btn-info'
+					onClick={() => navigate('/receta-formulario')}
+				>
+					Agregar Receta
+				</Button>
 
-				<Link to={'/recetas/categorias'} className='bg-secondary'>
-					Realizar la búsqueda por categorías
-				</Link>
-
-				{!recipes || recipes.length === 0 ? (
+				{/* {!recipes || recipes.length === 0 ? (
 					<Spinner />
-				) : (
-					<Cards
-						recipes={recipes}
-						setRecipes={setRecipes}
-						page={page}
-						setPage={setPage}
-						hasMore={hasMore}
-						sethasMore={sethasMore}
-					/>
-				)}
+				) : ( */}
+				{/* )} */}
 			</div>
+
+			<RecipeCard />
 		</div>
 	);
 };

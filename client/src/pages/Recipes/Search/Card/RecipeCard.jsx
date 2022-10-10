@@ -9,7 +9,7 @@ export const RecipeCard = () => {
 	return (
 		<div className='card-recipe card-1'>
 			<div className='card-img'></div>
-			<Link to={`/recetas/${recipe._id}`} className='card-link'>
+			<Link to={`/recetas/:id`} className='card-link'>
 				<div
 					className='card-img-hovered'
 					style={{
@@ -17,19 +17,19 @@ export const RecipeCard = () => {
         to bottom,
         rgba(0, 0, 0, 0),
         rgba(0, 0, 0, 0.65)
-      ), url(${image})`,
+      ), url('')`,
 					}}
 				></div>
 				<div className='card-info'>
 					<div className='card-about'>
-						<div className='card-tag tag-news'>{recipe.category}</div>
+						<div className='card-tag tag-news'>DULCES</div>
 						<div style={{ color: '#9B9B9B' }}>
-							{day}/{month}/{year}
+							01/10/2022
 						</div>
 					</div>
-					<h1 className='card-title'>{recipe.title}</h1>
+					<h1 className='card-title'>TITULO</h1>
 					<div className='card-creator'>
-						<UserOutlined /> {recipe.user.name} {recipe.user.lastname}
+						<UserOutlined /> NOMBRE APELLIDO
 					</div>
 				</div>
 			</Link>

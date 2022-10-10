@@ -16,6 +16,11 @@ export default defineConfig({
 					libName: 'antd',
 					style: name => `antd/es/${name}/style`,
 				},
+				{
+					libName: 'underscore',
+					libDirectory: '',
+					camel2DashComponentName: false
+				}
 			],
 		}),
 	],

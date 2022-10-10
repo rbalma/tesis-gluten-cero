@@ -3,15 +3,6 @@
 	flex-wrap: wrap-reverse;
 }
 
-.paramSearchMap {
-	font-weight: 500;
-	font-size: 15px;
-	line-height: 29px;
-	background-color: #f7f7f7;
-	width: 100%;
-	padding: 2em 5em 1.5em 3em;
-}
-
 .listSearchMap {
 	display: flex;
 	flex-direction: column;
@@ -21,18 +12,25 @@
 	height: 100%;
 }
 
+.fullMap {
+	background-color: #f7f7f7;
+	width: 50%;
+}
+
+.paramSearchMap {
+	font-weight: 500;
+	font-size: 15px;
+	line-height: 29px;
+	background-color: #f7f7f7;
+	width: 100%;
+	padding: 2em 5em 1.5em 3em;
+}
+
 .listCardsMap {
 	display: flex;
 	flex-direction: column;
 	width: 100%;
 	padding: 3ch;
-}
-
-.fullMap {
-	background-color: #f7f7f7;
-	width: 50%;
-	height: auto;
-	position: relative;
 }
 
 .showingResultsMap {

@@ -1,30 +1,28 @@
-import { useState, useRef } from "react";
-import { Form, Input, Select, Button, Upload, message } from "antd";
+import { useState } from "react";
+import { Form, Input, Select, Button, Upload, message, Col } from "antd";
 import ImgCrop from "antd-img-crop";
 import { UploadOutlined } from "@ant-design/icons";
-import { Map, TileLayer, Marker, Popup } from "react-leaflet";
-// import { OpenStreetMapProvider } from "leaflet-geosearch"; cambiar
-import { Pin } from "../Search/Pin";
+import { MapContainer, TileLayer } from "react-leaflet";
+import { OpenStreetMapProvider } from "leaflet-geosearch";
 
 import styles from './MapForm.module.css';
-import "leaflet/dist/leaflet.css";
+import "leaflet/dist/leaflet.css"; 
+import { LocationMarket } from "./LocationMarket";
 // import { addMarketApi } from "../../api/map";
 // import { getAccessTokenApi } from "../../api/auth";
 
 const GEOCODE_URL =
   "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/reverseGeocode?f=pjson&langCode=TR&location=";
 
+const ubicacion = {
+  lat: -31.41718428534527,
+  lng: -64.18382740831277,
+}
 
 export const MapForm = () => {
   const [form] = Form.useForm();
-  const [ubicacion, setUbicacion] = useState([
-    -31.41718428534527, -64.18382740831277,
-  ]);
-
+  const [map, setMap] = useState(null)
   const [foto, setFoto] = useState({});
-  const [lugar, setLugar] = useState("Plaza San Martin");
-  const [zoom, setZoom] = useState(12);
-  const mapRef = useRef();
 
   const buscarDireccion = (value) => {
     if (value.length > 8) {
@@ -50,30 +48,8 @@ export const MapForm = () => {
   };
 
   const handleSetView = (cordenadas, nombre) => {
-    const { current = {} } = mapRef;
-    const { leafletElement: map } = current;
-    setUbicacion(cordenadas);
-    setLugar(nombre);
-    setZoom(18);
+    //setLugar(nombre);
     map.setView(cordenadas, 18);
-  };
-
-  const moverPin = async (e) => {
-    const posicion = e.target.getLatLng();
-    const { current = {} } = mapRef;
-    const { leafletElement: map } = current;
-    const data = await (
-      await fetch(GEOCODE_URL + `${posicion.lng},${posicion.lat}`)
-    ).json();
-    setLugar(data.address.LongLabel);
-    form.setFieldsValue({
-        direction: data.address.Address,
-        city: data.address.City,
-        country: data.address.CountryCode,
-        longitude: data.location.y,
-        latitude: data.location.x,
-    });
-    map.panTo(posicion);
   };
 
   const handleSubmit = (values) => {
@@ -89,7 +65,7 @@ export const MapForm = () => {
   return (
      <div className={styles.mapaContenedor}>
       <div className={styles.mapaFormulario}>
-        <h5 className={styles.mapaTitulo}>Agrega un Nuevo Marcador al Mapa</h5>
+        <h3 className={styles.mapaTitulo}>Agrega un Nuevo Marcador al Mapa</h3>
 
         <Form
           {...formItemLayout}
@@ -98,6 +74,7 @@ export const MapForm = () => {
           onFinish={handleSubmit}
           validateMessages={validateMessages}
           autoComplete="off"
+          requiredMark={false}
         >
           <Form.Item
             name="name"
@@ -119,11 +96,11 @@ export const MapForm = () => {
           </Form.Item>
 
           <Form.Item name="phone" label="Telefono">
-            <Input />
+            <Input type='number' />
           </Form.Item>
 
           {/* UPLOAD FOTO */}
-          <Form.Item label="Foto" extra="Formato png, jpeg, jpg">
+          <Form.Item label="Foto" tooltip="Formato png, jpeg, jpg. Tamaño máximo 1 mb">
             <ImgCrop aspect={16/9} beforeCrop={beforeUpload} modalTitle="Subir Imagen" >
             <Upload
               name="picture"
@@ -139,44 +116,29 @@ export const MapForm = () => {
             </ImgCrop>
           </Form.Item>
 
-          <Form.Item
-            name="ubicación"
-            label="Ubicación"
-            extra="Ingresa una dirección precisa para ubicar el pin en el mapa"
-            style={{ marginBottom: "10px" }}
-          >
-            <Input.Search enterButton="Ir" onSearch={buscarDireccion} />
-          </Form.Item>
+
+          <label>Ingresa calle, número, barrio y provincia de la ubicación: </label>
+          <Input.Search style={{ marginBottom: "10px" }} enterButton="Ir" onSearch={buscarDireccion} />
+
 
           {/* MAPA */}
           <small>
             Mueve el Pin hacia el punto exacto en caso de ser necesario
           </small>
-          <div className="mapa__ubicacion">
-            <Map
-              ref={mapRef}
+          <div className={styles.mapaUbicacion}>
+            <MapContainer
               center={ubicacion}
-              zoom={zoom}
+              zoom={12}
               scrollWheelZoom={false}
+              style={{ minHeight: '100%', minWidth: '100%', zIndex: 1 }}
+              ref={setMap}
             >
               <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
-              <Marker
-                position={ubicacion}
-                icon={Pin}
-                draggable={true}
-                autoPan={true}
-                ondragend={moverPin}
-              >
-                <Popup>
-                  <div style={popupContent}>
-                    <div style={popupHead}>{lugar}</div>
-                  </div>
-                </Popup>
-              </Marker>
-            </Map>
+              <LocationMarket form={form} />
+            </MapContainer>
           </div>
 
           <div className="mapa__texto">
@@ -270,15 +232,7 @@ const validateMessages = {
 };
 /* eslint-disable no-template-curly-in-string */
 
-// Estilos para el popUp
-const popupContent = {
-  textAlign: "center",
-  height: "auto",
-};
-const popupHead = {
-  fontWeight: "bold",
-  fontSize: "11px",
-};
+
 
 // * Cortar imagen subida por el usuario
 const beforeUpload = (file) => {

@@ -15,14 +15,18 @@ import {
 	EnvironmentFilled,
 } from '@ant-design/icons';
 import { CardsMap } from './CardsMap';
-import { Map, TileLayer } from 'react-leaflet';
 import { Markers } from './Markers';
+import { useNavigate } from 'react-router-dom';
 import Footer from '@/layout/Home/ui/Footer';
 
-import 'leaflet/dist/leaflet.css';
+//import { Map, TileLayer } from 'react-leaflet';
+import { MapContainer, TileLayer } from "react-leaflet";
+import "leaflet/dist/leaflet.css"; 
+
 import styles from './mapSearch.module.css';
 
 export const MapSearch = () => {
+	const navigate = useNavigate();
 	const [visibleCategories, setVisibleCategories] = useState(false);
 	const [visibleRadio, setVisibleRadio] = useState(false);
 	const [radio, setRadio] = useState(50);
@@ -84,9 +88,12 @@ export const MapSearch = () => {
 
 	const getUbicacion = () => {
 		navigator.geolocation.getCurrentPosition(
-			(position) => {
-				let miUbicacion = [position.coords.latitude, position.coords.longitude];
+			({ coords }) => {
+				let miUbicacion = [coords.latitude, coords.longitude];
 				handleFlyTo(miUbicacion);
+			},
+			(blocked) => {
+				if (blocked) console.log('La geolocalización está bloqueada. Debe habilitarla');
 			},
 			(error) => {
 				console.log(error);
@@ -156,7 +163,7 @@ export const MapSearch = () => {
 						<span className={styles.showingResultsMap}>14 Resultados </span>
 						<button
 							className={styles.newMarketButton}
-							onClick={() => history.push('/mapa-formulario')}
+							onClick={() => navigate('/mapa-formulario')}
 						>
 							{' '}
 							<EnvironmentFilled /> Nuevo{' '}
@@ -171,21 +178,20 @@ export const MapSearch = () => {
 			</div>
 
 			<div className={styles.fullMap}>
-				<Map
+				<MapContainer
 					ref={mapRef}
 					center={ubicacion}
 					zoom={15}
 					scrollWheelZoom={false}
-					style={{ position: 'fixed' }}
+					style={{ minHeight: "calc(100vh - 80px)", minWidth: "50vw", position: 'fixed', right: 0, bottom: 0 }}
 				>
 					<TileLayer
 						attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 						url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 					/>
-
 					<Markers />
-				</Map>
-			</div>
+				</MapContainer>
+			</div> 
 		</div>
 	);
 };
