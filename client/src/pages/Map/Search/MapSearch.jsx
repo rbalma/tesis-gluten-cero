@@ -17,9 +17,8 @@ import {
 import { CardsMap } from './CardsMap';
 import { Markers } from './Markers';
 import { useNavigate } from 'react-router-dom';
-import Footer from '@/layout/Home/ui/Footer';
+import Footer from '@/layout/home/ui/Footer';
 
-//import { Map, TileLayer } from 'react-leaflet';
 import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css"; 
 
