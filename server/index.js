@@ -27,8 +27,8 @@ app.use(
 );
 
 // Router Basic
-// app.use(`/api`, require('./routes/auth.routes'));
-// app.use(`/api`, require('./routes/user.routes'));
+app.use(`/api`, require('./routes/auth.routes'));
+app.use(`/api`, require('./routes/user.routes'));
 app.use(`/api`, require('./routes/recipe.routes'));
 app.use(`/api`, require('./routes/notice.routes'));
 app.use(`/api`, require('./routes/category.routes'));

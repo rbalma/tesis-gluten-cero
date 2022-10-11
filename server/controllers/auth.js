@@ -1,7 +1,7 @@
 const { URL_FRONT, JWT_SECRET } = process.env;
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
-const User = require("../models/User");
+const User = require("../models/User.js");
 const ErrorResponse = require("../utils/errorResponse");
 const sendEmail = require("../services/sendEmail");
 const { googleVerify } = require("../services/google-verify");
