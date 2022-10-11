@@ -2,7 +2,7 @@
 	text-align: center;
 	padding-top: 2rem;
 	padding-bottom: 2rem;
-	background-color: #f0f4f7;
+	background-color: #fff;
 }
 
 .title {
@@ -10,4 +10,9 @@
 	font-size: 35px;
 	font-weight: 600;
 	font-family: 'NoirPro', sans-serif; /* Montserrat */
+}
+
+.notFound {
+	font-family: 'Sora', sans-serif;
+	margin-top: 25px;
 }

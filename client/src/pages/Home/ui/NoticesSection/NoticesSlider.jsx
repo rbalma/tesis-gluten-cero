@@ -1,34 +1,32 @@
 import React, { useState } from 'react';
-import { CaretRightOutlined , CaretLeftOutlined } from '@ant-design/icons';
+import { RightCircleTwoTone , LeftCircleTwoTone } from '@ant-design/icons';
 import Slider from "react-slick";
 import { NoticesCard } from './NoticesCard';
 
-import styles from './NoticesSlider.module.css';
 
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
 
+import styles from './NoticesSlider.module.css';
+
 export const NoticesSlider = ({ notices }) => {
-  const [imageIndex, setImageIndex] = useState(0);
 
   const settings = {
     infinite: true,
     speed: 800,
-    slidesToShow: 5,
+    slidesToShow: 4,
     slidesToScroll: 1,
     centerMode: true,
-    dots: true,
     nextArrow: <SlickArrowRight />,
     prevArrow: <SlickArrowLeft />,
-    beforeChange: (_, next) => setImageIndex(next),
     responsive: [
       {
         breakpoint: 576,
-        settings: { slidesToShow: 1, initialSlide: 0, arrows: false, centerMode: false}
+        settings: { slidesToShow: 1, initialSlide: 0 }
       },
       {
         breakpoint: 992,
-        settings: { slidesToShow: 2, initialSlide: 0, centerMode: false, }
+        settings: { slidesToShow: 2, initialSlide: 0 }
       },
       {
         breakpoint: 1600,
@@ -43,9 +41,7 @@ export const NoticesSlider = ({ notices }) => {
     <Slider {...settings}>
           {
             notices.map((notice, i) => (
-              <div key={i} className={i === imageIndex ? `${styles.slide} ${styles.activeSlide}` : `${styles.slide}`} >
-                <NoticesCard notice={ notice } />
-              </div>
+                <NoticesCard key={i} notice={ notice } />
             ))
           }
         </Slider>
@@ -56,11 +52,11 @@ export const NoticesSlider = ({ notices }) => {
 //* Botones flechas
 const SlickArrowLeft = ({ onClick }) => (
   <div className={`${styles.arrow} ${styles.prev}`} onClick={ onClick } >
-    <CaretLeftOutlined />
+    <LeftCircleTwoTone twoToneColor="#0D58BA" />
   </div>
 );
 const SlickArrowRight = ({ onClick }) => (
   <div className={`${styles.arrow} ${styles.next}`}  onClick={ onClick } >
-   <CaretRightOutlined />
+   <RightCircleTwoTone twoToneColor="#0D58BA" />
   </div>
 );

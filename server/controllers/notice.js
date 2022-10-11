@@ -114,11 +114,11 @@ exports.deleteNotice = async (req, res, next) => {
     const notice = await Notice.findById(noticeId);
     if (!notice) return next(new ErrorResponse('La noticia no existe'));
 
-    await Notice.findByIdAndDelete(id);
+    await Notice.findByIdAndDelete(noticeId);
 
     if (notice.image) fsUnlink(`/notices/${notice.image}`);
 
-    res.json({ ok: true, data: id, message: 'Noticia eliminada' });
+    res.json({ ok: true, data: noticeId, message: 'Noticia eliminada' });
   } catch (error) {
     next(error);
   }

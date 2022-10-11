@@ -1,4 +1,4 @@
-import { Banner, ServicesSection, BackTopButton, RecipesSection, MapSection, NoticesSection } from './ui';
+import { Banner, ServicesSection, RecipesSection, MapSection, NoticesSection } from './ui';
 
 const HomePage = () => {
 	return (
@@ -8,8 +8,6 @@ const HomePage = () => {
 			<NoticesSection />
 			<RecipesSection />
 			<MapSection />
-			
-			<BackTopButton />
 		</>
 	);
 };

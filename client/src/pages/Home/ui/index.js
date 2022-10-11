@@ -4,4 +4,3 @@ export * from './ServicesSection';
 export * from './RecipesSection';
 export * from './NoticesSection';
 export * from './MapSection';
-export * from './BackTopButton';

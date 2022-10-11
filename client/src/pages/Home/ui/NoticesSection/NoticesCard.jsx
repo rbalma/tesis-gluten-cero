@@ -17,8 +17,10 @@ export const NoticesCard = ({ notice }) => {
     }}>
       <div className={styles.inner}>
         <h2 className={styles.title}>{notice.title}</h2>
+        <div className={styles.footer}>
         <time className={styles.subtitle}>Publicado el { format( date, 'PPP', { locale: ESLocale }) }</time>
-        <div className={styles.openNotice}>Abrir</div>
+        <button className={styles.openNotice}>Abrir</button>
+        </div>
       </div>
     </div>
   )

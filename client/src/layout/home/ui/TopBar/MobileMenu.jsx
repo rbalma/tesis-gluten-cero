@@ -1,20 +1,14 @@
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+import useAuthStore from '@/store/authStore';
 
 import styles from './MobileMenu.module.css';
 
 export const MobileMenu = ({ open, closeMenu }) => {
-	const navigate = useNavigate();
+	const { userProfile } = useAuthStore();
 
 	const handleSelectItemMenu = () => {
 		setTimeout(() => {
 			closeMenu();
-		}, 1000);
-	};
-
-	const handleSelectLogin = () => {
-		setTimeout(() => {
-			closeMenu();
-			navigate('/login');
 		}, 1000);
 	};
 
@@ -81,16 +75,20 @@ export const MobileMenu = ({ open, closeMenu }) => {
 						&nbsp;Aportar&nbsp;
 					</NavLink>
 				</li>
-				<li className={styles.menuli} >
-					<span
+
+				{ userProfile ? null : (
+					<li className={styles.menuli} >
+					<NavLink
+						to='/ingreso'
 						className={styles.item}
 						style={{ '--color': '#106EEA', cursor: 'pointer' }}
 						data-text='&nbsp;Ingresar&nbsp;'
-						onClick={handleSelectLogin}
 					>
 						&nbsp;Ingresar&nbsp;
-					</span>
+					</NavLink>
 				</li>
+				)}
+				
 			</ul>
 		</div>
 	);

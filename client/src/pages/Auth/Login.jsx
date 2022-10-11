@@ -7,16 +7,13 @@ import useCrud from '@/hooks/useCrud';
 import styles from './Login.module.css';
 
 export const Login = () => {
-	const { userProfile, addUser } = useAuthStore();
+	const { addUser } = useAuthStore();
 	const navigate = useNavigate();
-	const { 2: postLogin } = useCrud('/login');
+	const { 1: postLogin } = useCrud('/login');
 
 	const onSubmit = async (values) => {
-		//setIsLoading(true);
-		// await sleep(1000);
 		const data = await postLogin({ ...values });
-		//console.log({data})
-		addUser(data.user);
+		if ( data.ok ) addUser(data.user);
 		navigate('/');
 	};
 

@@ -1,6 +1,5 @@
 .sliderReact {
-	width: 80%;
-	margin: 3rem auto;
+	margin: 3rem 0;
 	height: auto;
 	position: relative;
 }
@@ -11,12 +10,6 @@
 }
 
 .slide {
-	transform: scale(0.5);
-	transition: transform 300ms;
-	opacity: 0.5;
-}
-
-.activeSlide {
 	transform: scale(1);
 	opacity: 1;
 }
@@ -24,9 +17,10 @@
 .arrow {
 	position: absolute;
 	cursor: pointer;
-	z-index: 1;
-	font-size: 50px;
+	z-index: 2;
+	font-size: 40px;
 	transition: color 500ms ease-in-out;
+	margin-right: 5%;
 }
 
 .arrow:hover {
@@ -35,10 +29,10 @@
 
 .next {
 	right: 0%;
-	top: 50%;
+	bottom: -15%;
 }
 
 .prev {
-	left: 0%;
-	top: 50%;
+	right: 60px;
+	bottom: -15%;
 }

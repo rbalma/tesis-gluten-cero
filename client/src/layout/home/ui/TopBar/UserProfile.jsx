@@ -6,27 +6,32 @@ import {
 	LockFilled,
 	LogoutOutlined,
 } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import useAuthStore from '@/store/authStore';
+import { userGetAvatar } from '@/utils/fetchData';
 
 export const UserProfile = () => {
 	const {
 		userProfile: user,
 		removeUser,
 	} = useAuthStore();
+	const navigate = useNavigate();
 	const [avatar, setAvatar] = useState('');
 
 	useEffect(() => {
 		if (user?.avatar) {
-			setAvatar(import.meta.env.VITE_API_URL + user.avatarUrl);
+			return setAvatar(userGetAvatar(user.avatar));
 		}
 		if (user?.google) {
-			setAvatar(user.avatarUrl);
+			return setAvatar(user.avatarUrl);
 		}
+
+		setAvatar(user?.dicebear);
 	}, [user]);
 
 	const logoutUser = () => {
 		removeUser();
+		navigate('/');
 	};
 
 	const menuPerfil = (
@@ -35,7 +40,7 @@ export const UserProfile = () => {
 				<Link to={`/perfil/${user.id}`}>Perfil</Link>
 			</Menu.Item>
 			<Menu.Item key='2' icon={<SettingFilled />}>
-				<Link to={`/perfil/${user.id}/configuracion/datos`}>Configuración</Link>
+				<Link to={`/perfil/${user.id}/panel/configuracion`}>Configuración</Link>
 			</Menu.Item>
 
 			{user.role === 'admin' && (
