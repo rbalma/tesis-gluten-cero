@@ -1,5 +1,5 @@
 const { URL_FRONT } = process.env;
-const User = require("../models/User");
+const User = require("../models/user");
 const ErrorResponse = require("../utils/errorResponse");
 const { fsUnlink } = require("../utils/fsUnlink");
 const sendEmail = require('../services/sendEmail');
