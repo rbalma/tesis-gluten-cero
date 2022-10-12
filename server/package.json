@@ -7,6 +7,7 @@
   "license": "MIT",
   "scripts": {
     "start": "node index.js",
+    "build": "webpack --mode production",
     "dev": "nodemon index.js"
   },
   "dependencies": {
@@ -28,6 +29,9 @@
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
-    "nodemon": "^2.0.19"
+    "nodemon": "^2.0.19",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-node-externals": "^3.0.0"
   }
 }

@@ -1,5 +1,5 @@
 const Recipe = require('../models/recipe');
-//const Comment = require('../models/comment');
+const Comment = require('../models/comment');
 const ErrorResponse = require('../utils/errorResponse');
 const { uploadImage, deleteImage } = require('../services/cloudinary');
 const fs = require('fs-extra');
@@ -201,7 +201,7 @@ exports.deleteRecipe = async (req, res, next) => {
 
     await Recipe.findByIdAndDelete(recipeId);
     if (recipe.image?.public_id) await deleteImage(recipe.image.public_id);
-   // await Comment.deleteMany({ recipe: recipeId });
+    await Comment.deleteMany({ recipe: recipeId });
     // await User.updateMany({}, { $pull: { favRecipes: id } });
 
 
