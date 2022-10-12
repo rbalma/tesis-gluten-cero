@@ -1,4 +1,4 @@
-const Comment = require('../models/Comment');
+const Comment = require('../models/comment');
 const ErrorResponse = require('../utils/errorResponse');
 
 // @desc Agregar un nuevo comentario

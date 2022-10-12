@@ -1,5 +1,5 @@
-const Recipe = require('../models/Recipe');
-const Comment = require('../models/Comment');
+const Recipe = require('../models/recipe');
+const Comment = require('../models/comment');
 const ErrorResponse = require('../utils/errorResponse');
 const { uploadImage, deleteImage } = require('../services/cloudinary');
 const fs = require('fs-extra');

@@ -1,5 +1,5 @@
-const Post = require("../models/Post");
-const Thread = require("../models/Thread");
+const Post = require("../models/post");
+const Thread = require("../models/thread");
 const ErrorResponse = require("../utils/errorResponse");
 
 // @desc Agregar un nuevo hilo

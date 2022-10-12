@@ -71,7 +71,9 @@ UserSchema.pre("save", async function (next) {
     next();
   }
 
-  this.dicebear ||= `https://avatars.dicebear.com/api/initials/${this.name}%20${this.lastname}.svg?bold=true`;
+  if (!this.dicebear) {
+    this.dicebear = `https://avatars.dicebear.com/api/initials/${this.name}%20${this.lastname}.svg?bold=true`;
+  }
 
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);

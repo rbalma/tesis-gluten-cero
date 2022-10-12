@@ -1,5 +1,5 @@
-const Category = require('../models/Category');
-const Recipe = require('../models/Recipe');
+const Category = require('../models/category');
+const Recipe = require('../models/recipe');
 const ErrorResponse = require('../utils/errorResponse');
 
 // @desc Agregar una nueva categoría de receta

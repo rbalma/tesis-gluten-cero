@@ -1,4 +1,4 @@
-const Notice = require("../models/Notice");
+const Notice = require("../models/notice");
 const ErrorResponse = require("../utils/errorResponse");
 const { fsUnlink } = require("../utils/fsUnlink");
 

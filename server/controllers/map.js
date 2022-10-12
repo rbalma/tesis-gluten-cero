@@ -1,4 +1,4 @@
-const Market = require('../models/Market');
+const Market = require('../models/market');
 const ErrorResponse = require('../utils/errorResponse');
 const { uploadImage, deleteImage } = require('../services/cloudinary');
 const fs = require('fs-extra');
