@@ -29,9 +29,8 @@ axiosInstance.interceptors.response.use(
 	async error => {
 		const originalRequest = error.config;
 		if (error.response?.status === 401 && originalRequest.url !== '/login') {
-			//! Agregar función logout
-			//await store.dispatch(startLogout());
-			useAuthStore.destroy();
+			localStorage.clear();
+			useAuthStore.setState({ userProfile: null, checking: false });
 			toast.error('Token Expirado por favor inicie sesión para continuar');
 		} 
 		Promise.reject(error);
