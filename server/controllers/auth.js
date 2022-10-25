@@ -60,7 +60,7 @@ exports.login = async (req, res, next) => {
 exports.renewToken = (req, res) => {
   const { user } = req;
   // Generar Nuevo Token
-  const token = jwt.sign(user, JWT_SECRET, { expiresIn: "1d" });
+  const token = jwt.sign({ user }, JWT_SECRET, { expiresIn: "1d" });
   res.json({ ok: true, user, token });
 };
 
