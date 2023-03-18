@@ -40,7 +40,7 @@ export const addUsers = async (req, res, next) => {
       text-transform: uppercase;
       text-align: center;
       text-decoration: none;
-      'href=${resetUrl}>Confirmar cuenta</a>
+      'href=${confirmUrl}>Confirmar cuenta</a>
       <p style='font-family: Arial, Helvetica;'>Si no puedes acceder a este enlace, vísita : ${confirmUrl}</p>
     `;
 
