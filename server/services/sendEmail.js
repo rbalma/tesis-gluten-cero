@@ -1,5 +1,5 @@
-const { EMAIL_USERNAME, EMAIL_PASSWORD } = process.env;
-const nodemailer = require("nodemailer");
+import { EMAIL_USERNAME, EMAIL_PASSWORD } from '../config/config.js';
+import nodemailer from "nodemailer";
 
 const sendEmail = async (options) => {
   const transporter = nodemailer.createTransport({
@@ -26,4 +26,4 @@ const sendEmail = async (options) => {
   }
 };
 
-module.exports = sendEmail;
+export default sendEmail;

@@ -1,11 +1,11 @@
-const Category = require('../models/category');
-const Recipe = require('../models/recipe');
-const ErrorResponse = require('../utils/errorResponse');
+import Category from '../models/category.js';
+import Recipe from '../models/recipe.js';
+import ErrorResponse from '../utils/errorResponse.js';
 
 // @desc Agregar una nueva categoría de receta
 // @route /api/categories
 // @access Private
-exports.addCategory = async (req, res, next) => {
+export const addCategory = async (req, res, next) => {
   const category = new Category(req.body);
 
   try {
@@ -22,7 +22,7 @@ exports.addCategory = async (req, res, next) => {
 // @desc Obtiene todas las categorias de las recetas
 // @route /api/categories
 // @access Public
-exports.getCategory = async (req, res, next) => {
+export const getCategory = async (req, res, next) => {
   try {
     const categories = await Category.find().sort({ name: 1 });
     res.json({
@@ -37,7 +37,7 @@ exports.getCategory = async (req, res, next) => {
 // @desc Elimina una categoria de receta
 // @route /api/categories/:categoryId
 // @access Private
-exports.updateCategory = async (req, res, next) => {
+export const updateCategory = async (req, res, next) => {
   const { categoryId } = req.params;
 
   try {
@@ -66,7 +66,7 @@ exports.updateCategory = async (req, res, next) => {
 // @desc Elimina una categoria de receta
 // @route /api/categories/:categoryId
 // @access Private
-exports.deleteCategory = async (req, res, next) => {
+export const deleteCategory = async (req, res, next) => {
   const { categoryId } = req.params;
 
   try {

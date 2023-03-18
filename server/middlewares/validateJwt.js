@@ -1,8 +1,10 @@
-const { JWT_SECRET } = process.env;
-const jwt = require("jsonwebtoken");
-const ErrorResponse = require("../utils/errorResponse");
+import { config } from "dotenv";
+config();
+import { JWT_SECRET } from '../config/config.js';
+import jwt from "jsonwebtoken";
+import ErrorResponse from "../utils/errorResponse.js";
 
-const validateJWT = (req, res, next) => {
+export const validateJWT = (req, res, next) => {
   const hayToken = req.headers.authorization && req.headers.authorization.startsWith('Bearer') ;
 
   try {
@@ -19,8 +21,4 @@ const validateJWT = (req, res, next) => {
   }
 
   next();
-};
-
-module.exports = {
-  validateJWT,
 };

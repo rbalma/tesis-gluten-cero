@@ -1,19 +1,19 @@
-const express = require('express');
-const {
+import express from 'express';
+import {
   addThread,
   getThread,
   getThreadById,
   updateThread,
   deleteThread,
-} = require('../controllers/thread');
-const {
+} from '../controllers/thread.js';
+import {
   addPost,
   getPosts,
   getPostById,
   updatePost,
   deletePost,
-} = require('../controllers/post');
-const { validateJWT } = require('../middlewares/validateJwt');
+} from '../controllers/post.js';
+import { validateJWT } from '../middlewares/validateJwt.js';
 
 const router = express.Router();
 
@@ -39,4 +39,4 @@ router
   .put(validateJWT, updatePost)
   .delete(validateJWT, deletePost);
 
-module.exports = router;
+export default router;

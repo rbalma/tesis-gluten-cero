@@ -1,12 +1,12 @@
-const Notice = require("../models/notice");
-const ErrorResponse = require("../utils/errorResponse");
-const { fsUnlink } = require("../utils/fsUnlink");
+import Notice from "../models/notice.js";
+import ErrorResponse from "../utils/errorResponse.js";
+import { fsUnlink } from "../utils/fsUnlink.js";
 
 
 // @desc Agregar una nuevo noticia
 // @route /api/notices
 // @access Private
-exports.addNotice = async (req, res, next) => {
+export const addNotice = async (req, res, next) => {
   try {
     if (req.file) //req.body.image = req.file.filename;
     return res.json({ file: req.file })
@@ -22,7 +22,7 @@ exports.addNotice = async (req, res, next) => {
 // @desc Obtener las noticias paginadas
 // @route /api/notices
 // @access Public
-exports.getNotices = async (req, res, next) => {
+export const getNotices = async (req, res, next) => {
   const { page = 1, limit = 10, search = "" } = req.query;
 
   const options = {
@@ -59,7 +59,7 @@ exports.getNotices = async (req, res, next) => {
 // @desc Obtener una noticia
 // @route /api/notices/:noticeId
 // @access Private
-exports.getNoticeById = async (req, res, next) => {
+export const getNoticeById = async (req, res, next) => {
   const { noticeId } = req.params;
 
   try {
@@ -76,7 +76,7 @@ exports.getNoticeById = async (req, res, next) => {
 // @desc Actualizar una noticia
 // @route /api/notices/:noticeId
 // @access Private
-exports.updateNotice = async (req, res, next) => {
+export const updateNotice = async (req, res, next) => {
   const { noticeId } = req.params;
 
   try {
@@ -107,7 +107,7 @@ exports.updateNotice = async (req, res, next) => {
 // @desc Eliminar una noticia
 // @route /api/notices/:noticeId
 // @access Private
-exports.deleteNotice = async (req, res, next) => {
+export const deleteNotice = async (req, res, next) => {
   const { noticeId } = req.params;
 
   try {

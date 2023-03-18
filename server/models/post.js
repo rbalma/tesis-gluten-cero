@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
-const mongoosePaginate = require('mongoose-paginate-v2');
-const Thread = require('./thread');
+import mongoose from 'mongoose';
+import mongoosePaginate from 'mongoose-paginate-v2';
+import Thread from './thread.js';
 
 const Schema = mongoose.Schema;
 
@@ -42,4 +42,4 @@ postSchema.post("remove", async function (doc) {
 
 postSchema.plugin(mongoosePaginate);
 
-module.exports = mongoose.model('Post', postSchema);
+export default mongoose.model('Post', postSchema);

@@ -1,12 +1,12 @@
-const Market = require('../models/market');
-const ErrorResponse = require('../utils/errorResponse');
-const { uploadImage, deleteImage } = require('../services/cloudinary');
-const fs = require('fs-extra');
+import Market from '../models/market.js';
+import ErrorResponse from '../utils/errorResponse.js';
+import { uploadImage, deleteImage } from '../services/cloudinary.js';
+import fs from 'fs-extra';
 
 // @desc Obtener los marcadores cercanos a una ubicación
 // @route /api/map
 // @access Public
-exports.marketsByLocation = async (req, res) => {
+export const marketsByLocation = async (req, res) => {
   let { lng, lat, mts } = req.query;
 
   lng = parseFloat(lng);
@@ -35,7 +35,7 @@ exports.marketsByLocation = async (req, res) => {
 // @desc Agrega un nuevo marcador al mapa
 // @route GET /api/markets
 // @access public
-exports.getMarkets = async (req, res, next) => {
+export const getMarkets = async (req, res, next) => {
   const {
     page = 1,
     limit = 10,
@@ -91,7 +91,7 @@ exports.getMarkets = async (req, res, next) => {
 // @desc Obtiene un marcador del mapa
 // @route GET /api/markets/:marketId
 // @access private
-exports.getMarketById = async (req, res, next) => {
+export const getMarketById = async (req, res, next) => {
   const { marketId } = req.params;
 
   try {
@@ -110,7 +110,7 @@ exports.getMarketById = async (req, res, next) => {
 // @desc Agrega un nuevo marcador al mapa
 // @route POST /api/markets
 // @access private
-exports.addMarket = async (req, res) => {
+export const addMarket = async (req, res) => {
   const { type, longitude, latitude } = req.body;
   const lng = parseFloat(longitude);
   const lat = parseFloat(latitude);
@@ -146,7 +146,7 @@ exports.addMarket = async (req, res) => {
 // @desc Habilitar el marcador para que se vea en el mapa
 // @route PUT /api/active-market/:marketId
 // @access Private
-exports.activateMarket = async (req, res, next) => {
+export const activateMarket = async (req, res, next) => {
   const { marketId } = req.params;
   const { active } = req.body;
 
@@ -171,7 +171,7 @@ exports.activateMarket = async (req, res, next) => {
 // @desc Actualizar un marcador
 // @route /api/markets/:marketId
 // @access Private
-exports.updateMarket = async (req, res, next) => {
+export const updateMarket = async (req, res, next) => {
   const { marketId } = req.params;
 
   try {
@@ -219,7 +219,7 @@ exports.updateMarket = async (req, res, next) => {
 // @desc Eliminar un marcador
 // @route /api/markets/:marketId
 // @access Private
-exports.deleteMarket = async (req, res, next) => {
+export const deleteMarket = async (req, res, next) => {
   const { marketId } = req.params;
 
   try {

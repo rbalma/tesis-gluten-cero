@@ -1,12 +1,14 @@
-const multer = require('multer');
-const shortid = require('shortid');
-const ErrorResponse = require('../utils/errorResponse');
-const pathUpload = __dirname + "../../uploads/recipes";
+import multer from 'multer';
+import shortid from 'shortid';
+import ErrorResponse from '../utils/errorResponse.js';
+import __dirname from '../dirnamePath.js';
+
+const pathUpload = __dirname + "/uploads/recipes";
 
 const configuracionMulter = {
   // 1 Mb
   limits: { fileSize: 1 * 1000 * 1000 },
-  storage: (fileStorage = multer.diskStorage({
+  storage: multer.diskStorage({
     destination: (req, file, cb) => {
       cb(null, pathUpload);
     },
@@ -14,7 +16,7 @@ const configuracionMulter = {
       const extension = file.mimetype.split("/")[1];
       cb(null, `${shortid.generate()}.${extension}`);
     },
-  })),
+  }),
   fileFilter(req, file, cb) {
     if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
       cb(null, true);
@@ -32,7 +34,7 @@ const configuracionMulter = {
 const upload = multer(configuracionMulter).single("image");
 
 // Sube un archivo
-exports.uploadFile = (req, res, next) => {
+export const uploadFile = (req, res, next) => {
   upload(req, res, function (error) {
     if (error) {
       if (error instanceof multer.MulterError) {

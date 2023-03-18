@@ -1,6 +1,6 @@
-const fs = require("fs");
+import fs from "fs";
 
-exports.fsUnlink = (imagePath) => {
+export const fsUnlink = (imagePath) => {
   const filePath = __dirname + `/../uploads${imagePath}`;
   fs.unlink(filePath, (err) => {
     if (err) {

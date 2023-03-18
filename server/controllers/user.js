@@ -1,14 +1,14 @@
-const { URL_FRONT } = process.env;
-const User = require("../models/user");
-const ErrorResponse = require("../utils/errorResponse");
-const { fsUnlink } = require("../utils/fsUnlink");
-const sendEmail = require('../services/sendEmail');
+import { URL_FRONT } from '../config/config.js';
+import User from "../models/user.js";
+import ErrorResponse from "../utils/errorResponse.js";
+import { fsUnlink } from "../utils/fsUnlink.js";
+import sendEmail from '../services/sendEmail.js';
 
 
 // @desc Agregar un nuevo usuario
 // @route /api/users
 // @access Public
-exports.addUsers = async (req, res, next) => {
+export const addUsers = async (req, res, next) => {
   const { name, lastname, email, password, role, active } = req.body;
 
   try {
@@ -66,7 +66,7 @@ exports.addUsers = async (req, res, next) => {
 // @desc Activar la cuenta de un usuario registrado
 // @route /api/active-account/:userId
 // @access Private
-exports.activeUserAccount = async (req, res, next) => {
+export const activeUserAccount = async (req, res, next) => {
   const { userId } = req.params;
 
   try {
@@ -89,7 +89,7 @@ exports.activeUserAccount = async (req, res, next) => {
 // @desc Obtener un usuario
 // @route /api/users/:id
 // @access Private
-exports.getUserById = async (req, res, next) => {
+export const getUserById = async (req, res, next) => {
   const { id } = req.params;
 
   try {
@@ -106,7 +106,7 @@ exports.getUserById = async (req, res, next) => {
 // @desc Obtener los usuarios paginados
 // @route /api/users
 // @access Private
-exports.getUsers = async (req, res, next) => {
+export const getUsers = async (req, res, next) => {
   const { page = 1, limit = 15, search = "", active } = req.query;
 
   const records = [
@@ -162,7 +162,7 @@ exports.getUsers = async (req, res, next) => {
 // @desc Actualizar un usuario
 // @route /api/users/:id
 // @access Private
-exports.updateUser = async (req, res, next) => {
+export const updateUser = async (req, res, next) => {
   const { id } = req.params;
 
   try {
@@ -197,7 +197,7 @@ exports.updateUser = async (req, res, next) => {
 // @desc Eliminar un usuario
 // @route /api/users/:id
 // @access Private
-exports.deleteUser = async (req, res, next) => {
+export const deleteUser = async (req, res, next) => {
   const { id } = req.params;
 
   try {
@@ -218,7 +218,7 @@ exports.deleteUser = async (req, res, next) => {
 // @desc Obtiene el detalle de las recetas favoritas de un usuario
 // @route /api/fav-recipes/:userId
 // @access Private
-exports.getFavRecipes = async (req, res, next) => {
+export const getFavRecipes = async (req, res, next) => {
   const { userId } = req.params;
 
   try {
@@ -239,7 +239,7 @@ exports.getFavRecipes = async (req, res, next) => {
 // @desc agrega una receta como favorita de un usuario
 // @route /api/fav-recipes/:userId
 // @access Private
-exports.addFavRecipe = async (req, res, next) => {
+export const addFavRecipe = async (req, res, next) => {
   const { userId } = req.params;
   const { recipeId } = req.body;
 
@@ -256,7 +256,7 @@ exports.addFavRecipe = async (req, res, next) => {
 // @desc elimina una receta como favorita de un usuario
 // @route /api/fav-recipes/:userId
 // @access Private
-exports.deleteFavRecipe = async (req, res, next) => {
+export const deleteFavRecipe = async (req, res, next) => {
   const { userId } = req.params;
   const { recipeId } = req.query;
 
@@ -272,7 +272,7 @@ exports.deleteFavRecipe = async (req, res, next) => {
 // @desc Obtiene el detalle de los marcadores favoritos de un usuario
 // @route /api/fav-markets/:userId
 // @access Private
-exports.getFavMarkets = async (req, res, next) => {
+export const getFavMarkets = async (req, res, next) => {
   const { userId } = req.params;
 
   try {
@@ -292,7 +292,7 @@ exports.getFavMarkets = async (req, res, next) => {
 // @desc agrega un marcador como favorito de un usuario
 // @route /api/fav-markets/:userId
 // @access Private
-exports.addFavMarkets = async (req, res, next) => {
+export const addFavMarkets = async (req, res, next) => {
   const { userId } = req.params;
   const { marketId } = req.body;
 
@@ -308,7 +308,7 @@ exports.addFavMarkets = async (req, res, next) => {
 // @desc elimina un marcador como favorito de un usuario
 // @route /api/fav-markets/:userId
 // @access Private
-exports.deleteFavMarkets = async (req, res, next) => {
+export const deleteFavMarkets = async (req, res, next) => {
   const { userId } = req.params;
   const { marketId } = req.query;
 

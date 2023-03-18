@@ -1,9 +1,21 @@
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
-const connectDB = require('./config/db');
-const errorHandler = require('./middlewares/error');
-const path = require('path');
+import { PORT } from "./config/config.js";
+import express from 'express';
+import cors from 'cors';
+import connectDB from './config/db.js';
+import errorHandler from './middlewares/error.js';
+import path from 'path';
+
+import authRouter from './routes/auth.routes.js';
+import userRoute from './routes/user.routes.js';
+import recipeRoute from './routes/recipe.routes.js';
+import noticeRoute from './routes/notice.routes.js';
+import categoryRoute from './routes/category.routes.js';
+import forumRoute from './routes/forum.routes.js';
+import productRoute from './routes/products.routes.js';
+import commentRoute from './routes/comment.routes.js';
+import mapRoute from './routes/map.routes.js';
+
+import __dirname from './dirnamePath.js'
 
 const app = express();
 
@@ -27,15 +39,15 @@ app.use(
 );
 
 // Router Basic
-app.use(`/api`, require('./routes/auth.routes'));
-app.use(`/api`, require('./routes/user.routes'));
-app.use(`/api`, require('./routes/recipe.routes'));
-app.use(`/api`, require('./routes/notice.routes'));
-app.use(`/api`, require('./routes/category.routes'));
-app.use(`/api`, require('./routes/forum.routes'));
-app.use(`/api`, require('./routes/products.routes'));
-app.use(`/api`, require('./routes/comment.routes'));
-app.use(`/api`, require('./routes/map.routes'));
+app.use(`/api`, authRouter);
+app.use(`/api`, userRoute);
+app.use(`/api`, recipeRoute);
+app.use(`/api`, noticeRoute);
+app.use(`/api`, categoryRoute);
+app.use(`/api`, forumRoute);
+app.use(`/api`, productRoute);
+app.use(`/api`, commentRoute);
+app.use(`/api`, mapRoute);
 
 app.get('/', (req, res, next) => {
     res.send('Api running');
@@ -48,7 +60,7 @@ app.get('/', (req, res, next) => {
 // Error Handler
 app.use(errorHandler);
 
-const port = process.env.PORT || 5000;
+const port = PORT || 5000;
 
 const server = app.listen(port, () => {
     console.log(`Server running on port ${port}`);

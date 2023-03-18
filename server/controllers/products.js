@@ -1,12 +1,13 @@
-const XLSX = require('xlsx');
-const multer = require('multer');
-const ErrorResponse = require('../utils/errorResponse');
+import XLSX from 'xlsx';
+import multer from 'multer';
+import ErrorResponse from '../utils/errorResponse.js';
+import __dirname from '../dirnamePath.js';
 
 //* Configuración Multer
 const pathUpload = __dirname + '../../docs';
 const configuracionMulter = {
   limits: { fileSize: 1 * 1024 * 1024 }, // 1 MB
-  storage: (fileStorage = multer.diskStorage({
+  storage: multer.diskStorage({
     destination: (req, file, cb) => {
       cb(null, pathUpload);
     },
@@ -14,7 +15,7 @@ const configuracionMulter = {
       const extension = 'xlsx';
       cb(null, `listado-anmat.${extension}`);
     },
-  })),
+  }),
   fileFilter(req, file, cb) {
     if (
       file.mimetype ===
@@ -33,7 +34,7 @@ const upload = multer(configuracionMulter).single('file');
 // @desc Obtener el listado de productos aprobados por ANMAT
 // @route /api/products-anmat
 // @access Public
-exports.getProducts = (req, res, error) => {
+export const getProducts = (req, res, error) => {
   try {
     const workbook = XLSX.readFile('./docs/listado-anmat.xlsx');
     //const workbookSheets = workbook.SheetNames;
@@ -50,7 +51,7 @@ exports.getProducts = (req, res, error) => {
 // @desc Cargar archivo excel que contiene el listado de productos aprobados por ANMAT
 // @route /api/products-anmat
 // @access Private
-exports.addFileExcel = (req, res, next) => {
+export const addFileExcel = (req, res, next) => {
   upload(req, res, function (error) {
     if (error) {
       if (error instanceof multer.MulterError) {

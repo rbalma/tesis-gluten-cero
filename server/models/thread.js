@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const mongoosePaginate = require("mongoose-paginate-v2");
+import mongoose from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2";
 
 const Schema = mongoose.Schema;
 
@@ -38,4 +38,4 @@ const ThreadSchema = new Schema({
 
 ThreadSchema.plugin(mongoosePaginate);
 
-module.exports = mongoose.model("Thread", ThreadSchema);
+export default mongoose.model("Thread", ThreadSchema);

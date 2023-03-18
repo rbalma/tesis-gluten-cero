@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "server para tesis gluten cero",
   "main": "index.js",
+  "type": "module",
   "author": "Rodrigo Balmaceda",
   "license": "MIT",
   "scripts": {

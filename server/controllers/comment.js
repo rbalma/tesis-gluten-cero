@@ -1,10 +1,10 @@
-const Comment = require('../models/comment');
-const ErrorResponse = require('../utils/errorResponse');
+import Comment from '../models/comment.js';
+import ErrorResponse from '../utils/errorResponse.js';
 
 // @desc Agregar un nuevo comentario
 // @route /api/comments
 // @access Private
-exports.addComment = async (req, res, next) => {
+export const addComment = async (req, res, next) => {
   const comment = new Comment(req.body);
   try {
     comment.user = req.id;
@@ -19,7 +19,7 @@ exports.addComment = async (req, res, next) => {
 // @desc Agregar una respuesta a un comentario
 // @route /api/comments-reply/:commentId
 // @access Private
-exports.addCommentReply = async (req, res, next) => {
+export const addCommentReply = async (req, res, next) => {
     const { commentId } = req.params;
     const comment = new Comment(req.body);
   
@@ -42,7 +42,7 @@ exports.addCommentReply = async (req, res, next) => {
 // @desc Obtener los comentarios de una receta
 // @route /api/comments/:recipeId
 // @access Public
-exports.getComments = async (req, res, next) => {
+export const getComments = async (req, res, next) => {
   const { recipeId } = req.params;
 
   try {
@@ -66,7 +66,7 @@ exports.getComments = async (req, res, next) => {
 // @desc Eliminar un comentario de una receta
 // @route /api/comments/:commentId
 // @access Private
-exports.deleteComment = async (req, res, next) => {
+export const deleteComment = async (req, res, next) => {
   const { commentId } = req.params;
 
   try {
