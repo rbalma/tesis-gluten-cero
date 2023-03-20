@@ -2,7 +2,8 @@ import mongoose from 'mongoose';
 
 const connectDB = async() => {
     try {
-        mongoose.connect(process.env.MONGO_ATLAS, {
+        mongoose.set("strictQuery", false);
+        mongoose.connect(process.env.MONGO_URL, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         });
