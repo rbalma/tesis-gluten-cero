@@ -2,7 +2,6 @@ import { NavLink } from 'react-router-dom';
 import {
 	BarChartOutlined,
 	TeamOutlined,
-	UnorderedListOutlined,
 	BookOutlined,
 	EnvironmentOutlined,
 	FileExcelOutlined,
@@ -23,20 +22,9 @@ export const menuItems = [
 		key: '/admin/usuarios',
 	},
 	{
-		key: 'recetas',
-		type: 'subMenu',
+		label: <NavLink to='/admin/recetas'>Recetas</NavLink>,
 		icon: <SnippetsOutlined />,
-		label: 'Recetas',
-		children: [
-			{
-				label: <NavLink to='/admin/recetas'>Publicadas</NavLink>,
-				key: '/admin/recetas',
-			},
-			{
-				label: <NavLink to='/admin/recetas-categorias'>Categorías</NavLink>,
-				key: '/admin/categorias',
-			},
-		],
+		key: '/admin/recetas',
 	},
 	{
 		label: <NavLink to='/admin/noticias'>Noticias</NavLink>,

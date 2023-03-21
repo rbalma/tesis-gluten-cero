@@ -1,14 +1,14 @@
-const Recipe = require('../models/recipe');
-const Comment = require('../models/comment');
-const ErrorResponse = require('../utils/errorResponse');
-const { uploadImage, deleteImage } = require('../services/cloudinary');
-const fs = require('fs-extra');
+import Recipe from '../models/recipe.js';
+import Comment from '../models/comment.js';
+import ErrorResponse from '../utils/errorResponse.js';
+import { uploadImage, deleteImage } from '../services/cloudinary.js';
+import fs from 'fs-extra';
  //https://github.com/telegraf/telegraf/discussions/1450
 
 // @desc Agregar una nuevo receta
 // @route /api/recipes
 // @access Private
-exports.addRecipes = async (req, res, next) => {
+export const addRecipes = async (req, res, next) => {
   const recipe = new Recipe(req.body);
 
   try {
@@ -40,7 +40,7 @@ exports.addRecipes = async (req, res, next) => {
 // @desc Obtener una receta
 // @route /api/recipes/:recipeId
 // @access Public
-exports.getRecipesById = async (req, res, next) => {
+export const getRecipesById = async (req, res, next) => {
   const { recipeId } = req.params;
 
   try {
@@ -58,7 +58,7 @@ exports.getRecipesById = async (req, res, next) => {
 // @desc Obtener las recetas paginadas
 // @route /api/recipes
 // @access Public
-exports.getRecipes = async (req, res, next) => {
+export const getRecipes = async (req, res, next) => {
   const {
     page = 1,
     limit = 20,
@@ -117,7 +117,7 @@ exports.getRecipes = async (req, res, next) => {
 // @desc Habilitar la receta de un usuario para que se vea en la web
 // @route /api/active-recipe/:recipeId
 // @access Private
-exports.activateRecipe = async (req, res, next) => {
+export const activateRecipe = async (req, res, next) => {
   const { recipeId } = req.params;
   const { active } = req.body;
 
@@ -142,7 +142,7 @@ exports.activateRecipe = async (req, res, next) => {
 // @desc Actualizar una receta
 // @route /api/recipes/:recipeId
 // @access Private
-exports.updateRecipe = async (req, res, next) => {
+export const updateRecipe = async (req, res, next) => {
   const { recipeId } = req.params;
 
   try {
@@ -192,7 +192,7 @@ exports.updateRecipe = async (req, res, next) => {
 // @desc Eliminar una receta
 // @route /api/recipes/:recipeId
 // @access Private
-exports.deleteRecipe = async (req, res, next) => {
+export const deleteRecipe = async (req, res, next) => {
   const { recipeId } = req.params;
 
   try {

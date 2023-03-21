@@ -1,11 +1,11 @@
-const Post = require("../models/post");
-const Thread = require("../models/thread");
-const ErrorResponse = require("../utils/errorResponse");
+import Post from "../models/post.js";
+import Thread from "../models/thread.js";
+import ErrorResponse from "../utils/errorResponse.js";
 
 // @desc Agregar un nuevo hilo
 // @route POST /api/threads
 // @access Private
-exports.addThread = async (req, res, next) => {
+export const addThread = async (req, res, next) => {
   try {
     const thread = new Thread(req.body);
     const post = new Post(req.body);
@@ -30,7 +30,7 @@ exports.addThread = async (req, res, next) => {
 // @desc Obtiene los hilos paginados
 // @route GET /api/threads
 // @access Public
-exports.getThread = async (req, res, next) => {
+export const getThread = async (req, res, next) => {
   const { page = 1, limit = 15, search = "", status, user } = req.query;
 
   const options = {
@@ -83,7 +83,7 @@ exports.getThread = async (req, res, next) => {
 // @desc Obtiene un hilo
 // @route GET /api/thread/:threadId
 // @access Public
-exports.getThreadById = async (req, res, next) => {
+export const getThreadById = async (req, res, next) => {
     const { threadId } = req.params;
   
     try {
@@ -100,7 +100,7 @@ exports.getThreadById = async (req, res, next) => {
 // @desc Actualiza un hilo
 // @route PUT /api/threads/:threadId
 // @access Private
-exports.updateThread = async (req, res, next) => {
+export const updateThread = async (req, res, next) => {
     const { threadId } = req.params;
   
     try {
@@ -137,7 +137,7 @@ exports.updateThread = async (req, res, next) => {
 // @desc Elimina un hilo
 // @route DELETE /api/threads/threadId
 // @access Private
-exports.deleteThread = async (req, res, next) => {
+export const deleteThread = async (req, res, next) => {
   const { threadId } = req.params;
 
   try {

@@ -1,11 +1,11 @@
-const express = require('express');
-const {
+import express from 'express';
+import {
   addCategory,
   getCategory,
   updateCategory,
   deleteCategory,
-} = require('../controllers/category');
-const { validateJWT } = require('../middlewares/validateJwt');
+} from '../controllers/category.js';
+import { validateJWT } from '../middlewares/validateJwt.js';
 
 const router = express.Router();
 
@@ -15,4 +15,4 @@ router
   .put(validateJWT, updateCategory)
   .delete(validateJWT, deleteCategory);
 
-module.exports = router;
+export default router;

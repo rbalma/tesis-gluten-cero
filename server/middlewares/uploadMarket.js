@@ -1,12 +1,14 @@
-const multer = require('multer');
-const shortid = require('shortid');
-const ErrorResponse = require('../utils/errorResponse');
+import multer from 'multer';
+import shortid from 'shortid';
+import ErrorResponse from '../utils/errorResponse.js';
+import __dirname from '../dirnamePath.js';
 
-const pathUploadMarkets = __dirname + '../../uploads/markets';
+
+const pathUploadMarkets = __dirname + '/uploads/markets';
 
 const configuracionMulter = {
     limits: { fileSize: 1 * 1024 * 1024 }, // 1 MB
-    storage: (fileStorage = multer.diskStorage({
+    storage: multer.diskStorage({
       destination: (req, file, cb) => {
         cb(null, pathUploadMarkets);
       },
@@ -14,7 +16,7 @@ const configuracionMulter = {
         const extension = file.mimetype.split("/")[1];
         cb(null, `${req.body.name}-${shortid.generate()}.${extension}`);
       },
-    })),
+    }),
     fileFilter(req, file, cb) {
       if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
         cb(null, true);
@@ -28,7 +30,7 @@ const configuracionMulter = {
   const upload = multer(configuracionMulter).single('picture');
   
   // Sube un archivo 
-  exports.uploadFile = (req, res, next) => {
+  export const uploadFile = (req, res, next) => {
       upload(req, res, function(error) {
           if(error) {
               if(error instanceof multer.MulterError){

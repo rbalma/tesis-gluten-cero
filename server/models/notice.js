@@ -1,6 +1,5 @@
-const mongoose = require('mongoose');
-const mongoosePaginate = require('mongoose-paginate-v2');
-
+import mongoose from 'mongoose';
+import mongoosePaginate from 'mongoose-paginate-v2';
 const Schema = mongoose.Schema;
 
 const noticesSchema = new Schema ({
@@ -27,4 +26,4 @@ const noticesSchema = new Schema ({
 
 noticesSchema.plugin(mongoosePaginate);
 
-module.exports = mongoose.model('Notice', noticesSchema);
+export default mongoose.model('Notice', noticesSchema);

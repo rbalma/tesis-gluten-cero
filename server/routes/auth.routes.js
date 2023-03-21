@@ -1,6 +1,6 @@
-const express = require('express');
-const { login, googleSignIn, forgotPassword, resetPassword, renewToken } = require('../controllers/auth');
-const { validateJWT } = require('../middlewares/validateJwt');
+import express from 'express';
+import { login, googleSignIn, forgotPassword, resetPassword, renewToken } from '../controllers/auth.js';
+import { validateJWT } from '../middlewares/validateJwt.js';
 
 const router = express.Router();
 
@@ -10,4 +10,4 @@ router.route('/refresh-token').get(validateJWT, renewToken);
 router.route('/forgot-password').post(forgotPassword);
 router.route('/reset-password/:resetToken').put(resetPassword);
 
-module.exports = router;
+export default router;

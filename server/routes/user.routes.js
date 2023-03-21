@@ -1,5 +1,5 @@
-const express = require('express');
-const {
+import express from 'express';
+import {
   addUsers,
   activeUserAccount,
   getUsers,
@@ -12,10 +12,10 @@ const {
   getFavMarkets,
   addFavMarkets,
   deleteFavMarkets,
-} = require('../controllers/user');
+} from '../controllers/user.js';
 
-const { validateJWT } = require('../middlewares/validateJwt');
-const { uploadFile } = require('../middlewares/uploadAvatar');
+import { validateJWT } from '../middlewares/validateJwt.js';
+import { uploadFile } from '../middlewares/uploadAvatar.js';
 
 const router = express.Router();
 
@@ -41,4 +41,4 @@ router
   .put(validateJWT, addFavMarkets)
   .delete(validateJWT, deleteFavMarkets);
 
-module.exports = router;
+export default router;

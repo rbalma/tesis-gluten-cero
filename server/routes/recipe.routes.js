@@ -1,14 +1,14 @@
-const express = require('express');
-const {
+import express from 'express';
+import {
   addRecipes,
   getRecipesById,
   getRecipes,
   activateRecipe,
   updateRecipe,
   deleteRecipe,
-} = require('../controllers/recipe');
-const { validateJWT } = require('../middlewares/validateJwt');
-const { uploadFile } = require('../middlewares/UploadRecipe');
+} from '../controllers/recipe.js';
+import { validateJWT } from '../middlewares/validateJwt.js';
+import { uploadFile } from '../middlewares/UploadRecipe.js';
 
 const router = express.Router();
 
@@ -20,4 +20,4 @@ router
   .delete(validateJWT, deleteRecipe);
 router.put('/active-recipe/:recipeId', validateJWT, activateRecipe);
 
-module.exports = router;
+export default router;

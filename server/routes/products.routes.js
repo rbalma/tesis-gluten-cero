@@ -1,6 +1,6 @@
-const express = require('express');
-const { getProducts, addFileExcel } = require('../controllers/products');
-const { validateJWT } = require('../middlewares/validateJwt');
+import express from 'express';
+import { getProducts, addFileExcel } from '../controllers/products.js';
+import { validateJWT } from '../middlewares/validateJwt.js';
 
 const router = express.Router();
 
@@ -9,4 +9,4 @@ router
   .get(getProducts)
   .post(validateJWT, addFileExcel);
 
-module.exports = router;
+export default router;

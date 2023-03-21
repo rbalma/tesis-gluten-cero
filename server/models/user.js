@@ -1,8 +1,8 @@
-const mongoose = require("mongoose");
-const mongoosePaginate = require("mongoose-paginate-v2");
-const crypto = require("crypto");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
+import mongoose from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2";
+import crypto from "crypto";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 const UserSchema = new mongoose.Schema({
   name: {
@@ -113,4 +113,4 @@ UserSchema.methods.getResetPasswordToken = function () {
 
 UserSchema.plugin(mongoosePaginate);
 
-module.exports =  mongoose.model("User", UserSchema);
+export default mongoose.model("User", UserSchema);

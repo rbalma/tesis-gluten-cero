@@ -1,5 +1,5 @@
-const mongoose = require("mongoose");
-const mongoosePaginate = require("mongoose-paginate-v2");
+import mongoose from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2";
 
 const Schema = mongoose.Schema;
 
@@ -59,4 +59,4 @@ const marketSchema = new Schema({
 marketSchema.index({ location: "2dsphere" });
 marketSchema.plugin(mongoosePaginate);
 
-module.exports = mongoose.model("Market", marketSchema);
+export default mongoose.model("Market", marketSchema);

@@ -1,15 +1,15 @@
-const { URL_FRONT, JWT_SECRET } = process.env;
-const jwt = require("jsonwebtoken");
-const crypto = require("crypto");
-const User = require("../models/user");
-const ErrorResponse = require("../utils/errorResponse");
-const sendEmail = require("../services/sendEmail");
-const { googleVerify } = require("../services/google-verify");
+import { URL_FRONT, JWT_SECRET } from '../config/config.js';
+import jwt from "jsonwebtoken";
+import crypto from "crypto";
+import User from "../models/user.js";
+import ErrorResponse from "../utils/errorResponse.js";
+import sendEmail from "../services/sendEmail.js";
+import { googleVerify } from "../services/google-verify.js";
 
 // @desc Autenticación
 // @route /api/login
 // @access Public
-exports.login = async (req, res, next) => {
+export const login = async (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password)
@@ -57,7 +57,7 @@ exports.login = async (req, res, next) => {
 // @desc Renovar token
 // @route /api/refresh-token
 // @access Private
-exports.renewToken = (req, res) => {
+export const renewToken = (req, res) => {
   const { user } = req;
   // Generar Nuevo Token
   const token = jwt.sign({ user }, JWT_SECRET, { expiresIn: "1d" });
@@ -68,7 +68,7 @@ exports.renewToken = (req, res) => {
 // @desc Autenticación con Google
 // @route /api/login-google
 // @access Public
-exports.googleSignIn = async (req, res, next) => {
+export const googleSignIn = async (req, res, next) => {
   const { id_token } = req.body;
 
   try {
@@ -123,7 +123,7 @@ exports.googleSignIn = async (req, res, next) => {
 // @desc Envio de correo para modificar la contraseña
 // @route /api/forgot-password
 // @access Public
-exports.forgotPassword = async (req, res, next) => {
+export const forgotPassword = async (req, res, next) => {
   const { email } = req.body;
 
   try {
@@ -185,7 +185,7 @@ exports.forgotPassword = async (req, res, next) => {
 // @desc Modificar contraseña
 // @route /api/reset-password/:resetToken
 // @access Private
-exports.resetPassword = async (req, res, next) => {
+export const resetPassword = async (req, res, next) => {
   const resetPasswordToken = crypto
     .createHash("sha256")
     .update(req.params.resetToken)

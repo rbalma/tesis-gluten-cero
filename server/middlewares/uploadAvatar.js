@@ -1,14 +1,15 @@
-const multer = require('multer');
-const shortid = require('shortid');
-const ErrorResponse = require('../utils/errorResponse');
+import multer from 'multer';
+import shortid from 'shortid';
+import ErrorResponse from '../utils/errorResponse.js';
+import __dirname from '../dirnamePath.js';
 
-const pathUploadAvatar = __dirname + '../../uploads/avatar';
-const pathUploadNotices = __dirname + '../../uploads/notices';
+const pathUploadAvatar = __dirname + '/uploads/avatar';
+const pathUploadNotices = __dirname + '/uploads/notices';
 // if ( process.env.NODE_ENV === 'production')  pathUpload = __dirname+'/uploads/avatar';
 
 const configuracionMulter = {
   limits: { fileSize: 1 * 1024 * 1024 }, // 1 MB
-  storage: (fileStorage = multer.diskStorage({
+  storage: multer.diskStorage({
     destination: (req, file, cb) => {
       const pathUpload = req.body.title ? pathUploadNotices : pathUploadAvatar;
       cb(null, pathUpload);
@@ -21,7 +22,7 @@ const configuracionMulter = {
         : `${name}_${lastname}-${shortid.generate()}.${extension}`;
       cb(null, nameFile);
     },
-  })),
+  }),
   fileFilter(req, file, cb) {
     if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
       cb(null, true);
@@ -39,7 +40,7 @@ const configuracionMulter = {
 const upload = multer(configuracionMulter).single('avatar');
 
 // Sube la imagen al server
-exports.uploadFile = (req, res, next) => {
+export const uploadFile = (req, res, next) => {
   upload(req, res, function (error) {
     if (error) {
       if (error instanceof multer.MulterError) {

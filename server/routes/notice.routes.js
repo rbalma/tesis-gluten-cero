@@ -1,14 +1,14 @@
-const express = require('express');
-const {
+import express from 'express';
+import {
   addNotice,
   getNotices,
   getNoticeById,
   updateNotice,
   deleteNotice,
-} = require('../controllers/notice');
+} from '../controllers/notice.js';
 
-const { validateJWT } = require('../middlewares/validateJwt');
-const { uploadFile } = require('../middlewares/uploadAvatar');
+import { validateJWT } from '../middlewares/validateJwt.js';
+import { uploadFile } from '../middlewares/uploadAvatar.js';
 
 const router = express.Router();
 
@@ -23,4 +23,4 @@ router
   .put([validateJWT, uploadFile], updateNotice)
   .delete(validateJWT, deleteNotice);
 
-module.exports = router;
+export default router;

@@ -1,11 +1,11 @@
-const Post = require('../models/post');
-const Thread = require('../models/thread');
-const ErrorResponse = require('../utils/errorResponse');
+import Post from '../models/post.js';
+import Thread from '../models/thread.js';
+import ErrorResponse from '../utils/errorResponse.js';
 
 // @desc Agregar un nuevo posteo
 // @route POST /api/posts
 // @access Private
-exports.addPost = async (req, res, next) => {
+export const addPost = async (req, res, next) => {
   const { threadId } = req.body;
   const post = new Post(req.body);
 
@@ -28,7 +28,7 @@ exports.addPost = async (req, res, next) => {
 // @desc Obtiene los posteos paginados
 // @route GET /api/posts
 // @access Public
-exports.getPosts = async (req, res, next) => {
+export const getPosts = async (req, res, next) => {
   const { page = 1, limit = 10, user, threadId } = req.query;
 
   const options = {
@@ -72,7 +72,7 @@ exports.getPosts = async (req, res, next) => {
 // @desc Obtiene un posteo
 // @route GET /api/posts/:postId
 // @access Private
-exports.getPostById = async (req, res, next) => {
+export const getPostById = async (req, res, next) => {
   const { postId } = req.params;
 
   try {
@@ -88,7 +88,7 @@ exports.getPostById = async (req, res, next) => {
 // @desc Actualiza un posteo
 // @route UPDATE /api/posts/:postId
 // @access Private
-exports.updatePost = async (req, res, next) => {
+export const updatePost = async (req, res, next) => {
   const { postId } = req.params.idPost;
 
   try {
@@ -125,7 +125,7 @@ exports.updatePost = async (req, res, next) => {
 // @desc Elimina un posteo
 // @route DELETE /api/posts/:postId
 // @access Private
-exports.deletePost = async (req, res, next) => {
+export const deletePost = async (req, res, next) => {
   const { postId } = req.params;
 
   try {
