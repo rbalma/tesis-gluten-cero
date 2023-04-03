@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 import useAuthStore from '@/store/authStore';
 
 const axiosInstance = axios.create({
@@ -33,7 +33,7 @@ axiosInstance.interceptors.response.use(
 			useAuthStore.setState({ userProfile: null, checking: false });
 			toast.error('Token Expirado por favor inicie sesión para continuar');
 		} 
-		Promise.reject(error);
+		return Promise.reject(error);
 	}
 );
 
