@@ -1,5 +1,3 @@
-import { config } from "dotenv";
-config();
 import { JWT_SECRET } from '../config/config.js';
 import jwt from "jsonwebtoken";
 import ErrorResponse from "../utils/errorResponse.js";

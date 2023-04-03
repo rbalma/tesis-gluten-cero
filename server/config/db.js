@@ -1,9 +1,10 @@
 import mongoose from 'mongoose';
+import { MONGO_ATLAS } from '../config/config.js';
 
 const connectDB = async() => {
     try {
         mongoose.set("strictQuery", false);
-        mongoose.connect(process.env.MONGO_URL, {
+        mongoose.connect(MONGO_ATLAS, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
         });
