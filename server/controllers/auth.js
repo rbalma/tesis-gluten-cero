@@ -27,7 +27,7 @@ export const login = async (req, res, next) => {
       return next(new ErrorResponse("La contraseña es incorrecta", 401));
 
     if (!user.active)
-      return next(new ErrorResponse("El usuario está inactivo", 401));
+      return next(new ErrorResponse("La cuenta está inactiva", 401));
 
     const payload = {
       id: user._id,
@@ -64,16 +64,15 @@ export const renewToken = (req, res) => {
   res.json({ ok: true, user, token });
 };
 
-//! REVISAR
 // @desc Autenticación con Google
 // @route /api/login-google
 // @access Public
 export const googleSignIn = async (req, res, next) => {
-  const { id_token } = req.body;
+  const { code } = req.body;
 
   try {
     const { given_name, family_name, picture, email } = await googleVerify(
-      id_token
+      code
     );
 
     let user = await User.findOne({ email });
@@ -84,13 +83,14 @@ export const googleSignIn = async (req, res, next) => {
       email,
       avatar: picture,
       google: true,
+      active: true,
     };
 
     if (!user) {
       //Tengo que crearlo
       data = {
         ...data,
-        password: "XD**********??",
+        password: "XD**********??t23",
       };
       user = new User(data);
       await user.save();
@@ -101,7 +101,7 @@ export const googleSignIn = async (req, res, next) => {
         // user = await User.findByIdAndUpdate(user._id, data, { new: true });
         return next(
           new ErrorResponse(
-            "El usuario ya está registrado. Use el logueo de Gluten Cero",
+            "El usuario ya está registrado. Ingrese con su correo a Gluten Cero",
             401
           )
         );
@@ -109,10 +109,23 @@ export const googleSignIn = async (req, res, next) => {
     }
 
     // Si user active es false
-    //if (!user.active) return next(new ErrorResponse('El usuario está inactivo', 401));
+    if (!user.active) return next(new ErrorResponse('El usuario está inactivo', 401));
 
     // Generar el JWT
-    // const token = user.getSignedJwtToken(payload);
+    const payload = {
+      id: user._id,
+      name: user.name,
+      lastname: user.lastname,
+      email: user.email,
+      role: user.role,
+      active: user.active,
+      avatar: user.avatar,
+      dicebear: user.dicebear,
+      userGoogle: user.google,
+      favRecipes: user.favRecipes,
+    };
+
+    const token = user.getSignedJwtToken(payload);
 
     res.json({ ok: true, user, token });
   } catch (error) {
@@ -168,7 +181,7 @@ export const forgotPassword = async (req, res, next) => {
         text: message,
       });
 
-      if (result) return res.json({ data: true, message: "Correo enviado" });
+      if (result) return res.json({ ok: true, message: "Correo enviado" });
     } catch (error) {
       user.resetPasswordToken = undefined;
       user.resetPasswordExpire = undefined;
@@ -206,7 +219,7 @@ export const resetPassword = async (req, res, next) => {
     await user.save();
 
     res.status(201).json({
-      data: true,
+      ok: true,
       message: "Contraseña actualizada",
     });
   } catch (err) {
