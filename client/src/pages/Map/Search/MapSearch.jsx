@@ -13,6 +13,7 @@ import {
 	DownOutlined,
 	AimOutlined,
 	EnvironmentFilled,
+	SearchOutlined
 } from '@ant-design/icons';
 import { CardsMap } from './CardsMap';
 import { Markers } from './Markers';
@@ -110,16 +111,17 @@ export const MapSearch = () => {
 					<Row style={{ marginBottom: 20 }}>
 						<Col span={24}>
 							<Input
-								placeholder='Dirección'
+								placeholder='Ingrese calle, número, barrio y provincia'
 								size='large'
 								suffix={
-									<Tooltip title='Mi ubicación'>
+									<Tooltip title='Mi ubicación' placement='bottom'>
 										<AimOutlined
 											style={{ color: 'rgba(0,0,0,.45)' }}
 											onClick={getUbicacion}
 										/>
 									</Tooltip>
 								}
+								prefix={<SearchOutlined style={{ color: 'rgba(0,0,0,.45)', marginRight: 12 }} />}
 							/>
 						</Col>
 					</Row>
@@ -165,7 +167,7 @@ export const MapSearch = () => {
 							onClick={() => navigate('/mapa-formulario')}
 						>
 							{' '}
-							<EnvironmentFilled /> Nuevo{' '}
+							<EnvironmentFilled style={{ marginRight: 5 }} /> Nuevo{' '}
 						</button>
 					</div>
 					<CardsMap />

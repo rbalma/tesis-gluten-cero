@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import picture from '@/assets/images/map.jpg';
-// import { FaRegHeart, FaHeart } from 'react-icons/fa';
 import { HeartOutlined, HeartFilled } from '@ant-design/icons';
 
 import styles from './CardsMap.module.css';
@@ -23,7 +22,7 @@ export const CardsMap = () => {
 				<span className={styles.tagCard}>Restaurante</span>
 			</section>
 			<section className={styles.rightCard}>
-				<h3 className={styles.nameCard}>Patio Olmos Shopping</h3>
+				<p className={styles.nameCard}>Patio Olmos Shopping</p>
 				<span className={styles.infoCardMap}>Av. Vélez Sarsfield 361</span>
 				<span className={styles.infoCardMap}>(0351) 4315478</span>
 

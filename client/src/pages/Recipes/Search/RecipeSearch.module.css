@@ -42,6 +42,15 @@
 	margin: 20px 5%;
 }
 
+.scroller {
+	width: 100%;
+	overflow-x: auto;
+}
+
+.scroller::-webkit-scrollbar {
+	display: none;
+}
+
 @media (max-width: 992px) {
 	.banner .container {
 		padding-top: 58px;

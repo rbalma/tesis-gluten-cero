@@ -55,13 +55,13 @@
 	border: none;
 	outline: none;
 	cursor: pointer;
-	transition: color 0.2s ease-in-out;
+	background: color 500ms ease-in-out;
 	text-decoration: none;
 	font-family: Sora Light, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .newMarketButton:hover {
-	color: #000;
+	background: #4a6458;
 }
 
 .resultButtonMap {

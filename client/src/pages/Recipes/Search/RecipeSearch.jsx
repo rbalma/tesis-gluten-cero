@@ -1,18 +1,20 @@
-import { useState, useEffect, useRef } from 'react';
-import { Col, Row, Button, AutoComplete, Input } from 'antd';
+import { useState, useRef } from 'react';
+import { Col, Row, Button, AutoComplete, Input, Segmented } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import { Spinner } from '@/components/Loader/Spinner';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import debounce from 'underscore/modules/debounce.js';
+import { RecipeCard } from './Card/RecipeCard'; 
 import useCrud from '@/hooks/useCrud';
 
 import styles from './RecipeSearch.module.css';
-import { RecipeCard } from './Card/RecipeCard';
 
 export const RecipeSearch = () => {
-	const [resultData, setResultData] = useState([]);
-	const { 0: loading, 2: getRecipesData } = useCrud('/recipes');
 	const navigate = useNavigate();
+	const { 0: loading, 2: getRecipesData } = useCrud('/recipes');
+	const [resultData, setResultData] = useState([]);
+	const [value, setValue] = useState('Map');
+	
 
 	const onSearchRecipes = async (value) => {
 		if (!value) return;
@@ -72,6 +74,10 @@ export const RecipeSearch = () => {
 					<Spinner />
 				) : ( */}
 				{/* )} */}
+			</div>
+
+			<div className={styles.scroller}>
+			<Segmented options={['Map', 'Transit', 'Satellite', 'Dulces', 'Aperitivos', 'Postres', 'Helado', 'Crema', 'Naranja']} value={value} onChange={setValue} />
 			</div>
 
 			<RecipeCard />

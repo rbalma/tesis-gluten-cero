@@ -14,6 +14,11 @@ import { StepAddItem } from './steps/StepAddItem';
 
 const { Step } = Steps;
 
+/* Ejemplo de formulario por pasos: 
+	https://dribbble.com/shots/16001694-X-Team-Hire-Developer-Animatio
+	https://subsidios-energia.argentina.gob.ar/
+*/
+
 export const RecipeForm = () => {
 	//const { userProfile: user } = useAuthStore();
 	const [current, setCurrent] = useState(0);
