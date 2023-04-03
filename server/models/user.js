@@ -63,7 +63,7 @@ const UserSchema = new mongoose.Schema({
   ],
   resetPasswordToken: String,
   resetPasswordExpire: Date,
-});
+}, { timestamps: true });
 
 UserSchema.pre("save", async function (next) {
   //si la contraseña no fue actualizada
