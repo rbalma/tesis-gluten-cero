@@ -18,45 +18,53 @@ export const addUsers = async (req, res, next) => {
       email,
       password,
       role,
-      active
+      active,
     };
 
     const user = await User.create(newUser);
 
-    const confirmUrl = `${URL_FRONT}/confirmar/${user._id}`;
+    const confirmUrl = `${URL_FRONT}/ingreso?q=${user._id}`;
 
     const message = `
-      <h1 style='
-      text-align: center;
-      font-family: Arial, Helvetica;
-      '>Confirma tu Cuenta</h1>
-      <p style='font-family: Arial, Helvetica;'>Ya estás a un solo paso de convertirte en miembro de Gluten Cero. Solo debes presionar el siguiente botón: </p>
-      <a style='
-      display: block;
-      font-family: Arial, Helvetica;
-      padding: 1rem;
-      background-color: #00C897;
-      color: white;
-      text-transform: uppercase;
-      text-align: center;
-      text-decoration: none;
-      'href=${confirmUrl}>Confirmar cuenta</a>
-      <p style='font-family: Arial, Helvetica;'>Si no puedes acceder a este enlace, vísita : ${confirmUrl}</p>
+    <h1 style='
+    text-align: center;
+    font-family: Arial, Helvetica;
+    '>Confirma tu Cuenta</h1>
+    <p style='font-family: Arial, Helvetica; text-align: center;'>Ya estás a un solo paso de convertirte en miembro de Gluten Cero. Solo debes
+      presionar el siguiente botón: </p>
+    <a style='
+    display: flex;
+    font-family: Arial, Helvetica;
+    padding: 1rem;
+    background-color: #00C897;
+    color: white;
+    margin: 10px auto;
+    text-transform: uppercase;
+    text-align: center;
+    text-decoration: none;
+    width: max-content;
+    ' href=${confirmUrl}>Confirmar cuenta</a>
+    <p style='font-family: Arial, Helvetica; text-align: center;'>Si no puedes acceder a este enlace, vísita : ${confirmUrl}</p>
     `;
 
     try {
       const result = await sendEmail({
-        to: user.email,
-        subject: 'Activar cuenta de Gluten Cero',
+        to: "balmarodrigo45@gmail.com",
+        subject: "Activar cuenta de Gluten Cero",
         text: message,
       });
 
-      if(result) return res.status(201).json({ ok: true, data: user, message: 'Usuario creado y correo enviado' });
-      
+      if (result)
+        return res
+          .status(201)
+          .json({
+            ok: true,
+            data: "user",
+            message: "Usuario creado y correo enviado",
+          });
     } catch (error) {
-      return next(new ErrorResponse('El correo no pudo ser enviado', 500));
+      return next(new ErrorResponse("El correo no pudo ser enviado", 500));
     }
-
   } catch (error) {
     next(error);
   }
@@ -119,6 +127,8 @@ export const getUsers = async (req, res, next) => {
     "active",
     "avatar",
     "dicebear",
+    "createdAt",
+    "google"
   ];
 
   const options = {
