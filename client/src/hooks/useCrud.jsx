@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 import axios from '../utils/axiosInstance';
 
 const useCrud = endpoint => {
@@ -8,11 +8,12 @@ const useCrud = endpoint => {
 	const createData = async (dataForm, config = {}) => {
 		try {
 			setLoading(true);
-			const data = await axios.post(endpoint, dataForm, config);
-			return data.data;
+			const resp = await axios.post(endpoint, dataForm, config);
+			return resp.data;
 		} catch (error) {
 			console.log('Error: ', error.message);
-      error.response?.data && toast.success(error.response.data.message );
+			const messageError = error.response?.data.message;
+			toast.error(messageError || 'Error del servidor');
 		} finally {
 			setLoading(false);
 		}
@@ -20,12 +21,13 @@ const useCrud = endpoint => {
 
 	const readData = async (filters = {}) => {
 		try {
-			let params = { ...filters };
 			setLoading(true);
-			const data = await axios.get(endpoint, { params });
-			return data.data;
+			const resp = await axios.get(endpoint, { ...filters });
+			return resp.data;
 		} catch (error) {
 			console.log('Error', error.message);
+			const messageError = error.response?.data.message;
+			toast.error(messageError || 'Error del servidor');
 		} finally {
 			setLoading(false);
 		}
@@ -33,12 +35,13 @@ const useCrud = endpoint => {
 
 	const updateData = async (id, dataForm, config = {}) => {
 		try {
-			setLoading(false);
-			const { data } = await axios.put(`${endpoint}/${id}`, dataForm, config);
-			toast.success(data?.message || 'Editado con Ã©xito');
-			return data.data;
+			setLoading(true);
+			const resp = await axios.put(`${endpoint}/${id}`, dataForm, config);
+			return resp.data;
 		} catch (error) {
 			console.log('Error: ', error.message);
+			const messageError = error.response?.data.message;
+			toast.error(messageError || 'Error del servidor');
 		} finally {
 			setLoading(false);
 		}
@@ -46,14 +49,15 @@ const useCrud = endpoint => {
 
 	const deleteData = async (id, dataForm = {}) => {
 		try {
-			setLoading(false);
-			const { data } = await axios.delete(`${endpoint}/${id}`, {
+			setLoading(true);
+			const resp = await axios.delete(`${endpoint}/${id}`, {
 				data: dataForm,
 			});
-			toast.success(data?.message || 'Eliminado con Ã©xito');
-			return data.data;
+			return resp.data;
 		} catch (error) {
 			console.log('Error: ', error.message);
+			const messageError = error.response?.data.message;
+			toast.error(messageError || 'Error del servidor');
 		} finally {
 			setLoading(false);
 		}
