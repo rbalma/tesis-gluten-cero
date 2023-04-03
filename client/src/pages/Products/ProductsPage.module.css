@@ -1,1 +1,16 @@
+.searchForm {
+  background: #fbfbfb;
+  border: 1px solid #d9d9d9;
+  border-radius: 2px;
+}
 
+.containerProducts {
+  min-height: calc(100vh - 170px);
+  height: 100%;
+  padding: 20px 5% 40px;
+}
+
+.countProducts {
+  padding: 20px 0px 5px;
+  font-weight: 500;
+}
