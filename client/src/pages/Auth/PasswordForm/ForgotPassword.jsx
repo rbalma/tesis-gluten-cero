@@ -1,14 +1,18 @@
-import { Form, Input } from 'antd';
+import { Button, Form, Input } from 'antd';
 import { Link } from 'react-router-dom';
+import { toast } from 'sonner';
 import Logo from '@/assets/images/logo.png';
+import useCrud from '@/hooks/useCrud';
 
 import styles from './ForgotPassword.module.css';
 
 export const ForgotPassword = () => {
-	const onSubmit = async values => {
-		setIsLoading(true);
-		// await sleep(1000);
-		console.log({ values });
+
+	const [ isLoading, sendMail ] = useCrud('/forgot-password');
+
+	const onSubmit = async mail => {
+		const data = await sendMail(mail);
+		if (data?.ok) toast.success('Correo enviado')
 	};
 
 	return (
@@ -36,29 +40,33 @@ export const ForgotPassword = () => {
 						autoComplete='off'
 					>
 						<Form.Item
-							name='correo'
+							name='email'
 							rules={[
 								{
 									required: true,
 									message: 'El correo es obligatorio',
+								},
+								{
+									type: 'email',
+									message: 'Debe ingresar un correo válido',
 								},
 							]}
 						>
 							<Input placeholder='Correo' />
 						</Form.Item>
 
-						<button
-							// disabled={isLoading && true}
-							type='submit'
+						<Button
+							loading={isLoading}
+							htmlType='submit'
+							type='primary'
 							className={styles.btn}
 						>
-							{/* {isLoading ? "Ingresando..." : "Ingresar"} */}
 							Enviar correo
-						</button>
+						</Button>
 
 						<div className={styles.footer}>
 							<hr className={styles.dotted} />
-							<Link to={'/password-perdida'} className={styles.link}>
+							<Link to={'/registro'} className={styles.link}>
 								<span>Crear una cuenta</span>
 							</Link>
 							<span>

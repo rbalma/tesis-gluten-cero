@@ -1,15 +1,19 @@
 import { Form, Input } from 'antd';
 import { LockOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import Logo from '@/assets/images/logo.png';
+import useCrud from '@/hooks/useCrud';
 
 import styles from './ResetPassword.module.css';
+import { toast } from 'sonner';
 
 export const ResetPassword = () => {
+	const { resetToken } = useParams();
+	const { 0: isLoading, 3: resetPassword } = useCrud('/reset-password');
+
 	const onSubmit = async values => {
-		setIsLoading(true);
-		// await sleep(1000);
-		console.log({ values });
+		const data = await resetPassword(resetToken, values);
+		if (data?.ok) toast.success('Contraseña actualizada con éxito')
 	};
 
 	return (
@@ -75,7 +79,7 @@ export const ResetPassword = () => {
 						</Form.Item>
 
 						<button
-							// disabled={isLoading && true}
+							disabled={isLoading}
 							type='submit'
 							className={styles.btnLogin}
 						>

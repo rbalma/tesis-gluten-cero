@@ -1,15 +1,21 @@
+import { useState } from 'react';
 import { Form, Input, Row, Col } from 'antd';
 import { LockOutlined, UserOutlined, MailOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import Logo from '@/assets/images/logoGlutenCero.png';
+import useCrud from '@/hooks/useCrud';
+import { AccountConfirmMail } from './ui';
 
 import styles from './SignUp.module.css';
 
 export const SignUp = () => {
-	const onSubmit = async values => {
-		// setIsLoading(true);
-		// await sleep(1000);
-		console.log({ values });
+	const [formInstance] = Form.useForm();
+	const [isLoading, postUser] = useCrud('/users');
+	const [isModalOpen, setIsModalOpen] = useState(false);
+
+	const onSubmit = async (user) => {
+		const data = await postUser(user);
+		if (data?.ok) setIsModalOpen(true);
 	};
 
 	return (
@@ -28,10 +34,10 @@ export const SignUp = () => {
 
 					<Form
 						layout='vertical'
+						form={formInstance}
 						onFinish={onSubmit}
 						requiredMark={false}
 						autoComplete='off'
-						validateTrigger='onSubmit'
 					>
 						<Row gutter={24}>
 							<Col sm={12} xs={24}>
@@ -92,7 +98,6 @@ export const SignUp = () => {
 						<Form.Item
 							name='password'
 							hasFeedback
-							extra='Entre 8 y 30 caracteres. Como mínimo una letra minúscula, una letra mayúscula y un número.'
 							rules={[
 								{
 									required: true,
@@ -100,7 +105,7 @@ export const SignUp = () => {
 								},
 								{
 									pattern: /^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).{8,30}$/,
-									message: 'La contraseña no respeta los requisitos:',
+									message: 'Entre 8 y 30 caracteres. Como mínimo una letra minúscula, una letra mayúscula y un número.',
 								},
 							]}
 						>
@@ -117,7 +122,7 @@ export const SignUp = () => {
 							rules={[
 								{
 									required: true,
-									message: 'Debe confirmar tu contraseña',
+									message: 'Debe confirmar la contraseña',
 								},
 								({ getFieldValue }) => ({
 									validator(_, value) {
@@ -141,21 +146,16 @@ export const SignUp = () => {
 						</Form.Item>
 
 						<div className={styles.btnPosition}>
-							<button
-								// disabled={isLoading && true}
-								type='submit'
-								className={styles.btn}
-							>
-								{/* {isLoading ? "Ingresando..." : "Ingresar"} */}
-								Registrarse
+							<button disabled={isLoading} type='submit' className={styles.btn}>
+								{isLoading ? 'Registrando...' : 'Registrarse'}
 							</button>
 						</div>
 
 						<div className={styles.footer}>
 							<hr className={styles.dotted} />
-							<Link to={'/password-perdida'}>
-								<small>¿Olvidaste tu contraseña?</small>
-							</Link>
+							<small>
+								<Link to={'/password-perdida'}>¿Olvidaste tu contraseña?</Link>
+							</small>
 							<small>
 								¿Ya tienes una cuenta?{' '}
 								<Link to={'/ingreso'}>Ingresa ahora </Link>
@@ -164,6 +164,8 @@ export const SignUp = () => {
 					</Form>
 				</div>
 			</div>
+
+			<AccountConfirmMail open={isModalOpen} formInstance={formInstance} />
 		</div>
 	);
 };
