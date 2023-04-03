@@ -4,9 +4,9 @@ import ErrorResponse from '../utils/errorResponse.js';
 import __dirname from '../dirnamePath.js';
 
 //* Configuración Multer
-const pathUpload = __dirname + '../../docs';
+const pathUpload = __dirname + '/docs';
 const configuracionMulter = {
-  limits: { fileSize: 1 * 1024 * 1024 }, // 1 MB
+  limits: { fileSize: 2 * 1024 * 1024 }, // 2 MB
   storage: multer.diskStorage({
     destination: (req, file, cb) => {
       cb(null, pathUpload);
