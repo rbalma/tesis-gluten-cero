@@ -1,9 +1,3 @@
-@import '../../../../node_modules/react-toastify/dist/ReactToastify.css';
-
-/*
-https://stackoverflow.com/questions/60849448/how-can-i-change-the-styles-of-the-react-toastify-popup-message
-*/
-
 @font-face {
 	font-family: 'Montserrat';
 	src: url('./fonts/') format('embedded-opentype'),
@@ -15,8 +9,7 @@ https://stackoverflow.com/questions/60849448/how-can-i-change-the-styles-of-the-
 
 @font-face {
 	font-family: 'Montserrat';
-	src: url('./fonts/montserrat-v25-latin-500.eot?#iefix')
-			format('embedded-opentype'),
+	src: url('./fonts/montserrat-v25-latin-500.eot?#iefix') format('embedded-opentype'),
 		url('./fonts/montserrat-v25-latin-500.woff') format('woff'),
 		url('./fonts/montserrat-v25-latin-500.woff2') format('woff2');
 	font-weight: 500;
@@ -25,8 +18,7 @@ https://stackoverflow.com/questions/60849448/how-can-i-change-the-styles-of-the-
 
 @font-face {
 	font-family: 'Montserrat';
-	src: url('./fonts/montserrat-v25-latin-600.eot?#iefix')
-			format('embedded-opentype'),
+	src: url('./fonts/montserrat-v25-latin-600.eot?#iefix') format('embedded-opentype'),
 		url('./fonts/montserrat-v25-latin-600.woff') format('woff'),
 		url('./fonts/montserrat-v25-latin-600.woff2') format('woff2');
 	font-weight: 600;
@@ -35,8 +27,7 @@ https://stackoverflow.com/questions/60849448/how-can-i-change-the-styles-of-the-
 
 @font-face {
 	font-family: 'Montserrat';
-	src: url('./fonts/montserrat-v25-latin-700.eot?#iefix')
-			format('embedded-opentype'),
+	src: url('./fonts/montserrat-v25-latin-700.eot?#iefix') format('embedded-opentype'),
 		url('./fonts/montserrat-v25-latin-700.woff') format('woff'),
 		url('./fonts/montserrat-v25-latin-700.woff2') format('woff2');
 	font-weight: 700;
@@ -45,134 +36,9 @@ https://stackoverflow.com/questions/60849448/how-can-i-change-the-styles-of-the-
 
 @font-face {
 	font-family: 'Montserrat';
-	src: url('./fonts/montserrat-v25-latin-800.eot?#iefix')
-			format('embedded-opentype'),
+	src: url('./fonts/montserrat-v25-latin-800.eot?#iefix') format('embedded-opentype'),
 		url('./fonts/montserrat-v25-latin-800.woff') format('woff'),
 		url('./fonts/montserrat-v25-latin-800.woff2') format('woff2');
 	font-weight: 800;
 	font-style: normal;
 }
-
-.Toastify__toast-body {
-	font-family: 'NoirPro', 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande',
-		'Lucida Sans', Arial, sans-serif;
-	font-size: 16px;
-}
-
-/* 
-.notification-container {
-	position: fixed;
-	top: 0;
-	right: 0;
-	z-index: 999999;
-	width: 320px;
-	padding: 0 15px;
-	max-height: calc(100% - 30px);
-	overflow-x: hidden;
-	overflow-y: auto;
-}
-
-.notification,
-.notification-container {
-	-webkit-box-sizing: border-box;
-	box-sizing: border-box;
-}
-
-.notification {
-	padding: 15px 15px 15px 58px;
-	border-radius: 2px;
-	color: #fff;
-	background-color: #ccc;
-	-webkit-box-shadow: 0 0 12px #999;
-	box-shadow: 0 0 12px #999;
-	cursor: pointer;
-	font-size: 1em;
-	line-height: 1.2em;
-	position: relative;
-	opacity: 0.9;
-	margin-top: 15px;
-}
-
-.notification .title {
-	font-size: 1em;
-	line-height: 1.2em;
-	font-weight: 700;
-	margin: 0 0 5px;
-}
-
-.notification:focus,
-.notification:hover {
-	opacity: 1;
-}
-
-.notification-enter {
-	visibility: hidden;
-	-webkit-transform: translate3d(100%, 0, 0);
-	transform: translate3d(100%, 0, 0);
-}
-
-.notification-enter.notification-enter-active {
-	-webkit-transition: all 0.4s;
-	transition: all 0.4s;
-}
-
-.notification-enter.notification-enter-active,
-.notification-leave {
-	visibility: visible;
-	-webkit-transform: translateZ(0);
-	transform: translateZ(0);
-}
-
-.notification-leave.notification-leave-active {
-	visibility: hidden;
-	-webkit-transform: translate3d(100%, 0, 0);
-	transform: translate3d(100%, 0, 0);
-	-webkit-transition: all 0.4s;
-	transition: all 0.4s;
-}
-
-.notification:before {
-	position: absolute;
-	top: 50%;
-	left: 15px;
-	margin-top: -14px;
-	display: block;
-	font-family: Notification;
-	width: 28px;
-	height: 28px;
-	font-size: 28px;
-	text-align: center;
-	line-height: 28px;
-}
-
-.notification-info {
-	background-color: #2f96b4;
-}
-
-.notification-info:before {
-	content: '';
-}
-
-.notification-success {
-	background-color: #51a351;
-}
-
-.notification-success:before {
-	content: '';
-}
-
-.notification-warning {
-	background-color: #f89406;
-}
-
-.notification-warning:before {
-	content: '';
-}
-
-.notification-error {
-	background-color: #bd362f;
-}
-
-.notification-error:before {
-	content: '';
-} */
