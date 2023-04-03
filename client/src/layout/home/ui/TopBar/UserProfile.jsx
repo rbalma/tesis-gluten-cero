@@ -7,6 +7,7 @@ import {
 	LogoutOutlined,
 } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
+import { googleLogout } from '@react-oauth/google';
 import useAuthStore from '@/store/authStore';
 import { userGetAvatar } from '@/utils/fetchData';
 
@@ -16,7 +17,7 @@ export const UserProfile = () => {
 	const [avatar, setAvatar] = useState('');
 
 	useEffect(() => {
-		if (user?.avatar) {
+		if (user?.avatar && !user.userGoogle) {
 			return setAvatar(userGetAvatar(user.avatar));
 		}
 		if (user?.google) {
@@ -28,6 +29,7 @@ export const UserProfile = () => {
 
 	const logoutUser = () => {
 		removeUser();
+		googleLogout();
 		navigate('/');
 	};
 
