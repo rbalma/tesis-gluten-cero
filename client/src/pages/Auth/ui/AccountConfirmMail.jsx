@@ -24,7 +24,7 @@ export const AccountConfirmMail = ({ open, formInstance }) => {
 		>
 			<MailFilled style={{ fontSize: 48, margin: '20px auto' }} />
 			<p>
-				Enviamos un correo a <b>{formInstance.getFieldValue('correo')}</b>.
+				Enviamos un correo a <b>{formInstance.getFieldValue('email')}</b>.
 				Contiene un enlace en el que debe hacer clic para confirmar su cuenta.
 			</p>
 			<p>
