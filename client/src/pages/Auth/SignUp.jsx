@@ -42,7 +42,7 @@ export const SignUp = () => {
 						<Row gutter={24}>
 							<Col sm={12} xs={24}>
 								<Form.Item
-									name='nombre'
+									name='name'
 									rules={[
 										{
 											required: true,
@@ -59,7 +59,7 @@ export const SignUp = () => {
 
 							<Col sm={12} xs={24}>
 								<Form.Item
-									name='apellido'
+									name='lastname'
 									rules={[
 										{
 											required: true,
