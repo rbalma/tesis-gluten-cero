@@ -76,7 +76,7 @@ export const SignUp = () => {
 						</Row>
 
 						<Form.Item
-							name='correo'
+							name='email'
 							hasFeedback
 							rules={[
 								{
