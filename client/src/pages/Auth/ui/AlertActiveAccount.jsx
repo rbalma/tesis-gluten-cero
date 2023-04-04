@@ -1,19 +1,37 @@
 import { useEffect, useState } from 'react';
 import { Alert, Skeleton } from 'antd';
-import useData from '@/hooks/useData';
+
+import useCrud from '@/hooks/useCrud';
+import axiosInstance from '@/utils/axiosInstance';
 
 export const AlertActiveAccount = ({ userId }) => {
-	const [endpointActiveAccount, setEndpointActiveAccount] = useState();
-	const [errorActive, loadingActive, isActive] = useData(endpointActiveAccount);
+	const { 0: loadingActive, 3: putActive } = useCrud('/active-account');
+	const [isSuccess, setIsSuccess] = useState(false);
+	const [isError, setIsError] = useState(false);
+	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
-		if (userId) setEndpointActiveAccount(`/active-account/${userId}`);
-		//? Hace un toast headless
+
+		const handleActiveUser = async (userId) => {
+			try {
+				const { data } = await axiosInstance.put(`/active-account/${userId}`);
+				if (data.ok) setIsSuccess(true);
+			} catch (error) { 
+				setIsError(true)
+			} finally {
+				setIsLoading(false);
+			}
+		}
+
+		if (userId) handleActiveUser(userId);
+
 	}, []);
 
 	if (!userId) return null;
+	
+	if (isLoading) return  <Skeleton.Input active={isLoading} size='small' style={{ width: 400 }} />;
 
-	if (errorActive && !loadingActive)
+	if (!isLoading && isError)
 		return (
 			<Alert
 				message='Hubo un error al activar la cuenta'
@@ -25,9 +43,8 @@ export const AlertActiveAccount = ({ userId }) => {
 			/>
 		);
 
-	if (loadingActive) return  <Skeleton.Input active={loadingActive} size='small' style={{ width: 400 }} />;
 
-	if (!errorActive && !loadingActive && isActive)
+	if (!isLoading && isSuccess)
 		return (
 			<Alert
 				message='La cuenta fue activada'

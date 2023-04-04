@@ -85,7 +85,7 @@ export const activeUserAccount = async (req, res, next) => {
     await user.save();
 
     res.json({
-      data: true,
+      ok: true,
       message: "Cuenta activada",
     });
   } catch (error) {
