@@ -49,7 +49,7 @@ export const addUsers = async (req, res, next) => {
 
     try {
       const result = await sendEmail({
-        to: "balmarodrigo45@gmail.com",
+        to: email,
         subject: "Activar cuenta de Gluten Cero",
         text: message,
       });
