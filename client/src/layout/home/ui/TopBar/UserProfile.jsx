@@ -16,15 +16,16 @@ export const UserProfile = () => {
 	const navigate = useNavigate();
 	const [avatar, setAvatar] = useState('');
 
-	useEffect(() => {
-		if (user?.avatar && !user.userGoogle) {
-			return setAvatar(userGetAvatar(user.avatar));
-		}
-		if (user?.google) {
-			return setAvatar(user.avatar);
-		}
+	console.log({ user })
 
-		setAvatar(user?.dicebear);
+	useEffect(() => {
+		if (user.avatar && user.userGoogle) {
+			setAvatar(user.avatar);
+		} else if (user.avatar && !user.userGoogle) {
+			setAvatar(userGetAvatar(user.avatar));
+		} else {
+			setAvatar(user?.dicebear);
+		}
 	}, [user]);
 
 	const logoutUser = () => {
