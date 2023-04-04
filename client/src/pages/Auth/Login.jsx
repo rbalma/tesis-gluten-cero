@@ -35,7 +35,7 @@ export const Login = () => {
 		} catch (error) {
 			const messageError = `${error.response?.data.message}`;
 
-			if (messageError.includes('cuenta')) return setModalVisible(true);
+			if (messageError.includes('cuenta')) return toast.error(messageError);
 
 			formInstance.setFields([
 				{
@@ -133,13 +133,12 @@ export const Login = () => {
 						<div className={styles.footer}>
 							<hr className={styles.dotted} />
 							<button
-								// disabled={isLoading && true}
+								disabled={isLoadingGoogle}
 								type='button'
 								onClick={onGoogleLoginClick}
 								className={`${styles.btnLogin} ${styles.btnGoogle}`}
 							>
-								{/* {isLoading ? "Ingresando..." : "Ingresar"} */}
-								Ingresar con Google
+								{isLoadingGoogle ? "Ingresando..." : "Ingresar con Google"}
 							</button>
 							<small className='gx-mt-2'>
 								<Link to={'/password-perdida'}>¿Olvidaste tu contraseña?</Link>
