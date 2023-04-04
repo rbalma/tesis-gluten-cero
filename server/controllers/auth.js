@@ -127,7 +127,7 @@ export const googleSignIn = async (req, res, next) => {
 
     const token = user.getSignedJwtToken(payload);
 
-    res.json({ ok: true, user, token });
+    res.json({ ok: true, user: payload, token });
   } catch (error) {
     next(error);
   }
