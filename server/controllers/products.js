@@ -2,6 +2,7 @@ import XLSX from 'xlsx';
 import multer from 'multer';
 import ErrorResponse from '../utils/errorResponse.js';
 import __dirname from '../dirnamePath.js';
+//import Products from '../models/product.js';
 
 //* Configuración Multer
 const pathUpload = __dirname + '/docs';
@@ -34,14 +35,16 @@ const upload = multer(configuracionMulter).single('file');
 // @desc Obtener el listado de productos aprobados por ANMAT
 // @route /api/products-anmat
 // @access Public
-export const getProducts = (req, res, error) => {
+export const getProducts = (req, res, next) => {
   try {
     const workbook = XLSX.readFile('./docs/listado-anmat.xlsx');
     //const workbookSheets = workbook.SheetNames;
-    const dataExcel = XLSX.utils.sheet_to_json(
+    const data = XLSX.utils.sheet_to_json(
       workbook.Sheets['Resumen Productos']
     );
-    res.json({ ok: true, data: dataExcel, count: dataExcel.length });
+    //const data = dataExcel.filter( d => d.tipoProducto.includes('CEREAL'));
+    data.length = 30;
+    res.json({ ok: true, data: data, count: data.length });
   } catch (error) {
     next(error);
   }
@@ -52,7 +55,7 @@ export const getProducts = (req, res, error) => {
 // @route /api/products-anmat
 // @access Private
 export const addFileExcel = (req, res, next) => {
-  upload(req, res, function (error) {
+  upload(req, res, async (error) => {
     if (error) {
       if (error instanceof multer.MulterError) {
         if (error.code === 'LIMIT_FILE_SIZE') {
@@ -68,7 +71,23 @@ export const addFileExcel = (req, res, next) => {
         return next(new ErrorResponse(error.message, 404));
       }
     }
-
+    
     res.json({ ok: true, message: 'Archivo Excel guardado' });
+    // try {
+    //   const workbook = XLSX.readFile('./docs/listado-anmat.xlsx');
+      
+    //   //const workbookSheets = workbook.SheetNames;
+    //   const dataExcel = XLSX.utils.sheet_to_json(
+    //     workbook.Sheets['Resumen Productos']
+    //   );
+
+    //   await Products.deleteMany({});
+
+    //   await Products.insertMany(dataExcel);
+
+    // } catch (error) {
+      
+    // }
+
   });
 };
