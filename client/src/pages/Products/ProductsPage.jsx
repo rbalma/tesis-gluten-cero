@@ -24,20 +24,20 @@ const columns = [
 	},
 	{
 		title: 'Denominación Venta',
-		dataIndex: 'denominacionventa',
-		key: 'denominacionventa',
+		dataIndex: 'denominacionVenta',
+		key: 'denominacionVenta',
 		align: 'justify',
 	},
 	{
 		title: 'Tipo Producto',
-		dataIndex: 'TipoProducto',
-		key: 'TipoProducto',
+		dataIndex: 'tipoProducto',
+		key: 'tipoProducto',
 		align: 'center',
 	},
 	{
 		title: 'Estado',
-		dataIndex: 'Estado',
-		key: 'Estado',
+		dataIndex: 'estado',
+		key: 'estado',
 		align: 'center',
 	},
 ];
