@@ -1,30 +1,21 @@
 import { useEffect, useState } from 'react';
 import { Alert, Skeleton } from 'antd';
-
-import useCrud from '@/hooks/useCrud';
 import axiosInstance from '@/utils/axiosInstance';
+import useCrud from '@/hooks/useCrud';
 
 export const AlertActiveAccount = ({ userId }) => {
-	const { 0: loadingActive, 3: putActive } = useCrud('/active-account');
+	const { 0: isLoading, 3: activeUser } = useCrud('/active-account');
 	const [isSuccess, setIsSuccess] = useState(false);
-	const [isError, setIsError] = useState(false);
-	const [isLoading, setIsLoading] = useState(true);
+	const [isError, setIsError] = useState('');
 
 	useEffect(() => {
-
 		const handleActiveUser = async (userId) => {
-			try {
-				const { data } = await axiosInstance.put(`/active-account/${userId}`);
-				if (data.ok) setIsSuccess(true);
-			} catch (error) { 
-				setIsError(true)
-			} finally {
-				setIsLoading(false);
-			}
-		}
+			const data = await activeUser(userId);
+			if (data?.ok) setIsSuccess(true);
+			if (data?.error) setIsError(data.error);
+		};
 
 		if (userId) handleActiveUser(userId);
-
 	}, []);
 
 	if (!userId) return null;
@@ -35,7 +26,7 @@ export const AlertActiveAccount = ({ userId }) => {
 		return (
 			<Alert
 				message='Hubo un error al activar la cuenta'
-				//description='El enlace no es válido o está vencido'
+				description={isError}
 				type='error'
 				showIcon
 				closable

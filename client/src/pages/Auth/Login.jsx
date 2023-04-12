@@ -18,41 +18,37 @@ export const Login = () => {
 	const { search } = useLocation();
 	const { addUser } = useAuthStore();
 	const [formInstance] = Form.useForm();
-	const [isLoading, setIsLoading] = useState(false);
+	const [ isLoading, postLogin ] = useCrud('/login');
 	const [ isLoadingGoogle, postGoogleLogin ] = useCrud('/login-google');
 	
 	const userId = useMemo(() => search.split('=')[1], []);
 
 	const onSubmit = async (values) => {
-		try {
-			setIsLoading(true);
-			const { data } = await axiosInstance.post( '/login', { ...values } );
-			if (data.ok) {
-				addUser(data.user, data.token);
-				//toast.success('Bienvenido a Gluten Cero');
-				navigate('/');
-			}
-		} catch (error) {
-			const messageError = `${error.response?.data.message}`;
+		const data = await postLogin({ ...values });
+		if (data?.ok) {
+			addUser(data.user, data.token);
+			//toast.success('Bienvenido a Gluten Cero');
+			navigate('/');
+		}
 
-			if (messageError.includes('cuenta')) return toast.error(messageError);
+		if (data?.error) {
+			const messageError = data.error;
+			if (!messageError.includes('correo') && !messageError.includes('contraseña')) return toast.error(messageError);
 
 			formInstance.setFields([
 				{
 					name: 'email',
 					errors: messageError.includes('correo')
-						? [`${error.response?.data.message}`]
+						? [messageError]
 						: '',
 				},
 				{
 					name: 'password',
 					errors: messageError.includes('contraseña')
-						? [`${error.response?.data.message}`]
+						? [messageError]
 						: '',
 				},
 			]);
-		} finally {
-			setIsLoading(false);
 		}
 	};
 
