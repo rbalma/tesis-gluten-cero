@@ -41,10 +41,6 @@ const routesPages = [
 		element: RecipeSearch,
 	},
 	{
-		path: '/receta-formulario',
-		element: RecipeForm,
-	},
-	{
 		path: '/receta/:recetaId',
 		element: RecipeDetail,
 	},
@@ -53,16 +49,8 @@ const routesPages = [
 		element: MapSearch,
 	},
 	{
-		path: '/mapa-formulario',
-		element: MapForm,
-	},
-	{
 		path: '/foro',
 		element: ThreadsList,
-	},
-	{
-		path: '/foro-formulario',
-		element: ThreadForm,
 	},
 	{
 		path: '/foro/:hiloId',
@@ -75,6 +63,21 @@ const routesPages = [
 	{
 		path: '/perfil/:id',
 		element: ProfilePage
+	},
+];
+
+const routesPrivatePages = [
+	{
+		path: '/receta-formulario',
+		element: RecipeForm,
+	},
+	{
+		path: '/mapa-formulario',
+		element: MapForm,
+	},
+	{
+		path: '/foro-formulario',
+		element: ThreadForm,
 	},
 	{
 		path: '/perfil/:id/panel/*',
@@ -140,4 +143,4 @@ const routesProfile = [
 	},
 ];
 
-export { routesAuth, routesPages, routesAdmin, routesProfile };
+export { routesAuth, routesPages, routesPrivatePages, routesAdmin, routesProfile };

@@ -1,8 +1,8 @@
 import { Navigate } from 'react-router-dom';
 import useAuthStore from '@/store/authStore';
 
-export const PrivateRoute = ({ children }) => {
+export const PublicRoute = ({ children }) => {
 	const { userProfile } = useAuthStore();
 
-	return userProfile?.id ? children : <Navigate to='/ingreso' />;
+	return userProfile?.id ? <Navigate to='/' /> : children;
 };
