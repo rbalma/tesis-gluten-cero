@@ -1,0 +1,204 @@
+.aportes-container {
+    min-height: calc(100vh - 170px);
+    height: 100%;
+    background: url(/src/assets/images/fondoAportes.png) top;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.aportes-container-background {
+    min-height: calc(100vh - 170px);
+    height: 100%;
+    background-color: rgba(246, 216, 107, 0.50);
+}
+
+.aportes-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 4rem;
+    padding: 1rem;
+    padding-top: 3rem;
+    background-color: rgba(0, 255, 0, .35);
+    backdrop-filter: blur(3px);
+    font-size: 2rem;
+    color: #444;
+}
+
+.aportes-body {
+    margin-top: 1rem;
+    padding: 1rem;
+}
+
+.aportes-body_info-title {
+    font-size: 1.7rem;
+    color: #222;
+}
+
+.aportes-body_info-body {
+    font-size: 1.1rem;
+    color: #111;
+}
+
+.aportes-body_btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5rem;
+}
+
+.btn-donar-container {
+    position: relative;
+}
+
+@media (max-width: 425px) {
+    .aportes-title {
+        font-size: 1.8rem;
+    }
+
+    .aportes-body_info-title {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 380px) {
+    .aportes-title {
+        font-size: 1.6rem;
+    }
+}
+
+@media (max-width: 340px) {
+    .aportes-title {
+        font-size: 1.4rem;
+    }
+}
+
+.aportes-body_btn img {
+    position: absolute;
+    right: -10rem;
+    top: 3rem;
+}
+
+.btn-donar {
+    font-size: 2.2rem;
+    font-weight: bolder;
+    padding: .8rem 2.5rem;
+    border-radius: 1rem;
+    cursor: pointer;
+}
+
+.btn-donar:hover {
+    background-color: #ddd;
+}
+
+/*  MODAL  */
+
+.modal-opciones-pago-container {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 170px);
+    width: 100%;
+    background-color: rgba(0,0,0,.5);
+    z-index: 1;
+}
+
+.modal-opciones-pago {
+    height: 15rem;
+    width: 25rem;
+    padding: 1rem;
+    padding-top: .5rem;
+    border-radius: 1rem;
+    background-color: #ddd;
+}
+
+.modal-opciones-pago_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 3rem;
+    border-bottom: 1px solid #ccc;
+}
+
+.modal-opciones-pago_header-title {
+    font-size: 1.4rem;
+}
+
+.modal-opciones-pago_header-close {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 2rem;
+    width: 2rem;
+    font-size: 1.3rem;
+    cursor: pointer;
+    border-radius: .5rem;
+}
+
+.modal-opciones-pago_header-close:hover {
+    background-color: #ccc;
+}
+
+.modal-opciones-pago_body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 10rem;
+    gap: 1.5rem;
+}
+
+.modal-opciones-pago_body-input-container {
+    display: flex;
+    height: 2.3rem;
+    width: 15rem;
+    border-radius: .5rem;
+    background-color: #f5f5f5;
+}
+
+.modal-opciones-pago_body-input-container p {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 2rem;
+}
+
+.modal-opciones-pago_body-input {
+    outline: none;
+    border: none;
+    height: 2.3rem;
+    width: 13rem;
+    background-color: #f5f5f5;
+    border-radius: .5rem;
+    /* padding-left: .5rem; */
+}
+
+.modal-opciones-pago_body-btn {
+    height: 3.5rem;
+    /* width: 8.5rem; */
+    width: 15rem;
+    border-radius: .5rem;
+    font-size: 1rem;
+    color: #0d58ba;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.modal-opciones-pago_body-btn:hover {
+    background-color: #0d58ba;
+    color: #fff;
+}
+
+.modal-opciones-pago_body-btn-disabled {
+    color: #777;
+}
+
+.modal-opciones-pago_body-btn-disabled:hover {
+    background-color: rgba(239, 239, 239, 0.3);
+    color: #777;
+    cursor: not-allowed;
+}
