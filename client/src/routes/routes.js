@@ -11,6 +11,7 @@ import { ProductsPage } from '@/pages/Products/ProductsPage';
 import { RecipeDetail, RecipeForm, RecipeSearch } from '@/pages/Recipes';
 import { MapForm, MapSearch } from '@/pages/Map';
 import { PostsList, ThreadForm, ThreadsList } from '@/pages/Forum';
+import Aportes from '@/pages/Aportes/Aportes';
 
 const routesAuth = [
 	{
@@ -59,6 +60,14 @@ const routesPages = [
 	{
 		path: '/foro',
 		element: ThreadsList,
+	},
+	{
+		path: '/aporte',
+		element: Aportes
+	},
+	{
+		path: '/aporte/:status',
+		element: Aportes
 	},
 	{
 		path: '/foro-formulario',
