@@ -12,6 +12,7 @@ import { RecipeDetail, RecipeForm, RecipeSearch } from '@/pages/Recipes';
 import { MapForm, MapSearch } from '@/pages/Map';
 import { PostsList, ThreadForm, ThreadsList } from '@/pages/Forum';
 import Aportes from '@/pages/Aportes/Aportes';
+import { ThreadEditForm } from '@/pages/Forum/Form/ThreadEditForm';
 
 const routesAuth = [
 	{
@@ -62,20 +63,24 @@ const routesPages = [
 		element: ThreadsList,
 	},
 	{
+		path: '/foro-formulario',
+		element: ThreadForm,
+	},
+	{
+		path: '/foro-formulario-edit/:hiloId',
+		element: ThreadEditForm,
+	},
+	{
+		path: '/foro/:hiloId',
+		element: PostsList,
+	},
+	{
 		path: '/aporte',
 		element: Aportes
 	},
 	{
 		path: '/aporte/:status',
 		element: Aportes
-	},
-	{
-		path: '/foro-formulario',
-		element: ThreadForm,
-	},
-	{
-		path: '/foro/:hiloId',
-		element: PostsList,
 	},
 	{
 		path: '/productos',

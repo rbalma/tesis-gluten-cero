@@ -10,10 +10,16 @@ const ThreadSchema = new Schema({
     trim: true,
     unique: true,
   },
+  description: {
+    type: String,
+    required: [true, 'Debe ingresar una descripcion'],
+    trim: true,
+    unique: true,
+  },
   status: {
     type: String,
     enum: {
-      values: ["open", "closed", "locked", "solved"],
+      values: ["open", "closed"],
       message: "{VALUE} no es un estado válido",
     },
     default: "open",
@@ -34,6 +40,10 @@ const ThreadSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  likes: [{
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  }],
 });
 
 ThreadSchema.plugin(mongoosePaginate);

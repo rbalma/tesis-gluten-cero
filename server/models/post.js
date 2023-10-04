@@ -17,25 +17,25 @@ const postSchema = new Schema({
         type: Date,
         default: Date.now
     },
-    thread: {
-        type: Schema.Types.ObjectId,
-        ref: 'Thread'
-    },
     isUpdated: {
         type: Boolean,
         default: false,
-      },
+    },
     postMother: {
         type: Schema.Types.ObjectId,
         ref: 'Post'
     },
+    thread: {
+        type: Schema.Types.ObjectId,
+        ref: 'Thread'
+    }
 });
 
 
 postSchema.post("save", async function (doc) {
     await Thread.findByIdAndUpdate(doc.thread, { $push: { posts: doc._id } });
-  });
-
+});
+ 
 postSchema.post("remove", async function (doc) {
     await Thread.findByIdAndUpdate(this.thread, { $pull: { posts: doc._id } });
 });
