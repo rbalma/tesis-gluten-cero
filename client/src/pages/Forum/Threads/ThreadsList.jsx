@@ -28,15 +28,26 @@ export const ThreadsList = () => {
 	const orderThreads = (filter) => {
 		if(filter === 'recientes') {
 			const threadsCopy = [...staticThreads];
+
+			threadsCopy.sort((threadA, threadB) => {
+				const dateA = new Date(threadA.date);
+				const dateB = new Date(threadB.date);
+	
+				return dateB - dateA;
+			});
+
 			setThreads(threadsCopy);
 		} else {
 			const threadsCopy = [...staticThreads];
 
 			threadsCopy.sort((threadA, threadB) => {
-				const postCountA = threadA.posts.length;
-				const postCountB = threadB.posts.length;
-	
-				return postCountB - postCountA;
+				if(threadA.likes.length > threadB.likes.length) {
+					return -1;
+				} else if(threadA.likes.length < threadB.likes.length) {
+					return 1;
+				} else {
+					return threadB.posts.length - threadA.posts.length;
+				};
 			});
 	
 			setThreads(threadsCopy);
@@ -49,8 +60,16 @@ export const ThreadsList = () => {
 				method: 'GET',
 			});
 			const data = await res.json();
-			setThreads(data.data);
-			setStaticThreads(data.data);
+
+			const threads = data.data.sort((threadA, threadB) => {
+				const dateA = new Date(threadA.date);
+				const dateB = new Date(threadB.date);
+	
+				return dateB - dateA;
+			});
+
+			setThreads(threads);
+			setStaticThreads(threads);
 		}
 		fetchData();
 	}, []);

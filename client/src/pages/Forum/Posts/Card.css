@@ -23,9 +23,30 @@
 }
 
 .card-user {
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.card-user::after {
+    display: none;
+    position: absolute;
+    top: -1.5rem;
+    left: 0;
+    content: attr(data-user);
+    border-radius: .5rem;
+    padding: .5rem;
+    min-width: 10rem;
+    text-align: center;
+    background-color: #222;
+    color: #ddd;
+}
+
+.card-user:hover:after{
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .card-content {

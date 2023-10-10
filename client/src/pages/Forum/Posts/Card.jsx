@@ -18,7 +18,7 @@ export default function Card(props) {
 
     return(
         <div className={userProfile === null ? 'card-container' : 'card-container card-container-active'} onClick={userProfile === null ? ()=>{}:  toDetails}>
-            <div className='card-user'>
+            <div className='card-user' data-user={`${thread.user.name} ${thread.user.lastname}`}>
                 <AvatarIcon user={thread.user}/>
             </div>
             <div className="card-content">
