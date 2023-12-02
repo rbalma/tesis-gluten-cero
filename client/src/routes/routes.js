@@ -2,7 +2,8 @@ import HomePage from '@/pages/Home/HomePage';
 import { Login, SignUp, ForgotPassword, ResetPassword } from '@/pages/Auth';
 
 import {AdminRecipe, AdminRecipeCategories, AdminMap, AdminNotice, AdminProducts, AdminStatistics, AdminForo, AdminUser } from '@/pages/Admin';
-
+import { FormNotice } from '@/pages/Admin/Notices/FormNotice';
+import { FormEditNotice } from '@/pages/Admin/Notices/FormEditNotice';
 import ProfilePanel from '@/pages/Profile/Panel/ProfilePanel';
 import { ProfileMap, ProfileTheards, ProfileRecipes, ProfileSetting } from '@/pages/Profile/Panel/items';
 import NotFoundScreen from '@/pages/NotFound/NotFoundScreen';
@@ -116,6 +117,14 @@ const routesAdmin = [
 	{
 		path: 'noticias',
 		element: AdminNotice,
+	},
+	{
+		path: 'noticias/agregar',
+		element: FormNotice,
+	},
+	{
+		path: 'noticias/editar/:noticeId',
+		element: FormEditNotice,
 	},
 	{
 		path: 'mapa',

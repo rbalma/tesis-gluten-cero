@@ -13,14 +13,24 @@ const noticesSchema = new Schema ({
         type: Date,
         default: Date.now
     },
-    description : {
+    link : {
         type: String,
-        trim: true,
-        required: [true, 'Debe ingresar una descripción'],
+        required: [true, 'Debe ingresar un link'],
     },
-    image: {
-        type: String,
-        required: [true, 'Debe ingresar una imagen'],
+    // avatar: {
+    //     type: Buffer,
+    //     contentType: String,
+    //     required: [true, 'Debe ingresar una imagen'],
+    // }
+    avatar: {
+        data: {
+            type: Buffer,
+            required: [true, 'Debe ingresar una imagen'],
+        },
+        contentType: {
+            type: String,
+            required: [true, 'Debe ingresar una imagen'],
+        }
     }
 });
 
