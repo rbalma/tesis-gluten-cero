@@ -10,7 +10,8 @@ export const FormNotice = () => {
  
     const [formData, setFormData] = useState({
         title: '',
-        link: ''
+        link: '',
+        source: ''
     });
 
     const [imagen, setImagen] = useState(null);
@@ -33,24 +34,17 @@ export const FormNotice = () => {
         const formDataSubmit = new FormData();
         formDataSubmit.append('title', formData.title);
         formDataSubmit.append('link', formData.link);
+        formDataSubmit.append('source', formData.source);
         formDataSubmit.append('avatar', imagen);
 
         const response = await fetch('http://localhost:5000/api/notices', {
             method: 'POST',
             headers: {
-                // 'Accept': 'application/json',
-                // 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
             body: formDataSubmit
-            // body: JSON.stringify({
-            //     title: formData.title,
-            //     link: formData.link,
-            //     image: imagen,
-            // }),
         });
-        console.log('Response')
-        console.log(response)
+        
         const data = await response.json();
         console.log(data)
 
@@ -79,6 +73,16 @@ export const FormNotice = () => {
                             type='file'
                             required
                             onChange={handleImageChange}
+                        />
+                    </div>
+                    <div className='notice-input'>
+                        <label>Fuente</label>
+                        <input 
+                            name='source' 
+                            type='text'
+                            value={formData.source}
+                            required
+                            onChange={handleChange}
                         />
                     </div>
                     <div className='notice-input'>

@@ -1,0 +1,140 @@
+.swiper {
+  width: 100%;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.swiper-slide {
+  background-position: center;
+  background-size: cover;
+  width: 400px;
+  background-color: beige;
+  box-shadow: 0 15px 50px rgba(0,0,0,0.2);
+  filter: blur(4px) grayscale(50%);
+  border-radius: .7rem;
+  overflow: hidden;
+}
+
+@media (max-width: 425px) {
+  .swiper-slide {
+    width: 300px;
+  }
+}
+
+.swiper-slide-active {
+  filter: blur(0)
+}
+
+.swiper-container-3d .swiper-slide-shadow-left,
+.swiper-container-3d .swiper-slide-shadow-right {
+  background-image: none;
+}
+
+.card-notice {
+  position: relative;
+  display: flex !important;
+  flex-direction: column;
+  justify-content: space-between !important;
+  height: 22rem;
+  width: 100%;
+  border-radius: .5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-notice-actions {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  top: -8rem;
+  min-width: 13rem;
+  padding: 1.5rem;
+  border-radius: .5rem;
+  z-index: 10;
+  background-color: rgba(255,255,255,0.55);
+  backdrop-filter: blur(5px);
+  transition: .4s all;
+}
+
+.card-notice-actions__source {
+  color: #000;
+  font-size: 1.2rem;
+}
+
+.card-notice-actions__btn {
+  width: 100%;
+  font-size: 1rem;
+  padding: .5rem 0;
+  border-radius: .5rem;
+  border: none;
+  cursor: pointer;
+  background-color: #106eea;
+  color: #fff;
+  transition: .2s all;
+}
+
+.card-notice-actions__btn:hover {
+  background-color: #4e8bdb;
+}
+
+.card-notice:hover > .card-notice-actions {
+  top: 33.5%;
+}
+
+.card-notice:hover > .card-notice-image {
+  filter: brightness(0.2);
+}
+
+.card-notice-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  transition: .4s all;
+}
+
+.card-notice-header, .card-notice-footer {
+  height: 4rem;
+  width: 100%;
+  z-index: 10;
+}
+
+.card-notice-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 .7rem;
+  background-color: rgba(255,255,255,.7);
+  backdrop-filter: blur(5px);
+}
+
+.card-notice-header__title {
+  text-align: center;
+  font-size: 1.3rem;
+  color: black;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.card-notice-footer {
+  height: 3rem;
+  position: relative;
+  background-color: rgba(255,255,255,.7);
+  backdrop-filter: blur(5px);
+}
+
+.card-notice-footer__date {
+  position: absolute;
+  bottom: 20%;
+  right: 5%;
+  text-align: center;
+  font-size: 1rem;
+  color: black;
+}

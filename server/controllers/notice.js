@@ -8,12 +8,13 @@ import { fsUnlink } from "../utils/fsUnlink.js";
 // @access Private
 export const addNotice = async (req, res, next) => {
   try {
-    const { title, link } = req.body;
+    const { title, link, source } = req.body;
     const imageBuffer = req.file.buffer;
     // Guardar la noticia en MongoDB junto con el buffer de la imagen
     const newNotice = new Notice({
       title,
       link,
+      source,
       avatar: {
         data: imageBuffer,
         contentType: req.file.mimetype,

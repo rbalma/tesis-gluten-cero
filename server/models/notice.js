@@ -17,11 +17,10 @@ const noticesSchema = new Schema ({
         type: String,
         required: [true, 'Debe ingresar un link'],
     },
-    // avatar: {
-    //     type: Buffer,
-    //     contentType: String,
-    //     required: [true, 'Debe ingresar una imagen'],
-    // }
+    source : {
+        type: String,
+        required: [true, 'Debe ingresar una fuente'],
+    },
     avatar: {
         data: {
             type: Buffer,

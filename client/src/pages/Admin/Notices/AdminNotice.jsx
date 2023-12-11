@@ -1,26 +1,18 @@
-import React from 'react'
-import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom';
 import { Row, Col, Dropdown, Button } from 'antd';
 import {
 	PlusSquareOutlined,
 	MoreOutlined,
 } from '@ant-design/icons';
 import { DataTable } from '@/components/AdminDashboard';
-/* import { userGetAvatar } from '@/utils/fetchData'; */
 import useData from '@/hooks/useData';
 import { FiltersAdminNotices } from './FiltersAdminNotices';
 import { format } from 'date-fns';
 import ESLocale from 'date-fns/locale/es';
 import './AdminNotice.css';
 
-// const items = [
-// 	{ label: 'Editar', key: 'editar', id: 'id' },
-// 	{ label: 'Eliminar', key: 'eliminar' },
-// ];
-
 const pageLimit = { page: 1, limit: 20 };
-// https://example.admin.refine.dev/orders?pageSize=10&current=1
 
 export const AdminNotice = () => {
 
@@ -29,7 +21,6 @@ export const AdminNotice = () => {
 	const navigate = useNavigate();
 
   	const [filters, setFilters] = useState({ ...pageLimit, active: true });
-	// const [tab, setTab] = useState('1');
 
 	const {
 		1: loadingData,
@@ -41,37 +32,11 @@ export const AdminNotice = () => {
 		9: countData,
 	} = useData('/notices', filters);
 
-	const onClick = async ({ item, key }) => {
-		if (key === 'editar') {
-			navigate(`editar/${item.props.id}`)
-		} else {
-			// Delete Notice
-			try {
-				await fetch(`http://localhost:5000/api/notices/${item.props.id}`, {
-					method: 'DELETE',
-					headers: {
-						'Accept': 'application/json',
-						'Content-Type': 'application/json',
-						'Authorization': `Bearer ${token}`
-					},
-				});
-			} catch(error) {
-				console.log(error);
-			};
-		}
-	};
-
-	const columns = [
+	const dataTableColumns = [
 		{
 			title: 'Titulo',
 			dataIndex: 'title',
 			key: 'title',
-      		width: 130,
-		},
-		{
-			title: 'Link',
-			dataIndex: 'link',
-			key: 'link',
       		width: 130,
 		},
 		{
@@ -80,6 +45,22 @@ export const AdminNotice = () => {
 			key: 'date',
 			render: (v) => {
 				if (v) return	format(new Date(v), 'PPPp', { locale: ESLocale });
+				return ''
+			},
+		},
+		{
+			title: 'Fuente',
+			dataIndex: 'source',
+			key: 'source',
+      		width: 130,
+		},
+		{
+			title: 'Link',
+			dataIndex: 'link',
+			key: 'link',
+      		width: 130,
+			render: (link) => {
+				if (link) return <a href={link} rel='noreferrer' target="_blank">{link}</a>
 				return ''
 			},
 		},
@@ -102,8 +83,6 @@ export const AdminNotice = () => {
 					src={imageUrl}
 					alt='Imagen noticia'
 				/>;
-				// return <h1>hola</h1>
-
 			},
 		},
 		{
@@ -135,23 +114,126 @@ export const AdminNotice = () => {
 		},
 	];
 
-	// const handleChangeTab = (newTab) => {
-	// 	setTab(newTab);
-	// 	if (newTab === '1') return setFilters({ ...pageLimit, active: true });
-	// 	if (newTab === '2') return setFilters({ ...pageLimit, active: false });
-	// };
+	const [noticesCopy, setNoticesCopy] = useState(data)
 
-	const props = {
+	const [props, setProps] = useState({
 		count: countData,
-		columns: columns,
+		columns: dataTableColumns,
 		loading: loadingData,
 		data: data,
 		fetch: setFilters,
 		showHeader: true,
 		perPage: filters.limit,
+	})
+
+	const applyFilters = (title, dates, orderBy) => {
+		console.log('prueba')
+		// let filteredNotices = [...data]; 
+		let filteredNotices = [...noticesCopy]; 
+
+		// Filtra por el titulo
+		if(title.length > 0) {
+			const filteredNoticesByTitle = filteredNotices?.filter((notice) =>
+				notice.title.toLowerCase().includes(title.toLowerCase())
+			);
+			filteredNotices = filteredNoticesByTitle;
+		};
+		
+		// Filtra por la fecha
+		if(dates[0].length > 0 && dates[1].length) {
+			const desde = new Date(dates[0]);
+			const hasta = new Date(dates[1]);
+
+			const filteredNoticesByDate = filteredNotices.filter((notice) => {
+				const fechaNoticia = new Date(notice.date);
+				return fechaNoticia >= desde && fechaNoticia <= hasta;
+			});
+			filteredNotices = filteredNoticesByDate;
+		};
+
+		// Ordena por fecha recientes
+		if(orderBy === 'recientes') {
+			const filteredNoticesCopy = filteredNotices;
+			filteredNoticesCopy.sort((noticeA, noticeB) => {
+				const dateA = new Date(noticeA.date);
+				const dateB = new Date(noticeB.date);
+
+				return dateB - dateA;
+			});
+		};
+
+		// Ordena por fecha antiguos
+		if(orderBy === 'antiguos') {
+			const filteredNoticesCopy = filteredNotices;
+			filteredNoticesCopy.sort((noticeA, noticeB) => {
+				const dateA = new Date(noticeA.date);
+				const dateB = new Date(noticeB.date);
+
+				return dateA - dateB;
+			});
+			filteredNotices = filteredNoticesCopy;
+		};
+
+		setProps({
+			count: countData,
+			columns: dataTableColumns,
+			loading: loadingData,
+			data: filteredNotices,
+			fetch: setFilters,
+			showHeader: true,
+			perPage: filters.limit,
+		})
 	};
 
-	
+	useEffect(() => {
+		if(!loadingData) {
+			setProps({
+				...props,
+				count: countData,
+				columns: dataTableColumns,
+				loading: loadingData,
+				data: data,
+			})
+			setNoticesCopy(data);
+		};
+	}, [data]);
+
+	const removeNotice = (id) => {
+		setProps(prevProps => {
+			const updatedNotices = prevProps.data.filter(notice => notice._id !== id);
+			return {
+			...prevProps,
+			data: updatedNotices,
+			};
+		});
+
+		setNoticesCopy(prevNoticesCopy => {
+			const updatedNotices = prevNoticesCopy.filter(notice => notice._id !== id);
+			return updatedNotices;
+		});
+	};
+
+	const onClick = async ({ item, key }) => {
+		if (key === 'editar') {
+			navigate(`editar/${item.props.id}`)
+		} else {
+			// Delete Notice
+			try {
+				await fetch(`http://localhost:5000/api/notices/${item.props.id}`, {
+					method: 'DELETE',
+					headers: {
+						'Accept': 'application/json',
+						'Content-Type': 'application/json',
+						'Authorization': `Bearer ${token}`
+					},
+				});
+				
+				removeNotice(item.props.id);
+			} catch(error) {
+				console.log(error);
+			};
+		}
+	};
 
   return (
     <>
@@ -175,7 +257,7 @@ export const AdminNotice = () => {
 		</Row>
 
 		<Row>
-			<Col span={6}><FiltersAdminNotices /></Col>
+			<Col span={6}><FiltersAdminNotices applyFilters={applyFilters}/></Col>
 			<Col span={17} offset={1}>
 				<DataTable {...props} />
 			</Col>

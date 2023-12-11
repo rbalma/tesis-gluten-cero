@@ -13,6 +13,7 @@ export const FormEditNotice = () => {
     const [formData, setFormData] = useState({
         title: '',
         link: '',
+        source: ''
     });
 
     useEffect(() => {
@@ -25,7 +26,7 @@ export const FormEditNotice = () => {
             });
             const data = await res.json();
             console.log(data)
-            setFormData({title: data.data.title, link: data.data.link})
+            setFormData({title: data.data.title, link: data.data.link, source: data.data.source})
         };
         fetchData();
     }, []);
@@ -50,6 +51,7 @@ export const FormEditNotice = () => {
         const formDataSubmit = new FormData();
         formDataSubmit.append('title', formData.title);
         formDataSubmit.append('link', formData.link);
+        formDataSubmit.append('source', formData.source);
         imagen !== null && formDataSubmit.append('avatar', imagen);
 
         const response = await fetch(`http://localhost:5000/api/notices/${params.noticeId}`, {
@@ -88,6 +90,16 @@ export const FormEditNotice = () => {
                             name='avatar' 
                             type='file'
                             onChange={handleImageChange}
+                        />
+                    </div>
+                    <div className='notice-input'>
+                        <label>Fuente</label>
+                        <input 
+                            name='source' 
+                            type='text'
+                            value={formData.source}
+                            required
+                            onChange={handleChange}
                         />
                     </div>
                     <div className='notice-input'>
