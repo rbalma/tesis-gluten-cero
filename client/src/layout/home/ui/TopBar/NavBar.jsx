@@ -16,9 +16,18 @@ const NavBar = () => {
 		setOpenMenu((open) => !open);
 	};
 
+	const scrollToNoticias = (event) => {
+		event.preventDefault(); // Evitar que el enlace realice la navegación
+
+		const noticiasElement = document.getElementById('noticias');
+		if (noticiasElement) {
+			noticiasElement.scrollIntoView({ behavior: 'smooth' });
+		}
+    };
+
 	return (
 		<>
-			<nav className='main__navbar'>
+			<nav className='main__navbar' id='main__navbar'>
 				<div className='logo__navbar'>
 					<Link to='/'>
 						<img src={Logo} alt='logo_gluten-cero' width={100} />
@@ -28,10 +37,9 @@ const NavBar = () => {
 				<ul className='menu__navbar'>
 					<li>
 						<NavLink
-							to='/noticias'
-							className={({ isActive }) =>
-								'item__navbar' + (isActive ? 'item__navbar-selected' : '')
-							}
+							to='/#noticias'
+							onClick={scrollToNoticias}
+							className={'item__navbar'}
 						>
 							Noticias
 						</NavLink>
