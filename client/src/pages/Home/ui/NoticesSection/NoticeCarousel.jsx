@@ -20,6 +20,25 @@ const getImageURL = (notice) => {
   return imageUrl;
 }
 
+const CardNotice = ({notice}) => {
+  return(
+    <div className='card-notice'>
+      <img 
+        className='card-notice-image'
+        src={getImageURL(notice)}
+        alt='Imagen noticia'
+      />
+      <div className='card-notice-info'>
+        <div className='card-notice-info__title'>{notice.title}</div>
+        <div className='card-notice-info__actions'>
+          <div className='card-notice-info__date'>{format(new Date(notice.date), 'PPP', { locale: ESLocale })}</div>
+          <button className='card-notice-info__btn' onClick={()=>window.open(notice.link,'_blank')}>Ver más</button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function NoticeCarousel({ notices }) {
   return(
     <Swiper
@@ -44,23 +63,7 @@ export default function NoticeCarousel({ notices }) {
       >
         {notices.concat(notices).map((notice, index) => (
           <SwiperSlide key={index}>
-            <div className='card-notice'>
-              <div className='card-notice-actions'>
-                <div className='card-notice-actions__source'>{notice.source}</div>
-                <button className='card-notice-actions__btn' onClick={()=>window.open(notice.link,'_blank')}>Ver más</button>
-              </div>
-              <img 
-                className='card-notice-image'
-                src={getImageURL(notice)}
-                alt='Imagen noticia'
-              />
-              <div className='card-notice-header'>
-                <div className='card-notice-header__title'>{notice.title}</div>
-              </div>
-              <div className='card-notice-footer'>
-                <div className='card-notice-footer__date'>{format(new Date(notice.date), 'PPP', { locale: ESLocale })}</div>
-              </div>
-            </div>
+            <CardNotice notice={notice}/>
           </SwiperSlide>
         ))}
       </Swiper>
