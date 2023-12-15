@@ -28,6 +28,7 @@ const CardNotice = ({notice}) => {
         src={getImageURL(notice)}
         alt='Imagen noticia'
       />
+      <div className='card-notice-source'>{notice.source}</div>
       <div className='card-notice-info'>
         <div className='card-notice-info__title'>{notice.title}</div>
         <div className='card-notice-info__actions'>
@@ -53,10 +54,10 @@ export default function NoticeCarousel({ notices }) {
           modifier: 2,
           slideShadows: false,
         }}
-        autoplay={{
-          delay: 5000,
-          disableOnInteraction: false,
-        }}
+        // autoplay={{
+        //   delay: 5000,
+        //   disableOnInteraction: false,
+        // }}
         loop={true}
         modules={[Autoplay, EffectCoverflow, Pagination]}
         className="mySwiper"
