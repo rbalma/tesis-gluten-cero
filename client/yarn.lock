@@ -415,6 +415,30 @@
   resolved "https://registry.yarnpkg.com/@react-oauth/google/-/google-0.9.0.tgz#af65ee0c6238a0988056d9e820029f99255f8381"
   integrity sha512-iq9I6A4uwZezU/BixqLM6UET6an559ufC4Nh0lEIeIaKC3TJRvcPNWCjjHny56yAhgdT6ivUicLIvEoiSMjnmg==
 
+"@tanstack/query-core@5.17.10":
+  version "5.17.10"
+  resolved "https://registry.yarnpkg.com/@tanstack/query-core/-/query-core-5.17.10.tgz#8b799f4a973ca1e2da8936b27aadc472900e6f36"
+  integrity sha512-bJ2oQUDBftvHcEkLS3gyzzShSeZpJyzNNRu8oHK13iNdsofyaDXtNO/c1Zy/PZYVX+PhqOXwoT42gMiEMRSSfQ==
+
+"@tanstack/query-devtools@5.17.7":
+  version "5.17.7"
+  resolved "https://registry.yarnpkg.com/@tanstack/query-devtools/-/query-devtools-5.17.7.tgz#9f9e44a32d08ecd5c9fe3ede62a114d6d6e240d5"
+  integrity sha512-TfgvOqza5K7Sk6slxqkRIvXlEJoUoPSsGGwpuYSrpqgSwLSSvPPpZhq7hv7hcY5IvRoTNGoq6+MT01C/jILqoQ==
+
+"@tanstack/react-query-devtools@^5.17.12":
+  version "5.17.12"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-query-devtools/-/react-query-devtools-5.17.12.tgz#61b62a230472243931982d0c802d1a1bc164fc5d"
+  integrity sha512-5n2oqe9GUD7+QNJqfFm8RqQVVFOeaLQDujBnhyyILDq8XPB6wymTEaS6OJ/CdrhCYKoQe3Uh8E6u9ChABEMuhA==
+  dependencies:
+    "@tanstack/query-devtools" "5.17.7"
+
+"@tanstack/react-query@^5.17.12":
+  version "5.17.12"
+  resolved "https://registry.yarnpkg.com/@tanstack/react-query/-/react-query-5.17.12.tgz#7d5c05615f02a5f27a792e4a8019a85c86630d00"
+  integrity sha512-mJQ+3da1ug4t9b+GycUuNzMs5hd6t+F4tJ1hqyaN/dlETP+bWwYwrv2GXFIbZIfI1K1Hu+XWZ6HUhRPbNtZ4QQ==
+  dependencies:
+    "@tanstack/query-core" "5.17.10"
+
 "@types/file-saver@^2.0.1":
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/@types/file-saver/-/file-saver-2.0.5.tgz#9ee342a5d1314bb0928375424a2f162f97c310c7"
@@ -509,6 +533,13 @@ antd-img-crop@4.2.4:
   integrity sha512-Wgv+HhWhG+iIyzWech3xL0AwPf2mJveINv/6/cvLCn7fJ6xePVlGUL7UF3Y3y4V/Ogs8JGqKD0EaX+W3MagfTw==
   dependencies:
     react-easy-crop "^4.4.2"
+
+antd-mask-input@^2.0.7:
+  version "2.0.7"
+  resolved "https://registry.yarnpkg.com/antd-mask-input/-/antd-mask-input-2.0.7.tgz#202d706eb83571646835bf52e9bfe1d1e4ea5eaf"
+  integrity sha512-EFv/Hjar5nzYuzvgCcIeEcbVzw5+4RynUQTl2S8bLMaR9iajiWoeV/VYvENaP6X+ytnM0OqemE2pHY9ZRR6hEw==
+  dependencies:
+    imask "6.4.2"
 
 antd-table-saveas-excel@^2.2.1:
   version "2.2.1"
@@ -1569,6 +1600,11 @@ image-size@~0.5.0:
   version "0.5.5"
   resolved "https://registry.yarnpkg.com/image-size/-/image-size-0.5.5.tgz#09dfd4ab9d20e29eb1c3e80b8990378df9e3cb9c"
   integrity sha512-6TDAlDPZxUFCv+fuOkIoXT/V/f3Qbq8e37p+YOiYrUv3v9cc3/6x78VdfPgFVaB9dZYeLUfKgHRebpkm/oP2VQ==
+
+imask@6.4.2:
+  version "6.4.2"
+  resolved "https://registry.yarnpkg.com/imask/-/imask-6.4.2.tgz#f1c67e6961640bf5b09d7b4a34dcf4f9a3df7e22"
+  integrity sha512-xvEgbTdk6y2dW2UAysq0NRPmO6PuaXM5NHIt4TXEJEwXUHj26M0p/fXqyrSJdNXFaGVOtqYjPRnNdrjQQhDuuA==
 
 immediate@~3.0.5:
   version "3.0.6"

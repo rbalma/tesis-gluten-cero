@@ -9,7 +9,7 @@ import NotFoundScreen from '@/pages/NotFound/NotFoundScreen';
 import { ProfilePage } from '@/pages/Profile/ProfilePage';
 import { ProductsPage } from '@/pages/Products/ProductsPage';
 import { RecipeDetail, RecipeForm, RecipeSearch } from '@/pages/Recipes';
-import { MapForm, MapSearch } from '@/pages/Map';
+import { MapFormPage, MapSearchPage } from '@/pages/Map';
 import { PostsList, ThreadForm, ThreadsList } from '@/pages/Forum';
 
 const routesAuth = [
@@ -37,7 +37,7 @@ const routesPages = [
 		element: HomePage,
 	},
 	{
-		path: '/recetas-busqueda',
+		path: '/recetas',
 		element: RecipeSearch,
 	},
 	{
@@ -45,8 +45,8 @@ const routesPages = [
 		element: RecipeDetail,
 	},
 	{
-		path: '/mapa-busqueda',
-		element: MapSearch,
+		path: '/mapa',
+		element: MapSearchPage,
 	},
 	{
 		path: '/foro',
@@ -73,7 +73,7 @@ const routesPrivatePages = [
 	},
 	{
 		path: '/mapa-formulario',
-		element: MapForm,
+		element: MapFormPage,
 	},
 	{
 		path: '/foro-formulario',

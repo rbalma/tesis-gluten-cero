@@ -16,8 +16,6 @@ export const UserProfile = () => {
 	const navigate = useNavigate();
 	const [avatar, setAvatar] = useState('');
 
-	console.log({ user })
-
 	useEffect(() => {
 		if (user.avatar && user.userGoogle) {
 			setAvatar(user.avatar);

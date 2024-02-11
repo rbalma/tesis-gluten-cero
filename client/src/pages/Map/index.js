@@ -1,3 +1,2 @@
-
-export * from './Form/MapForm';
-export * from './Search/MapSearch';
+export * from './MapFormPage';
+export * from './MapSearchPage';

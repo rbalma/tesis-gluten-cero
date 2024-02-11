@@ -1,6 +1,17 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { Toaster } from 'sonner';
 import AppRoutes from './routes/AppRoutes';
+
+const queryClient = new QueryClient({
+	defaultOptions: {
+		queries: {
+			refetchIntervalInBackground: false,
+			refetchOnWindowFocus: false,
+		},
+	},
+});
 
 const App = () => {
 	return (
@@ -14,7 +25,10 @@ const App = () => {
 				position='top-right'
 				richColors
 			/>
-			<AppRoutes />
+			<QueryClientProvider client={queryClient}>
+			<ReactQueryDevtools initialIsOpen={false} />
+				<AppRoutes />
+			</QueryClientProvider>
 		</GoogleOAuthProvider>
 	);
 };

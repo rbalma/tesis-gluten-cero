@@ -1,0 +1,29 @@
+.header {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.user {
+  display: flex;
+  gap: 10px;
+}
+
+.user p>span {
+  display: block;
+  margin-top: 5px;
+  font-size: 12px;
+}
+
+.rate {
+  display: flex;
+  flex-direction: column;
+  text-align: end;
+  width: max-content;
+  gap: 5px;
+  font-size: 12px;
+}
+
+.comment {
+  margin: 10px 0px;
+}

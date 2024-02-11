@@ -1,5 +1,5 @@
 import { Form, Input, Select } from 'antd';
-import LoadAvatar from '@/components/Upload/LoadAvatar';
+// import UploadImage from '@/components/Upload/UploadImage';
 
 export const StepForm = () => {
 	//const [avatar, setAvatar] = useState([]);
@@ -20,7 +20,7 @@ export const StepForm = () => {
 			{/* UPLOAD FOTO */}
 
 			<Form.Item name='image' required>
-				<LoadAvatar />
+				{/* <UploadImage /> */}
 			</Form.Item>
 		</>
 	);

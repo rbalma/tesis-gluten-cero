@@ -38,7 +38,7 @@ const NavBar = () => {
 					</li>
 					<li>
 						<NavLink
-							to='/recetas-busqueda'
+							to='/recetas'
 							className={({ isActive }) =>
 								'item__navbar' + (isActive ? 'item__navbar-selected' : '')
 							}
@@ -48,7 +48,7 @@ const NavBar = () => {
 					</li>
 					<li>
 						<NavLink
-							to='/mapa-busqueda'
+							to='/mapa'
 							className={({ isActive }) =>
 								'item__navbar' + (isActive ? 'item__navbar-selected' : '')
 							}

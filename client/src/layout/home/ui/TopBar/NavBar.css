@@ -6,7 +6,8 @@
 	align-items: baseline;
 	padding: 0.5rem 0;
 	z-index: 30;
-	font-family: Sora, sans-serif; /* lato poppins Oswald */
+	font-family: Sora, sans-serif;
+	/* lato poppins Oswald */
 	position: sticky;
 	top: 0;
 }
@@ -139,19 +140,19 @@
 	transition: transform 0.4s ease-in-out;
 }
 
-.icon-menu__navbar input[type='checkbox']:checked ~ .menu-items {
+.icon-menu__navbar input[type='checkbox']:checked~.menu-items {
 	transform: translateX(0);
 }
 
-.icon-menu__navbar input[type='checkbox']:checked ~ .hamburger-lines .line1 {
+.icon-menu__navbar input[type='checkbox']:checked~.hamburger-lines .line1 {
 	transform: rotate(45deg);
 }
 
-.icon-menu__navbar input[type='checkbox']:checked ~ .hamburger-lines .line2 {
+.icon-menu__navbar input[type='checkbox']:checked~.hamburger-lines .line2 {
 	transform: scaleY(0);
 }
 
-.icon-menu__navbar input[type='checkbox']:checked ~ .hamburger-lines .line3 {
+.icon-menu__navbar input[type='checkbox']:checked~.hamburger-lines .line3 {
 	transform: rotate(-45deg);
 }
 
