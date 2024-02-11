@@ -19,3 +19,8 @@ export const EMAIL_USERNAME = process.env.EMAIL_USERNAME;
 export const EMAIL_PASSWORD = process.env.EMAIL_PASSWORD;
 
 export const URL_FRONT = process.env.URL_FRONT;
+
+export const MERCADOPAGO_ACCESS_TOKEN = process.env.MERCADOPAGO_ACCESS_TOKEN;
+export const PAYPAL_API_CLIENT = process.env.PAYPAL_API_CLIENT;
+export const PAYPAL_API_SECRET = process.env.PAYPAL_API_SECRET;
+export const PAYPAL_API = process.env.PAYPAL_API;

@@ -14,6 +14,8 @@ import forumRoute from './routes/forum.routes.js';
 import productRoute from './routes/products.routes.js';
 import commentRoute from './routes/comment.routes.js';
 import mapRoute from './routes/map.routes.js';
+import donationRoute from './routes/donations.routes.js';
+
 
 import __dirname from './dirnamePath.js'
 
@@ -48,6 +50,7 @@ app.use(`/api`, forumRoute);
 app.use(`/api`, productRoute);
 app.use(`/api`, commentRoute);
 app.use(`/api`, mapRoute);
+app.use(`/api`, donationRoute);
 
 app.get('/', (req, res, next) => {
     res.send('Api running');
