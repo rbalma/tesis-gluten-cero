@@ -20,19 +20,21 @@ const NavBar = () => {
 		<>
 			<nav className='main__navbar'>
 				<div className='logo__navbar'>
-					<Link to='/'>
+					<NavLink to='/'>
 						<img src={Logo} alt='logo_gluten-cero' width={100} />
-					</Link>
+					</NavLink>
 				</div>
 
 				<ul className='menu__navbar'>
 					<li>
 						<NavLink
-							to='/noticias'
-							className={({ isActive }) =>
-								'item__navbar' + (isActive ? 'item__navbar-selected' : '')
-							}
-						>
+							to='/#noticias'
+							className={() =>
+								'item__navbar' +
+								(window.location.hash === '#noticias'
+									? 'item__navbar-selected'
+									: '')
+							}>
 							Noticias
 						</NavLink>
 					</li>
@@ -41,8 +43,7 @@ const NavBar = () => {
 							to='/recetas'
 							className={({ isActive }) =>
 								'item__navbar' + (isActive ? 'item__navbar-selected' : '')
-							}
-						>
+							}>
 							Recetas
 						</NavLink>
 					</li>
@@ -51,8 +52,7 @@ const NavBar = () => {
 							to='/mapa'
 							className={({ isActive }) =>
 								'item__navbar' + (isActive ? 'item__navbar-selected' : '')
-							}
-						>
+							}>
 							Mapa
 						</NavLink>
 					</li>
@@ -61,8 +61,7 @@ const NavBar = () => {
 							to='/foro'
 							className={({ isActive }) =>
 								'item__navbar' + (isActive ? 'item__navbar-selected' : '')
-							}
-						>
+							}>
 							Foro
 						</NavLink>
 					</li>
@@ -71,18 +70,16 @@ const NavBar = () => {
 							to='/productos'
 							className={({ isActive }) =>
 								'item__navbar' + (isActive ? 'item__navbar-selected' : '')
-							}
-						>
+							}>
 							Productos
 						</NavLink>
 					</li>
 					<li>
 						<NavLink
-							to='/contacto'
+							to='/#contacto'
 							className={({ isActive }) =>
-								'item__navbar' + (isActive ? 'item__navbar-selected' : '')
-							}
-						>
+								'item__navbar' + (window.location.hash === '#contacto' ? 'item__navbar-selected' : '')
+							}>
 							Contacto
 						</NavLink>
 					</li>
@@ -91,8 +88,7 @@ const NavBar = () => {
 							to='/aporte'
 							className={({ isActive }) =>
 								'item__navbar' + (isActive ? 'item__navbar-selected' : '')
-							}
-						>
+							}>
 							Aportar
 						</NavLink>
 					</li>
@@ -106,8 +102,7 @@ const NavBar = () => {
 					<div className='login__navbar'>
 						<button
 							className='button-login__navbar'
-							onClick={() => navigate('/ingreso')}
-						>
+							onClick={() => navigate('/ingreso')}>
 							Iniciar Sesión
 						</button>
 					</div>

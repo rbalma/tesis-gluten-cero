@@ -17,7 +17,7 @@ export const MobileMenu = ({ open, closeMenu }) => {
 			<ul className={styles.menu}>
 				<li className={styles.menuli} onClick={handleSelectItemMenu}>
 					<NavLink
-						to='/noticias'
+						to='/#noticias'
 						className={styles.item}
 						style={{ '--color': '#A5907E' }}
 						data-text='&nbsp;Noticias&nbsp;'

@@ -5,7 +5,7 @@
 .page_404 {
 	font-family: 'Sora', serif;
 	background-color: #fff;
-	height: calc(100vh - 170px);
+	min-height: calc(100dvh - 140px);
 	display: grid;
 	place-content: center;
 }
@@ -15,6 +15,7 @@
 	text-align: center;
 	flex-direction: column;
 	justify-content: center;
+
 }
 
 .four_zero_four_bg {
@@ -22,7 +23,8 @@
 	background-position: center;
 	background-repeat: no-repeat;
 	height: 500px;
-	width: 100vw;
+	width: 800px;
+	min-width: 100%;
 	padding-top: 50px;
 }
 
@@ -40,6 +42,7 @@
 	background: #39ac31;
 	display: inline-block;
 }
+
 .contant_box_404 {
 	margin-top: -80px;
 	padding-bottom: 60px;

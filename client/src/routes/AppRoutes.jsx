@@ -11,6 +11,7 @@ import axiosInstance from '@/utils/axiosInstance';
 import { PublicRoute } from './PublicRoute';
 import { PrivateRoute } from './PrivateRoute';
 import { ProtectedAdminRoute } from './ProtectedAdminRoute';
+import ScrollToAnchor from './ScrollToAnchor';
 
 const AppRoutes = () => {
 	const { checking, startChecking, finishChecking } = useAuthStore();
@@ -43,6 +44,7 @@ const AppRoutes = () => {
 	return (
 		<BrowserRouter>
 			<ScrollToTop>
+	
 				<Routes>
 					{/* AUTH */}
 					{routesAuth.map((route) => (
