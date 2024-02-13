@@ -10,7 +10,7 @@ import { mapCategories } from '@/utils/constants';
 // import { getAccessTokenApi } from "../../api/auth";
 import styles from './MapFormPage.module.css';
 import { UploadImage } from '@/components/Upload/UploadImage';
-import { MapFormContainer } from '@/components/MapContainer/MapFormContainer';
+import { MapFormContainer } from '@/components/Map/Form/MapFormContainer';
 import { BuildingStoreIcon, PhoneIcon } from '@/components/Icons';
 
 export const MapFormPage = () => {

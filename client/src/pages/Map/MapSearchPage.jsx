@@ -16,7 +16,7 @@ import Footer from '@/layout/home/ui/Footer';
 
 import 'leaflet/dist/leaflet.css';
 import styles from './MapSearchPage.module.css';
-import { AutoCompleteMap } from '@/components/AutoComplete/AutoCompleteMap';
+import { AutoCompleteMap } from '@/components/Map/AutoComplete/AutoCompleteMap';
 
 export const MapSearchPage = () => {
 	const navigate = useNavigate();

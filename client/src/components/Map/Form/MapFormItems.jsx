@@ -1,5 +1,5 @@
 import { Form, Input } from 'antd';
-import { LocationPinIcon, MapPinIcon, WorldIcon } from '../Icons';
+import { LocationPinIcon, MapPinIcon, WorldIcon } from '../../Icons';
 
 import styles from './MapFormContainer.module.css';
 

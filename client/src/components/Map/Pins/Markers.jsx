@@ -1,5 +1,5 @@
 import { Marker, Popup } from 'react-leaflet';
-import { IconLocation } from './IconLocation';
+import { IconLocation } from './IconPins/IconLocation';
 import Foto from '@/assets/images/patio-olmos.jpg';
 
 import { StarFilledIcon } from '@/components/Icons';

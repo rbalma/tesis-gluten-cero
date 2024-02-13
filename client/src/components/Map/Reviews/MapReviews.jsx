@@ -1,20 +1,22 @@
-import { Progress, Collapse, Input, Button, Avatar, Rate, Divider } from 'antd';
-import { IconArrowNarrowLeft, StarFilledIcon } from '@/components/Icons';
+import { Progress, Collapse, Input, Button, Rate } from 'antd';
+import {
+	IconArrowNarrowLeft,
+	IconCirclePlus,
+	StarFilledIcon,
+} from '@/components/Icons';
 
 import styles from './MapReviews.module.css';
-import { MapReviewsFiltersButton } from './Filters/Items/MapReviewsFiltersRadio';
 import { MapReviewsFilters } from './Filters/MapReviewsFilters';
-import { MapReviewsFiltersCheckBox } from './Filters/Items/MapReviewsFiltersCheckBox';
 import { MapReviewsComment } from './MapReviewsComment';
 
-export const MapReviews = ({setIsReviews}) => {
+export const MapReviews = ({ setIsReviews }) => {
 	return (
 		<>
 			<a className={styles.btnBack} onClick={() => setIsReviews(false)}>
 				<IconArrowNarrowLeft /> Volver
 			</a>
 			<div className={styles.header}>
-					<h2>Patio Olmos Shopping</h2>
+				<h2>Patio Olmos Shopping</h2>
 				<div className={styles.averageContainer}>
 					<span>
 						<StarFilledIcon size={36} /> 4.8
@@ -35,15 +37,26 @@ export const MapReviews = ({setIsReviews}) => {
 					/>
 				</span>
 			</div>
-			<Collapse ghost>
+			<Collapse
+				ghost
+				expandIcon={({ isActive }) => (
+					<span
+						style={{
+							transform: isActive ? 'rotate(45deg)' : 'rotate(0deg)',
+							display: 'flex',
+						}}>
+						<IconCirclePlus size={22} />
+					</span>
+				)}>
 				<Collapse.Panel
 					collapsible='header'
+					style={{ fontSize: 16 }}
 					header='Escribir una opinión'
 					key='1'>
-					<Rate allowHalf defaultValue={0}/>
+					<Rate allowHalf defaultValue={0} />
 					<Input.TextArea
-					placeholder='Comparte tu experiencia en este lugar'						
-					autoSize={{
+						placeholder='Comparte tu experiencia en este lugar'
+						autoSize={{
 							minRows: 2,
 							maxRows: 4,
 						}}
@@ -53,9 +66,8 @@ export const MapReviews = ({setIsReviews}) => {
 				</Collapse.Panel>
 			</Collapse>
 
-		
 			<MapReviewsFilters />
-		
+
 			<MapReviewsComment />
 		</>
 	);

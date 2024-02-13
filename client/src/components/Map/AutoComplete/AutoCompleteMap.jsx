@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { AutoComplete, Input, Tooltip } from 'antd';
 import { SearchOutlined, LoadingOutlined } from '@ant-design/icons';
-import { ChefHatIcon, IconCurrentLocation, IconMap2, SearchIcon, SpinnerIcon } from '../Icons';
+import { ChefHatIcon, IconCurrentLocation, IconMap2, SearchIcon, SpinnerIcon } from '../../Icons';
 import { OpenStreetMapProvider } from 'leaflet-geosearch';
 import useDebounce from '@/hooks/useDebounce';
 

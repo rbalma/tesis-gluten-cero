@@ -3,7 +3,7 @@ import { MapFormItems } from './MapFormItems';
 import { useMemo, useRef, useState } from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import { Pin } from '../MapPines/Pin';
+import { Pin } from '../Pins/IconPins/Pin';
 
 import styles from './MapFormContainer.module.css';
 
