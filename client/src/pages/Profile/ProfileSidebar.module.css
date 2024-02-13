@@ -1,0 +1,108 @@
+.sidebar {
+  position: static;
+  top: 80px;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  width: 250px;
+  min-height: calc(100dvh - 80px);
+  height: 100%;
+  background: #2A2A2A;
+  transition: width 0.4s;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  padding-top: 10px;
+}
+
+.sidebarNav {
+  flex: 1 1 auto;
+}
+
+.sidebar h2 {
+  padding-left: 26px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.item {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  color: #d4d4ea;
+  cursor: pointer;
+  display: flex;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 400;
+  gap: 25px;
+  height: 50px;
+  line-height: 1;
+  padding: 0 25px;
+  position: relative;
+  position: relative;
+  text-align: left;
+  width: 100%;
+}
+
+.item span:nth-child(2) {
+  flex: 1 1 auto;
+}
+
+.btnActive button {
+  background: #353535;
+}
+
+.btnActive button::before {
+  content: '';
+  width: 5px;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  background-color: #F91942;
+}
+
+.item:hover {
+  background: #353535;
+}
+
+.item:hover::before {
+  content: '';
+  width: 5px;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  background-color: #F91942;
+}
+
+.subNav {
+  overflow: hidden;
+  height: 0;
+  transition: 0.5s;
+  background: #353535;
+}
+
+.subNav button {
+  padding-left: 35px;
+}
+
+.open {
+  height: 150px;
+}
+
+.iconSize {
+  font-size: 22px;
+}
+
+.more {
+  transform: rotate(0deg);
+  transition: transform 500ms ease-in;
+}
+
+.less {
+  transform: rotate(180deg);
+  transition: transform 500ms ease-in;
+}
+
+/*
+  997px
+*/

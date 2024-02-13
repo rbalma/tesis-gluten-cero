@@ -15,3 +15,5 @@ export * from './IconMap2';
 export * from './IconUsers';
 export * from './IconArrowNarrowLeft';
 export * from './IconCurrentLocation';
+export * from './IconCirclePlus';
+export * from './IconChevronDown';

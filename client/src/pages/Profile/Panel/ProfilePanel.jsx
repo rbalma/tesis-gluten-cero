@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 import useAuthStore from '@/store/authStore';
-import { SideBarProfile } from './ui/SideBarProfile';
+import { ProfileSidebar } from '../ProfileSidebar';
 import { routesProfile } from '@/routes/routes';
 import { PrivateRoute } from '@/routes/PrivateRoute';
 
@@ -10,8 +10,8 @@ const ProfilePanel = () => {
 	const { userProfile } = useAuthStore();
 
 	return (
-		<>
-			<SideBarProfile id={userProfile?.id} />
+		<div style={{ display: 'flex' }}>
+			<ProfileSidebar id={userProfile?.id} />
 			<div className={styles.mainP}>
 				<Routes>
 					{routesProfile.map((route) => (
@@ -27,7 +27,7 @@ const ProfilePanel = () => {
 					))}
 				</Routes>
 			</div>
-		</>
+		</div>
 	);
 };
 
