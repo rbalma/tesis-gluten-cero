@@ -88,6 +88,35 @@
   transition: .4s all;
 }
 
+.card-notice-source {
+  position: absolute;
+  top: -2.5rem;
+  right: .6rem;
+  color: #eee;
+  font-size: 1.1rem;
+  text-shadow: 10px 0px 10px rgba(0,0,0,1),
+  10px 0px 10px rgba(0,0,0,1),
+  10px 0px 10px rgba(0,0,0,1),
+  10px 0px 10px rgba(0,0,0,1),
+  10px 0px 10px rgba(0,0,0,1),
+  10px 10px 10px rgba(0,0,0,1),
+  10px 10px 10px rgba(0,0,0,1),
+  10px -10px 10px rgba(0,0,0,1),
+  10px -10px 10px rgba(0,0,0,1),
+  -10px 0px 10px rgba(0,0,0,1),
+  -10px -10px 10px rgba(0,0,0,1),
+  -10px -20px 10px rgba(0,0,0,1),
+  -10px 10px 10px rgba(0,0,0,1),
+  -10px 0px 10px rgba(0,0,0,1);
+  filter: drop-shadow(.1rem .1rem #000);
+  z-index: 10;
+  transition: .3s;
+}
+
+.card-notice:hover > .card-notice-source {
+  top: .4rem;
+}
+
 .card-notice-info {
   display: flex;
   justify-content: center;
