@@ -67,7 +67,7 @@ export const FormNotice = () => {
                         />
                     </div>
                     <div className='notice-input'>
-                        <label>Imagen</label>
+                        <label>Imagen (JPG o PNG)</label>
                         <input 
                             name='avatar' 
                             type='file'
