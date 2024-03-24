@@ -9,7 +9,9 @@ import 'swiper/css/pagination';
 import './NoticeCarousel.css';
 
 const getImageURL = (notice) => {
-  const bufferArray = notice.avatar.data.data;
+  const bufferArray = notice.avatar?.data.data;
+
+  if(!bufferArray) return;
 				
   const buffer = Uint8Array.from(bufferArray);
 
