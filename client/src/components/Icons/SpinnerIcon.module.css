@@ -1,0 +1,15 @@
+.loader {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  margin: auto 0px;
+  background: conic-gradient(#0000 10%, #038FDE);
+  mask: radial-gradient(farthest-side, #0000 calc(100% - 4px), #000 0);
+  animation: s3 1s infinite linear;
+}
+
+@keyframes s3 {
+  to {
+    transform: rotate(1turn)
+  }
+}

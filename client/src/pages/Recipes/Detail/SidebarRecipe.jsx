@@ -13,14 +13,14 @@ export const SidebarRecipe = () => {
 				<Avatar
 					shape='square'
 					size={80}
-					src='https://joeschmoe.io/api/v1/random'
+					src='https://img-global.cpcdn.com/recipes/6ab24d3a956ff32a/680x482cq70/noquis-de-papa-y-zapallo-sin-gluten-foto-principal.webp'
 				/>
 				<div className={styles.infoSidebar}>
 					<span className={styles.titleSidebar}>
-						Lorem ipsum dolor sit amet consect
+					Ñoquis de papa y zapallo
 					</span>
 					<span className={styles.categorySidebar}>
-						<TagOutlined /> Lorem ips
+						<TagOutlined /> Plato Principal
 					</span>
 				</div>
 			</div>
@@ -34,6 +34,7 @@ export const SidebarRecipe = () => {
 					<button className={styles.categoriesSidebar}>Ensaladas</button>
 					<button className={styles.categoriesSidebar}>Postres</button>
 					<button className={styles.categoriesSidebar}>Aperitivos</button>
+					<button className={styles.categoriesSidebar}>Plato Principal</button>
 				</div>
 			</div>
 		</div>

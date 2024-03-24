@@ -13,7 +13,8 @@ export const ResetPassword = () => {
 
 	const onSubmit = async values => {
 		const data = await resetPassword(resetToken, values);
-		if (data?.ok) toast.success('Contraseña actualizada con éxito')
+		if (data?.ok) toast.success('Contraseña actualizada con éxito');
+		if (data?.error) toast.error(data.error);
 	};
 
 	return (

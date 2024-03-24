@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Form, Input, Row, Col } from 'antd';
 import { LockOutlined, UserOutlined, MailOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
+import { toast } from 'sonner';
 import Logo from '@/assets/images/logoGlutenCero.png';
 import useCrud from '@/hooks/useCrud';
 import { AccountConfirmMail } from './ui';
@@ -16,6 +17,7 @@ export const SignUp = () => {
 	const onSubmit = async (user) => {
 		const data = await postUser(user);
 		if (data?.ok) setIsModalOpen(true);
+		if (data?.error) toast.error(data.error);
 	};
 
 	return (

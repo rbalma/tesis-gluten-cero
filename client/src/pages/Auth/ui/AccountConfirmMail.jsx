@@ -11,7 +11,7 @@ export const AccountConfirmMail = ({ open, formInstance }) => {
 
 	return (
 		<Modal
-			visible={open}
+			open={open}
 			title={null}
 			footer={null}
 			closable={false}

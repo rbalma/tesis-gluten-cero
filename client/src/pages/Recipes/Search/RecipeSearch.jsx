@@ -47,8 +47,7 @@ export const RecipeSearch = () => {
 							style={{ width: '100%' }}
 							options={resultData}
 							onSearch={onSearch}
-							onSelect={navigateToRecipe}
-						>
+							onSelect={navigateToRecipe}>
 							<Input
 								suffix={<SearchOutlined />}
 								size='large'
@@ -62,25 +61,39 @@ export const RecipeSearch = () => {
 				</Row>
 			</section>
 
-			<div className={styles.divBtn}>
+			{/* <div className={styles.divBtn}>
 				<Button
 					className='gx-btn-info'
 					onClick={() => navigate('/receta-formulario')}
 				>
 					Agregar Receta
 				</Button>
-
-				{/* {!recipes || recipes.length === 0 ? (
-					<Spinner />
-				) : ( */}
-				{/* )} */}
 			</div>
 
 			<div className={styles.scroller}>
 			<Segmented options={['Map', 'Transit', 'Satellite', 'Dulces', 'Aperitivos', 'Postres', 'Helado', 'Crema', 'Naranja']} value={value} onChange={setValue} />
-			</div>
+			</div> */}
 
-			<RecipeCard />
+			<div className={styles.recipesGrid}>
+				<RecipeCard
+					title='Rosca de Pascua'
+					image='https://www.lavoz.com.ar/resizer/igh8fcDUwk3e7p8NyRsEfbPe4-8=/0x0:0x0/980x640/filters:quality(80):format(webp)/cloudfront-us-east-1.images.arcpublishing.com/grupoclarin/G4ZDQNBSHFTDKOJXGU2DMNBZGI.jpg'
+					category='Dulces'
+					date={'20/03/2024'}
+				/>
+				<RecipeCard
+					title='Ñoquis de papa y zapallo'
+					image='https://img-global.cpcdn.com/recipes/6ab24d3a956ff32a/680x482cq70/noquis-de-papa-y-zapallo-sin-gluten-foto-principal.webp'
+					category='Plato Principal'
+					date={'12/03/2024'}
+				/>
+				<RecipeCard
+					title='Pizzetas de papa sin tacc'
+					image='https://img-global.cpcdn.com/recipes/3b72696969c1d19c/680x482cq70/pizzetas-de-papa-sin-tacc-foto-principal.webp'
+					category='Plato Principal'
+					date={'07/03/2024'}
+				/>
+			</div>
 		</div>
 	);
 };

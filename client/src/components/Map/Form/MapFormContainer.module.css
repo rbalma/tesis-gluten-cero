@@ -1,0 +1,35 @@
+.containerMapForm {
+  display: grid;
+  column-gap: 50px;
+  grid-template:
+    'autocomplete .' auto
+    'map formItems' 350px /
+    1fr 400px;
+  margin-bottom: 50px;
+}
+
+.autocompleteItem {
+  grid-area: autocomplete;
+  width: 100%;
+  margin: 20px 0px;
+}
+
+.mapContainer {
+  grid-area: map;
+}
+
+.mapForItem {
+  grid-area: formItems;
+}
+
+.helpTextMap {
+  font-size: 14px;
+  font-weight: 400;
+  color: #5c5c5c;
+  margin-top: 10px;
+}
+
+.mapTextInfo {
+  margin-bottom: 2em;
+  font-size: 20px;
+}

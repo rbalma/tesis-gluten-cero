@@ -1,6 +1,7 @@
 .container {
 	min-height: 100vh;
-	background-color: #ebecf0; /* #212121 */
+	background-color: #ebecf0;
+	/* #212121 */
 }
 
 .divAutocomplete {
@@ -16,7 +17,7 @@
 .banner {
 	padding-top: 10px;
 	width: 100%;
-	height: 20vh;
+	height: 22vh;
 	background: url('@/assets/images/section-recipe.jpg') top left;
 	background-size: cover;
 	position: relative;
@@ -51,6 +52,15 @@
 	display: none;
 }
 
+.recipesGrid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(325px, 1fr));
+	gap: 20px;
+	margin-inline: auto;
+	align-items: center;
+	padding: 30px 5%;
+}
+
 @media (max-width: 992px) {
 	.banner .container {
 		padding-top: 58px;
@@ -78,6 +88,7 @@
 	.banner {
 		height: 25vh;
 	}
+
 	.banner h1 {
 		font-size: 28px;
 		line-height: 36px;

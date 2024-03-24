@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Avatar, Menu, Dropdown } from 'antd';
+import { useEffect, useState } from 'react';
+import { Avatar, Dropdown } from 'antd';
 import {
 	IdcardFilled,
 	SettingFilled,
@@ -15,8 +15,6 @@ export const UserProfile = () => {
 	const { userProfile: user, removeUser } = useAuthStore();
 	const navigate = useNavigate();
 	const [avatar, setAvatar] = useState('');
-
-	console.log({ user })
 
 	useEffect(() => {
 		if (user.avatar && user.userGoogle) {
@@ -34,54 +32,54 @@ export const UserProfile = () => {
 		navigate('/');
 	};
 
-	const menuPerfil = useMemo(
-		() => [
-			{
-				key: '01',
-				label: <Link to={`/perfil/${user.id}`}>Perfil</Link>,
-				icon: <IdcardFilled />,
-			},
-			{
-				key: '02',
-				label: (
-					<Link to={`/perfil/${user.id}/panel/configuracion`}>
-						Configuración
-					</Link>
-				),
-				icon: <SettingFilled />,
-			},
-			user.role === 'admin' && {
-				key: '04',
-				label: <Link to='/admin'>Panel Admin</Link>,
-				icon: <LockFilled />,
-			},
-			{
-				type: 'divider',
-			},
-			{
-				key: '03',
-				label: <div onClick={logoutUser}>Cerrar Sesión</div>,
-				icon: <LogoutOutlined />,
-				danger: true,
-			},
-		],
-		[]
-	);
+	const items = [
+		{
+			key: '01',
+			label: (
+				<Link style={{ fontFamily: 'Sora, Verdana' }} to={`/perfil/${user.id}`}>
+					Perfil
+				</Link>
+			),
+			icon: <IdcardFilled />,
+		},
+		{
+			key: '02',
+			label: (
+				<Link
+					style={{ fontFamily: 'Sora, Verdana' }}
+					to={`/perfil/${user.id}/panel/configuracion`}>
+					Configuración
+				</Link>
+			),
+			icon: <SettingFilled />,
+		},
+		user.role === 'admin' && {
+			key: '04',
+			label: (
+				<Link style={{ fontFamily: 'Sora, Verdana' }} to='/admin'>
+					Panel Admin
+				</Link>
+			),
+			icon: <LockFilled />,
+		},
+		{
+			type: 'divider',
+		},
+		{
+			key: '03',
+			label: (
+				<div style={{ fontFamily: 'Sora, Verdana' }} onClick={logoutUser}>
+					Cerrar Sesión
+				</div>
+			),
+			icon: <LogoutOutlined />,
+			danger: true,
+		},
+	];
 
 	return (
-		<Dropdown
-			overlay={
-				<Menu style={{ fontFamily: 'Sora, Verdana' }} items={menuPerfil} />
-			}
-			trigger={['click']}
-			placement='bottom'
-			arrow
-		>
-			<Avatar
-				style={{ cursor: 'pointer' }}
-				src={avatar}
-				size='large'
-			/>
+		<Dropdown menu={{ items }} trigger={['click']} placement='bottom' arrow>
+			<Avatar style={{ cursor: 'pointer' }} src={avatar} size='large' />
 		</Dropdown>
 	);
 };

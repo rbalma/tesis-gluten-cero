@@ -12,7 +12,7 @@ export const NoticesSection = () => {
 	if(loading) return <h1>Cargando...</h1>
 
 	return (
-		<section className={styles.container} id="noticias">
+		<section className={styles.container} id='noticias'>
 			<h4 className={styles.title}>Últimas Noticias</h4>
 			{ !loading && notices?.length === 0 ? (
 				<>

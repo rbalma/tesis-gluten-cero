@@ -12,7 +12,8 @@ export const ForgotPassword = () => {
 
 	const onSubmit = async mail => {
 		const data = await sendMail(mail);
-		if (data?.ok) toast.success('Correo enviado')
+		if (data?.ok) toast.success('Correo enviado');
+		if (data?.error) toast.error(data.error);
 	};
 
 	return (

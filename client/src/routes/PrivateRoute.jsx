@@ -1,8 +1,8 @@
 import { Navigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import useAuthStore from '@/store/authStore';
 
 export const PrivateRoute = ({ children }) => {
-	const { id } = useSelector(({ auth }) => auth);
+	const { userProfile } = useAuthStore();
 
-	return id ? children : <Navigate to='/login' />;
+	return userProfile?.id ? children : <Navigate to='/ingreso' />;
 };

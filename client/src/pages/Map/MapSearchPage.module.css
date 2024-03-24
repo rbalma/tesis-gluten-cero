@@ -1,0 +1,115 @@
+.containerMap {
+	display: flex;
+	flex-wrap: wrap-reverse;
+}
+
+.displayCategories {
+	display: flex;
+	align-items: center;
+	justify-content: space-evenly;
+	text-transform: capitalize;
+}
+
+.listSearchMap {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	background-color: #f5f4f1;
+	width: 50%;
+	min-height: calc(100dvh - 80px);
+	height: 100%;
+}
+
+.fullMap {
+	width: 50%;
+}
+
+.paramSearchMap {
+	font-weight: 500;
+	background-color: #fffefb;
+	font-size: 15px;
+	line-height: 29px;
+	width: 100%;
+	padding: 2em 3em 1.5em;
+}
+
+.listCardsMap {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	padding: 3ch;
+}
+
+.showingResultsMap {
+	color: #888;
+	font-weight: 500;
+	margin: 5px 0 25px 0;
+	font-size: 16px;
+	line-height: 29px;
+}
+
+.radio-button {
+	display: flex;
+	justify-content: space-around;
+	margin-top: 20px;
+}
+
+.newMarketButton {
+	border-radius: 4px;
+	background: #26A69A;
+	padding: 5px 8px;
+	color: #fff;
+	border: none;
+	outline: none;
+	cursor: pointer;
+	background: color 500ms ease-in-out;
+	text-decoration: none;
+	font-family: Sora Light, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.newMarketButton:hover {
+	background: #4a6458;
+}
+
+.resultButtonMap {
+	display: flex;
+	flex-wrap: wrap-reverse;
+	justify-content: space-between;
+	align-items: baseline;
+	margin-bottom: 15px;
+}
+
+.radioMenuMap {
+	padding: 15px;
+	background-color: #fff;
+	box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+@media only screen and (max-width: 990px) {
+
+	/* .leaflet-container {
+		position: absolute;
+	} */
+	.containerMap {
+		min-height: 100vh;
+	}
+
+	.fullMap {
+		width: 100%;
+		height: 70vh;
+	}
+
+	.paramSearchMap {
+		padding: 1em 1.5em;
+	}
+
+	.listSearchMap {
+		width: 100%;
+		height: auto;
+	}
+
+	.listCardsMap {
+		height: auto;
+		overflow-y: hidden;
+	}
+}

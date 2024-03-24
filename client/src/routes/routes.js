@@ -1,16 +1,39 @@
 import HomePage from '@/pages/Home/HomePage';
 import { Login, SignUp, ForgotPassword, ResetPassword } from '@/pages/Auth';
 
-import {AdminRecipe, AdminRecipeCategories, AdminMap, AdminNotice, AdminProducts, AdminStatistics, AdminForo, AdminUser } from '@/pages/Admin';
+
+import {
+	AdminRecipe,
+	AdminRecipeCategories,
+	AdminMap,
+	AdminNotice,
+	AdminProducts,
+	AdminStatistics,
+	AdminForo,
+	AdminUser,
+} from '@/pages/Admin';
+
 import { FormNotice } from '@/pages/Admin/Notices/FormNotice';
 import { FormEditNotice } from '@/pages/Admin/Notices/FormEditNotice';
-import ProfilePanel from '@/pages/Profile/Panel/ProfilePanel';
-import { ProfileMap, ProfileTheards, ProfileRecipes, ProfileSetting } from '@/pages/Profile/Panel/items';
+
+import {
+	ProfileSettingPage,
+	ProfileNotificationsPage,
+	ProfileRecipesCreatedPage,
+	ProfileRecipesFavPage,
+	ProfileRecipesReviewPage,
+	ProfileMarkersCreatedPage,
+	ProfileMarkersFavPage,
+	ProfileMarkersReviewPage,
+	ProfileTheardsCreatedPage,
+	ProfileTheardsFavPage,
+	ProfilePostsCreatedPage,
+} from '@/pages/Profile';
+
 import NotFoundScreen from '@/pages/NotFound/NotFoundScreen';
-import { ProfilePage } from '@/pages/Profile/ProfilePage';
 import { ProductsPage } from '@/pages/Products/ProductsPage';
 import { RecipeDetail, RecipeForm, RecipeSearch } from '@/pages/Recipes';
-import { MapForm, MapSearch } from '@/pages/Map';
+import { MapFormPage, MapSearchPage } from '@/pages/Map';
 import { PostsList, ThreadForm, ThreadsList } from '@/pages/Forum';
 import Aportes from '@/pages/Aportes/Aportes';
 import { ThreadEditForm } from '@/pages/Forum/Form/ThreadEditForm';
@@ -40,28 +63,28 @@ const routesPages = [
 		element: HomePage,
 	},
 	{
-		path: '/recetas-busqueda',
+		path: '/recetas',
 		element: RecipeSearch,
 	},
 	{
-		path: '/receta-formulario',
-		element: RecipeForm,
-	},
-	{
-		path: '/receta/:recetaId',
+		path: '/recetas/:recetaId',
 		element: RecipeDetail,
 	},
 	{
-		path: '/mapa-busqueda',
-		element: MapSearch,
-	},
-	{
-		path: '/mapa-formulario',
-		element: MapForm,
+		path: '/mapa',
+		element: MapSearchPage,
 	},
 	{
 		path: '/foro',
 		element: ThreadsList,
+	},
+	{
+		path: '/aporte',
+		element: Aportes,
+	},
+	{
+		path: '/aporte/:status',
+		element: Aportes,
 	},
 	{
 		path: '/foro-formulario',
@@ -87,14 +110,21 @@ const routesPages = [
 		path: '/productos',
 		element: ProductsPage,
 	},
+];
+
+const routesPrivatePages = [
 	{
-		path: '/perfil/:id',
-		element: ProfilePage
+		path: '/receta-formulario',
+		element: RecipeForm,
 	},
 	{
-		path: '/perfil/:id/panel/*',
-		element: ProfilePanel
-	}
+		path: '/mapa-formulario',
+		element: MapFormPage,
+	},
+	{
+		path: '/foro-formulario',
+		element: ThreadForm,
+	},
 ];
 
 const routesAdmin = [
@@ -132,30 +162,58 @@ const routesAdmin = [
 	},
 	{
 		path: 'foro',
-		element: AdminForo
+		element: AdminForo,
 	},
 	{
 		path: 'productos',
-		element: AdminProducts
+		element: AdminProducts,
 	},
 ];
 
 const routesProfile = [
 	{
-		path: 'configuracion',
-		element: ProfileSetting,
+		path: '',
+		element: ProfileSettingPage,
+	},
+	{
+		path: 'notificaciones',
+		element: ProfileNotificationsPage,
 	},
 	{
 		path: 'recetas',
-		element: ProfileRecipes,
+		element: ProfileRecipesCreatedPage,
 	},
 	{
-		path: 'mapa',
-		element: ProfileMap,
+		path: 'recetas/favoritas',
+		element: ProfileRecipesFavPage,
+	},
+	{
+		path: 'recetas/calificadas',
+		element: ProfileRecipesReviewPage,
+	},
+	{
+		path: 'marcadores',
+		element: ProfileMarkersCreatedPage,
+	},
+	{
+		path: 'marcadores/favoritos',
+		element: ProfileMarkersFavPage,
+	},
+	{
+		path: 'marcadores/calificados',
+		element: ProfileMarkersReviewPage,
 	},
 	{
 		path: 'foro',
-		element: ProfileTheards,
+		element: ProfileTheardsCreatedPage,
+	},
+	{
+		path: 'foro/favoritos',
+		element: ProfileTheardsFavPage,
+	},
+	{
+		path: 'posteos',
+		element: ProfilePostsCreatedPage,
 	},
 	{
 		path: '*',
@@ -163,4 +221,10 @@ const routesProfile = [
 	},
 ];
 
-export { routesAuth, routesPages, routesAdmin, routesProfile };
+export {
+	routesAuth,
+	routesPages,
+	routesPrivatePages,
+	routesAdmin,
+	routesProfile,
+};

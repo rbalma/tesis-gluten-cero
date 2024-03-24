@@ -6,6 +6,7 @@ import useData from '@/hooks/useData';
 import styles from './ProductsPage.module.css';
 
 // https://eddieup.github.io/antd-table-saveas-excel/2api
+// https://github.com/webstylepress/Fetch-Data-from-XLSX-Excel-File-in-React-JS/blob/main/src/App.js
 
 const columns = [
 	{
@@ -24,20 +25,20 @@ const columns = [
 	},
 	{
 		title: 'Denominación Venta',
-		dataIndex: 'denominacionventa',
-		key: 'denominacionventa',
+		dataIndex: 'denominacionVenta',
+		key: 'denominacionVenta',
 		align: 'justify',
 	},
 	{
 		title: 'Tipo Producto',
-		dataIndex: 'TipoProducto',
-		key: 'TipoProducto',
+		dataIndex: 'tipoProducto',
+		key: 'tipoProducto',
 		align: 'center',
 	},
 	{
 		title: 'Estado',
-		dataIndex: 'Estado',
-		key: 'Estado',
+		dataIndex: 'estado',
+		key: 'estado',
 		align: 'center',
 	},
 ];

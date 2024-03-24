@@ -1,0 +1,169 @@
+.containerCard {
+	display: flex;
+	height: 200px;
+	width: 100%;
+	background-color: #ffffff;
+	cursor: pointer;
+	margin-bottom: 2em;
+	transition: 900ms box-shadow;
+	border-radius: 15px;
+	position: relative;
+	transition: 500ms transform;
+	margin-left: auto;
+}
+
+.containerCard:hover {
+	/* box-shadow: rgba(0, 0, 0, 0.2) 0px 10px 20px 0px;
+	transform: translateY(-5px); */
+	outline: 1.5px solid #546e2aff;
+}
+
+
+.imagenCard {
+	border-radius: 15px;
+	border-top-right-radius: 0px;
+	border-bottom-right-radius: 0px;
+	height: 100%;
+	object-fit: cover;
+	position: relative;
+	width: 250px;
+}
+
+.tagCard {
+	background-color: #A67D53;
+	border-radius: 10px;
+	box-shadow: rgba(0, 0, 0, 0.2) 0px 10px 20px 0px;
+	color: #fff;
+	font-size: 12px;
+	font-weight: 400;
+	left: 7px;
+	letter-spacing: 1px;
+	line-height: 10px;
+	line-height: normal;
+	margin: 0;
+	padding: 5px 10px;
+	position: absolute;
+	text-align: center;
+	top: 7px;
+	width: min-content;
+}
+
+.bodyCard {
+	margin: 35px 4%;
+	height: auto;
+}
+
+.titleCard {
+	font-family: 'NoirPro', sans-serif;
+	font-size: 20px;
+	font-weight: 500;
+	margin-bottom: 8px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.infoCardMap {
+	align-items: center;
+	color: #808080;
+	display: flex;
+	font-size: 16px;
+	font-weight: 300;
+	gap: 10px;
+	line-height: normal;
+	margin-bottom: 5px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.starCard {
+	font-family: 'Sora', sans-serif;
+	font-size: 14px;
+	font-weight: 500;
+	display: flex;
+	align-items: baseline;
+	gap: 5px;
+	margin-top: 10px;
+}
+
+.countReviews {
+	font-size: 12px;
+	font-weight: 300;
+	margin-left: 10px;
+	cursor: pointer;
+}
+
+.countReviews:hover {
+	text-decoration: underline;
+	color: #9d9d9d;
+}
+
+.likeMap {
+	border: none;
+	cursor: pointer;
+	background-color: #eee;
+	line-height: normal;
+	color: #9d9d9d;
+	font-size: 20px;
+	padding: 4px 7px;
+	border-radius: 50%;
+	width: min-content;
+	position: absolute;
+	right: 10px;
+	top: 10px;
+}
+
+.likediconMap {
+	animation: liked 0.4s ease;
+}
+
+@keyframes liked {
+	0% {
+		transform: scale(0.8);
+	}
+
+	50% {
+		transform: scale(1.2);
+	}
+
+	100% {
+		transform: scale(1);
+	}
+}
+
+.likeMapActive {
+	background-color: #f3103c;
+	color: #fff;
+}
+
+@media only screen and (max-width: 1080px) {
+	.containerCard {
+		flex-direction: column;
+		min-height: 250px;
+	}
+
+	.leftCard {
+		height: 60%;
+		width: 100%;
+	}
+
+	.imagenCard {
+		object-fit: cover;
+		height: 100%;
+		width: 100%;
+	}
+
+	.rightCard {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-content: center;
+		padding-left: 3em;
+		height: 40%;
+	}
+
+	.likeMap {
+		top: 45%;
+	}
+}

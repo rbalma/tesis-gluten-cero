@@ -12,17 +12,17 @@
 
 .recipeDetails {
 	grid-area: recipe;
-	background-color: #85aedd;
+
 }
 
 .sidebarDetails {
 	grid-area: sidebar;
-	background-color: #fdcfcf;
+	background-color: #afd6af;
+	margin-top: 20px;
 }
 
 .commentDetails {
 	grid-area: comments;
-	background-color: #afd6af;
 }
 
 @media (min-width: 1300px) {

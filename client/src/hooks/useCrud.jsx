@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { toast } from 'sonner';
 import axios from '../utils/axiosInstance';
 
 const useCrud = endpoint => {
@@ -13,7 +12,7 @@ const useCrud = endpoint => {
 		} catch (error) {
 			console.log('Error: ', error.message);
 			const messageError = error.response?.data.message;
-			toast.error(messageError || 'Error del servidor');
+			return { error: messageError || 'Error del servidor' };
 		} finally {
 			setLoading(false);
 		}
@@ -25,9 +24,9 @@ const useCrud = endpoint => {
 			const resp = await axios.get(endpoint, { ...filters });
 			return resp.data;
 		} catch (error) {
-			console.log('Error', error.message);
+			console.log('Error: ', error.message);
 			const messageError = error.response?.data.message;
-			toast.error(messageError || 'Error del servidor');
+			return { error: messageError || 'Error del servidor' };
 		} finally {
 			setLoading(false);
 		}
@@ -41,7 +40,7 @@ const useCrud = endpoint => {
 		} catch (error) {
 			console.log('Error: ', error.message);
 			const messageError = error.response?.data.message;
-			toast.error(messageError || 'Error del servidor');
+			return { error: messageError || 'Error del servidor' };
 		} finally {
 			setLoading(false);
 		}
@@ -57,7 +56,7 @@ const useCrud = endpoint => {
 		} catch (error) {
 			console.log('Error: ', error.message);
 			const messageError = error.response?.data.message;
-			toast.error(messageError || 'Error del servidor');
+			return { error: messageError || 'Error del servidor' };
 		} finally {
 			setLoading(false);
 		}

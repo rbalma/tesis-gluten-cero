@@ -9,7 +9,7 @@ const LayoutHome = () => {
 		<>
 			<Navbar />
 			<Outlet />
-			{location.pathname !== '/mapa-busqueda' && <Footer />}
+			{location.pathname !== '/mapa' && <Footer />}
 		</>
 	);
 };

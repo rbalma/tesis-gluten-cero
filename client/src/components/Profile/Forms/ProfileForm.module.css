@@ -1,0 +1,44 @@
+.profileFormImage {
+  border-radius: 4px;
+  max-width: 200px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.profileFormImage:hover~.profileUploadBtn {
+  display: block;
+}
+
+.profileUploadBtn {
+  background-color: #fff;
+  border-radius: 50px;
+  border: 1px solid #888;
+  bottom: 30px;
+  color: #333;
+  cursor: pointer;
+  display: none;
+  font-family: 'Montserrat', Geneva, Tahoma, sans-serif;
+  font-size: 13px;
+  left: 40px;
+  padding: 5px 10px;
+  position: absolute;
+  transition: 0.3s;
+  width: auto;
+  outline: none;
+}
+
+.profileUploadBtn>svg {
+  margin-right: 5px;
+  padding-top: 2px;
+}
+
+.profileUploadBtn:hover {
+  display: block;
+  background-color: #F5222D;
+  color: #fff;
+  border: 1px solid #888;
+}
+
+.profileFormBtn {
+  margin-top: 20px;
+}
