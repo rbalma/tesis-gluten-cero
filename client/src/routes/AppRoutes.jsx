@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { routesAuth, routesPages, routesAdmin, routesPrivatePages } from './routes';
+import { routesAuth, routesPages, routesAdmin, routesPrivatePages, routesProfile } from './routes';
 import { ScrollToTop } from './ScrollToTop';
 import { Spinner } from '@/components/Loader/Spinner';
 import LayoutHome from '../layout/home/LayoutHome';
@@ -11,7 +11,7 @@ import axiosInstance from '@/utils/axiosInstance';
 import { PublicRoute } from './PublicRoute';
 import { PrivateRoute } from './PrivateRoute';
 import { ProtectedAdminRoute } from './ProtectedAdminRoute';
-import ScrollToAnchor from './ScrollToAnchor';
+import LayoutProfile from '../layout/home/LayoutProfile';
 
 const AppRoutes = () => {
 	const { checking, startChecking, finishChecking } = useAuthStore();
@@ -82,6 +82,21 @@ const AppRoutes = () => {
 						))}
 
 						<Route path='*' element={<NotFoundScreen />} />
+					</Route>
+
+					{/* PANEL PROFILE */}
+					<Route path='perfil/:id' element={<LayoutProfile />}>
+						{routesProfile.map((route) => (
+							<Route
+								key={route.path}
+								path={route.path}
+								element={
+									<PrivateRoute>
+										<route.element />
+									</PrivateRoute>
+								}
+							/>
+						))}
 					</Route>
 
 					{/* PANEL ADMIN */}
