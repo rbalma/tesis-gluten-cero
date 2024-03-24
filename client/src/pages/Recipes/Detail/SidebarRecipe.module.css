@@ -20,13 +20,14 @@
 .itemSidebar {
 	display: flex;
 	gap: 20px;
-	align-items: flex-end;
+	align-items: center;
 	margin-top: 15px;
 }
 
 .infoSidebar {
 	display: flex;
 	flex-direction: column;
+	gap: 8px;
 }
 
 .titleSidebar {
@@ -37,7 +38,7 @@
 
 .categorySidebar {
 	gap: 5px;
-	color: #718fc2;
+	color: green;
 	font-family: 'Open Sans', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 	font-size: 14px;
 }
