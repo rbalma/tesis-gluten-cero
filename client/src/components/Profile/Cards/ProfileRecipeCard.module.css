@@ -1,0 +1,175 @@
+.profileRecipeCard {
+  background-color: #fff;
+  display: flex;
+  gap: 20px;
+  padding: 30px;
+}
+
+.profileRecipeCard:hover {
+  background-color: #fbfbfb;
+}
+
+.profileRecipeCard>img {
+  object-fit: cover;
+  border-radius: 4px;
+  height: 115px;
+  width: 150px;
+}
+
+.profileRecipeContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.profileRecipeContent>h2 {
+  color: rgba(0, 0, 0, .65);
+  font-size: 18px;
+  margin-bottom: 2px;
+  cursor: pointer;
+}
+
+.profileRecipeContent>h2:hover {
+  text-decoration: underline;
+}
+
+.profileRecipeContent>p {
+  color: rgba(0, 0, 0, .65);
+  font-size: 16px;
+  font-weight: 300;
+  margin-bottom: 8px;
+}
+
+.profileRecipeContent>span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(0, 0, 0, .45);
+  font-size: 14px;
+  line-height: 1.5715;
+}
+
+.profileRecipeStarCard {
+  font-family: 'Sora', sans-serif;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 5px;
+}
+
+.profileRecipeStarCard>ul {
+  font-size: 16px;
+}
+
+.profileRecipeCountReviews {
+  font-size: 12px;
+  font-weight: 400;
+}
+
+
+.profileRecipeButtonContainer {
+  display: none;
+  gap: 8px;
+  margin-block: auto;
+  margin-left: auto;
+}
+
+.profileRecipeCard:hover>.profileRecipeButtonContainer {
+  display: flex;
+}
+
+.profileRecipeButton {
+  align-items: center;
+  background-color: #e9e9e9;
+  border-radius: 50px;
+  border: none;
+  color: #666666;
+  cursor: pointer;
+  display: flex;
+  font-family: 'Sora', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  gap: 8px;
+  line-height: 20px;
+  margin: 0;
+  padding: 6px 10px;
+  width: fit-content;
+}
+
+.profileRecipeButton:hover {
+  background-color: #f91942;
+  color: #fff;
+}
+
+/*
+  Reviews
+*/
+
+.profileRecipeReviewCard {
+  padding: 23px 30px;
+  background-color: #fff;
+  transition: background-color 0.3s;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 20px;
+}
+
+.profileRecipeReviewCard:hover {
+  background-color: #fbfbfb;
+}
+
+.profileRecipeReviewCard>img {
+  max-width: 80px;
+  border-radius: 50%;
+  aspect-ratio: 1/1;
+}
+
+.profileRecipeReviewContent {
+  margin-top: 10px;
+}
+
+.profileRecipeReviewContent>span {
+  font-size: 15px;
+  font-family: 'Sora', sans-serif;
+}
+
+.profileRecipeReviewContent>span>b {
+  font-weight: 500;
+  color: #888888;
+}
+
+.dateRate {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 5px 0 10px;
+}
+
+.dateRate>span {
+  color: #888888;
+  font-weight: 300;
+}
+
+.profileRecipeReviewContent>p {
+  font-size: 15px;
+  font-weight: 300;
+  color: #666666;
+}
+
+.profileRecipeReviewAnswer {
+  background-color: #fbfbfb;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.profileRecipeReviewAnswer>span {
+  font-size: 12px;
+  font-weight: 500;
+  font-family: 'Sora', sans-serif;
+}
+
+.profileRecipeReviewAnswer>p {
+  font-size: 14px;
+  font-weight: 300;
+}

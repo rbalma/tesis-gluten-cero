@@ -1,12 +1,11 @@
 .sidebar {
-  position: static;
+  position: sticky;
   top: 80px;
   left: 0;
   display: flex;
   flex-direction: column;
   width: 250px;
-  min-height: calc(100dvh - 80px);
-  height: 100%;
+  height: calc(100dvh - 80px);
   background: #2A2A2A;
   transition: width 0.4s;
   overflow-y: scroll;
@@ -44,8 +43,50 @@
   width: 100%;
 }
 
+.item:hover {
+  background: #353535;
+}
+
+.item:hover::before {
+  content: '';
+  width: 5px;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  background-color: #F91942;
+}
+
 .item span:nth-child(2) {
   flex: 1 1 auto;
+}
+
+.collapsedItem {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  color: #d4d4ea;
+  cursor: pointer;
+  display: flex;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 400;
+  gap: 25px;
+  height: 50px;
+  line-height: 1;
+  padding: 0 25px;
+  position: relative;
+  text-align: left;
+  width: 100%;
+}
+
+.collapsedItem:hover {
+  /* background: #353535; */
+  color: #F91942;
+  transition: color 200ms ease-in;
+}
+
+.collapsedItemActive {
+  color: #F91942;
 }
 
 .btnActive button {
@@ -61,19 +102,6 @@
   background-color: #F91942;
 }
 
-.item:hover {
-  background: #353535;
-}
-
-.item:hover::before {
-  content: '';
-  width: 5px;
-  height: 100%;
-  position: absolute;
-  left: 0;
-  background-color: #F91942;
-}
-
 .subNav {
   overflow: hidden;
   height: 0;
@@ -81,9 +109,9 @@
   background: #353535;
 }
 
-.subNav button {
-  padding-left: 35px;
-}
+/* .subNav button {
+  padding-left: 25px;
+} */
 
 .open {
   height: 150px;
@@ -95,12 +123,12 @@
 
 .more {
   transform: rotate(0deg);
-  transition: transform 500ms ease-in;
+  transition: transform 400ms ease-out;
 }
 
 .less {
   transform: rotate(180deg);
-  transition: transform 500ms ease-in;
+  transition: transform 400ms ease-out;
 }
 
 /*
