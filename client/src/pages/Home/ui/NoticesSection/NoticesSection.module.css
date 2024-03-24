@@ -5,6 +5,15 @@
 	background-color: #fff;
 }
 
+.carouselContainer {
+	position: relative;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden;
+}
+
 .title {
 	margin: 0;
 	font-size: 35px;

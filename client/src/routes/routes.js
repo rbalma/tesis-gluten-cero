@@ -1,6 +1,7 @@
 import HomePage from '@/pages/Home/HomePage';
 import { Login, SignUp, ForgotPassword, ResetPassword } from '@/pages/Auth';
 
+
 import {
 	AdminRecipe,
 	AdminRecipeCategories,
@@ -11,6 +12,9 @@ import {
 	AdminForo,
 	AdminUser,
 } from '@/pages/Admin';
+
+import { FormNotice } from '@/pages/Admin/Notices/FormNotice';
+import { FormEditNotice } from '@/pages/Admin/Notices/FormEditNotice';
 
 import {
 	ProfileSettingPage,
@@ -32,6 +36,7 @@ import { RecipeDetail, RecipeForm, RecipeSearch } from '@/pages/Recipes';
 import { MapFormPage, MapSearchPage } from '@/pages/Map';
 import { PostsList, ThreadForm, ThreadsList } from '@/pages/Forum';
 import Aportes from '@/pages/Aportes/Aportes';
+import { ThreadEditForm } from '@/pages/Forum/Form/ThreadEditForm';
 
 const routesAuth = [
 	{
@@ -86,8 +91,20 @@ const routesPages = [
 		element: ThreadForm,
 	},
 	{
+		path: '/foro-formulario-edit/:hiloId',
+		element: ThreadEditForm,
+	},
+	{
 		path: '/foro/:hiloId',
 		element: PostsList,
+	},
+	{
+		path: '/aporte',
+		element: Aportes
+	},
+	{
+		path: '/aporte/:status',
+		element: Aportes
 	},
 	{
 		path: '/productos',
@@ -130,6 +147,14 @@ const routesAdmin = [
 	{
 		path: 'noticias',
 		element: AdminNotice,
+	},
+	{
+		path: 'noticias/agregar',
+		element: FormNotice,
+	},
+	{
+		path: 'noticias/editar/:noticeId',
+		element: FormEditNotice,
 	},
 	{
 		path: 'mapa',

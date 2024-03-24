@@ -8,18 +8,19 @@ import ErrorResponse from "../utils/errorResponse.js";
 export const addThread = async (req, res, next) => {
   try {
     const thread = new Thread(req.body);
-    const post = new Post(req.body);
-
+    // const post = new Post(req.body);
     thread.user = req.id;
+    // thread.title = req.body.title
 
     const threadDB = await thread.save();
     if (!threadDB) return next(new ErrorResponse("El Hilo ya existe", 400));
 
-    post.content = req.body.content;
-    post.user = req.id;
-    post.thread = threadDB._id;
-    const postDB = await post.save();
-    if (!postDB) return next(new ErrorResponse("El posteo no se pudo crear", 400));
+    // post.title = req.body.title;
+    // post.content = req.body.content;
+    // post.user = req.id;
+    // post.thread = threadDB._id;
+    // const postDB = await post.save();
+    // if (!postDB) return next(new ErrorResponse("El posteo no se pudo crear", 400));
 
     res.json({ ok: true, data: threadDB, message: 'Hilo agregado' });
   } catch (error) {
@@ -40,13 +41,11 @@ export const getThread = async (req, res, next) => {
     populate: [
       {
         path: "user",
-        select: "name lastname",
       },
       {
         path: "posts",
         select: "date user",
         sort: { date: -1 },
-        limit: 1,
         populate: { path: "user", select: "name lastname" },
       },
     ],
@@ -88,7 +87,11 @@ export const getThreadById = async (req, res, next) => {
   
     try {
       const thread = await Thread.findById(threadId)
-        .populate('user', 'name lastname');
+        .populate('user')
+        .populate({
+          path: 'posts',
+          populate: { path: 'user' }
+        });
       if (!thread) return next(new ErrorResponse('No existe el hilo', 404));
   
       return res.json({ ok: true, data: thread });
@@ -116,7 +119,6 @@ export const updateThread = async (req, res, next) => {
       const newThread = {
         ...req.body,
         user: req.id,
-        date: Date.now(),
         isUpdated: true
       };
   
@@ -144,8 +146,8 @@ export const deleteThread = async (req, res, next) => {
     const thread = await Thread.findById(threadId);
     if (!thread) return next(new ErrorResponse("No existe el hilo", 404));
 
-    await Thread.findByIdAndDelete(threadId);
-    await Post.deleteMany({ thread: threadId });
+    const deletedThread = await Thread.findByIdAndDelete(threadId);
+    await Post.deleteMany({ _id: { $in: deletedThread.posts } });
     res.json({ ok: true, data: threadId, message: 'Hilo eliminado' });
   } catch (error) {
     next(error);

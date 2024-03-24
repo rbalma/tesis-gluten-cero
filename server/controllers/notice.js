@@ -8,11 +8,33 @@ import { fsUnlink } from "../utils/fsUnlink.js";
 // @access Private
 export const addNotice = async (req, res, next) => {
   try {
-    if (req.file) //req.body.image = req.file.filename;
-    return res.json({ file: req.file })
-    const notice = await Notice.create(req.body);
-    res.json({ ok: true, data: notice, message: "Noticia creada" });
+    const { title, link, source } = req.body;
+    const imageBuffer = req.file.buffer;
+    // Guardar la noticia en MongoDB junto con el buffer de la imagen
+    const newNotice = new Notice({
+      title,
+      link,
+      source,
+      avatar: {
+        data: imageBuffer,
+        contentType: req.file.mimetype,
+      },
+    });
+
+    // Liberar memoria
+    req.file.buffer = null;
+
+    await newNotice.save();
+
+    res.json({ ok: true, data: newNotice, message: "Noticia creada" });
+
+
+    // if (req.file) //req.body.image = req.file.filename;
+    // return res.json({ file: req.file })
+    // const notice = await Notice.create(req.body);
+    // res.json({ ok: true, data: notice, message: "Noticia creada" });
   } catch (error) {
+    console.log(error)
     if (req.file) fsUnlink(`/notices/${req.file.filename}`);
     next(error);
   }
@@ -84,11 +106,16 @@ export const updateNotice = async (req, res, next) => {
     if (!notice) return next(new ErrorResponse("La noticia no existe"));
 
     if (req.file) {
-      req.body.image = req.file.filename;
-      fsUnlink(`/notices/${notice.image}`);
+      // req.body.avatar = req.file.filename;
+
+      req.body.avatar = {
+        data: req.file.buffer,
+        contentType: req.file.mimetype,
+      };
+      // fsUnlink(`/notices/${notice.image}`);
     }
 
-    const noticeUpdated = await Notice.findByIdAndUpdate(id, req.body, {
+    const noticeUpdated = await Notice.findByIdAndUpdate(noticeId, req.body, {
       new: true,
     });
 

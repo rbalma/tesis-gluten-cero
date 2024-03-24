@@ -89,7 +89,8 @@ export const getPostById = async (req, res, next) => {
 // @route UPDATE /api/posts/:postId
 // @access Private
 export const updatePost = async (req, res, next) => {
-  const { postId } = req.params.idPost;
+  // const { postId } = req.params.idPost;
+  const { postId } = req.params;
 
   try {
     const post = await Post.findById(postId);
@@ -104,7 +105,7 @@ export const updatePost = async (req, res, next) => {
     const newPost = {
       ...req.body,
       user: req.id,
-      thread: threadId,
+      // thread: threadId,
       isUpdated: true,
     };
 

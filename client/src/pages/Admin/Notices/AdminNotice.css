@@ -1,0 +1,4 @@
+.notice-image {
+    max-height: 10rem;
+    object-fit: cover;
+}
