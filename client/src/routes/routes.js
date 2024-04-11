@@ -1,10 +1,8 @@
 import HomePage from '@/pages/Home/HomePage';
 import { Login, SignUp, ForgotPassword, ResetPassword } from '@/pages/Auth';
 
-
 import {
 	AdminRecipe,
-	AdminRecipeCategories,
 	AdminMap,
 	AdminNotice,
 	AdminProducts,
@@ -13,6 +11,9 @@ import {
 	AdminUser,
 } from '@/pages/Admin';
 
+import { AdminCategories } from '@/pages/Admin/Categories/AdminCategories';
+import { FormCategories } from '@/pages/Admin/Categories/FormCategories';
+import { FormEditCategories } from '@/pages/Admin/Categories/FormEditCategories';
 import { FormNotice } from '@/pages/Admin/Notices/FormNotice';
 import { FormEditNotice } from '@/pages/Admin/Notices/FormEditNotice';
 
@@ -141,8 +142,16 @@ const routesAdmin = [
 		element: AdminRecipe,
 	},
 	{
-		path: 'recetas-categorias',
-		element: AdminRecipeCategories,
+		path: 'categorias',
+		element: AdminCategories,
+	},
+	{
+		path: 'categorias/agregar',
+		element: FormCategories,
+	},
+	{
+		path: 'categorias/editar/:categoryId',
+		element: FormEditCategories,
 	},
 	{
 		path: 'noticias',
