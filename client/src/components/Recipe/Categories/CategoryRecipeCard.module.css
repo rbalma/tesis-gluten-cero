@@ -1,0 +1,52 @@
+.categoryRecipeCard {
+  cursor: pointer;
+  min-width: 130px;
+  width: 130px;
+}
+
+.categoryRecipeItem {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  height: 120px;
+  padding: 10px 0;
+  background: #f8f8f8;
+  scroll-snap-align: start;
+  transition: background 400ms ease-in-out;
+  box-shadow: 0 4px 6px rgb(0 0 0/12%);
+}
+
+.categoryRecipeItem>img {
+  width: 75px;
+  height: 75px;
+  border-radius: 50px;
+}
+
+.categoryRecipeItem>span {
+  padding-top: 10px;
+  margin-bottom: auto;
+  text-align: center;
+  font-weight: 700;
+  font-size: 12px;
+  font-family: 'Sora';
+  text-transform: capitalize;
+}
+
+.categoryRecipeItem:hover {
+  background: #f1f0ef;
+}
+
+.categoryRecipeCard input[type=checkbox]:checked~.categoryRecipeItem {
+  background: #fafafa;
+  border: 0.5px solid #A67D53;
+}
+
+
+.categoryRecipeCard input[type='checkbox'] {
+  display: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}

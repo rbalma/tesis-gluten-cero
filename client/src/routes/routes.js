@@ -28,7 +28,7 @@ import {
 
 import NotFoundScreen from '@/pages/NotFound/NotFoundScreen';
 import { ProductsPage } from '@/pages/Products/ProductsPage';
-import { RecipeDetail, RecipeForm, RecipeSearch } from '@/pages/Recipes';
+import { RecipeDetailPage, RecipeFormPage, RecipeSearchPage } from '@/pages/Recipes';
 import { MapFormPage, MapSearchPage } from '@/pages/Map';
 import { PostsList, ThreadForm, ThreadsList } from '@/pages/Forum';
 import Aportes from '@/pages/Aportes/Aportes';
@@ -59,11 +59,11 @@ const routesPages = [
 	},
 	{
 		path: '/recetas',
-		element: RecipeSearch,
+		element: RecipeSearchPage,
 	},
 	{
 		path: '/recetas/:recetaId',
-		element: RecipeDetail,
+		element: RecipeDetailPage,
 	},
 	{
 		path: '/mapa',
@@ -98,7 +98,7 @@ const routesPages = [
 const routesPrivatePages = [
 	{
 		path: '/receta-formulario',
-		element: RecipeForm,
+		element: RecipeFormPage,
 	},
 	{
 		path: '/mapa-formulario',

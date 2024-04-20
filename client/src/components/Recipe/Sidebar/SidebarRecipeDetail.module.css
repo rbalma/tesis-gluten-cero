@@ -1,0 +1,56 @@
+.containerSidebar {
+	margin: 0px 20px 20px;
+}
+
+.containerSidebar>hr {
+	margin-top: 20px;
+	margin-bottom: 20px;
+	border: 0;
+	border-top: 1px solid #eee;
+}
+
+.titleSidebar {
+	font-family: 'Montserrat', sans-serif;
+	font-weight: 800;
+	font-size: 16px;
+	color: #333;
+	display: block;
+	padding-bottom: 10px;
+	text-transform: uppercase;
+	position: relative;
+}
+
+.titleSidebar::before {
+	content: "";
+	position: absolute;
+	bottom: 0;
+	width: 100px;
+	height: 2px;
+	left: 0;
+	background-color: #ff203e;
+}
+
+.printButton {
+	background: #fff;
+	border-radius: 4px;
+	padding: 5px 10px;
+	color: #f91942;
+	border: 1px solid #f91942;
+	outline: none;
+	cursor: pointer;
+	font-family: 'Sora', sans-serif;
+	font-weight: 300;
+	font-size: 14px;
+	transition: background 400ms ease, color 400ms ease;
+	width: 90%;
+	margin: 0px auto;
+	display: flex;
+	gap: 8px;
+	justify-content: center;
+	align-items: center;
+}
+
+.printButton:hover {
+	background: #f91942;
+	color: #fff;
+}

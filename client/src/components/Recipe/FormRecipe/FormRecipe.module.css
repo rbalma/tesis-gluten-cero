@@ -1,0 +1,126 @@
+.formRecipe {
+  height: 100%;
+  margin: 45px auto 0px;
+}
+
+.titleFormRecipe {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  font-family: 'Montserrat', Verdana, Geneva, Tahoma, sans-serif;
+  margin-bottom: 25px;
+}
+
+.contentFormRecipe {
+  width: 600px;
+  min-width: 100%;
+}
+
+.divBtn {
+  width: 100%;
+  border-top: 1px solid #d9d9d9;
+  margin-top: auto;
+}
+
+.divBtn>div {
+  max-width: 1200px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px auto 10px;
+}
+
+.stepInfoCount>strong {
+  color: #f91942;
+  font-weight: 400;
+}
+
+.btnNext {
+  background: #f91942;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 20px;
+  margin: 0;
+  padding: 6px 10px;
+  width: 120px;
+  height: 40px;
+  transition: background 300ms ease;
+}
+
+.btnNext:hover {
+  background: rgb(216, 45, 54);
+}
+
+.btnNext:disabled {
+  cursor: not-allowed;
+  background: #c8c8c8;
+  color: #a9a9a9;
+}
+
+.btnBack {
+  background: #ededed;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 20px;
+  margin: 0;
+  padding: 6px 10px;
+  width: 120px;
+  height: 40px;
+  transition: background 300ms ease;
+}
+
+.btnBack:hover {
+  background: #dfdfdf;
+}
+
+.btnSubmit {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+  background: #f91942;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  font-size: 16px;
+  font-style: italic;
+  font-weight: 300;
+  line-height: 20px;
+  margin: 0;
+  padding: 6px 10px;
+  width: 100vw;
+  height: 0;
+  animation-name: height;
+  animation-duration: 600ms;
+  animation-fill-mode: forwards;
+  position: fixed;
+  z-index: 5;
+  bottom: 0;
+  transition: background 300ms ease;
+}
+
+.btnSubmit:hover {
+  background: #db163a;
+}
+
+@keyframes height {
+  0% {
+    height: 0;
+  }
+
+  100% {
+    height: 14dvh;
+  }
+}
+
+.btnSubmit>svg {
+  transform: rotate(180deg);
+}

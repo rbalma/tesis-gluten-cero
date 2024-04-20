@@ -1,0 +1,42 @@
+.formCommentContainer {
+  background: #f2f2f2;
+  margin-bottom: 50px;
+}
+
+.headerFormComment {
+  color: #ffffff;
+  background-color: #154c44;
+  padding: 25px 30px 25px 130px;
+  margin: 0;
+  background: #154c44 url('../../../assets/images/star.webp') no-repeat 15px center;
+  background-size: auto 102px
+}
+
+.contentHeaderFormComment {
+  margin: 5px 0;
+  font-family: 'Montserrat', sans-serif;
+  text-wrap: balance;
+}
+
+.contentHeaderFormComment>h2 {
+  color: #619c8b;
+  font-size: 24px;
+  line-height: .8;
+  font-weight: 400;
+  text-transform: none;
+  font-weight: 400;
+  letter-spacing: normal;
+  margin: 0 0 10px;
+  font-style: italic;
+}
+
+.contentHeaderFormComment>p {
+  margin: 0;
+  display: block;
+  font-size: 14px;
+}
+
+.formCommentRecipe {
+  padding: 10px 25px 30px;
+  font-family: 'Montserrat', sans-serif
+}

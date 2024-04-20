@@ -1,11 +1,11 @@
 .card-recipe {
 	align-self: flex-start;
 	position: relative;
-	width: 325px;
-	min-width: 275px;
-	margin: 1.25rem 0.75rem;
-	background: white;
+	width: 270px;
+	background: #f7f7f7;
 	transition: all 300ms ease-in-out;
+	border-radius: 10px;
+	box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
 }
 
 .card-recipe .card-img {
@@ -29,11 +29,14 @@
 	position: absolute;
 	height: 200px;
 	top: 0;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
 }
 
 .card-recipe .card-info {
 	position: relative;
 	padding: 0.75rem 1.25rem;
+	height: 120px;
 	transition: all 200ms ease-in-out;
 }
 
@@ -46,43 +49,44 @@
 }
 
 .card-recipe .card-info .card-about .card-tag {
-	width: 100%;
-	max-width: fit-content;
-	padding: 0.2rem 0.5rem;
-	font-size: 12px;
+	width: fit-content;
+	padding: 4px 8px;
+	font-size: 10px;
 	text-align: center;
 	text-transform: uppercase;
 	letter-spacing: 1px;
-	background: #505f79;
 	color: #fff;
-}
-
-.card-recipe .card-info .card-about .card-tag.tag-news {
-	background: #36b37e;
-}
-
-.card-recipe .card-info .card-about .card-tag.tag-deals {
-	background: #ffab00;
-}
-
-.card-recipe .card-info .card-about .card-tag.tag-politics {
 	background: #ff5630;
+	border-radius: 5px;
+}
+
+.card-recipe .card-info .card-about .card-review {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	color: #ffab00;
+	font-size: 14px;
+	width: fit-content;
+	box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+	padding: 4px 8px;
+	border-radius: 8px;
+	font-family: 'Sora', sans-serif;
 }
 
 .card-recipe .card-info .card-title {
-	z-index: 10;
-	font-size: 1.3rem;
-	padding-bottom: 0.75rem;
+	z-index: 10px;
+	font-size: 16px;
+	padding-top: 4px;
 	transition: all 350ms ease-in-out;
-	font-family: 'Montserrat', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-	font-weight: bold;
+	font-family: 'Sora', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	font-weight: 600px;
 	text-transform: capitalize;
-}
-
-.card-recipe .card-info .card-creator {
-	padding-bottom: 0.75rem;
-	transition: all 250ms ease-in-out;
-	color: #9b9b9b;
+	color: #0d1717;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
 }
 
 .card-recipe:hover {
@@ -97,6 +101,8 @@
 			rgba(0, 0, 0, 0),
 			rgba(0, 0, 0, 0.65));
 	height: 100%;
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
 }
 
 .card-recipe:hover .card-about,
@@ -109,6 +115,6 @@
 }
 
 .card-recipe:hover .card-title {
-	color: #ebecf0;
-	transform: translate(0, 20px);
+	color: #fff;
+	transform: translate(0, -10px);
 }
