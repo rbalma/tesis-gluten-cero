@@ -1,0 +1,94 @@
+.foro-form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.foro-form-title {
+    padding: 1rem;
+    font-size: 2rem;
+}
+
+.foro-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 30rem;
+    min-width: 18rem;
+    padding: 2rem;
+    margin: 1rem;
+    background-color: rgba(255, 255, 255, .5);
+    border-radius: .5rem;
+    font-size: 1rem;
+}
+
+@media (max-width: 490px) {
+	.foro-form {
+        width: 95%;
+	}
+}
+
+.foro-input {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2.5rem;
+    width: 100%;
+}
+
+.foro-input input {
+    border: none;
+    background-color: #ffd09ec7;
+    padding: .5rem;
+    border-radius: .5rem;
+}
+
+.foro-input textarea {
+    border: none;
+    background-color: #ffd09ec7;
+    padding: .5rem;
+    border-radius: .5rem;
+}
+
+.foro-input label {
+    display: flex;
+    flex-direction: column;
+    padding: .5rem 0;
+    font-size: 1rem;
+}
+
+.foro-btn-container {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+}
+
+.foro-submit-btn {
+    width: 100%;
+    padding: .5rem;
+    border: none;
+    border-radius: .5rem;
+    background-color: #FA8C15;
+    color: #fff;
+    cursor: pointer;
+}
+
+.foro-submit-btn:hover {
+    background-color: #b86610;
+}
+
+.foro-cancel-btn {
+    width: 100%;
+    padding: .5rem;
+    border: none;
+    border-radius: .5rem;
+    text-align: center;
+    background-color: #ffe4c7;
+    color: #FA8C15;
+    cursor: pointer;
+    transition: 0s;
+}
+
+.foro-cancel-btn:hover {
+    background-color: #ffd09e;
+    color: #b86610;
+}

@@ -6,7 +6,8 @@ import {
 	EnvironmentOutlined,
 	FileExcelOutlined,
 	MessageOutlined,
-	SnippetsOutlined
+	SnippetsOutlined,
+	UnorderedListOutlined
 } from '@ant-design/icons';
 
 
@@ -45,6 +46,11 @@ export const menuItems = [
 		label: <NavLink to='/admin/productos'>Productos</NavLink>,
 		icon: <FileExcelOutlined />,
 		key: '/admin/productos',
+	},
+	{
+		label: <NavLink to='/admin/categorias'>Categorias</NavLink>,
+		icon: <UnorderedListOutlined />,
+		key: '/admin/categorias',
 	},
 ];
 

@@ -122,8 +122,40 @@ export default function Aportes() {
                     <div className='aportes-body_info'>
                         <p className='aportes-body_info-title'>¿Que hacemos con tu donación?</p>
                         <p className='aportes-body_info-body'>
-                            Vorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus. Maecenas eget condimentum velit, sit amet feugiat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent auctor purus luctus enim egestas, ac scelerisque ante pulvinar. Donec ut rhoncus ex. Suspendisse ac rhoncus nisl, eu tempor urna. Curabitur vel bibendum lorem. Morbi convallis convallis diam sit amet lacinia. Aliquam in elementum tellus.
+                        ¡Bienvenido a nuestra página de donaciones! En Gluten Cero, nos esforzamos por proporcionar información precisa, recursos útiles y apoyo vital a todas las personas afectadas por la enfermedad celíaca.<br></br>
+                        Sin embargo, para seguir cumpliendo con nuestra misión y expandir nuestro alcance, necesitamos tu ayuda.
                         </p>
+                    </div>
+                    <div className='aportes-body_info-content'>
+                    <div className='aportes-up-container'>
+                        <div className='aportes-body_info-left-content'>
+                            <img src="/src/assets/images/aportes/debby-hudson-asviIGR3CPE-unsplash.jpg" alt="" className="aportes-body_info-content-image"/>
+                            <div className='left-column'>                          
+                                <h2>Educación y Concienciación</h2>
+                                <p>La enfermedad celíaca es a menudo subestimada o malentendida.
+                                Con tu apoyo, podemos trabajar para aumentar la comprensión general sobre esta condición médica. 
+                                </p>
+                            </div>
+                        </div>
+                        <div className='aportes-body_info-right-content'>
+                            <div className='right-column'>
+                                <h2>Acceso a una Alimentación Segura</h2>
+                                <p> La dieta sin gluten es esencial para las personas con enfermedad celíaca, pero puede ser costosa y difícil de seguir. Con tus donaciones, podemos proporcionar recursos para facilitar acceder a alimentos seguros y nutritivos.</p>
+                            </div>
+                            <img src="/src/assets/images/aportes/anna-pelzer-IGfIGP5ONV0-unsplash.jpg" alt=""  className="aportes-body_info-content-image"/>
+                        </div>
+                    </div>
+                    <div className="aportes-bottom-container">
+                        <img src="/src/assets/images/aportes/krakenimages-Y5bvRlcCx8k-unsplash.jpg" alt="Imagen inferior" className="aportes-body_info-content-image"/>
+                        <div className='aportes-body_info-bottom-content'>
+                            <h2>Fomentar la Inclusión</h2>
+                            <p>Queremos que las personas con enfermedad celíaca se sientan incluidas y capacitadas en todas las áreas de la vida. Tu apoyo nos permite abogar por políticas inclusivas, promover opciones sin gluten en restaurantes y establecimientos, y trabajar para eliminar barreras sociales y culturales.</p>
+                        </div>
+                    </div>
+                    <div>
+                        <p className='aportes-body_info-body'>
+                        Cada donación nos acerca un paso más a nuestro objetivo de mejorar la vida de las personas afectadas por la enfermedad celíaca. Con tu ayuda, podemos hacer una diferencia real y duradera. ¡Gracias por considerar apoyarnos en esta importante misión!                        </p>
+                    </div>
                     </div>
                     <div className="aportes-body_btn">
                         <div className="btn-donar-container">

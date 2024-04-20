@@ -9,7 +9,8 @@ const pathUploadNotices = __dirname + '/uploads/notices';
 
 const configuracionMulter = {
   limits: { fileSize: 1 * 1024 * 1024 }, // 1 MB
-  storage: multer.diskStorage({
+  // storage: multer.diskStorage({
+  storage: multer.memoryStorage({
     destination: (req, file, cb) => {
       const pathUpload = req.body.title ? pathUploadNotices : pathUploadAvatar;
       cb(null, pathUpload);

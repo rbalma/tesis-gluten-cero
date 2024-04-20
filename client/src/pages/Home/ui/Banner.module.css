@@ -6,14 +6,14 @@
 	align-items: center;
 	width: 100%;
 	height: calc(100vh - 80px);
-	background: url('@/assets/images/hero-bgr.jpg') bottom right;
+	background: url('@/assets/images/home/logo-glutenCero-v2.jpg') right;
 	background-size: cover;
 	position: relative;
 }
 
 .hero:before {
 	content: '';
-	background: rgba(0, 0, 0, 0.2);
+	/*background: rgba(0, 0, 0, 0.1);*/
 	position: absolute;
 	bottom: 0;
 	top: 0;
@@ -99,7 +99,7 @@
 	}
 
 	#hero {
-		background: url('@/assets/images/hero-bgr.jpg') top right;
+		background: url('@/assets/images/home/logo-glutenCero-v2.jpg') top right;
 	}
 
 	#hero:before {

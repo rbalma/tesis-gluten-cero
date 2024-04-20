@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Row, Col, Space, Avatar, Tabs, Tag, Dropdown, Button } from 'antd';
 import {
 	CheckCircleTwoTone,
@@ -108,13 +108,15 @@ export const AdminUser = () => {
 		},
 	];
 
-	const handleChangeTab = (newTab) => {
+	/*const handleChangeTab = (newTab) => {
 		setTab(newTab);
 		if (newTab === '1') return setFilters({ ...pageLimit, active: true });
 		if (newTab === '2') return setFilters({ ...pageLimit, active: false });
-	};
+	};*/
 
-	const props = {
+	const [usersCopy, setUsersCopy] = useState(data)
+
+	const [props, setProps] = useState({
 		count: countData,
 		columns: columns,
 		loading: loadingData,
@@ -122,7 +124,81 @@ export const AdminUser = () => {
 		fetch: setFilters,
 		showHeader: true,
 		perPage: filters.limit,
+	})
+
+	const applyFilters = (name, state, dates, orderBy) => {
+		let filteredUsers = [...usersCopy];
+
+		// Filtra por el nombre de usuario, apellido o mail
+		if(name.length > 0) {
+			const filteredUsersByName = filteredUsers?.filter((user) =>
+			user.name.toLowerCase().includes(name.toLowerCase()) ||
+			user.lastname.toLowerCase().includes(name.toLowerCase()) ||
+			user.email.toLowerCase().includes(name.toLowerCase())
+		  );
+			filteredUsers = filteredUsersByName;
+		};
+
+		// Filtra por el estado de usuario
+		if (state === null) {
+			filteredUsers = filteredUsers;
+		} 
+		else{
+			const filteredUsersByState = filteredUsers?.filter((user) => state ? user.active : !user.active);
+			filteredUsers = filteredUsersByState;
+		};
+
+		// Filtra por la fecha
+		if(dates[0].length > 0 && dates[1].length) {
+			const desde = new Date(dates[0]);
+			const hasta = new Date(dates[1]);
+
+			const filteredUsersByDate = filteredUsers?.filter((user) => {
+				const fechaCreacionUsuario = new Date(user.createdAt);
+				return fechaCreacionUsuario >= desde && fechaCreacionUsuario <= hasta;
+			});
+			filteredUsers = filteredUsersByDate;
+		};
+
+		// Ordenar por nombre, apellido o fecha de creación
+		if (orderBy) {
+			filteredUsers.sort((a, b) => {
+			  switch (orderBy) {
+				case 'nombre':
+				  return a.name.localeCompare(b.name);
+				case 'apellido':
+				  return a.lastname.localeCompare(b.lastname);
+				case 'fechaCreacion':
+				  return new Date(a.createdAt) - new Date(b.createdAt);
+				default:
+				  return 0;
+			  }
+			});
+		  }
+
+		setProps({
+			count: countData,
+			columns: columns,
+			loading: loadingData,
+			data: filteredUsers,
+			fetch: setFilters,
+			showHeader: true,
+			perPage: filters.limit,
+		})
 	};
+
+	useEffect(() => {
+		if(!loadingData) {
+			setProps({
+				...props,
+				count: countData,
+				columns: columns,
+				loading: loadingData,
+				data: data,
+			})
+			setUsersCopy(data);
+		};
+	}, [data]);
 
 	return (
 		<>
@@ -158,7 +234,7 @@ export const AdminUser = () => {
 
 			<Row>
 				<Col span={6}>
-					<FiltersAdminUser />
+					<FiltersAdminUser applyFilters={applyFilters}/>
 				</Col>
 				<Col span={17} offset={1}>
 					<DataTable {...props} />
