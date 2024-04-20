@@ -2,14 +2,10 @@ import notFound from '@/assets/images/notices-not-found.gif';
 import useData from "@/hooks/useData";
 
 import styles from './NoticesSection.module.css';
-import NoticeCarousel from './NoticeCarousel';
-
-
+import { NoticesSlider } from "./NoticesSlider";
 
 export const NoticesSection = () => {
-	const { 1: loading, 2: notices } = useData('/notices?limit=10&page=1');
-
-	if(loading) return <h1>Cargando...</h1>
+const { 1: loading, 2: notices } = useData('/notices?limit=10&page=1');
 
 	return (
 		<section className={styles.container} id='noticias'>
@@ -24,9 +20,7 @@ export const NoticesSection = () => {
 				<p className={styles.notFound}>Disculpe pero en este momento no existen noticias</p>
 				</>
 			) : (
-				<div className={styles.carouselContainer}>
-					<NoticeCarousel notices={notices}/>
-				</div>
+				<NoticesSlider notices={notices} />
 			)}
 		</section>
 	);
