@@ -27,7 +27,7 @@ export const MobileMenu = ({ open, closeMenu }) => {
 				</li>
 				<li className={styles.menuli} onClick={handleSelectItemMenu}>
 					<NavLink
-						to='/recetas-busqueda'
+						to='/recetas'
 						className={styles.item}
 						style={{ '--color': '#9684A1' }}
 						data-text='&nbsp;Recetas&nbsp;'
@@ -37,7 +37,7 @@ export const MobileMenu = ({ open, closeMenu }) => {
 				</li>
 				<li className={styles.menuli} onClick={handleSelectItemMenu}>
 					<NavLink
-						to='/mapa-busqueda'
+						to='/mapa'
 						className={styles.item}
 						style={{ '--color': '#638475' }}
 						data-text='&nbsp;Mapa&nbsp;'

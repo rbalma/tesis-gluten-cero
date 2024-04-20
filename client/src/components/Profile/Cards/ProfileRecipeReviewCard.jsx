@@ -1,8 +1,9 @@
 import { Rate } from 'antd';
-import { IconArrowBackUp } from '@/components/Icons';
+import { IconTrash } from '@/components/Icons';
 import styles from './ProfileRecipeCard.module.css';
+import { ReviewReplyModal } from '../Modal/ReviewReplyModal';
 
-export const ProfileRecipeReviewCard = ({ children }) => {
+export const ProfileRecipeReviewCard = ({ isUserRecipe = false }) => {
 	return (
 		<div className={styles.profileRecipeReviewCard}>
 			<img
@@ -28,7 +29,13 @@ export const ProfileRecipeReviewCard = ({ children }) => {
 					lacinia neque non metus
 				</p>
 
-				<button className={styles.profileRecipeButton}>{children}</button>
+				{isUserRecipe ? (
+					<ReviewReplyModal />
+				) : (
+					<button className={styles.profileRecipeButton}>
+						<IconTrash size={16} /> Eliminar
+					</button>
+				)}
 
 				{/* <div className={styles.profileRecipeReviewAnswer}>
 					<span>Tu Respuesta</span>
@@ -37,7 +44,10 @@ export const ProfileRecipeReviewCard = ({ children }) => {
 						posuere tristique sem, eu ultricies tortor imperdiet vitae.
 						Curabitur lacinia neque non metus
 					</p>
-				</div> */}
+					<button className={styles.profileRecipeButton}>
+						<IconTrash size={16} /> Eliminar
+					</button>
+				</div>  */}
 			</div>
 		</div>
 	);

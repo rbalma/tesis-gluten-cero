@@ -1,6 +1,6 @@
 import { Breadcrumb, Select } from 'antd';
 import { Link } from 'react-router-dom';
-import { IconArrowBackUp, IconChevronDown, IconEdit } from '@/components/Icons';
+import { IconChevronDown } from '@/components/Icons';
 import { ProfileRecipeReviewCard } from '@/components/Profile/Cards';
 
 import styles from './ProfileRecipe.module.css';
@@ -50,15 +50,11 @@ export const ProfileRecipesReviewPage = () => {
 							]}
 						/>
 					</div>
-					<ProfileRecipeReviewCard>
-						<IconArrowBackUp size={16} /> Responder esta reseña
-					</ProfileRecipeReviewCard>
+					<ProfileRecipeReviewCard isUserRecipe />
 				</section>
 				<section className={styles.recipesList}>
 					<div className={styles.recipesListHeader}>Mis Reseñas</div>
-					<ProfileRecipeReviewCard>
-						<IconEdit size={16} /> Editar
-					</ProfileRecipeReviewCard>
+					<ProfileRecipeReviewCard />
 				</section>
 			</div>
 		</div>

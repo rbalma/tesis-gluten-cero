@@ -1,0 +1,82 @@
+.containerSummary {
+  width: 800px;
+  min-width: 100%;
+  margin-bottom: 20px;
+}
+
+.headerSummary {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 25px;
+}
+
+.titleSummary {
+  font-size: 26px;
+  margin-bottom: 0px;
+}
+
+.backToForm {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  color: #a6a6a6;
+  gap: 3px;
+}
+
+.backToForm>svg {
+  transform: rotate(90deg);
+}
+
+.backToForm:hover {
+  color: #f91942;
+}
+
+.dataRecipeItem>h2 {
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.dataRecipeItem>span {
+  font-size: 16px;
+  font-weight: 300;
+}
+
+.dataRecipeItem>ul>li,
+.dataRecipeItem>ol>li {
+  font-size: 16px;
+  font-weight: 300;
+}
+
+.rowData {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.rowDataItems {
+  display: grid;
+  gap: 50px;
+  grid-template-columns: 1fr 280px;
+  margin-top: 35px;
+}
+
+.rowDataItems>img {
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+.confirmButtonRecipe {
+  background-color: #f91942;
+  color: #fff;
+  border: 1px solid #f91942;
+  outline: none;
+  height: 50px;
+  display: block;
+  width: 100%;
+  z-index: 20px;
+  position: absolute;
+  bottom: 0;
+}

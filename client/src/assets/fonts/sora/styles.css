@@ -1,53 +1,90 @@
+/* sora-200 - latin */
 @font-face {
+	font-display: swap;
+	/* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
 	font-family: 'Sora';
-	src: url('sora-v10-latin-300.eot?#iefix') format('embedded-opentype'),
-		url('sora-v10-latin-300.woff') format('woff'),
-		url('sora-v10-latin-300.woff2') format('woff2');
+	font-style: normal;
+	font-weight: 200;
+	src: url('sora-v12-latin-200.woff2') format('woff2'),
+		/* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+		url('sora-v12-latin-200.ttf') format('truetype');
+	/* Chrome 4+, Firefox 3.5+, IE 9+, Safari 3.1+, iOS 4.2+, Android Browser 2.2+ */
+}
+
+/* sora-300 - latin */
+@font-face {
+	font-display: swap;
+	/* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+	font-family: 'Sora';
+	font-style: normal;
 	font-weight: 300;
-	font-style: normal;
+	src: url('sora-v12-latin-300.woff2') format('woff2'),
+		/* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+		url('sora-v12-latin-300.ttf') format('truetype');
+	/* Chrome 4+, Firefox 3.5+, IE 9+, Safari 3.1+, iOS 4.2+, Android Browser 2.2+ */
 }
 
+/* sora-regular - latin */
 @font-face {
+	font-display: swap;
+	/* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
 	font-family: 'Sora';
-	src: url('sora-v10-latin-regular.eot?#iefix') format('embedded-opentype'),
-		url('sora-v10-latin-regular.woff') format('woff'),
-		url('sora-v10-latin-regular.woff2') format('woff2');
+	font-style: normal;
 	font-weight: 400;
-	font-style: normal;
+	src: url('sora-v12-latin-regular.woff2') format('woff2'),
+		/* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+		url('sora-v12-latin-regular.ttf') format('truetype');
+	/* Chrome 4+, Firefox 3.5+, IE 9+, Safari 3.1+, iOS 4.2+, Android Browser 2.2+ */
 }
 
+/* sora-500 - latin */
 @font-face {
+	font-display: swap;
+	/* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
 	font-family: 'Sora';
-	src: url('sora-v10-latin-500.eot?#iefix') format('embedded-opentype'),
-		url('sora-v10-latin-500.woff') format('woff'),
-		url('sora-v10-latin-500.woff2') format('woff2');
+	font-style: normal;
 	font-weight: 500;
-	font-style: normal;
+	src: url('sora-v12-latin-500.woff2') format('woff2'),
+		/* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+		url('sora-v12-latin-500.ttf') format('truetype');
+	/* Chrome 4+, Firefox 3.5+, IE 9+, Safari 3.1+, iOS 4.2+, Android Browser 2.2+ */
 }
 
+/* sora-600 - latin */
 @font-face {
+	font-display: swap;
+	/* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
 	font-family: 'Sora';
-	src: url('sora-v10-latin-600.eot?#iefix') format('embedded-opentype'),
-		url('sora-v10-latin-600.woff') format('woff'),
-		url('sora-v10-latin-600.woff2') format('woff2');
+	font-style: normal;
 	font-weight: 600;
-	font-style: normal;
+	src: url('sora-v12-latin-600.woff2') format('woff2'),
+		/* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+		url('sora-v12-latin-600.ttf') format('truetype');
+	/* Chrome 4+, Firefox 3.5+, IE 9+, Safari 3.1+, iOS 4.2+, Android Browser 2.2+ */
 }
 
+/* sora-700 - latin */
 @font-face {
+	font-display: swap;
+	/* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
 	font-family: 'Sora';
-	src: url('sora-v10-latin-700.eot?#iefix') format('embedded-opentype'),
-		url('sora-v10-latin-700.woff') format('woff'),
-		url('sora-v10-latin-700.woff2') format('woff2');
+	font-style: normal;
 	font-weight: 700;
-	font-style: normal;
+	src: url('sora-v12-latin-700.woff2') format('woff2'),
+		/* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+		url('sora-v12-latin-700.ttf') format('truetype');
+	/* Chrome 4+, Firefox 3.5+, IE 9+, Safari 3.1+, iOS 4.2+, Android Browser 2.2+ */
 }
 
+/* sora-800 - latin */
 @font-face {
+	font-display: swap;
+	/* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
 	font-family: 'Sora';
-	src: url('sora-v10-latin-800.eot?#iefix') format('embedded-opentype'),
-		url('sora-v10-latin-800.woff') format('woff'),
-		url('sora-v10-latin-800.woff2') format('woff2');
-	font-weight: 800;
 	font-style: normal;
+	font-weight: 800;
+	src: url('sora-v12-latin-800.woff2') format('woff2'),
+		/* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+		url('sora-v12-latin-800.ttf') format('truetype');
+	/* Chrome 4+, Firefox 3.5+, IE 9+, Safari 3.1+, iOS 4.2+, Android Browser 2.2+ */
 }

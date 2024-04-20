@@ -513,12 +513,14 @@
   dependencies:
     "color-convert" "^2.0.1"
 
-"antd-img-crop@4.2.4":
-  "integrity" "sha512-Wgv+HhWhG+iIyzWech3xL0AwPf2mJveINv/6/cvLCn7fJ6xePVlGUL7UF3Y3y4V/Ogs8JGqKD0EaX+W3MagfTw=="
-  "resolved" "https://registry.npmjs.org/antd-img-crop/-/antd-img-crop-4.2.4.tgz"
-  "version" "4.2.4"
+antd-img-crop@4.12.2:
+  version "4.12.2"
+  resolved "https://registry.yarnpkg.com/antd-img-crop/-/antd-img-crop-4.12.2.tgz#28d3fe752d0b0b6d6bae1bb8303f3aefe04e0470"
+  integrity sha512-xgxR3x2sg+tCBHMfx1gejEfhhvnIL2mpZ4OIPfQDJZTTfm9YpMqaqLF9qWbF9Nf83bXCdaQywYihcVGyw3niDg==
   dependencies:
-    "react-easy-crop" "^4.4.2"
+    compare-versions "6.0.0-rc.1"
+    react-easy-crop "^4.7.4"
+    tslib "^2.5.0"
 
 "antd-mask-input@^2.0.7":
   "integrity" "sha512-EFv/Hjar5nzYuzvgCcIeEcbVzw5+4RynUQTl2S8bLMaR9iajiWoeV/VYvENaP6X+ytnM0OqemE2pHY9ZRR6hEw=="
@@ -2519,9 +2521,6 @@
   "integrity" "sha512-MVzCWmKXTwZTK0iYqlF/gPLdLqvUGrLGX7SQ4g+DO3b/lCiVAwxZKLeZ1wjDfG+r/yEWUoL7At5a0kkDJeU+rQ=="
   "resolved" "https://registry.npmjs.org/react-easy-crop/-/react-easy-crop-4.5.1.tgz"
   "version" "4.5.1"
-  dependencies:
-    "normalize-wheel" "^1.0.1"
-    "tslib" "2.0.1"
 
 "react-is@^16.12.0", "react-is@^16.13.1":
   "integrity" "sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ=="

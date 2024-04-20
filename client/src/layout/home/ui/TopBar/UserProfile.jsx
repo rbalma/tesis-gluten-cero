@@ -42,17 +42,6 @@ export const UserProfile = () => {
 			),
 			icon: <IdcardFilled />,
 		},
-		{
-			key: '02',
-			label: (
-				<Link
-					style={{ fontFamily: 'Sora, Verdana' }}
-					to={`/perfil/${user.id}/panel/configuracion`}>
-					Configuración
-				</Link>
-			),
-			icon: <SettingFilled />,
-		},
 		user.role === 'admin' && {
 			key: '04',
 			label: (
