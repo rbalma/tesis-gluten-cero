@@ -248,7 +248,7 @@ export const AdminNotice = () => {
 					marginBottom: 10,
 				}}
 			>
-				<h2 style={{ display: 'inline-block', marginBottom: 0 }}>Recetas</h2>
+				<h2 style={{ display: 'inline-block', marginBottom: 0 }}>Noticias</h2>
 				<Button type='primary' onClick={()=>navigate('agregar')}>
 					<PlusSquareOutlined />
 					Agregar

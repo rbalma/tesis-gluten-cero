@@ -5,13 +5,25 @@ const categorySchema = new Schema({
   name: {
     type: String,
     trim: true,
-    unique: true,
     required: [true, 'Debe ingresar un nombre para la categoría'],
   },
-  color: {
+  description: {
     type: String,
     trim: true,
-    unique: true,
+  },
+  avatar: {
+    data: {
+      type: Buffer,
+    },
+    contentType: {
+      type: String,
+    }
+  },
+  type: {
+    type: String,
+    trim: true,
+    required: [true, 'Debe especificar el tipo de categoría (Mapa o Receta)'],
+    enum: ['Mapa', 'Receta']
   },
 });
 
