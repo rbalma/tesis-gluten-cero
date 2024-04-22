@@ -209,6 +209,7 @@ function DashboardBarChart({dataUsers}) {
       },
       y: {
         ticks: {
+          stepSize: 1,
           font: {
             size: 12,
             weight: 'bold', 
@@ -289,15 +290,11 @@ function DashboardPolarAreaChart({dataCategories,dataMarkers}) {
 
   const markersCategories = dataCategories.filter(category => category.type === "Mapa");
   const markersLabels = markersCategories.map(category => category.name);
-
-  //console.log(dataMarkers);
-  //console.log(markersCategories);
-  
+ 
   const marcadoresPorCategoria = {};
 
   dataMarkers.forEach(marker => {
     const categoryId = marker.category.name;
-  //  console.log(categoryId);
     if (!marcadoresPorCategoria[categoryId]) {
       marcadoresPorCategoria[categoryId] = 1;
     } else {
@@ -305,15 +302,13 @@ function DashboardPolarAreaChart({dataCategories,dataMarkers}) {
     }
   });
 
-  //console.log(marcadoresPorCategoria);
-
   const data = {
     labels: markersLabels,
     datasets: [
       {
         label: 'Cantidad de Marcadores',
-        data: markersLabels.map(label => marcadoresPorCategoria[label] || 0),
-        //data: [1,2,3],
+        //data: markersLabels.map(label => marcadoresPorCategoria[label] || 0),
+        data: [1,2,3],
         backgroundColor: [
          
           'rgba(255, 206, 86, 1)',
