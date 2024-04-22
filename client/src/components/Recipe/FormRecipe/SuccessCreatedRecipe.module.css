@@ -1,0 +1,54 @@
+.containerSuccessRecipe {
+  background-color: #36b37e;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100vw;
+  height: 0;
+  animation-name: height;
+  animation-duration: 600ms;
+  animation-fill-mode: forwards;
+  position: fixed;
+  z-index: 10;
+  bottom: 0;
+  text-align: center;
+}
+
+@keyframes height {
+  0% {
+    height: 0;
+  }
+
+  100% {
+    height: calc(100dvh - 80px);
+  }
+}
+
+.containerSuccessRecipe>h1 {
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  font-size: 24px;
+  font-weight: 300;
+  color: #fff;
+  margin-top: 20px;
+}
+
+.containerSuccessRecipe>p {
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  color: #fff;
+}
+
+.containerSuccessRecipe>a {
+  color: #f9f9f9;
+  font-weight: 200;
+  transition: color 500ms ease;
+}
+
+.containerSuccessRecipe>a:hover {
+  color: #ddd;
+}
+
+.containerSuccessRecipe>a>svg {
+  transform: translate(-5px, 4px);
+}

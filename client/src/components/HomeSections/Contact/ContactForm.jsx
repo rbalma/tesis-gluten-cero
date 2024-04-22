@@ -1,6 +1,7 @@
 import { Col, Form, Input, Row } from 'antd';
 import styles from './ContactForm.module.css';
 import Picture from '@/assets/images/recipes/recipe1.jpg';
+import { rules } from '@/utils/rulesForm';
 
 export const ContactForm = () => {
 	return (
@@ -22,22 +23,7 @@ export const ContactForm = () => {
 								<Form.Item
 									name='name'
 									label='Nombre completo'
-									rules={[
-										{
-											required: true,
-											message: 'Completa el campo',
-										},
-										{
-											min: 8,
-											message: 'Mínimo de 8 caracteres',
-											validateTrigger: 'onSubmit',
-										},
-										{
-											whitespace: true,
-											message: 'El campo está vacío',
-											validateTrigger: 'onSubmit',
-										},
-									]}>
+									rules={rules.fullName}>
 									<Input type='string' />
 								</Form.Item>
 							</Col>
@@ -46,17 +32,7 @@ export const ContactForm = () => {
 								<Form.Item
 									name='email'
 									label='Email'
-									rules={[
-										{
-											required: true,
-											message: 'El correo es obligatorio',
-										},
-										{
-											type: 'email',
-											message: 'Debe ingresar un correo válido',
-											validateTrigger: 'onSubmit',
-										},
-									]}>
+									rules={rules.email}>
 									<Input />
 								</Form.Item>
 							</Col>
@@ -64,44 +40,14 @@ export const ContactForm = () => {
 						<Form.Item
 							name='subject'
 							label='Asunto'
-							rules={[
-								{
-									required: true,
-									message: 'Completa el campo',
-								},
-								{
-									min: 8,
-									message: 'Mínimo de 8 caracteres',
-									validateTrigger: 'onSubmit',
-								},
-								{
-									whitespace: true,
-									message: 'El campo está vacío',
-									validateTrigger: 'onSubmit',
-								},
-							]}>
+							rules={rules.subject}>
 							<Input type='string' />
 						</Form.Item>
 
 						<Form.Item
 							name='message'
 							label='Mensaje'
-							rules={[
-								{
-									required: true,
-									message: 'Completa el campo',
-								},
-								{
-									min: 15,
-									message: 'Mínimo de 15 caracteres',
-									validateTrigger: 'onSubmit',
-								},
-								{
-									whitespace: true,
-									message: 'El campo está vacío',
-									validateTrigger: 'onSubmit',
-								},
-							]}>
+							rules={rules.message}>
 							<Input.TextArea
 								type='string'
 								placeholder='Escribe tu mensaje...'

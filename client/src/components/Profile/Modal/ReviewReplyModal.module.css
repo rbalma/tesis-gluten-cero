@@ -1,0 +1,56 @@
+.reviewReplyModalHeader {
+  width: 100%;
+  background-color: #f6f6f6;
+  padding: 35px 40px;
+  margin-bottom: 40px;
+}
+
+.reviewReplyModalTitle {
+  font-size: 24px;
+  font-weight: 300;
+  margin-bottom: 0px;
+  font-family: 'Montserrat';
+}
+
+
+.closableButton {
+  display: grid;
+  place-items: center;
+  background-color: #e9e9e9;
+  border-radius: 50px;
+  border: none;
+  color: #666666;
+  padding: 6px 10px;
+  top: 5px;
+  position: relative;
+  width: fit-content;
+  margin: 0;
+}
+
+.closableButton:hover {
+  background-color: #f91942;
+  color: #fff;
+}
+
+.profileRecipeButton {
+  align-items: center;
+  background-color: #e9e9e9;
+  border-radius: 50px;
+  border: none;
+  color: #666666;
+  cursor: pointer;
+  display: flex;
+  font-family: 'Sora', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  gap: 8px;
+  line-height: 20px;
+  margin: 0;
+  padding: 6px 10px;
+  width: fit-content;
+}
+
+.profileRecipeButton:hover {
+  background-color: #f91942;
+  color: #fff;
+}

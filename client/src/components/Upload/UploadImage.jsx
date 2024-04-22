@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Upload, message } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
 import ImgCrop from 'antd-img-crop';
-import { PhotoUpIcon } from '../Icons';
+import PhotoUpIcon from '@/assets/images/photo-image.svg';
 
 const { Dragger } = Upload;
 
-export const UploadImage = ({ image, onChange, value }) => {
+export const UploadImage = ({ image, onChange, value = [], aspectRatio = 1/1 }) => {
 	const [imageUrl, setImageUrl] = useState('');
 	useEffect(() => {
 		setImageUrl(image);
@@ -23,46 +22,36 @@ export const UploadImage = ({ image, onChange, value }) => {
 	};
 
 	const handleChange = async ({ file, fileList }) => {
-		
 		if (file.status === 'removed') return setImageUrl('');
-		console.log({ file })
 
 		const isLt1M = file.size / 1024 / 1024 < 1;
 		const isJPGPNG = file.type === 'image/jpeg' || file.type === 'image/png';
 		if (!isLt1M || !isJPGPNG) return;
 
-		const formData = new FormData();
-		const avatar = file.originFileObj;
-
 		let src = file.url;
 		if (!src) {
-			src = await new Promise(resolve => {
+			src = await new Promise((resolve) => {
 				const reader = new FileReader();
 				reader.readAsDataURL(file.originFileObj);
 				reader.onload = () => resolve(reader.result);
 			});
 		}
-	setImageUrl(src)
-		formData.append('avatar', avatar, avatar.name);
+		setImageUrl(src);
 
-		// const requestConfig = {
-		// 	headers: { 'Content-Type': 'multipart/form-data' },
-		// };
+		file.status = 'done';
+		file.response = '{"status": "success"}';
 
-	//	const resp = await putData(perfilId, formData, requestConfig);
-			file.status = 'done';
-			file.response = '{"status": "success"}';
-		
-			onChange(fileList);
+		onChange(fileList);
 	};
 
 	return (
 		<ImgCrop
-			//aspect={16 / 9}
+			aspect={aspectRatio}
 			modalTitle='Subir Imagen'
 			modalOk='Aceptar'
 			modalCancel='Cancelar'
 			rotationSlider
+			showGrid
 			maxZoom={5}
 			beforeCrop={beforeUpload}
 		>
@@ -71,21 +60,24 @@ export const UploadImage = ({ image, onChange, value }) => {
 				multiple={false}
 				maxCount={1}
 				onChange={({ file, fileList }) => handleChange({ file, fileList })}
+				onRemove={() => onChange([])}
+				customRequest={({ _, onSuccess }) => onSuccess('ok')}
+				//fileList={value}
 				beforeUpload={false}
 				className='draggerMap'
 			>
 				{imageUrl ? (
-					<img width={'min-content'} style={{ maxHeight: 200 }} alt='uploading-image' src={imageUrl} />
+					<img width={'min-content'} style={{ maxHeight: 120 }} alt='uploading-image' src={imageUrl} />
 				) : (
 					<>
-						<p style={{ padding: 20 }} >
-							<PhotoUpIcon size={48} />
+						<p style={{ padding: 15 }} >
+							<img src={PhotoUpIcon} width={34} height={34} />
 						</p>
-						<p className='ant-upload-text'>
+						<p style={{ fontSize: 14 }}>
 							Seleccione o arrastre el archivo a esta área para cargarlo
 						</p>
-						<p className='ant-upload-hint' style={{ paddingBottom: 25 }}>
-							Formato png, jpeg, jpg. Tamaño máximo 1 mb
+						<p style={{ paddingBottom: 25, fontSize: 12 }}>
+							Formato png, jpeg, jpg. Tamaño máximo 2 mb
 						</p>
 					</>
 				)}

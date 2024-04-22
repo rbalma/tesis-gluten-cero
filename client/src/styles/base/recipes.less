@@ -1,0 +1,65 @@
+.autocompleteInputRecipe{
+  &.ant-input-affix-wrapper {
+    background: #fff;
+    border-radius: 30px;
+    border: 1px solid #E2E2E2;
+    color: #545454;
+    font-family: 'Sora', sans-serif;
+    font-size: 16px;
+    line-height: 22%;
+    outline: none;
+    height: 50px;
+    padding: 8px 16px;
+
+    & svg, span {
+      margin: 2px 18px 5px 2px;
+      width: 24px;
+      height: 24px;
+      color: #ccc;
+    }
+
+    &:focus-within {
+      border: 1px solid #E2E2E2;
+    }
+    &:hover {
+      border-color: #E2E2E2;
+    }
+  }
+}
+
+.btn-success,
+a.btn-success {
+  color: @white-color !important;
+  background-color: darken(@success-color, 15%) !important;
+  border-color: darken(@success-color, 15%) !important;
+
+  &:hover,
+  &:focus {
+    color: @white-color !important;
+    background-color: darken(@success-color, 20%) !important;
+    border-color: darken(@success-color, 20%) !important;
+  }
+
+  &.disabled,
+  &:disabled {
+    background-color: @success-color !important;
+    border-color: @success-color !important;
+  }
+
+  &:not([disabled]):not(.disabled):active,
+  &:not([disabled]):not(.disabled).active {
+    color: @white-color !important;
+    background-color: darken(@success-color, 20%) !important;
+    border-color: darken(@success-color, 20%) !important;
+  }
+}
+
+.progressBarRecipe {
+  position: sticky;
+  bottom: 0;
+  & .ant-progress-outer {
+    & .ant-progress-inner {
+      vertical-align: bottom;
+    }
+  }
+}

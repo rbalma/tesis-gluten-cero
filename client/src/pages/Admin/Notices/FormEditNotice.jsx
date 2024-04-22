@@ -61,8 +61,6 @@ export const FormEditNotice = () => {
             },
             body: formDataSubmit
         });
-        console.log('Response')
-        console.log(response)
         const data = await response.json();
         console.log(data)
 

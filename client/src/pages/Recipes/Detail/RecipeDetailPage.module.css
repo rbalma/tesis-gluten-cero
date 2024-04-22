@@ -1,0 +1,123 @@
+.containerRecipeDetail {
+	display: grid;
+	row-gap: 0px;
+	column-gap: 40px;
+	grid-template:
+		'header' auto
+		'recipe' auto
+		'sidebar' auto
+		'comments' auto;
+	min-height: calc(100dvh - 170px);
+	height: 100%;
+	background-color: #fff;
+	padding: 40px 5%;
+}
+
+.headerRecipeDetail {
+	grid-area: header;
+	text-align: center;
+	margin-bottom: 20px;
+}
+
+.headerRecipeDetail>h1 {
+	font-size: 34px;
+	font-weight: 700;
+	color: #292929;
+	border-top: 1px solid #eee;
+	padding-top: 20px;
+}
+
+.linesCategory {
+	text-transform: uppercase;
+	font-weight: 700;
+	display: block;
+	text-align: center;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+.linesCategory>span {
+	display: inline-block;
+	position: relative;
+	padding-left: 1em;
+	padding-right: 1em;
+}
+
+.linesCategory>span::before {
+	right: 100%;
+	content: "";
+	position: absolute;
+	height: 100%;
+	width: 9999px;
+	top: 50%;
+	border-top-style: solid;
+	border-top-width: 1px;
+	border-top-color: hsla(0, 0%, 93%, .9);
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	border-bottom-color: hsla(0, 0%, 93%, .9);
+	height: 0.5em;
+	margin-top: -0.25em;
+}
+
+.linesCategory>span::after {
+	left: 100%;
+	content: "";
+	position: absolute;
+	height: 100%;
+	width: 9999px;
+	top: 50%;
+	border-top-style: solid;
+	border-top-width: 1px;
+	border-top-color: hsla(0, 0%, 93%, .9);
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	border-bottom-color: hsla(0, 0%, 93%, .9);
+	height: 0.5em;
+	margin-top: -0.25em;
+}
+
+.linesCategory>span>a {
+	font-family: 'Montserrat', Verdana, sans-serif;
+	color: #f91942;
+}
+
+.linesCategory>span>a:hover {
+	text-decoration: underline;
+	color: #f91942;
+}
+
+.recipeDetails {
+	grid-area: recipe;
+}
+
+.sidebarDetails {
+	grid-area: sidebar;
+	margin-top: 20px;
+}
+
+.commentDetails {
+	grid-area: comments;
+}
+
+@media (min-width: 1300px) {
+	.containerRecipeDetail {
+		grid-template:
+			'header header' auto
+			'recipe sidebar' auto
+			'recipe .' auto
+			'comments .' auto /
+			1fr 300px;
+	}
+}
+
+@media (min-width: 800px) and (max-width: 1299px) {
+	.containerRecipeDetail {
+		grid-template:
+			'header header' auto
+			'recipe sidebar' auto
+			'recipe .' auto
+			'comments .' auto /
+			1fr 300px;
+	}
+}

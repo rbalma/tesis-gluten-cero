@@ -1,0 +1,30 @@
+.optionsRecipe {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 20px;
+  padding: 5px;
+  font-weight: 300;
+  color: #222;
+}
+
+.optionsRecipe>img {
+  border-radius: 8px;
+  aspect-ratio: 299/168;
+  height: 50px;
+  width: 80px;
+}
+
+.optionsRecipe>div>p {
+  font-size: 16px;
+  margin-bottom: 4px;
+  font-family: 'Sora';
+}
+
+.optionsRecipe>div>span {
+  font-size: 14px;
+  color: #95A6BB;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

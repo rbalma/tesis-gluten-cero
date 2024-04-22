@@ -32,3 +32,7 @@ export * from './IconClock';
 export * from './IconTrash';
 export * from './IconEdit';
 export * from './IconArrowBackUp';
+export * from './IconX';
+export * from './IconTag';
+export * from './IconPrinter';
+export * from './IconHeartFilled';

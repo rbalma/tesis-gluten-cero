@@ -1,10 +1,8 @@
 import HomePage from '@/pages/Home/HomePage';
 import { Login, SignUp, ForgotPassword, ResetPassword } from '@/pages/Auth';
 
-
 import {
 	AdminRecipe,
-	AdminRecipeCategories,
 	AdminMap,
 	AdminNotice,
 	AdminProducts,
@@ -13,6 +11,9 @@ import {
 	AdminUser,
 } from '@/pages/Admin';
 
+import { AdminCategories } from '@/pages/Admin/Categories/AdminCategories';
+import { FormCategories } from '@/pages/Admin/Categories/FormCategories';
+import { FormEditCategories } from '@/pages/Admin/Categories/FormEditCategories';
 import { FormNotice } from '@/pages/Admin/Notices/FormNotice';
 import { FormEditNotice } from '@/pages/Admin/Notices/FormEditNotice';
 
@@ -32,7 +33,7 @@ import {
 
 import NotFoundScreen from '@/pages/NotFound/NotFoundScreen';
 import { ProductsPage } from '@/pages/Products/ProductsPage';
-import { RecipeDetail, RecipeForm, RecipeSearch } from '@/pages/Recipes';
+import { RecipeDetailPage, RecipeFormPage, RecipeSearchPage } from '@/pages/Recipes';
 import { MapFormPage, MapSearchPage } from '@/pages/Map';
 import { PostsList, ThreadForm, ThreadsList } from '@/pages/Forum';
 import Aportes from '@/pages/Aportes/Aportes';
@@ -64,11 +65,11 @@ const routesPages = [
 	},
 	{
 		path: '/recetas',
-		element: RecipeSearch,
+		element: RecipeSearchPage,
 	},
 	{
 		path: '/recetas/:recetaId',
-		element: RecipeDetail,
+		element: RecipeDetailPage,
 	},
 	{
 		path: '/mapa',
@@ -115,7 +116,7 @@ const routesPages = [
 const routesPrivatePages = [
 	{
 		path: '/receta-formulario',
-		element: RecipeForm,
+		element: RecipeFormPage,
 	},
 	{
 		path: '/mapa-formulario',
@@ -145,8 +146,16 @@ const routesAdmin = [
 		element: AdminRecipe,
 	},
 	{
-		path: 'recetas-categorias',
-		element: AdminRecipeCategories,
+		path: 'categorias',
+		element: AdminCategories,
+	},
+	{
+		path: 'categorias/agregar',
+		element: FormCategories,
+	},
+	{
+		path: 'categorias/editar/:categoryId',
+		element: FormEditCategories,
 	},
 	{
 		path: 'noticias',

@@ -106,13 +106,10 @@ export const updateNotice = async (req, res, next) => {
     if (!notice) return next(new ErrorResponse("La noticia no existe"));
 
     if (req.file) {
-      // req.body.avatar = req.file.filename;
-
-      req.body.avatar = {
+        req.body.avatar = {
         data: req.file.buffer,
         contentType: req.file.mimetype,
       };
-      // fsUnlink(`/notices/${notice.image}`);
     }
 
     const noticeUpdated = await Notice.findByIdAndUpdate(noticeId, req.body, {

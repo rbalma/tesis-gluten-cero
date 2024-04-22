@@ -1,0 +1,112 @@
+.containerRecipe {
+	min-height: 100dvh;
+	height: 100%;
+	background-color: #ebecf0;
+	/* #212121 */
+}
+
+.bannerRecipe {
+	padding-top: 10px;
+	width: 100%;
+	height: 200px;
+	background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.7)), url('@/assets/images/section-recipe.jpg') top left;
+	/* border-image: fill 0 linear-gradient(#0001, #000); */
+	background-size: cover;
+	padding: 0 5%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.bannerRecipe>h2 {
+	font-size: 32px;
+	font-family: 'Montserrat', Verdana, Geneva, Tahoma, sans-serif;
+	color: #fff;
+	font-weight: 700;
+}
+
+
+.containerCategoryRecipes {
+	display: flex;
+	justify-content: space-between;
+	gap: 15px;
+	padding: 20px 5%;
+	scroll-snap-type: x mandatory;
+	scroll-padding: 100px;
+	overflow-x: scroll;
+}
+
+.containerCategoryRecipes::-webkit-scrollbar {
+	/* Ocultar scroll */
+	display: none;
+}
+
+.containerFiltersRecipe {
+	padding: 0 5%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	flex-wrap: wrap-reverse;
+}
+
+
+.totalSort>h3 {
+	font-weight: 700;
+	font-family: 'Sora', sans-serif;
+	font-size: 16px;
+	margin-top: 20px;
+}
+
+.totalSort {
+	display: flex;
+	flex-direction: column;
+}
+
+.totalSort>div {
+	font-weight: 500;
+	font-size: 16px;
+}
+
+.buttonAddRecipe {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	min-width: 130px;
+	text-align: center;
+	line-height: 26px;
+	font-weight: 300;
+	font-family: 'Sora', sans-serif;
+	color: #f91942;
+	outline: none;
+	background-color: transparent;
+	border: 1px solid #f91942;
+	padding: 5px 17px;
+	font-size: 14px;
+	border-radius: 50px;
+	cursor: pointer;
+	transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+}
+
+.buttonAddRecipe:hover {
+	background-color: #f91942;
+	color: #fff;
+}
+
+.recipesGrid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+	grid-template-rows: auto;
+	column-gap: 30px;
+	row-gap: 50px;
+	justify-content: center;
+	padding: 10px 5% 40px;
+	width: 100%;
+	margin: 0 auto;
+}
+
+@media (min-width: 1536px) {
+	.containerCategoryRecipes {
+		justify-content: center;
+		gap: 5%;
+	}
+}

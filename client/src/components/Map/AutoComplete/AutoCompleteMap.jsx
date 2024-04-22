@@ -81,7 +81,7 @@ export const AutoCompleteMap = ({ form, getUbicacion }) => {
 					className='autocompleteInputMap'
 					type='text'
 					placeholder='Buscar por calle, número, y barrio'
-					prefix={isFetching ? <SpinnerIcon /> : <SearchIcon />}
+					prefix={isFetching ? <SpinnerIcon /> : <SearchIcon size={20} />}
 					suffix={
 						<Tooltip title='Mi ubicación' placement='left' color='#f50'>
 							<span onClick={getUbicacion}>
