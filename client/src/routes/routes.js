@@ -130,6 +130,10 @@ const routesPrivatePages = [
 
 const routesAdmin = [
 	{
+		path: '',
+		element: AdminStatistics,
+	},
+	{
 		path: 'estadisticas',
 		element: AdminStatistics,
 	},
