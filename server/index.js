@@ -40,6 +40,11 @@ app.use(
   express.static(path.join(__dirname, '/uploads/notices/'))
 );
 
+app.use(
+  '/api/image/category',
+  express.static(path.join(__dirname, '/uploads/categories/'))
+);
+
 // Router Basic
 app.use(`/api`, authRouter);
 app.use(`/api`, userRoute);
