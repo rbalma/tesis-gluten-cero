@@ -1,0 +1,13 @@
+.uploadContainer {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  width: fit-content;
+}
+
+.uploadContainer>img {
+  border: 1px solid #ccc;
+  object-fit: contain;
+  aspect-ratio: 1/1;
+  height: 150px;
+}
