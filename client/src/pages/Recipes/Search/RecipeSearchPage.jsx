@@ -4,11 +4,18 @@ import { AutoCompleteRecipe } from '@/components/Recipe/AutoComplete/AutoComplet
 import { RecipeCard } from '../../../components/Recipe/Card/RecipeCard';
 import { IconCirclePlus } from '@/components/Icons';
 import { CategoryRecipeCard } from '@/components/Recipe/Categories/CategoryRecipeCard';
+import { useGetCategories } from '@/services/queries/categoryQueries';
 
 import styles from './RecipeSearchPage.module.css';
 
+const filters = {
+	type: 'R',
+	visible: '1'
+}
+
 export const RecipeSearchPage = () => {
 	const navigate = useNavigate();
+	const { data } = useGetCategories(filters);
 	return (
 		<div className={styles.containerRecipe}>
 			<section className={styles.bannerRecipe}>
@@ -18,16 +25,8 @@ export const RecipeSearchPage = () => {
 			</section>
 			
 			<section className={styles.containerCategoryRecipes}>
-				{[
-					'Bebidas',
-					'Dulces',
-					'Ensaladas',
-					'Panes',
-					'Platos principales',
-					'Postres',
-					'Sopas',
-				].map((category) => (
-					<CategoryRecipeCard key={category} category={category} />
+				{data?.map((category) => (
+					<CategoryRecipeCard key={category._id} category={category} />
 				))}
 			</section>
 
