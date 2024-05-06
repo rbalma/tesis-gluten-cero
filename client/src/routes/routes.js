@@ -9,11 +9,9 @@ import {
 	AdminStatistics,
 	AdminForo,
 	AdminUser,
+	CategoriesAdminPage,
 } from '@/pages/Admin';
 
-import { AdminCategories } from '@/pages/Admin/Categories/AdminCategories';
-import { FormCategories } from '@/pages/Admin/Categories/FormCategories';
-import { FormEditCategories } from '@/pages/Admin/Categories/FormEditCategories';
 import { FormNotice } from '@/pages/Admin/Notices/FormNotice';
 import { FormEditNotice } from '@/pages/Admin/Notices/FormEditNotice';
 
@@ -147,15 +145,7 @@ const routesAdmin = [
 	},
 	{
 		path: 'categorias',
-		element: AdminCategories,
-	},
-	{
-		path: 'categorias/agregar',
-		element: FormCategories,
-	},
-	{
-		path: 'categorias/editar/:categoryId',
-		element: FormEditCategories,
+		element: CategoriesAdminPage,
 	},
 	{
 		path: 'noticias',
