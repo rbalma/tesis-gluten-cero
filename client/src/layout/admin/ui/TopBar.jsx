@@ -1,34 +1,29 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Button } from "antd";
-import { PoweroffOutlined, MenuOutlined } from "@ant-design/icons";
-import Logo from "@/assets/images/logoBlanco.png";
-import useAuthStore from "@/store/authStore";
+import { MenuOutlined } from "@ant-design/icons";
+import { UserProfile } from "@/layout/home/ui/TopBar/UserProfile";
+import Logo from "@/assets/images/logoGlutenCero.png";
 
 import styles from './TopBar.module.css';
 
 export const TopBar = ({ showDrawer }) => {
-  const {	removeUser } = useAuthStore();
-  const navigate = useNavigate();
-
-  const logoutUser = () => {
-    removeUser();
-    navigate('/');
-  };
 
   return (
-    <div className={styles.menuTop}>
-      <div>
-        <Button type="link" className={styles.btnMenu}>
-          <MenuOutlined onClick={showDrawer} />
-        </Button>
+		<div className={styles.menuTop}>
+			<div className={styles.logoBtnMenu}>
+				<Button type='link'>
+					<MenuOutlined onClick={showDrawer} />
+				</Button>
 
-        <Link to="/">
-          <img width={80} src={Logo} alt="Gluten-Cero" />
-        </Link>
-      </div>
-    
-      <Button icon={<PoweroffOutlined />} shape='circle' type='link' danger onClick={logoutUser} />
+				<Link to='/'>
+					<img width={80} src={Logo} alt='Gluten-Cero' />
+				</Link>
+			</div>
 
-    </div>
-  );
+<div className={styles.profileAvatar}>
+			<UserProfile />
+
+</div>
+		</div>
+	);
 }

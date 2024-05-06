@@ -1,68 +1,48 @@
-import { NavLink } from 'react-router-dom';
 import {
-	BarChartOutlined,
-	TeamOutlined,
-	BookOutlined,
-	EnvironmentOutlined,
-	FileExcelOutlined,
-	MessageOutlined,
-	SnippetsOutlined,
-	UnorderedListOutlined
-} from '@ant-design/icons';
-
+	IconChartBar,
+	IconMessage,
+	IconNews,
+	IconTag,
+	IconToolsKitchen,
+	IconUserCircle,
+	MapPinIcon,
+} from '@/components/Icons';
 
 export const menuItems = [
 	{
-		label: <NavLink to='/admin/estadisticas'>Estadísticas</NavLink>,
-		icon: <BarChartOutlined />,
-		key: '/admin/estadisticas',
+		label: 'Estadísticas',
+		icon: <IconChartBar />,
+		link: '/admin/estadisticas',
 	},
 	{
-		label: <NavLink to='/admin/usuarios'>Usuarios</NavLink>,
-		icon: <TeamOutlined />,
-		key: '/admin/usuarios',
+		label: 'Usuarios',
+		icon: <IconUserCircle />,
+		link: '/admin/usuarios',
 	},
 	{
-		label: <NavLink to='/admin/recetas'>Recetas</NavLink>,
-		icon: <SnippetsOutlined />,
-		key: '/admin/recetas',
+		label: 'Recetas',
+		icon: <IconToolsKitchen />,
+		link: '/admin/recetas',
+	},
+
+	{
+		label: 'Marcadores',
+		icon: <MapPinIcon />,
+		link: '/admin/mapa',
 	},
 	{
-		label: <NavLink to='/admin/noticias'>Noticias</NavLink>,
-		icon: <BookOutlined />,
-		key: '/admin/noticias',
+		label: 'Foros',
+		icon: <IconMessage />,
+		link: '/admin/foro',
 	},
 	{
-		label: <NavLink to='/admin/mapa'>Mapa</NavLink>,
-		icon: <EnvironmentOutlined />,
-		key: '/admin/mapa',
+		label: 'Noticias',
+		icon: <IconNews />,
+		link: '/admin/noticias',
 	},
 	{
-		label: <NavLink to='/admin/foro'>Foro</NavLink>,
-		icon: <MessageOutlined />,
-		key: '/admin/foro',
-	},
-	{
-		label: <NavLink to='/admin/productos'>Productos</NavLink>,
-		icon: <FileExcelOutlined />,
-		key: '/admin/productos',
-	},
-	{
-		label: <NavLink to='/admin/categorias'>Categorias</NavLink>,
-		icon: <UnorderedListOutlined />,
-		key: '/admin/categorias',
+		label: 'Categorías',
+		icon: <IconTag />,
+		link: '/admin/categorias',
 	},
 ];
-
-// const MenuItems = () => {
-// 	const location = useLocation();
-
-// 	return (
-// 		<Menu
-// 			theme='dark'
-// 			mode='vertical'
-// 			defaultSelectedKeys={[location.pathname]}
-// 			items={menuItems}
-// 		/>
-// 	);
-// };
