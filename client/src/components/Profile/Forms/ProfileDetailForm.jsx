@@ -1,30 +1,34 @@
 import { Button, Form, Input } from 'antd';
+import { IconUpload } from '@/components/Icons';
 import { rules } from '@/utils/rulesForm';
 
 import styles from './ProfileForm.module.css';
-import { IconUpload } from '@/components/Icons';
 
 export const ProfileDetailForm = () => {
 	return (
-		<Form layout='vertical'>
+		<Form autoComplete='off' layout='vertical'>
 			<Form.Item name='avatar' style={{ position: 'relative' }}>
+				<>
 				<img
 					alt='avatar'
 					src='https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&s=70'
 					className={styles.profileFormImage}
 				/>
-				<button className={styles.profileUploadBtn}><IconUpload /> Subir Foto</button>
+				<button className={styles.profileUploadBtn}>
+					<IconUpload /> Subir Foto
+				</button>
+				</>
 			</Form.Item>
 
-			<Form.Item label='Nombre' rules={rules.fullName}>
+			<Form.Item name='name' label='Nombre' rules={rules.fullName}>
 				<Input size='large' />
 			</Form.Item>
 
-			<Form.Item label='Apellido' rules={rules.fullName}>
+			<Form.Item name='lastName' label='Apellido' rules={rules.fullName}>
 				<Input size='large' />
 			</Form.Item>
 
-			<Form.Item label='Correo' rules={rules.email}>
+			<Form.Item name='mail' label='Correo' rules={rules.email}>
 				<Input size='large' />
 			</Form.Item>
 
