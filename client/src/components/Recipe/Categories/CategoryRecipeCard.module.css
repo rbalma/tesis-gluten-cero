@@ -10,9 +10,10 @@
   justify-content: center;
   align-items: center;
   border-radius: 10px;
+  border: 2px solid #f8f8f8;
   height: 120px;
   padding: 10px 0;
-  background: #f8f8f8;
+  background: #fff;
   scroll-snap-align: start;
   transition: background 400ms ease-in-out;
   box-shadow: 0 4px 6px rgb(0 0 0/12%);
@@ -22,6 +23,7 @@
   width: 75px;
   height: 75px;
   border-radius: 50px;
+  aspect-ratio: 1/1;
 }
 
 .categoryRecipeItem>span {
@@ -34,13 +36,9 @@
   text-transform: capitalize;
 }
 
-.categoryRecipeItem:hover {
-  background: #f1f0ef;
-}
-
 .categoryRecipeCard input[type=checkbox]:checked~.categoryRecipeItem {
   background: #fafafa;
-  border: 0.5px solid #A67D53;
+  border: 2px solid #fa8c15;
 }
 
 
