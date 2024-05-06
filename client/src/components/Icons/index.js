@@ -38,3 +38,5 @@ export * from './IconPrinter';
 export * from './IconHeartFilled';
 export * from './IconChartBar';
 export * from './IconNews';
+export * from './IconCircleCheck';
+export * from './IconExclamationCircle';
