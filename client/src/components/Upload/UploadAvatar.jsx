@@ -7,7 +7,6 @@ import { IconUpload } from '../Icons';
 import styles from './UploadAvatar.module.css';
 
 export const UploadAvatar = ({
-	image,
 	onChange,
 	value,
   width = 150,
@@ -16,8 +15,8 @@ export const UploadAvatar = ({
 	const [imageUrl, setImageUrl] = useState('');
 
 	useEffect(() => {
-		setImageUrl(image);
-	}, [image]);
+		if (value?.[0]?.url) setImageUrl(value[0].url);
+	}, [value?.[0]?.url]);
 
 	const beforeUpload = (file) => {
 		const isJPGPNG = file.type === 'image/jpeg' || file.type === 'image/png';
