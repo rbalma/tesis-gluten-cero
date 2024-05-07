@@ -1,23 +1,65 @@
+import { useEffect } from 'react';
 import { Form, Segmented, Radio, Input, Row, Button, Divider } from 'antd';
 import { UploadAvatar } from '@/components/Upload/UploadAvatar';
+import {
+	useCreateCategory,
+	useGetCategoryById,
+	useUpdateCategory,
+} from '@/services/queries/categoryQueries';
+import { categoryGetImage } from '@/utils/fetchData';
 
-export const FormCategory = ({ onCloseDrawer }) => {
-	const onFinishForm = (values) => {
-		console.log({ values });
+export const FormCategory = ({ categoryId, onCloseDrawer }) => {
+	const [formInstance] = Form.useForm();
+	const { isFetching, data } = useGetCategoryById(categoryId);
+	const { isPending: createLoading, mutateAsync: addCategory } =
+		useCreateCategory();
+	const { isPending: updateLoading, mutateAsync: putCategory } =
+		useUpdateCategory(categoryId);
+
+	useEffect(() => {
+		if (categoryId && !isFetching) {
+			formInstance.setFieldsValue(data);
+			const file = [
+				{
+					uid: data.image,
+					name: data.image,
+					status: 'done',
+					url: categoryGetImage(data.image),
+					thumbUrl: categoryGetImage(data.image),
+				},
+			];
+
+			formInstance.setFieldValue('image', file);
+		}
+	}, [isFetching]);
+
+	const onFinishForm = async (values) => {
+		try {
+			if (categoryId) {
+				await putCategory({ categoryId, values });
+			} else {
+				await addCategory(values);
+			}
+
+			onCloseDrawer();
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	return (
 		<Form
 			initialValues={{
-				visible: '1',
+				visible: true,
 			}}
+			form={formInstance}
 			onFinish={onFinishForm}
 			autoComplete='off'
-      className='formAdmin'
+			className='formAdmin'
 			layout='vertical'>
 			<Row justify='center'>
 				<Form.Item
-					name='avatar'
+					name='image'
 					rules={[
 						{
 							required: true,
@@ -37,8 +79,8 @@ export const FormCategory = ({ onCloseDrawer }) => {
 						message: 'Ingresa un nombre',
 					},
 					{
-						min: 8,
-						message: 'Mínimo de 8 caracteres',
+						min: 4,
+						message: 'Mínimo de 4 caracteres',
 						validateTrigger: 'onSubmit',
 					},
 					{
@@ -69,8 +111,8 @@ export const FormCategory = ({ onCloseDrawer }) => {
 				<Segmented
 					block
 					options={[
-						{ label: 'Visible', value: '1' },
-						{ label: 'No Visible', value: '0' },
+						{ label: 'Visible', value: true },
+						{ label: 'No Visible', value: false },
 					]}
 				/>
 			</Form.Item>
@@ -81,7 +123,11 @@ export const FormCategory = ({ onCloseDrawer }) => {
 				<Button shape='round' onClick={onCloseDrawer}>
 					Cancelar
 				</Button>
-				<Button htmlType='submit' type='primary' shape='round'>
+				<Button
+					htmlType='submit'
+					type='primary'
+					shape='round'
+					loading={categoryId ? updateLoading : createLoading}>
 					Guardar
 				</Button>
 			</Row>

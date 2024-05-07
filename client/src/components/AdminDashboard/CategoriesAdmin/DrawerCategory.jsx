@@ -42,7 +42,7 @@ export const DrawerCategory = ({ categoryId }) => {
 				}
 				onClose={onClose}
 				open={open}>
-				<FormCategory onCloseDrawer={onClose} />
+				<FormCategory categoryId={categoryId} onCloseDrawer={onClose} />
 			</Drawer>
 		</>
 	);
