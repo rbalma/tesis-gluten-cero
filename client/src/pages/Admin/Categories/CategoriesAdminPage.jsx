@@ -4,7 +4,10 @@ import {
 	TagVisible,
 	getColumnSearchProps,
 } from '@/components/AdminDashboard';
-import { DrawerCategory, ModalDeleteCategory } from '@/components/AdminDashboard/CategoriesAdmin';
+import {
+	DrawerCategory,
+	ModalDeleteCategory,
+} from '@/components/AdminDashboard/CategoriesAdmin';
 import { useGetCategories } from '@/services/queries/categoryQueries';
 import { categoryGetImage } from '@/utils/fetchData';
 import { Avatar, Space, Table } from 'antd';
@@ -15,7 +18,7 @@ const columns = [
 	{
 		title: 'Imagen',
 		dataIndex: 'image',
-		width: 100,
+		width: '15%',
 		align: 'center',
 		render: (image) => (
 			<Avatar shape='square' size={40} src={categoryGetImage(image)} />
@@ -24,6 +27,7 @@ const columns = [
 	{
 		title: 'Nombre',
 		dataIndex: 'name',
+		width: '30%',
 		sorter: true,
 		showSorterTooltip: false,
 		...getColumnSearchProps('nombre'),
@@ -31,6 +35,7 @@ const columns = [
 	{
 		title: 'Tipo',
 		dataIndex: 'type',
+		width: '20%',
 		filters: [
 			{
 				text: 'Receta',
@@ -50,6 +55,7 @@ const columns = [
 	{
 		title: 'Estado',
 		dataIndex: 'visible',
+		width: '20%',
 		filters: [
 			{
 				text: 'Visible',
@@ -66,6 +72,7 @@ const columns = [
 	{
 		title: '',
 		fixed: 'right',
+		width: '15%',
 		render: (_, record) => (
 			<Space size={24}>
 				<DrawerCategory categoryId={record._id} />
@@ -83,14 +90,27 @@ export const CategoriesAdminPage = () => {
 		page: 1,
 		limit: 15,
 	});
-	const { isFetching, data } = useGetCategories();
+	const { isFetching, data } = useGetCategories(tableParams);
 
-	const handleTableChange = (pagination, filters, sorter) => {
-		setTableParams({
-			pagination,
-			filters,
-			...sorter,
+	const handleTableChange = (_, filters, sorter) => {
+		const filtersQuery = {
+			page: 1,
+			limit: 15,
+		};
+
+		if (sorter?.order) {
+			filtersQuery.sortField = sorter.field;
+			filtersQuery.sortOrder = sorter.order === 'descend' ? 'desc' : 'asc';
+		} else {
+			filtersQuery.sortField = undefined;
+			filtersQuery.sortOrder = undefined;
+		}
+
+		Object.entries(filters).forEach(([key, value]) => {
+			if (value?.[0]) filtersQuery[key] = value[0];
 		});
+
+		setTableParams(filtersQuery);
 	};
 
 	return (
