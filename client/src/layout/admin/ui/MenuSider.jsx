@@ -23,7 +23,7 @@ export const MenuSider = ({ menuCollapsed, setMenuCollapsed }) => {
 		<aside className={styles.sidebar}>
 			<div className={styles.logoSideBar}>
 				<Link to='/'>
-					<img width={80} src={Logo} alt='Gluten-Cero' />
+					<img width={100} src={Logo} alt='Gluten-Cero' />
 				</Link>
 			</div>
 			<nav className={styles.sidebarNav}>
