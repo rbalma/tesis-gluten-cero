@@ -10,7 +10,7 @@ import {
 
 export const useGetCategories = (filters) => {
 	return useQuery({
-		queryKey: ['categories'],
+		queryKey: ['categories', filters],
 		queryFn: () => getCategories(filters),
 	});
 };
@@ -29,7 +29,8 @@ export const useCreateCategory = () => {
 		mutationFn: createCategory,
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: ['categories'],
+				predicate: (query) =>
+					query.queryKey[0] === 'categories' && query.queryKey[1]?.page >= 1,
 			});
 			toast.success('Categoría creada');
 		},
@@ -37,11 +38,12 @@ export const useCreateCategory = () => {
 	});
 };
 
-export const useUpdateCategory = () => {
+export const useUpdateCategory = (categoryId) => {
 	const queryClient = useQueryClient();
 	return useMutation({
 		mutationFn: updateCategory,
-		onSuccess: () => {
+		onSuccess: (data) => {
+			queryClient.setQueryData(['categories', categoryId], data);
 			queryClient.invalidateQueries({
 				predicate: (query) =>
 					query.queryKey[0] === 'categories' && query.queryKey[1]?.page >= 1,
@@ -55,10 +57,11 @@ export const useUpdateCategory = () => {
 export const useDeleteCategory = () => {
 	const queryClient = useQueryClient();
 	return useMutation({
-		mutationFn: (categoryId) => deleteCategory(categoryId),
+		mutationFn: deleteCategory,
 		onSuccess: () => {
 			queryClient.invalidateQueries({
-				queryKey: ['categories'],
+				predicate: (query) =>
+					query.queryKey[0] === 'categories' && query.queryKey[1]?.page >= 1,
 			});
 			toast.success('Categoría actualizada');
 		},
