@@ -22,7 +22,7 @@ const App = () => {
 				// toastOptions={{
 				// 	style: { fontSize: 15 },
 				// }}
-				position='bottom-right'
+				position='bottom-left'
 				expand={true}
 				richColors
 				closeButton
