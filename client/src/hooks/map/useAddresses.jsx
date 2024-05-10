@@ -1,4 +1,4 @@
-import { getAddressesOfPlaces } from '@/services/queries';
+import { getAddressesOfPlaces } from '@/services/queries/mapQueries';
 import { useQuery } from '@tanstack/react-query';
 
 export const useAddresses = (query) => {
