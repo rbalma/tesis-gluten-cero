@@ -22,14 +22,14 @@ export const UploadAvatar = ({
 		const isJPGPNG = file.type === 'image/jpeg' || file.type === 'image/png';
 		if (!isJPGPNG) message.error('Solo puedes subir una imagen en jpg o png');
 
-		const isLt1M = file.size / 1024 / 1024 < 1;
-		if (!isLt1M) message.error('La imagen debe ser menor a 1MB');
+		const isLt1M = file.size / 1024 / 1024 < 2;
+		if (!isLt1M) message.error('La imagen debe ser menor a 2MB');
 
 		return isJPGPNG && isLt1M;
 	};
 
 	const handleChange = async ({ file, fileList }) => {
-		const isLt1M = file.size / 1024 / 1024 < 1;
+		const isLt1M = file.size / 1024 / 1024 < 2;
 		const isJPGPNG = file.type === 'image/jpeg' || file.type === 'image/png';
 		if (!isLt1M || !isJPGPNG) {
 			setImageUrl('');
