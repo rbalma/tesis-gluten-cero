@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Avatar, Space, Table } from 'antd';
+import { Space, Table } from 'antd';
 import {
 	TagNoVisible,
 	TagVisible,
@@ -7,13 +7,13 @@ import {
 } from '@/components/AdminDashboard';
 import { useGetNotices } from '@/services/queries/noticeQueries';
 import { noticeGetImage } from '@/utils/fetchData';
+import { timeAgo } from '@/utils/format';
 import {
 	DrawerDetailNotices,
 	DrawerFormNotices,
 } from '@/components/AdminDashboard/NoticesAdmin';
 
 import styles from '../Admin.module.css';
-import { timeAgo } from '@/utils/format';
 
 const columns = [
 	{
@@ -90,8 +90,8 @@ export const NoticesAdminPage = () => {
 
 	const handleTableChange = (pagination, filters, sorter) => {
 		const filtersQuery = {
-			page: pagination.current | 1,
-			limit: pagination.pageSize | 15,
+			page: pagination.current || 1,
+			limit: pagination.pageSize || 15,
 		};
 
 		if (sorter?.order) {
