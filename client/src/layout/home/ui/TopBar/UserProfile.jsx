@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Avatar, Dropdown } from 'antd';
 import {
 	IdcardFilled,
-	SettingFilled,
 	LockFilled,
 	LogoutOutlined,
 } from '@ant-design/icons';
