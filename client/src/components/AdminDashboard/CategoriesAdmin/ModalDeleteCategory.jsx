@@ -13,7 +13,13 @@ export const ModalDeleteCategory = ({ categoryName, categoryId }) => {
 			okText: 'Confirmar',
 			okType: 'danger',
 			cancelText: 'Cancelar',
-			onOk: async () => await mutateAsync(categoryId),
+			onOk: async () => {
+				try {
+					await mutateAsync(categoryId);
+				} catch (error) {
+					console.log(error);
+				}
+			},
 		});
 	};
 
