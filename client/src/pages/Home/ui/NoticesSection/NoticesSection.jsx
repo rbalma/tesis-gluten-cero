@@ -1,20 +1,18 @@
+import NoticeCarousel from './NoticeCarousel';
 import notFound from '@/assets/images/notices-not-found.gif';
-import useData from "@/hooks/useData";
+import { useGetNotices } from '@/services/queries/noticeQueries';
 
 import styles from './NoticesSection.module.css';
-import NoticeCarousel from './NoticeCarousel';
-
-
 
 export const NoticesSection = () => {
-	const { 1: loading, 2: notices } = useData('/notices?limit=10&page=1');
+	const { isFetching, data } = useGetNotices();
 
-	if(loading) return <h1>Cargando...</h1>
+	if(isFetching) return <h1>Cargando...</h1>
 
 	return (
 		<section className={styles.container} id='noticias'>
 			<h4 className={styles.title}>Últimas Noticias</h4>
-			{ !loading && notices?.length === 0 ? (
+			{ !isFetching && data?.notices?.length === 0 ? (
 				<>
 				<img
 					src={notFound}
@@ -25,7 +23,7 @@ export const NoticesSection = () => {
 				</>
 			) : (
 				<div className={styles.carouselContainer}>
-					<NoticeCarousel notices={notices}/>
+					<NoticeCarousel notices={data?.notices}/>
 				</div>
 			)}
 		</section>
