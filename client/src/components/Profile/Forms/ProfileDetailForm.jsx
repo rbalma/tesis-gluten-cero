@@ -1,34 +1,51 @@
-import { Button, Form, Input } from 'antd';
-import { IconUpload } from '@/components/Icons';
+import { useEffect } from 'react';
+import { Button, Form, Input, Row, Spin } from 'antd';
+import { UploadAvatar } from '@/components/Upload/UploadAvatar';
+import { useGetUserById } from '@/services/queries/usersQueries';
+import { userGetAvatar } from '@/utils/fetchData';
 import { rules } from '@/utils/rulesForm';
 
 import styles from './ProfileForm.module.css';
 
-export const ProfileDetailForm = () => {
+export const ProfileDetailForm = ({ userId }) => {
+	const [formInstance] = Form.useForm();
+	const { isFetching, data } = useGetUserById(userId);
+
+	useEffect(() => {
+		if (!isFetching && data?._id) {
+			formInstance.setFieldsValue(data);
+			const file = [
+				{
+					uid: data.avatar,
+					name: data.avatar,
+					status: 'done',
+					url: userGetAvatar(data.avatar),
+					thumbUrl: userGetAvatar(data.avatar),
+				},
+			];
+
+			formInstance.setFieldValue('image', file);
+		}
+	}, [isFetching]);
+
 	return (
-		<Form autoComplete='off' layout='vertical'>
-			<Form.Item name='avatar' style={{ position: 'relative' }}>
-				<>
-				<img
-					alt='avatar'
-					src='https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&s=70'
-					className={styles.profileFormImage}
-				/>
-				<button className={styles.profileUploadBtn}>
-					<IconUpload /> Subir Foto
-				</button>
-				</>
-			</Form.Item>
+		<Spin spinning={isFetching} tip='Cargando'>
+		<Form form={formInstance} autoComplete='off' layout='vertical'>
+			<Row justify='center'>
+				<Form.Item name='image' style={{ position: 'relative' }}>
+					<UploadAvatar />
+				</Form.Item>
+			</Row>
 
 			<Form.Item name='name' label='Nombre' rules={rules.fullName}>
 				<Input size='large' />
 			</Form.Item>
 
-			<Form.Item name='lastName' label='Apellido' rules={rules.fullName}>
+			<Form.Item name='lastname' label='Apellido' rules={rules.fullName}>
 				<Input size='large' />
 			</Form.Item>
 
-			<Form.Item name='mail' label='Correo' rules={rules.email}>
+			<Form.Item name='email' label='Correo' rules={rules.email}>
 				<Input size='large' />
 			</Form.Item>
 
@@ -41,5 +58,6 @@ export const ProfileDetailForm = () => {
 				Guardar Cambios
 			</Button>
 		</Form>
+		</Spin>
 	);
 };
