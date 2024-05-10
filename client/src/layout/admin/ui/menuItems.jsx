@@ -24,7 +24,6 @@ export const menuItems = [
 		icon: <IconToolsKitchen />,
 		link: '/admin/recetas',
 	},
-
 	{
 		label: 'Marcadores',
 		icon: <MapPinIcon />,

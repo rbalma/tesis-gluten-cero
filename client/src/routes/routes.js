@@ -4,16 +4,13 @@ import { Login, SignUp, ForgotPassword, ResetPassword } from '@/pages/Auth';
 import {
 	AdminRecipe,
 	AdminMap,
-	AdminNotice,
 	AdminProducts,
 	AdminStatistics,
 	AdminForo,
 	AdminUser,
 	CategoriesAdminPage,
+	NoticesAdminPage,
 } from '@/pages/Admin';
-
-import { FormNotice } from '@/pages/Admin/Notices/FormNotice';
-import { FormEditNotice } from '@/pages/Admin/Notices/FormEditNotice';
 
 import {
 	ProfileSettingPage,
@@ -149,15 +146,7 @@ const routesAdmin = [
 	},
 	{
 		path: 'noticias',
-		element: AdminNotice,
-	},
-	{
-		path: 'noticias/agregar',
-		element: FormNotice,
-	},
-	{
-		path: 'noticias/editar/:noticeId',
-		element: FormEditNotice,
+		element: NoticesAdminPage,
 	},
 	{
 		path: 'mapa',
