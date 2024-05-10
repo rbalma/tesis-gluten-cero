@@ -12,6 +12,7 @@ export const getNotices = async (req, res, next) => {
     page = 1,
     limit = 10,
     title,
+    source,
     visible,
     sortField,
     sortOrder,
@@ -28,6 +29,7 @@ export const getNotices = async (req, res, next) => {
   const filters = {};
   if (visible) filters.visible = +visible;
   if (title) filters.title = { $regex: title, $options: "i" };
+  if (source) filters.source = { $regex: source, $options: "i" };
 
   try {
     const notices = await Notice.paginate(filters, options);
