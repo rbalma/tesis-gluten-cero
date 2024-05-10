@@ -7,6 +7,7 @@ import {
 	useUpdateCategory,
 } from '@/services/queries/categoryQueries';
 import { categoryGetImage } from '@/utils/fetchData';
+import { SkeletonForm } from '../Skeleton/SkeletonForm';
 
 export const FormCategory = ({ categoryId, onCloseDrawer }) => {
 	const [formInstance] = Form.useForm();
@@ -46,6 +47,8 @@ export const FormCategory = ({ categoryId, onCloseDrawer }) => {
 			console.log(error);
 		}
 	};
+
+	if (isFetching) return <SkeletonForm />
 
 	return (
 		<Form
