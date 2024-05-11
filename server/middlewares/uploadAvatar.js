@@ -5,12 +5,13 @@ import __dirname from "../dirnamePath.js";
 
 const pathUploadCategory = __dirname + "/uploads/categories";
 const pathUploadNotice = __dirname + "/uploads/notices";
-// if ( process.env.NODE_ENV === 'production')  pathUpload = __dirname+'/uploads/avatar';
+const pathUploadAvatar = __dirname+'/uploads/avatar';
 
 const configuracionMulter = {
   limits: { fileSize: 2 * 1024 * 1024 }, // 2 MB
   storage: multer.diskStorage({
     destination: (req, file, cb) => {
+      if (req.body?.email) return cb(null, pathUploadAvatar);
       const pathUpload = req.body.title ? pathUploadNotice : pathUploadCategory;
       cb(null, pathUpload);
     },

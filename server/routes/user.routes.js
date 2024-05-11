@@ -12,6 +12,7 @@ import {
   getFavMarkets,
   addFavMarkets,
   deleteFavMarkets,
+  addUserPanelAdmin,
 } from '../controllers/user.js';
 
 import { validateJWT } from '../middlewares/validateJwt.js';
@@ -22,10 +23,12 @@ const router = express.Router();
 router.route('/users').post(addUsers).get(validateJWT, getUsers);
 
 router
-  .route('/users/:id')
+  .route('/users/:userId')
   .get(validateJWT, getUserById)
-  .put(validateJWT, uploadFile, updateUser)
+  .put([validateJWT, uploadFile], updateUser)
   .delete(validateJWT, deleteUser);
+
+router.post('/admin/users', [validateJWT, uploadFile], addUserPanelAdmin)
 
 router.route('/active-account/:userId').put(activeUserAccount);
 

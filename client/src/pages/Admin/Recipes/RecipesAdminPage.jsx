@@ -22,7 +22,7 @@ const items = [
 const pageLimit = { page: 1, limit: 20 };
 //https://example.admin.refine.dev/orders?pageSize=10&current=1
 
-export const AdminRecipe = () => {
+export const RecipesAdminPage = () => {
 	const [filters, setFilters] = useState({ ...pageLimit, active: true });
 	const [tab, setTab] = useState('1');
 

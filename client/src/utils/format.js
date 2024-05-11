@@ -10,3 +10,8 @@ export const dateFormat = (date) => {
 	const result = format(new Date(date), 'dd MMMM, yyyy', {locale: es});
 	return result;
 }
+
+export const dateLongFormat = (date) => {
+	const result = format(new Date(date), 'Pp', {locale: es});
+	return result;
+}

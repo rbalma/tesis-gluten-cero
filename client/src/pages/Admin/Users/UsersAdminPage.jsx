@@ -1,73 +1,79 @@
 import { useState } from 'react';
-import { Space, Table } from 'antd';
+import { Avatar, Space, Table } from 'antd';
 import {
 	TagNoVisible,
 	TagVisible,
 	getColumnSearchProps,
 } from '@/components/AdminDashboard';
-import { useGetNotices } from '@/services/queries/noticeQueries';
-import { noticeGetImage } from '@/utils/fetchData';
-import { timeAgo } from '@/utils/format';
-import {
-	DrawerDetailNotices,
-	DrawerFormNotices,
-} from '@/components/AdminDashboard/NoticesAdmin';
+import { userGetAvatar } from '@/utils/fetchData';
+import { dateLongFormat } from '@/utils/format';
+import { useGetUsers } from '@/services/queries/usersQueries';
+import { DrawerDetailUsers, DrawerFormUsers } from '@/components/AdminDashboard/UsersAdmin';
 
 import styles from '../Admin.module.css';
 
 const columns = [
 	{
-		title: 'Imagen',
-		dataIndex: 'image',
-		width: '15%',
+		title: 'Avatar',
+		dataIndex: 'avatar',
+		width: '5%',
 		align: 'center',
-		render: (image) => (
-			<img width={80} height={45} src={noticeGetImage(image)} />
+		render: (avatar) => (
+			<Avatar
+				size={40}
+				shape='circle'
+				alt='avatar'
+				src={userGetAvatar(avatar)}
+			/>
 		),
 	},
 	{
-		title: 'Título',
-		dataIndex: 'title',
-		width: '32%',
+		title: 'Nombre',
+		dataIndex: 'name',
+		width: '15%',
 		sorter: true,
 		showSorterTooltip: false,
-		...getColumnSearchProps('título'),
+		...getColumnSearchProps('nombre'),
 	},
 	{
-		title: 'Fuente',
-		dataIndex: 'source',
+		title: 'Apellido',
+		dataIndex: 'lastname',
 		width: '15%',
 		sorter: true,
-		...getColumnSearchProps('fuente'),
-		render: (source, record) => (
-			<a href={record.link} target='_blank'>
-				{source}
-			</a>
-		),
+		showSorterTooltip: false,
+		...getColumnSearchProps('apellido'),
 	},
 	{
-		title: 'Publicada',
-		dataIndex: 'date',
-		width: '15%',
+		title: 'Correo',
+		dataIndex: 'email',
+		width: '25%',
+		...getColumnSearchProps('correo'),
+	},
+	{
+		title: 'Fecha Creación',
+		dataIndex: 'createdAt',
+		width: '20%',
 		sorter: true,
-		render: (date) => timeAgo(date),
+		showSorterTooltip: false,
+		render: (date) => dateLongFormat(date),
 	},
 	{
 		title: 'Estado',
-		dataIndex: 'visible',
-		width: '15%',
+		dataIndex: 'active',
+		width: '10%',
 		filters: [
 			{
-				text: 'Visible',
+				text: 'Activos',
 				value: '1',
 			},
 			{
-				text: 'No Visible',
+				text: 'Inactivos',
 				value: '0',
 			},
 		],
 		filterMultiple: false,
-		render: (visible) => (+visible === 1 ? <TagVisible /> : <TagNoVisible />),
+		render: (visible) =>
+			+visible === 1 ? <TagVisible isUser /> : <TagNoVisible isUser />,
 	},
 	{
 		title: '',
@@ -75,23 +81,25 @@ const columns = [
 		width: '8%',
 		render: (_, record) => (
 			<Space size={24}>
-				<DrawerDetailNotices noticeId={record._id} />
+				<DrawerDetailUsers userId={record._id} />
 			</Space>
 		),
 	},
 ];
 
-export const NoticesAdminPage = () => {
+export const UsersAdminPage = () => {
 	const [tableParams, setTableParams] = useState({
 		page: 1,
-		limit: 15,
+		limit: 10,
+		role: 'user'
 	});
-	const { isFetching, data } = useGetNotices(tableParams);
+	const { isFetching, data } = useGetUsers(tableParams);
 
 	const handleTableChange = (pagination, filters, sorter) => {
 		const filtersQuery = {
 			page: pagination.current || 1,
-			limit: pagination.pageSize || 15,
+			limit: pagination.pageSize || 10,
+			role: 'user'
 		};
 
 		if (sorter?.order) {
@@ -112,14 +120,14 @@ export const NoticesAdminPage = () => {
 	return (
 		<>
 			<header className={styles.headerBody}>
-				<h1>Noticias</h1>
-				<DrawerFormNotices />
+				<h1>Usuarios</h1>
+				<DrawerFormUsers />
 			</header>
 
 			<Table
 				loading={isFetching}
 				columns={columns}
-				dataSource={data?.notices}
+				dataSource={data?.data}
 				pagination={{
 					pageSize: tableParams.limit,
 					current: tableParams.page,

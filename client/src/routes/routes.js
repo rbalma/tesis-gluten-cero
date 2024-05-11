@@ -2,14 +2,13 @@ import HomePage from '@/pages/Home/HomePage';
 import { Login, SignUp, ForgotPassword, ResetPassword } from '@/pages/Auth';
 
 import {
-	AdminRecipe,
-	AdminMap,
-	AdminProducts,
 	AdminStatistics,
-	AdminForo,
-	AdminUser,
-	CategoriesAdminPage,
+	UsersAdminPage,
+	RecipesAdminPage,
+	MapAdminPage,
+	ThreadsAdminPage,
 	NoticesAdminPage,
+	CategoriesAdminPage,
 } from '@/pages/Admin';
 
 import {
@@ -134,11 +133,11 @@ const routesAdmin = [
 	},
 	{
 		path: 'usuarios',
-		element: AdminUser,
+		element: UsersAdminPage,
 	},
 	{
 		path: 'recetas',
-		element: AdminRecipe,
+		element: RecipesAdminPage,
 	},
 	{
 		path: 'categorias',
@@ -150,15 +149,11 @@ const routesAdmin = [
 	},
 	{
 		path: 'mapa',
-		element: AdminMap,
+		element: MapAdminPage,
 	},
 	{
 		path: 'foro',
-		element: AdminForo,
-	},
-	{
-		path: 'productos',
-		element: AdminProducts,
+		element: ThreadsAdminPage,
 	},
 ];
 
