@@ -9,9 +9,8 @@ import fs from 'fs-extra';
 // @route /api/recipes
 // @access Private
 export const addRecipes = async (req, res, next) => {
-  const recipe = new Recipe(req.body);
-
   try {
+    const recipe = new Recipe(req.body);
     recipe.user = req.id;
 
     if (!req.file) return next(new ErrorResponse('Debe subir una foto', 404));
@@ -33,6 +32,7 @@ export const addRecipes = async (req, res, next) => {
 
   } catch (error) {
     if (req.file) await fs.unlink(req.file.path);
+    console.log(error);
     next(error);
   }
 };
