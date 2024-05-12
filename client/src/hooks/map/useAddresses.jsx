@@ -13,6 +13,7 @@ export const useAddresses = (query) => {
 		queryFn: ({ signal }) => getAddressesOfPlaces(query, signal),
 		staleTime: 5 * 1000 * 60, // 5 minutos
 		gcTime: 2 * 1000 * 60,
+		enabled: !!query
 	});
 
 	return {

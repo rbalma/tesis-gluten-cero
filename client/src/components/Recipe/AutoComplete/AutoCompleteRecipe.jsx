@@ -1,43 +1,42 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AutoComplete, Input } from 'antd';
-import { IconTag, SearchIcon } from '@/components/Icons';
-import useCrud from '@/hooks/useCrud';
+import {
+	IconLoading,
+	IconTag,
+	SearchIcon,
+} from '@/components/Icons';
+import { useSearchRecipes } from '@/services/queries/recipeQueries';
+import useDebounce from '@/hooks/useDebounce';
 
 import styles from './AutoCompleteRecipe.module.css';
-import { useState } from 'react';
 
 export const AutoCompleteRecipe = () => {
 	const navigate = useNavigate();
-	const [resultData, setResultData] = useState([]);
-	const { 0: loading, 2: getRecipesData } = useCrud('/recipes');
+	const [search, setSearch] = useState('');
+	const debounceSearch = useDebounce(search, 700);
+	const { data, isFetching } = useSearchRecipes(debounceSearch);
 
 	const onSearchRecipes = async (value) => {
 		if (!value) return;
-
-		const recipes = await getRecipesData({ search: value });
-		if (recipes?.ok) {
-			setResultData(recipes.data);
-		}
+		setSearch(value);
 	};
 
 	const navigateToRecipe = (recipeId) => {
-		navigate(`/receta/${recipeId}`);
+		navigate(`/recetas/${recipeId}`);
 	};
 
 	return (
 		<AutoComplete
 			style={{ maxWidth: 750, width: '100%' }}
-			options={resultData.map((r) => ({
+			options={data?.data?.map((r) => ({
 				label: (
 					<span className={styles.optionsRecipe}>
-						<img
-							alt='recipe'
-							src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgFU4F3ENTPVbAtwkQBH7mK27Z0s3eeHpM0w&usqp=CAU'
-						/>{' '}
+						<img alt='recipe' src={r.image.secure_url} />{' '}
 						<div>
 							<p>{r.title}</p>
 							<span>
-								<IconTag size={14} /> Categoría
+								<IconTag size={14} /> {r.category.name}
 							</span>
 						</div>
 					</span>
@@ -48,6 +47,13 @@ export const AutoCompleteRecipe = () => {
 			onSelect={navigateToRecipe}>
 			<Input
 				prefix={<SearchIcon />}
+				suffix={
+					isFetching ? (
+						<div style={{ marginTop: 7 }}>
+							<IconLoading />
+						</div>
+					) : null
+				}
 				placeholder='Escribe la receta que buscas...'
 				className='autocompleteInputRecipe'
 			/>

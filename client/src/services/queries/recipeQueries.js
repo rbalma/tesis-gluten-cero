@@ -69,3 +69,16 @@ export const useDeleteRecipe = () => {
 		onError: () => toast.error('Error. Vuelva a intentarlo'),
 	});
 };
+
+
+export const useSearchRecipes = (searchTerm) => {
+  return useQuery({
+    queryKey: ['searchRecipes', searchTerm],
+    queryFn: () => getRecipes({
+			type: 'R',
+			visible: '1',
+			title: searchTerm
+		}),
+    enabled: !!searchTerm,
+  });
+};
