@@ -42,7 +42,7 @@
   cursor: pointer;
   font-family: 'Montserrat', sans-serif;
   font-size: 12px;
-  font-weight: 300;
+  font-weight: 500;
   line-height: 20px;
   margin: 0;
   padding: 6px 10px;
@@ -68,7 +68,7 @@
   cursor: pointer;
   font-family: 'Montserrat', sans-serif;
   font-size: 12px;
-  font-weight: 300;
+  font-weight: 500;
   line-height: 20px;
   margin: 0;
   padding: 6px 10px;
@@ -107,7 +107,7 @@
   transition: background 300ms ease;
 }
 
-.btnSubmit:hover {
+.btnSubmit:disabled {
   background: #db163a;
 }
 

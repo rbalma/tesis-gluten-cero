@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form, Progress } from 'antd';
-import { IconArrowNarrowLeft } from '@/components/Icons';
+import { IconArrowNarrowLeft, IconLoading } from '@/components/Icons';
 import { StepDataRecipe, StepAddItem, StepSummaryRecipe } from './StepsForm';
+import { useCreateRecipe } from '@/services/queries/recipeQueries';
 
 import styles from './FormRecipe.module.css';
 
@@ -16,11 +17,22 @@ const stepDescription = {
 export const FormRecipe = ({ setIsSuccessRecipe }) => {
 	const [form] = Form.useForm();
 	const navigate = useNavigate();
+	const { isPending, mutateAsync } = useCreateRecipe();
 	const [percent, setPercent] = useState(33.3);
 	const [current, setCurrent] = useState(1);
 	const [isDisabledStepOne, setIsDisabledStepOne] = useState(true);
 	const [isDisabledStepTwo, setIsDisabledStepTwo] = useState(true);
 	const [isDisabledStepThree, setIsDisabledStepThree] = useState(true);
+
+	const createRecipe = async () => {
+		try {
+			const recipe = form.getFieldsValue(true);
+			await mutateAsync(recipe);
+			setIsSuccessRecipe(true);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
 	const next = () => {
 		setCurrent(current + 1);
@@ -48,7 +60,7 @@ export const FormRecipe = ({ setIsSuccessRecipe }) => {
 				allFields.category &&
 				allFields.performance &&
 				allFields.preparationTime &&
-				allFields.picture?.[0]
+				allFields.image?.[0]
 			) {
 				setIsDisabledStepOne(false);
 			} else {
@@ -129,7 +141,7 @@ export const FormRecipe = ({ setIsSuccessRecipe }) => {
 				</Form>
 
 				<div style={{ display: current === 4 ? 'block' : 'none' }}>
-					<StepSummaryRecipe setCurrent={setCurrent} />
+					<StepSummaryRecipe setCurrent={setCurrent} formInstance={form} />
 				</div>
 			</div>
 
@@ -160,8 +172,15 @@ export const FormRecipe = ({ setIsSuccessRecipe }) => {
 				{current === 4 ? (
 					<button
 						className={styles.btnSubmit}
-						onClick={() => setIsSuccessRecipe(true)}>
-						Confirmar la Receta <IconArrowNarrowLeft />
+						disabled={isPending}
+						onClick={createRecipe}>
+						{isPending ? (
+							<IconLoading />
+						) : (
+							<>
+								Confirmar la Receta <IconArrowNarrowLeft />
+							</>
+						)}
 					</button>
 				) : null}
 			</div>

@@ -43,10 +43,16 @@
   font-weight: 300;
 }
 
+.dataRecipeItem>ul,
+.dataRecipeItem>ol {
+  padding-left: 18px;
+}
+
 .dataRecipeItem>ul>li,
 .dataRecipeItem>ol>li {
   font-size: 16px;
   font-weight: 300;
+
 }
 
 .rowData {

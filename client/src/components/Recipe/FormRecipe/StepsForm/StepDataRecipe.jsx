@@ -1,7 +1,14 @@
 import { UploadImage } from '@/components/Upload/UploadImage';
+import { useGetCategories } from '@/services/queries/categoryQueries';
 import { Form, Input, InputNumber, Select, Space } from 'antd';
 
+const categoriesFilters = {
+	type: 'R',
+	visible: '1'
+}
+
 export const StepDataRecipe = () => {
+	const { isFetching, data } = useGetCategories(categoriesFilters);
 
 	return (
 		<>
@@ -11,11 +18,16 @@ export const StepDataRecipe = () => {
 
 			<Space size={[32, 16]} wrap>
 				<Form.Item label='Categoría' name='category'>
-					<Select style={{ width: 200 }}>
-						<Select.Option value={0}>Bebidas</Select.Option>
-						<Select.Option value={1}>Dulces</Select.Option>
-						<Select.Option value={2}>Ensaladas</Select.Option>
-					</Select>
+					<Select
+						loading={isFetching}
+						placeholder=''
+						style={{ width: 200 }}
+						options={data}
+						fieldNames={{
+							label: 'name',
+							value: '_id',
+						}}
+					/>
 				</Form.Item>
 
 				<Form.Item label='Tiempo de preparación'>
@@ -37,8 +49,8 @@ export const StepDataRecipe = () => {
 				</Form.Item>
 			</Space>
 
-			<Form.Item label='Foto' name='picture'>
-				<UploadImage aspectRatio={16/9} />
+			<Form.Item label='Foto' name='image'>
+				<UploadImage aspectRatio={16 / 9} />
 			</Form.Item>
 		</>
 	);
