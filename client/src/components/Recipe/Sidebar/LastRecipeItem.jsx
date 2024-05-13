@@ -1,18 +1,20 @@
 
+import { useNavigate } from 'react-router-dom';
 import styles from './LastRecipeItem.module.css';
 
-export const LastRecipeItem = () => {
+export const LastRecipeItem = ({ recipeId, title, category, image}) => {
+	const navigate = useNavigate()
 	return (
-		<div className={styles.itemSidebar}>
+		<div className={styles.itemSidebar} onClick={() => navigate(`/recetas/${recipeId}`)}>
 			<img
 				alt='recipes'
-				src='https://img-global.cpcdn.com/recipes/6ab24d3a956ff32a/680x482cq70/noquis-de-papa-y-zapallo-sin-gluten-foto-principal.webp'
+				src={image}
 			/>
 			<div className={styles.infoSidebar}>
 				<span className={styles.titleSidebarItem}>
-					Ñoquis de papa y zapallo para todo el mundo
+				{title}
 				</span>
-				<span className={styles.categorySidebar}>Plato Principal</span>
+				<span className={styles.categorySidebar}>{category}</span>
 			</div>
 		</div>
 	);
