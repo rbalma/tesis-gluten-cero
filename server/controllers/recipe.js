@@ -64,7 +64,7 @@ export const getRecipes = async (req, res, next) => {
     page = 1,
     limit = 10,
     title,
-    categoryId,
+    categoriesIds,
     userName,
     userId,
     sortField,
@@ -93,7 +93,7 @@ export const getRecipes = async (req, res, next) => {
   const filters = {};
   if (active) filters.active = +active;
   if (title) filters.title = { $regex: title, $options: "i" };
-  if (categoryId) filters.category = categoryId;
+  if (categoriesIds) filters.category = { $in: categoriesIds };
   if (userId) filters.user = userId;
 
   try {
@@ -217,6 +217,39 @@ export const deleteRecipe = async (req, res, next) => {
 
     res.json({ ok: true, data: recipeId, message: 'Receta eliminada' });
   } catch (error) {
+    next(error);
+  }
+};
+
+
+// @desc Obtiene las últimas recetas para mostrar en el sidebar del detalle de la receta excluyendo la receta del detalle
+// @route /api/sidebar/recipes/:recipeId
+// @access Public
+export const getLastRecipesSideBar = async (req, res, next) => {
+  const { recipeId } = req.params;
+
+  const options = {
+    page: 1,
+    limit: 3,
+    sort: { createdAt: 1 },
+    select: ['_id', 'title', 'image'],
+    populate: [
+      {
+        path: "category",
+        select: "name",
+      },
+    ],
+  };
+
+  try {
+    const recipes = await Recipe.paginate({ _id: { $ne: recipeId } }, options);
+
+    res.json({
+      data: recipes.docs,
+      count: recipes.totalDocs,
+    });
+  } catch (error) {
+    console.log({ error });
     next(error);
   }
 };
