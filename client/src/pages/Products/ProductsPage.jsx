@@ -10,14 +10,6 @@ import styles from './ProductsPage.module.css';
 
 const columns = [
 	{
-		title: 'RNPA',
-		dataIndex: 'rnpa',
-		key: 'rnpa',
-		render: (text) => <i>{text}</i>,
-		width: '10%',
-		align: 'center',
-	},
-	{
 		title: 'Marca',
 		dataIndex: 'marca',
 		key: 'marca',
@@ -133,11 +125,6 @@ export const ProductsPage = () => {
 				onFinish={handleSearch}
 			>
 				<Row gutter={24}>
-					<Col span={8}>
-						<Form.Item name='rnpa' label='RNPA'>
-							<Input placeholder='Ej. 17003151' />
-						</Form.Item>
-					</Col>
 					<Col span={16}>
 						<Form.Item name='denominacionVenta' label='Denom. venta'>
 							<Input placeholder='Ej. Yogur endulzado sabor frutilla' />
@@ -171,7 +158,7 @@ export const ProductsPage = () => {
 						</Form.Item>
 					</Col>
 					<Col
-						span={16}
+						span={24}
 						style={{
 							textAlign: 'right',
 						}}

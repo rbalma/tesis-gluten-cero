@@ -40,3 +40,4 @@ export * from './IconChartBar';
 export * from './IconNews';
 export * from './IconCircleCheck';
 export * from './IconExclamationCircle';
+export * from './IconLoading';

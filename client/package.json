@@ -28,6 +28,7 @@
 		"react-leaflet": "^4.1.0",
 		"react-router-dom": "^6.3.0",
 		"react-slick": "^0.29.0",
+		"react-to-print": "^2.15.1",
 		"slick-carousel": "^1.8.1",
 		"sonner": "^0.3.0",
 		"swiper": "^11.1.1",
