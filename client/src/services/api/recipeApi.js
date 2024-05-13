@@ -9,14 +9,20 @@ export const getRecipes = async (filters = {}) => {
 
 export const getRecipeById = async (recipeId) => {
 	const { data } = await glutenCeroApi.get(`/recipes/${recipeId}`);
-	return data.notice;
+	return data.data;
 };
 
 export const createRecipe = async (values) => {
 	const formData = new FormData();
 
 	for (const value in values) {
-		if (value !== 'image') formData.append(value, values[value]);
+		if (['instructions', 'ingredients'].includes(value)) {
+			for (const item of values[value]) {
+				formData.append(`${value}[]`, item);
+			}
+		}
+		if (!['image', 'instructions', 'ingredients'].includes(value))
+			formData.append(value, values[value]);
 	}
 
 	const file = values.image[0]?.originFileObj;
@@ -46,5 +52,10 @@ export const updateRecipe = async ({ recipeId, values }) => {
 
 export const deleteRecipe = async (recipeId) => {
 	const { data } = await glutenCeroApi.delete(`/recipes/${recipeId}`);
+	return data;
+};
+
+export const getSideBarRecipes = async (recipeId) => {
+	const { data } = await glutenCeroApi.get(`/sidebar/recipes/${recipeId}`);
 	return data;
 };

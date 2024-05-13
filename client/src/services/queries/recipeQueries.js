@@ -5,6 +5,7 @@ import {
 	deleteRecipe,
 	getRecipeById,
 	getRecipes,
+	getSideBarRecipes,
 	updateRecipe,
 } from '../api/recipeApi';
 
@@ -81,4 +82,12 @@ export const useSearchRecipes = (searchTerm) => {
 		}),
     enabled: !!searchTerm,
   });
+};
+
+export const useGetSidebarRecipes = (recipeId) => {
+	return useQuery({
+		queryKey: ['sidebarRecipes', recipeId],
+		queryFn: () => getSideBarRecipes(recipeId),
+		enabled: !!recipeId,
+	});
 };
