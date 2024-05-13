@@ -18,11 +18,11 @@ const recipeSchema = new Schema(
     },
     preparationTime: {
       type: Number,
-      default: 0
+      default: 0,
     },
     performance: {
       type: Number,
-      default: 0
+      default: 0,
     },
     ingredients: {
       type: [String],
@@ -47,6 +47,14 @@ const recipeSchema = new Schema(
     isUpdated: {
       type: Boolean,
       default: false,
+    },
+    ratingAverage: {
+      type: mongoose.Types.Decimal128,
+      default: 0.00,
+    },
+    ratingCount: {
+      type: Number,
+      default: 0,
     },
   },
   { timestamps: true }
