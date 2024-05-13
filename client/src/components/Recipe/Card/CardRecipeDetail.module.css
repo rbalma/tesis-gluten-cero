@@ -89,7 +89,7 @@
 }
 
 .likeRecipe {
-	border: 1px solid #9d9d9d;
+	border: 2px solid #f3103c;
 	border-radius: 50px;
 	color: #eee;
 	cursor: pointer;
@@ -103,8 +103,8 @@
 	place-content: center;
 }
 
-.likeRecipe:hover {
-	border-color: #f3103c;
+.likeRecipe:hover:not(.likeRecipeActive) {
+	background-color: #f15f7a54;
 }
 
 @keyframes liked {
@@ -146,9 +146,8 @@
 }
 
 .userInfoDetailRecipe>em {
-	font-weight: 300;
-	font-size: 12px;
-	font-style: italic;
+	font-weight: 400;
+	font-size: 13px;
 	padding: 0px 2px;
 }
 

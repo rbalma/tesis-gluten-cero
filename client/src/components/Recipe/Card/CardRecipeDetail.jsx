@@ -4,12 +4,13 @@ import { CardHeaderRecipeDetail } from './CardHeaderRecipeDetail';
 import { ExtraDataRecipeCard } from './ExtraDataRecipeCard';
 
 import styles from './CardRecipeDetail.module.css';
+import { dateFormat } from '@/utils/format';
 
 const getPageMargins = () => {
 	return `@page { margin: 30px !important; }`;
 };
 
-export const CardRecipeDetail = ({ forwardRef }) => {
+export const CardRecipeDetail = ({ recipe, forwardRef }) => {
 	const [fav, setFav] = useState(false);
 
 	const addFav = () => {
@@ -26,12 +27,15 @@ export const CardRecipeDetail = ({ forwardRef }) => {
 
 			<div ref={forwardRef} className={styles.detailsRecipe}>
 				<div className={styles.headerPrint}>
-					<CardHeaderRecipeDetail />
+					<CardHeaderRecipeDetail
+						title={recipe.title}
+						category={recipe.category.name}
+					/>
 				</div>
 				<div className={styles.imageDetailRecipe}>
 					<img
 						className={styles.imageDetailRecipe}
-						src='https://www.lavoz.com.ar/resizer/igh8fcDUwk3e7p8NyRsEfbPe4-8=/0x0:0x0/980x640/filters:quality(80):format(webp)/cloudfront-us-east-1.images.arcpublishing.com/grupoclarin/G4ZDQNBSHFTDKOJXGU2DMNBZGI.jpg'
+						src={recipe.image.secure_url}
 						alt='Imagen receta'
 					/>
 					{/* Like Button */}
@@ -44,11 +48,21 @@ export const CardRecipeDetail = ({ forwardRef }) => {
 
 				<div className={styles.body}>
 					<div className={styles.userInfoDetailRecipe}>
-						<em>Publicada por </em> Becca Mills <em> el </em> 8 de Marzo, 2018
-						<em> (última actualización 9 de Junio, 2024)</em>
+						<em>Publicada por </em> {recipe.user.name} {recipe.user.lastname}{' '}
+						<em> el </em> {dateFormat(recipe.createdAt)}
+						<em>
+							{recipe.isUpdated
+								? `(última actualización ${dateFormat(recipe.updatedAt)})`
+								: ''}
+						</em>
 					</div>
 
-					<ExtraDataRecipeCard />
+					<ExtraDataRecipeCard
+						preparationTime={recipe.preparationTime}
+						performance={recipe.performance}
+						ratingAverage={recipe.ratingAverage}
+						ratingCount={recipe.ratingCount}
+					/>
 
 					<section style={{ marginTop: 30 }}>
 						<h3 className={styles.sectionTitle}>
@@ -56,25 +70,12 @@ export const CardRecipeDetail = ({ forwardRef }) => {
 						</h3>
 
 						<div className={styles.ingredientsList}>
-							<label className={styles.ingredientsItems}>
-								<input type='checkbox' name='checkbox' />
-								<span>100 g de azúcar</span>
-							</label>
-
-							<label className={styles.ingredientsItems}>
-								<input type='checkbox' name='checkbox' />
-								<span>100 g de azúcar</span>
-							</label>
-
-							<label className={styles.ingredientsItems}>
-								<input type='checkbox' name='checkbox' />
-								<span>500 g de harina de trigo</span>
-							</label>
-
-							<label className={styles.ingredientsItems}>
-								<input type='checkbox' name='checkbox' />
-								<span>1 cucharadita de esencia de vainilla</span>
-							</label>
+							{recipe.ingredients.map((ingredient, index) => (
+								<label key={index} className={styles.ingredientsItems}>
+									<input type='checkbox' name='checkbox' />
+									<span>{ingredient}</span>
+								</label>
+							))}
 						</div>
 					</section>
 
@@ -84,28 +85,11 @@ export const CardRecipeDetail = ({ forwardRef }) => {
 						</h3>
 
 						<ol className={styles.stepsList}>
-							<li className={styles.stepsListitem}>
-								En una procesadora colocar la harina, la levadura activada en
-								leche tibia, azúcar, sal, huevos, manteca derretida, esencia de
-								vainilla y ralladura de naranja.
-							</li>
-							<li className={styles.stepsListitem}>
-								Utilizar el accesorio amasador de la procesadora para formar el
-								bollo.
-							</li>
-							<li className={styles.stepsListitem}>
-								Dejar que la masa repose en el vaso, cubierta con un paño
-								húmedo, hasta que duplique su tamaño.
-							</li>
-							<li className={styles.stepsListitem}>
-								Dividir la masa en tres partes iguales y formar una trenza
-								uniendo los extremos para crear la rosca. Colocarla en una
-								bandeja y permitir que leude nuevamente.
-							</li>
-							<li className={styles.stepsListitem}>
-								Hornear la rosca en un horno precalentado durante unos 25-30
-								minutos.
-							</li>
+							{recipe.instructions.map((instruction, index) => (
+								<li key={index} className={styles.stepsListitem}>
+									{instruction}
+								</li>
+							))}
 						</ol>
 					</section>
 				</div>
