@@ -38,6 +38,7 @@ const columns = [
 		dataIndex: 'source',
 		width: '15%',
 		sorter: true,
+		showSorterTooltip: false,
 		...getColumnSearchProps('fuente'),
 		render: (source, record) => (
 			<a href={record.link} target='_blank'>
@@ -50,6 +51,7 @@ const columns = [
 		dataIndex: 'date',
 		width: '15%',
 		sorter: true,
+		showSorterTooltip: false,
 		render: (date) => timeAgo(date),
 	},
 	{
