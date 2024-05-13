@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Select } from 'antd';
 import { AutoCompleteRecipe } from '@/components/Recipe/AutoComplete/AutoCompleteRecipe';
@@ -5,17 +6,80 @@ import { RecipeCard } from '../../../components/Recipe/Card/RecipeCard';
 import { IconCirclePlus } from '@/components/Icons';
 import { CategoryRecipeCard } from '@/components/Recipe/Categories/CategoryRecipeCard';
 import { useGetCategories } from '@/services/queries/categoryQueries';
+import { useGetRecipes } from '@/services/queries/recipeQueries';
 
 import styles from './RecipeSearchPage.module.css';
 
-const filters = {
+const orderBy = {
+	recientes: {
+		sortField: 'createdAt',
+		sortOrder: 'desc',
+	},
+	antiguos: {
+		sortField: 'createdAt',
+		sortOrder: 'asc',
+	},
+	az: {
+		sortField: 'title',
+		sortOrder: 'asc',
+	},
+	za: {
+		sortField: 'title',
+		sortOrder: 'desc',
+	},
+	rating: {
+		sortField: 'ratingAverage',
+		sortOrder: 'desc',
+	},
+};
+
+const filtersCategories = {
 	type: 'R',
-	visible: '1'
-}
+	visible: '1',
+};
+
+const initialFiltersRecipes = {
+	// active: '1',
+	sortField: 'createdAt',
+	sortOrder: 'desc',
+	categoriesIds: [],
+};
 
 export const RecipeSearchPage = () => {
 	const navigate = useNavigate();
-	const { data } = useGetCategories(filters);
+	const { data } = useGetCategories(filtersCategories);
+	const [filtersRecipes, setFiltersRecipes] = useState(initialFiltersRecipes);
+	const { isSuccess, data: recipes } = useGetRecipes(filtersRecipes);
+
+	const onClickCategory = (newCategoryId) => {
+		if (
+			filtersRecipes.categoriesIds.some(
+				(categoryId) => categoryId === newCategoryId
+			)
+		) {
+			const filteredCategories = filtersRecipes.categoriesIds.filter(
+				(categoryId) => categoryId !== newCategoryId
+			);
+
+			return setFiltersRecipes((filters) => ({
+				...filters,
+				categoriesIds: filteredCategories,
+			}));
+		}
+
+		setFiltersRecipes((filters) => ({
+			...filters,
+			categoriesIds: [...filters.categoriesIds, newCategoryId],
+		}));
+	};
+
+	const onSelectOrderBy = (value) => {
+		setFiltersRecipes(filters => ({
+			...filters,
+			...orderBy[value]
+		}));
+	} 
+
 	return (
 		<div className={styles.containerRecipe}>
 			<section className={styles.bannerRecipe}>
@@ -23,42 +87,47 @@ export const RecipeSearchPage = () => {
 				{/* <p>Encuentra las mejores comidas y te invitamos a compartir las que conoces</p> */}
 				<AutoCompleteRecipe />
 			</section>
-			
+
 			<section className={styles.containerCategoryRecipes}>
 				{data?.map((category) => (
-					<CategoryRecipeCard key={category._id} category={category} />
+					<CategoryRecipeCard
+						key={category._id}
+						category={category}
+						onClickCategory={onClickCategory}
+					/>
 				))}
 			</section>
 
 			<div className={styles.containerFiltersRecipe}>
 				<div className={styles.totalSort}>
-					<h3>15 Recetas</h3>
+					<h3>{recipes?.count || ''} Recetas</h3>
 					<div>
 						Ordenar por:
 						<Select
-							defaultValue='jack'
+							defaultValue='recientes'
 							bordered={false}
 							dropdownStyle={{ minWidth: 120 }}
+							onSelect={onSelectOrderBy}
 							placement='bottomRight'
 							options={[
 								{
-									value: 'jack',
+									value: 'recientes',
 									label: 'Más recientes',
 								},
 								{
-									value: 'lucy',
+									value: 'antiguos',
 									label: 'Más antiguas',
 								},
 								{
-									value: 'pedrod',
+									value: 'rating',
 									label: 'Valoración',
 								},
 								{
-									value: 'pedro',
+									value: 'az',
 									label: 'Nombre (A-Z)',
 								},
 								{
-									value: 'pedrof',
+									value: 'za',
 									label: 'Nombre (Z-A)',
 								},
 							]}
@@ -73,60 +142,18 @@ export const RecipeSearchPage = () => {
 			</div>
 
 			<div className={styles.recipesGrid}>
-				<RecipeCard
-					title='Rosca de Pascua'
-					image='https://www.lavoz.com.ar/resizer/igh8fcDUwk3e7p8NyRsEfbPe4-8=/0x0:0x0/980x640/filters:quality(80):format(webp)/cloudfront-us-east-1.images.arcpublishing.com/grupoclarin/G4ZDQNBSHFTDKOJXGU2DMNBZGI.jpg'
-					category='Dulces'
-					date={'20/03/2024'}
-				/>
-				<RecipeCard
-					title='Ñoquis de papa y zapallo'
-					image='https://img-global.cpcdn.com/recipes/6ab24d3a956ff32a/680x482cq70/noquis-de-papa-y-zapallo-sin-gluten-foto-principal.webp'
-					category='Plato Principal'
-					date={'12/03/2024'}
-				/>
-				<RecipeCard
-					title='Pizzetas de papa sin tacc'
-					image='https://img-global.cpcdn.com/recipes/3b72696969c1d19c/680x482cq70/pizzetas-de-papa-sin-tacc-foto-principal.webp'
-					category='Plato Principal'
-					date={'07/03/2024'}
-				/>
-				<RecipeCard
-					title='Rosca de Pascua'
-					image='https://www.lavoz.com.ar/resizer/igh8fcDUwk3e7p8NyRsEfbPe4-8=/0x0:0x0/980x640/filters:quality(80):format(webp)/cloudfront-us-east-1.images.arcpublishing.com/grupoclarin/G4ZDQNBSHFTDKOJXGU2DMNBZGI.jpg'
-					category='Dulces'
-					date={'20/03/2024'}
-				/>
-				<RecipeCard
-					title='Ñoquis de papa y zapallo'
-					image='https://img-global.cpcdn.com/recipes/6ab24d3a956ff32a/680x482cq70/noquis-de-papa-y-zapallo-sin-gluten-foto-principal.webp'
-					category='Plato Principal'
-					date={'12/03/2024'}
-				/>
-				<RecipeCard
-					title='Pizzetas de papa sin tacc'
-					image='https://img-global.cpcdn.com/recipes/3b72696969c1d19c/680x482cq70/pizzetas-de-papa-sin-tacc-foto-principal.webp'
-					category='Plato Principal'
-					date={'07/03/2024'}
-				/>
-				<RecipeCard
-					title='Rosca de Pascua'
-					image='https://www.lavoz.com.ar/resizer/igh8fcDUwk3e7p8NyRsEfbPe4-8=/0x0:0x0/980x640/filters:quality(80):format(webp)/cloudfront-us-east-1.images.arcpublishing.com/grupoclarin/G4ZDQNBSHFTDKOJXGU2DMNBZGI.jpg'
-					category='Dulces'
-					date={'20/03/2024'}
-				/>
-				<RecipeCard
-					title='Ñoquis de papa y zapallo'
-					image='https://img-global.cpcdn.com/recipes/6ab24d3a956ff32a/680x482cq70/noquis-de-papa-y-zapallo-sin-gluten-foto-principal.webp'
-					category='Plato Principal'
-					date={'12/03/2024'}
-				/>
-				<RecipeCard
-					title='Pizzetas de papa sin tacc'
-					image='https://img-global.cpcdn.com/recipes/3b72696969c1d19c/680x482cq70/pizzetas-de-papa-sin-tacc-foto-principal.webp'
-					category='Plato Principal'
-					date={'07/03/2024'}
-				/>
+				{isSuccess
+					? recipes.data.map((recipe) => (
+							<RecipeCard
+								key={recipe._id}
+								recipeId={recipe._id}
+								title={recipe.title}
+								image={recipe.image.secure_url}
+								category={recipe.category.name}
+								rating={recipe.ratingAverage.$numberDecimal}
+							/>
+					  ))
+					: null}
 			</div>
 		</div>
 	);
