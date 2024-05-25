@@ -70,7 +70,7 @@ UserSchema.pre("save", async function (next) {
   }
 
   if (!this.avatar) {
-    this.avatar = `https://api.dicebear.com/7.x/initials/svg?seed=${this.name}%20${this.lastname}&radius=50&fontFamily=sans-serif&fontWeight=600`;
+    this.avatar = `https://api.dicebear.com/8.x/initials/svg?seed=${this.name}%20${this.lastname}&radius=50&fontFamily=sans-serif&fontWeight=600`;
   }
 
   const salt = await bcrypt.genSalt(10);
