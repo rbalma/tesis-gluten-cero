@@ -1,0 +1,62 @@
+.containerLoginRequired {
+  border: 1px solid #18B178;
+  border-radius: 10px;
+  padding: 20px 10px;
+  width: 95%;
+  margin: 0 auto 30px;
+}
+
+.titleLoginRequired {
+  font-family: 'Sora', sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+
+.subtitleLoginRequired {
+  font-family: 'Monserrat', sans-serif;
+  font-size: 14px;
+  color: #718096;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.flexLoginRequired {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+}
+
+
+.sectionLoginRequired {
+  text-align: center;
+  width: 300px;
+}
+
+
+.titleSectionLoginRequired {
+  font-family: 'Sora', sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.btnLoginRequired {
+  font-family: "Sora", sans-serif;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 1px;
+  display: inline-block;
+  padding: 8px 15px;
+  border-radius: 4px;
+  transition: color 0.5s, background 0.5s;
+  color: #fff;
+  background: #18B178;
+  width: 220px;
+}
+
+.btnLoginRequired:hover {
+  background: #18b179e8;
+  color: #fff;
+}
