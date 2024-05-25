@@ -2,10 +2,13 @@ import { Link } from 'react-router-dom';
 import { Breadcrumb, Card } from 'antd';
 import { IconChevronDown } from '@/components/Icons';
 import { ProfileDetailForm, ProfilePasswordForm } from '../../components/Profile';
+import useAuthStore from '@/store/authStore';
 
 import styles from './Profile.module.css';
 
 export const ProfileSettingPage = () => {
+	const { userProfile } = useAuthStore();
+
 	return (
 		<div className={styles.profileContainer}>
 			<header className={styles.profileHeader}>
@@ -29,7 +32,7 @@ export const ProfileSettingPage = () => {
 							Actualizar Información Personal
 						</span>
 					}>
-					<ProfileDetailForm />
+					<ProfileDetailForm userId={userProfile.id} />
 				</Card>
 
 				<Card

@@ -1,36 +1,33 @@
-import multer from 'multer';
-import shortid from 'shortid';
-import ErrorResponse from '../utils/errorResponse.js';
-import __dirname from '../dirnamePath.js';
+import multer from "multer";
+import shortid from "shortid";
+import ErrorResponse from "../utils/errorResponse.js";
+import __dirname from "../dirnamePath.js";
 
-const pathUploadAvatar = __dirname + '/uploads/avatar';
-const pathUploadNotices = __dirname + '/uploads/notices';
-// if ( process.env.NODE_ENV === 'production')  pathUpload = __dirname+'/uploads/avatar';
+const pathUploadCategory = __dirname + "/uploads/categories";
+const pathUploadNotice = __dirname + "/uploads/notices";
+const pathUploadAvatar = __dirname+'/uploads/avatar';
 
 const configuracionMulter = {
-  limits: { fileSize: 1 * 1024 * 1024 }, // 1 MB
-  // storage: multer.diskStorage({
-  storage: multer.memoryStorage({
+  limits: { fileSize: 2 * 1024 * 1024 }, // 2 MB
+  storage: multer.diskStorage({
     destination: (req, file, cb) => {
-      const pathUpload = req.body.title ? pathUploadNotices : pathUploadAvatar;
+      if (req.body?.email) return cb(null, pathUploadAvatar);
+      const pathUpload = req.body.title ? pathUploadNotice : pathUploadCategory;
       cb(null, pathUpload);
     },
     filename: (req, file, cb) => {
-      const { name, lastname } = req.user;
-      const extension = file.mimetype.split('/')[1];
-      const nameFile = req.body.title
-        ? `${shortid.generate()}.${extension}`
-        : `${name}_${lastname}-${shortid.generate()}.${extension}`;
+      const extension = file.mimetype.split("/")[1];
+      const nameFile = `${shortid.generate()}.${extension}`;
       cb(null, nameFile);
     },
   }),
   fileFilter(req, file, cb) {
-    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+    if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
       cb(null, true);
     } else {
       return cb(
         new Error(
-          'La extension de la imagen no es válida. (Extensiones permitidas: .png y .jpg'
+          "La extension de la imagen no es válida. (Extensiones permitidas: .png y .jpg"
         )
       );
     }
@@ -38,22 +35,22 @@ const configuracionMulter = {
 };
 
 // pasar la configuración y el campo
-const upload = multer(configuracionMulter).single('avatar');
+const upload = multer(configuracionMulter).single("image");
 
-// Sube la imagen al server
+// Sube la imagen a la carpeta upload del server
 export const uploadFile = (req, res, next) => {
   upload(req, res, function (error) {
     if (error) {
       if (error instanceof multer.MulterError) {
-        if (error.code === 'LIMIT_FILE_SIZE') {
+        if (error.code === "LIMIT_FILE_SIZE") {
           return next(
-            new ErrorResponse('La imagen es muy grande. Límite de 1 MB', 404)
+            new ErrorResponse("La imagen es muy grande. Límite de 2 MB", 404)
           );
         } else {
           return next(new ErrorResponse(error.message, 404));
         }
       }
-      if (error.hasOwnProperty('message'))
+      if (error.hasOwnProperty("message"))
         return next(new ErrorResponse(error.message, 404));
     }
     return next();

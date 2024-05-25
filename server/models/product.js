@@ -3,11 +3,6 @@ import mongoosePaginate from 'mongoose-paginate-v2';
 const Schema = mongoose.Schema;
 
 const productsSchema = new Schema ({
-    rnpa: {
-        type: String,
-        trim: true,
-        unique: true,
-    },
     marca: {
         type: String,
         trim: true,
@@ -24,6 +19,10 @@ const productsSchema = new Schema ({
         type: String,
         trim: true,
     },
+    estado: {
+        type: String,
+        enum: ["VIGENTE", "BAJA PROVISORIA"],
+    }
 });
 
 productsSchema.plugin(mongoosePaginate);

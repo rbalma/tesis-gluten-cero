@@ -84,6 +84,7 @@
 	color: #0d1717;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	text-wrap: pretty;
 	display: -webkit-box;
 	-webkit-line-clamp: 2;
 	-webkit-box-orient: vertical;

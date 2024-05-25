@@ -1,0 +1,19 @@
+.uploadContainer {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  width: fit-content;
+}
+
+.uploadContainer>img {
+  border: 1px solid #ccc;
+  border-bottom: none;
+  object-fit: contain;
+  aspect-ratio: 1/1;
+  height: 150px;
+}
+
+.uploadContainer>button>svg {
+  margin-right: 5px;
+  transform: translateY(1px);
+}

@@ -2,81 +2,47 @@ import Notice from "../models/notice.js";
 import ErrorResponse from "../utils/errorResponse.js";
 import { fsUnlink } from "../utils/fsUnlink.js";
 
-
-// @desc Agregar una nuevo noticia
-// @route /api/notices
-// @access Private
-export const addNotice = async (req, res, next) => {
-  try {
-    const { title, link, source } = req.body;
-    const imageBuffer = req.file.buffer;
-    // Guardar la noticia en MongoDB junto con el buffer de la imagen
-    const newNotice = new Notice({
-      title,
-      link,
-      source,
-      avatar: {
-        data: imageBuffer,
-        contentType: req.file.mimetype,
-      },
-    });
-
-    // Liberar memoria
-    req.file.buffer = null;
-
-    await newNotice.save();
-
-    res.json({ ok: true, data: newNotice, message: "Noticia creada" });
-
-
-    // if (req.file) //req.body.image = req.file.filename;
-    // return res.json({ file: req.file })
-    // const notice = await Notice.create(req.body);
-    // res.json({ ok: true, data: notice, message: "Noticia creada" });
-  } catch (error) {
-    console.log(error)
-    if (req.file) fsUnlink(`/notices/${req.file.filename}`);
-    next(error);
-  }
-};
-
+const pathUploadNotices = "/notices";
 
 // @desc Obtener las noticias paginadas
 // @route /api/notices
 // @access Public
 export const getNotices = async (req, res, next) => {
-  const { page = 1, limit = 10, search = "" } = req.query;
+  const {
+    page = 1,
+    limit = 10,
+    title,
+    source,
+    visible,
+    sortField,
+    sortOrder,
+  } = req.query;
 
   const options = {
     page,
     limit: parseInt(limit),
-    sort: { date: "desc" },
+    sort: { name: 1 },
   };
 
+  if (sortField) options.sort = { [sortField]: sortOrder || 1 };
+
+  const filters = {};
+  if (visible) filters.visible = +visible;
+  if (title) filters.title = { $regex: title, $options: "i" };
+  if (source) filters.source = { $regex: source, $options: "i" };
+
   try {
-    if (search) {
-      const notices = await Notice.paginate(
-        {
-          title: { $regex: search, $options: "i" },
-        },
-        options
-      );
-
-      return res.json({ ok: true, data: notices.docs });
-    }
-
-    const notices = await Notice.paginate({}, options);
+    const notices = await Notice.paginate(filters, options);
     res.json({
-      ok: true,
-      data: notices.docs,
+      notices: notices.docs,
       totalPages: notices.totalPages,
       count: notices.totalDocs,
     });
   } catch (error) {
+    console.log({ error });
     next(error);
   }
 };
-
 
 // @desc Obtener una noticia
 // @route /api/notices/:noticeId
@@ -86,14 +52,34 @@ export const getNoticeById = async (req, res, next) => {
 
   try {
     const notice = await Notice.findById({ _id: noticeId });
-    if (!notice) return next(new ErrorResponse("No existe la noticia", 404));
+    if (!notice) throw new ErrorResponse("No existe la noticia", 404);
 
-    return res.json({ ok: true, data: notice });
+    return res.json({ notice });
   } catch (error) {
     next(error);
   }
 };
 
+// @desc Agregar una nuevo noticia
+// @route /api/notices
+// @access Private
+export const addNotice = async (req, res, next) => {
+  try {
+    if (!req.file)
+      throw new ErrorResponse("Debe subir la foto de la noticia", 400);
+
+    req.body.image = req.file.filename;
+
+    const newNotice = new Notice(req.body);
+    const savedNotice = await newNotice.save();
+
+    res.json({ notice: savedNotice, message: "Noticia creada" });
+  } catch (error) {
+    if (req.file) fsUnlink(`${pathUploadNotices}/${req.file.filename}`);
+    console.log(error);
+    next(error);
+  }
+};
 
 // @desc Actualizar una noticia
 // @route /api/notices/:noticeId
@@ -103,13 +89,15 @@ export const updateNotice = async (req, res, next) => {
 
   try {
     const notice = await Notice.findById(noticeId);
-    if (!notice) return next(new ErrorResponse("La noticia no existe"));
+    if (!notice) throw new ErrorResponse("La noticia no existe", 404);
 
     if (req.file) {
-        req.body.avatar = {
-        data: req.file.buffer,
-        contentType: req.file.mimetype,
-      };
+      req.body.image = req.file.filename;
+      try {
+        fsUnlink(`${pathUploadNotices}/${notice.image}`);
+      } catch (error) {
+        console.log(error);
+      }
     }
 
     const noticeUpdated = await Notice.findByIdAndUpdate(noticeId, req.body, {
@@ -117,16 +105,15 @@ export const updateNotice = async (req, res, next) => {
     });
 
     res.json({
-      ok: true,
-      data: noticeUpdated,
+      notice: noticeUpdated,
       message: "Noticia actualizada",
     });
   } catch (error) {
-    if (req.file) fsUnlink(`/notices/${req.file.filename}`);
+    if (req.file) fsUnlink(`${pathUploadNotices}/${req.file.filename}`);
+    console.log(error);
     next(error);
   }
 };
-
 
 // @desc Eliminar una noticia
 // @route /api/notices/:noticeId
@@ -136,14 +123,19 @@ export const deleteNotice = async (req, res, next) => {
 
   try {
     const notice = await Notice.findById(noticeId);
-    if (!notice) return next(new ErrorResponse('La noticia no existe'));
+    if (!notice) throw new ErrorResponse("La noticia no existe", 404);
 
     await Notice.findByIdAndDelete(noticeId);
 
-    if (notice.image) fsUnlink(`/notices/${notice.image}`);
+    try {
+      fsUnlink(`${pathUploadNotices}/${notice.image}`);
+    } catch (error) {
+      console.log(error);
+    }
 
-    res.json({ ok: true, data: noticeId, message: 'Noticia eliminada' });
+    res.json({ noticeId, message: "Noticia eliminada" });
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };

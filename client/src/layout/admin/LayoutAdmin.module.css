@@ -1,18 +1,21 @@
-.layoutAdmin {
-	transition: margin-left 0.2s;
+.layoutBodyContainer {
+	display: grid;
+	grid-template-columns: max-content 1fr;
+	scrollbar-gutter: stable;
 }
 
-.header {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	padding: 0px 0px !important;
-	height: 65px;
+.mainLayout {
+	scrollbar-gutter: stable;
 }
 
 .content {
-	height: 100vh;
-	max-height: 100%;
-	padding: 90px 40px 15px 50px;
+	display: flex;
+	flex-direction: column;
+	margin: 0 auto;
+	padding: 20px 30px 40px;
+	height: auto;
+	min-height: calc(100dvh - 80px);
+	width: 100%;
+	max-width: 1400px;
+	scrollbar-gutter: stable;
 }

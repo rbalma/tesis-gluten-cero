@@ -1,16 +1,17 @@
+import { categoryGetImage } from '@/utils/fetchData';
 import styles from './CategoryRecipeCard.module.css';
 
-export const CategoryRecipeCard = ({ category }) => {
+export const CategoryRecipeCard = ({ category, onClickCategory }) => {
 	return (
-    <label htmlFor={category} className={styles.categoryRecipeCard}>
-    <input type='checkbox' id={category} />
-    <div className={styles.categoryRecipeItem}>
-    <img
-				alta='category'
-				src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgFU4F3ENTPVbAtwkQBH7mK27Z0s3eeHpM0w&usqp=CAU'
-			/>
-			<span>{category}</span>
-      </div>
-  </label>
+		<label
+			htmlFor={category._id}
+			className={styles.categoryRecipeCard}
+			onChange={() => onClickCategory(category._id)}>
+			<input type='checkbox' id={category._id} />
+			<div className={styles.categoryRecipeItem}>
+				<img alta='category' src={categoryGetImage(category.image)} />
+				<span>{category.name}</span>
+			</div>
+		</label>
 	);
 };

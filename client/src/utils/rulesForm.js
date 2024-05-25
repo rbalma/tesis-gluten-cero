@@ -5,8 +5,8 @@ export const rules = {
 			message: 'Completa el campo',
 		},
 		{
-			min: 8,
-			message: 'Mínimo de 8 caracteres',
+			min: 4,
+			message: 'Mínimo de 4 caracteres',
 			validateTrigger: 'onSubmit',
 		},
 		{
@@ -78,8 +78,8 @@ export const rules = {
 			message: 'Completa el campo',
 		},
 		{
-			min: 15,
-			message: 'Mínimo de 15 caracteres',
+			min: 5,
+			message: 'Mínimo de 5 caracteres',
 			validateTrigger: 'onSubmit',
 		},
 		{

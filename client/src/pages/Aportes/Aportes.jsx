@@ -152,7 +152,7 @@ export default function Aportes() {
                             <p>Queremos que las personas con enfermedad celíaca se sientan incluidas y capacitadas en todas las áreas de la vida. Tu apoyo nos permite abogar por políticas inclusivas, promover opciones sin gluten en restaurantes y establecimientos, y trabajar para eliminar barreras sociales y culturales.</p>
                         </div>
                     </div>
-                    <div>
+                    <div className='aportes-body_info'>
                         <p className='aportes-body_info-body'>
                         Cada donación nos acerca un paso más a nuestro objetivo de mejorar la vida de las personas afectadas por la enfermedad celíaca. Con tu ayuda, podemos hacer una diferencia real y duradera. ¡Gracias por considerar apoyarnos en esta importante misión!                        </p>
                     </div>

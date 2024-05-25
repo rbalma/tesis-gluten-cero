@@ -1,9 +1,0 @@
-#category-type {
-    display: flex;
-    gap: 2rem;
-}
-
-.fieldset-option {
-    display: flex;
-    gap: .5rem;
-}

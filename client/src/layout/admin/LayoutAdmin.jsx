@@ -1,11 +1,8 @@
 import { useState } from 'react';
-import { Layout } from 'antd';
 import { Outlet } from 'react-router-dom';
 import { DrawerMenu, TopBar, MenuSider } from './ui';
 
 import styles from './LayoutAdmin.module.css';
-
-const { Header, Content } = Layout;
 
 const AdminScreen = () => {
 	const [menuCollapsed, setMenuCollapsed] = useState(false);
@@ -15,21 +12,19 @@ const AdminScreen = () => {
 	};
 
 	return (
-		<Layout>
+		<div className={styles.layoutBodyContainer}>
 			<MenuSider
 				menuCollapsed={menuCollapsed}
 				setMenuCollapsed={setMenuCollapsed}
 			/>
 			<DrawerMenu menuCollapsed={menuCollapsed} showDrawer={showDrawer} />
-			<Layout className={styles.layoutAdmin}>
-				<Header className={styles.header}>
-					<TopBar showDrawer={showDrawer} />
-				</Header>
-				<Content className={styles.content}>
+			<div className={styles.mainLayout}>
+				<TopBar showDrawer={showDrawer} />
+				<main className={styles.content}>
 					<Outlet />
-				</Content>
-			</Layout>
-		</Layout>
+				</main>
+			</div>
+		</div>
 	);
 };
 

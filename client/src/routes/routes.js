@@ -2,20 +2,14 @@ import HomePage from '@/pages/Home/HomePage';
 import { Login, SignUp, ForgotPassword, ResetPassword } from '@/pages/Auth';
 
 import {
-	AdminRecipe,
-	AdminMap,
-	AdminNotice,
-	AdminProducts,
 	AdminStatistics,
-	AdminForo,
-	AdminUser,
+	UsersAdminPage,
+	RecipesAdminPage,
+	MapAdminPage,
+	ThreadsAdminPage,
+	NoticesAdminPage,
+	CategoriesAdminPage,
 } from '@/pages/Admin';
-
-import { AdminCategories } from '@/pages/Admin/Categories/AdminCategories';
-import { FormCategories } from '@/pages/Admin/Categories/FormCategories';
-import { FormEditCategories } from '@/pages/Admin/Categories/FormEditCategories';
-import { FormNotice } from '@/pages/Admin/Notices/FormNotice';
-import { FormEditNotice } from '@/pages/Admin/Notices/FormEditNotice';
 
 import {
 	ProfileSettingPage,
@@ -130,52 +124,36 @@ const routesPrivatePages = [
 
 const routesAdmin = [
 	{
+		path: '',
+		element: AdminStatistics,
+	},
+	{
 		path: 'estadisticas',
 		element: AdminStatistics,
 	},
 	{
 		path: 'usuarios',
-		element: AdminUser,
+		element: UsersAdminPage,
 	},
 	{
 		path: 'recetas',
-		element: AdminRecipe,
+		element: RecipesAdminPage,
 	},
 	{
 		path: 'categorias',
-		element: AdminCategories,
-	},
-	{
-		path: 'categorias/agregar',
-		element: FormCategories,
-	},
-	{
-		path: 'categorias/editar/:categoryId',
-		element: FormEditCategories,
+		element: CategoriesAdminPage,
 	},
 	{
 		path: 'noticias',
-		element: AdminNotice,
-	},
-	{
-		path: 'noticias/agregar',
-		element: FormNotice,
-	},
-	{
-		path: 'noticias/editar/:noticeId',
-		element: FormEditNotice,
+		element: NoticesAdminPage,
 	},
 	{
 		path: 'mapa',
-		element: AdminMap,
+		element: MapAdminPage,
 	},
 	{
 		path: 'foro',
-		element: AdminForo,
-	},
-	{
-		path: 'productos',
-		element: AdminProducts,
+		element: ThreadsAdminPage,
 	},
 ];
 

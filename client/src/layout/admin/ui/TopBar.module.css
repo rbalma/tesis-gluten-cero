@@ -1,17 +1,29 @@
 .menuTop {
 	display: flex;
 	justify-content: space-between;
-	align-items: baseline;
-	padding: 0px 3%;
-	background-color: #002140;
+	align-items: center;
+	background-color: #fff;
+	height: 80px;
+	scrollbar-gutter: stable;
 }
 
-.btnMenu {
-	margin-top: 15px;
+.logoBtnMenu {
+	display: none;
 }
 
-@media (min-width: 960px) {
-	.btnMenu {
-		display: none !important;
+.profileAvatar {
+	margin-left: auto;
+	margin-right: 8%;
+}
+
+@media (max-width: 960px) {
+
+	.logoBtnMenu {
+		display: block;
+	}
+
+	.profileAvatar {
+		margin-left: auto;
+		margin-right: 3%;
 	}
 }

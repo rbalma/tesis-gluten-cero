@@ -1,4 +1,5 @@
 import Recipe from '../models/recipe.js';
+import User from "../models/user.js";
 import Comment from '../models/comment.js';
 import ErrorResponse from '../utils/errorResponse.js';
 import { uploadImage, deleteImage } from '../services/cloudinary.js';
@@ -9,9 +10,8 @@ import fs from 'fs-extra';
 // @route /api/recipes
 // @access Private
 export const addRecipes = async (req, res, next) => {
-  const recipe = new Recipe(req.body);
-
   try {
+    const recipe = new Recipe(req.body);
     recipe.user = req.id;
 
     if (!req.file) return next(new ErrorResponse('Debe subir una foto', 404));
@@ -33,6 +33,7 @@ export const addRecipes = async (req, res, next) => {
 
   } catch (error) {
     if (req.file) await fs.unlink(req.file.path);
+    console.log(error);
     next(error);
   }
 };
@@ -46,10 +47,10 @@ export const getRecipesById = async (req, res, next) => {
   try {
     const recipe = await Recipe.findById(recipeId)
       .populate('user', 'name lastname')
-      .populate('category', 'name color');
-    if (!recipe) return next(new ErrorResponse('No existe la receta', 404));
+      .populate('category', 'name');
+    if (!recipe) throw new ErrorResponse('No existe la receta', 404);
 
-    return res.json({ ok: true, data: recipe });
+    return res.json({ data: recipe });
   } catch (error) {
     next(error);
   }
@@ -61,55 +62,64 @@ export const getRecipesById = async (req, res, next) => {
 export const getRecipes = async (req, res, next) => {
   const {
     page = 1,
-    limit = 20,
-    search = '',
-    sort = { date: 1 },
-    active = true,
-    category,
-    user,
+    limit = 10,
+    title,
+    categoriesIds,
+    userName,
+    userId,
+    sortField,
+    sortOrder,
+    active
   } = req.query;
 
   const options = {
     page,
     limit: parseInt(limit),
-    sort,
+    sort: { createdAt: 1 },
     populate: [
       {
-        path: 'user',
-        select: 'name lastname',
+        path: "user",
+        select: "name lastname",
       },
       {
-        path: 'category',
-        select: 'name color',
+        path: "category",
+        select: "name",
       },
     ],
   };
 
-  let filters = {};
-  if (active) filters = { active };
-  if (category) filters = { ...filters, category };
-  if (user) filters = { ...filters, user };
+  if (sortField) options.sort = { [sortField]: sortOrder || 1 };
+
+  const filters = {};
+  if (active) filters.active = +active;
+  if (title) filters.title = { $regex: title, $options: "i" };
+  if (categoriesIds) filters.category = { $in: categoriesIds };
+  if (userId) filters.user = userId;
 
   try {
-    if (search) {
-      const recipes = await Recipe.paginate(
+
+    if (userName) {
+      const users = await User.find(
         {
-          ...filters,
-          title: { $regex: search, $options: 'i' },
+          $or: [
+            { name: { $regex: userName, $options: "i" } },
+            { lastname: { $regex: userName, $options: "i" } },
+          ],
         },
-        options
+        "_id"
       );
-      return res.json({ ok: true, data: recipes.docs });
+      if (users.length) filters.user = { $in: users.map( user => user._id) };
     }
 
-    const recipes = await Recipe.paginate({ ...filters }, options);
+    const recipes = await Recipe.paginate(filters, options);
+
     res.json({
-      ok: true,
       data: recipes.docs,
       totalPages: recipes.totalPages,
       count: recipes.totalDocs,
     });
   } catch (error) {
+    console.log({ error });
     next(error);
   }
 };
@@ -207,6 +217,39 @@ export const deleteRecipe = async (req, res, next) => {
 
     res.json({ ok: true, data: recipeId, message: 'Receta eliminada' });
   } catch (error) {
+    next(error);
+  }
+};
+
+
+// @desc Obtiene las últimas recetas para mostrar en el sidebar del detalle de la receta excluyendo la receta del detalle
+// @route /api/sidebar/recipes/:recipeId
+// @access Public
+export const getLastRecipesSideBar = async (req, res, next) => {
+  const { recipeId } = req.params;
+
+  const options = {
+    page: 1,
+    limit: 3,
+    sort: { createdAt: 1 },
+    select: ['_id', 'title', 'image'],
+    populate: [
+      {
+        path: "category",
+        select: "name",
+      },
+    ],
+  };
+
+  try {
+    const recipes = await Recipe.paginate({ _id: { $ne: recipeId } }, options);
+
+    res.json({
+      data: recipes.docs,
+      count: recipes.totalDocs,
+    });
+  } catch (error) {
+    console.log({ error });
     next(error);
   }
 };

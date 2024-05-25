@@ -1,53 +1,102 @@
-import { Rate } from 'antd';
+import { Modal, Rate } from 'antd';
+import { Link } from 'react-router-dom';
+import { dateFormat } from '@/utils/format';
 import { IconTrash } from '@/components/Icons';
-import styles from './ProfileRecipeCard.module.css';
 import { ReviewReplyModal } from '../Modal/ReviewReplyModal';
+import { userGetAvatar } from '@/utils/fetchData';
+import { useDeleteReplyReview, useDeleteReview } from '@/services/queries/reviewsQueries';
 
-export const ProfileRecipeReviewCard = ({ isUserRecipe = false }) => {
+import styles from './ProfileRecipeCard.module.css';
+
+const { confirm } = Modal;
+
+export const ProfileRecipeReviewCard = ({
+	_id,
+	user,
+	recipe,
+	createdAt,
+	rating,
+	content,
+	reply,
+	isUserRecipe = false,
+}) => {
+	const mutateReview = useDeleteReview();
+	const mutateReply = useDeleteReplyReview();
+
+	const showDeleteConfirmReview = () => {
+		confirm({
+			title: `¿Está seguro de eliminar la reseña?`,
+			okText: 'Confirmar',
+			okType: 'danger',
+			cancelText: 'Cancelar',
+			onOk: async () => {
+				try {
+					await mutateReview.mutateAsync(_id);
+				} catch (error) {
+					console.log(error);
+				}
+			},
+		});
+	};
+
+	const showDeleteConfirmReply = () => {
+		confirm({
+			title: `¿Está seguro de eliminar la respuesta?`,
+			okText: 'Confirmar',
+			okType: 'danger',
+			cancelText: 'Cancelar',
+			onOk: async () => {
+				try {
+					await mutateReply.mutateAsync(reply?._id);
+				} catch (error) {
+					console.log(error);
+				}
+			},
+		});
+	};
+
 	return (
 		<div className={styles.profileRecipeReviewCard}>
-			<img
-				alt='avatar'
-				src='https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mm&s=70'
-			/>
+			<img alt='avatar' src={userGetAvatar(user.avatar)} />
 
 			<div className={styles.profileRecipeReviewContent}>
 				<span>
-					<strong>John Doe</strong> para <b>Burger House</b>
+					<strong>
+						{user.name} {user.lastname}
+					</strong>{' '}
+					para <Link to={`/recetas/${recipe._id}`}>{recipe.title}</Link>
 				</span>
 
 				<div className={styles.dateRate}>
-					<span>Junio 2017</span>{' '}
+					<span>{dateFormat(createdAt)}</span>{' '}
 					<span className={styles.profileRecipeStarCard}>
-						<Rate disabled allowHalf value={2.5} />
+						<Rate disabled allowHalf value={rating} />
 					</span>
 				</div>
 
-				<p>
-					Morbi velit eros, sagittis in facilisis non, rhoncus et erat. Nam
-					posuere tristique sem, eu ultricies tortor imperdiet vitae. Curabitur
-					lacinia neque non metus
-				</p>
+				<p>{content}</p>
 
-				{isUserRecipe ? (
-					<ReviewReplyModal />
-				) : (
-					<button className={styles.profileRecipeButton}>
+				{isUserRecipe && !reply ? <ReviewReplyModal reviewId={_id} /> : null}
+
+				{!isUserRecipe ? (
+					<button
+						className={styles.profileRecipeButton}
+						onClick={showDeleteConfirmReview}>
 						<IconTrash size={16} /> Eliminar
 					</button>
-				)}
+				) : null}
 
-				{/* <div className={styles.profileRecipeReviewAnswer}>
-					<span>Tu Respuesta</span>
-					<p>
-						Morbi velit eros, sagittis in facilisis non, rhoncus et erat. Nam
-						posuere tristique sem, eu ultricies tortor imperdiet vitae.
-						Curabitur lacinia neque non metus
-					</p>
-					<button className={styles.profileRecipeButton}>
-						<IconTrash size={16} /> Eliminar
-					</button>
-				</div>  */}
+				{reply ? (
+					<div className={styles.profileRecipeReviewAnswer}>
+						<span>Tu Respuesta</span>
+						<p>{reply.content}</p>
+						<button
+							className={styles.profileRecipeButton}
+							onClick={showDeleteConfirmReply}>
+							<IconTrash size={16} /> Eliminar
+						</button>
+					</div>
+				) : null}
 			</div>
 		</div>
 	);

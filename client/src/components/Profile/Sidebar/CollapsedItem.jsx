@@ -8,9 +8,9 @@ export const CollapsedItem = ({
 	item,
 	subItemActive,
 	onChangeSubItemActive,
+	collapsedItem,
+	onChangeCollapsedItem,
 }) => {
-	const [open, setOpen] = useState(false);
-
 	const isSubItemActive = () => {
 		return item.items.some((i) => i.link === subItemActive);
 	};
@@ -21,16 +21,22 @@ export const CollapsedItem = ({
 				className={`${styles.collapsedItem} ${
 					isSubItemActive() ? styles.collapsedItemActive : ''
 				}`}
-				onClick={() => setOpen(!open)}>
+				onClick={() => onChangeCollapsedItem(item.name)}>
 				{item.icon && (
-					<span className={open ? `${styles.less}` : `${styles.more}`}>
+					<span
+						className={
+							collapsedItem === item.name ? `${styles.less}` : `${styles.more}`
+						}>
 						<IconChevronDown size={24} />
 					</span>
 				)}
 				<span>{item.name}</span>
 			</button>
 
-			<div className={`${styles.subNav} ${open ? styles.open : ''}`}>
+			<div
+				className={`${styles.subNav} ${
+					collapsedItem === item.name ? styles.open : ''
+				}`}>
 				{item.items.map((subItem) => (
 					<NavLink
 						to={'/perfil/632298b7f462f1ba1974d3b6' + subItem.link}

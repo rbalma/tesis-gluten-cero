@@ -1,59 +1,52 @@
-import Category from '../models/category.js';
-import Recipe from '../models/recipe.js';
-import ErrorResponse from '../utils/errorResponse.js';
+import { fsUnlink } from "../utils/fsUnlink.js";
+import Category from "../models/category.js";
+import Recipe from "../models/recipe.js";
+import ErrorResponse from "../utils/errorResponse.js";
 
-// @desc Agregar una nueva categoría de receta
+const pathUploadCategory = "/categories";
+
+// @desc Agregar una nueva categoría
 // @route /api/categories
-// @access Private 
+// @access Private
 export const addCategory = async (req, res, next) => {
   try {
-    const { name, description, type } = req.body;
-    let category;
+    if (!req.file)
+      throw new ErrorResponse("Debe subir la foto de la categoría", 400);
 
-    if(req.file) {
-      const imageBuffer = req.file.buffer;
-      category = {
-        name,
-        description,
-        avatar: {
-          data: imageBuffer,
-          contentType: req.file.mimetype,
-        },
-        type,
-      }
+    req.body.image = req.file.filename;
 
-      // Liberar memoria
-      req.file.buffer = null;
-    } else {
-      category = {
-        name,
-        description,
-        type,
-      }
-    }
-
-    const newCategory = new Category(category);
-
+    const newCategory = new Category(req.body);
     const savedCategory = await newCategory.save();
-    res.json({ ok: true, data: savedCategory, message: 'Categoría agregada' });
 
-  } catch(error) {
+    res.json({ data: savedCategory, message: "Categoría agregada" });
+  } catch (error) {
+    if (req.file) fsUnlink(`${pathUploadCategory}/${req.file.filename}`);
     console.log(error);
     next(error);
-  };
+  }
 };
 
-// @desc Obtiene todas las categorias de las recetas
+// @desc Obtiene todas las categorias
 // @route /api/categories
 // @access Public
 export const getCategories = async (req, res, next) => {
+  const { type, visible, name, sortField, sortOrder } = req.query;
   try {
-    const categories = await Category.find().sort({ name: 1 });
+    const filters = {};
+    if (type) filters.type = type;
+    if (visible) filters.visible = +visible;
+    if (name) filters.name = { $regex: name, $options: 'i' };
+
+    let sorter = { name: 1 };
+    if (sortField) sorter = { [sortField]: sortOrder || 1 }
+
+    const categories = await Category.find(filters).sort(sorter);
+
     res.json({
-      ok: true,
       data: categories,
     });
   } catch (error) {
+    console.log({ error })
     next(error);
   }
 };
@@ -66,7 +59,7 @@ export const getCategoryById = async (req, res, next) => {
 
   try {
     const category = await Category.findById({ _id: categoryId });
-    if (!category) return next(new ErrorResponse("No existe la categoria", 404));
+    if (!category) throw new ErrorResponse("No existe la categoria", 404);
 
     return res.json({ ok: true, data: category });
   } catch (error) {
@@ -74,38 +67,45 @@ export const getCategoryById = async (req, res, next) => {
   }
 };
 
-// @desc Elimina una categoria de receta
+// @desc Actualiza una categoria
 // @route /api/categories/:categoryId
 // @access Private
 export const updateCategory = async (req, res, next) => {
   const { categoryId } = req.params;
-  console.log(req.body)
+
   try {
     const category = await Category.findById(categoryId);
-    if (!category) return next(new ErrorResponse('La categoría no existe', 404));
+    if (!category) throw new ErrorResponse("La categoría no existe", 404);
 
     if (req.file) {
-        req.body.avatar = {
-        data: req.file.buffer,
-        contentType: req.file.mimetype,
-      };
+      req.body.image = req.file.filename;
+      try {
+        fsUnlink(`${pathUploadCategory}/${category.image}`);
+      } catch (error) {
+        console.log(error);
+      }
     }
 
-    const categoryUpdated = await Category.findByIdAndUpdate(categoryId, req.body, {
-      new: true,
-    });
+    const categoryUpdated = await Category.findByIdAndUpdate(
+      categoryId,
+      req.body,
+      {
+        new: true,
+      }
+    );
 
     res.json({
-      ok: true,
       data: categoryUpdated,
-      message: 'Categoría actualizada',
+      message: "Categoría actualizada",
     });
   } catch (error) {
+    if (req.file) fsUnlink(`${pathUploadCategory}/${req.file.filename}`);
+    console.log(error);
     next(error);
   }
 };
 
-// @desc Elimina una categoria de receta
+// @desc Elimina una categoria
 // @route /api/categories/:categoryId
 // @access Private
 export const deleteCategory = async (req, res, next) => {
@@ -113,7 +113,7 @@ export const deleteCategory = async (req, res, next) => {
 
   try {
     const category = await Category.findById(categoryId);
-    if (!category) return next(new ErrorResponse('La categoría no existe', 404));
+    if (!category) throw new ErrorResponse("La categoría no existe", 404);
 
     // const recipe = await Recipe.findOne({ active: 1 }).populate({
     //   path: 'Category',
@@ -121,15 +121,22 @@ export const deleteCategory = async (req, res, next) => {
     // });
     const recipe = await Recipe.findOne({ active: 1, category: category._id });
     if (recipe)
-      return next(
-        new ErrorResponse('Existe al menos una receta con esa categoría', 404)
+      throw new ErrorResponse(
+        "Existe al menos una receta con esa categoría",
+        404
       );
 
     await Category.findByIdAndDelete(categoryId);
 
-    res.json({ ok: true, data: categoryId, message: 'Categoría eliminada' });
+    try {
+      fsUnlink(`${pathUploadCategory}/${category.image}`);
+    } catch (error) {
+      console.log(error);
+    }
+
+    res.json({ data: categoryId, message: "Categoría eliminada" });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     next(error);
   }
 };

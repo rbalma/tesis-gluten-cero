@@ -1,38 +1,38 @@
-import mongoose from 'mongoose';
-import mongoosePaginate from 'mongoose-paginate-v2';
+import mongoose from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2";
 const Schema = mongoose.Schema;
 
-const noticesSchema = new Schema ({
-    title : {
-        type: String,
-        trim: true,
-        required: [true, 'Debe ingresar un título'],
-        unique: true,
+const noticesSchema = new Schema(
+  {
+    title: {
+      type: String,
+      trim: true,
+      required: [true, "Debe ingresar el título de la noticia"],
     },
-    date : {
-        type: Date,
-        default: Date.now
+    date: {
+      type: Date,
+      required: [true, "Debe ingresar la fecha de publicación de la noticia"],
     },
-    link : {
-        type: String,
-        required: [true, 'Debe ingresar un link'],
+    link: {
+      type: String,
+      required: [true, "Debe ingresar el enlace que redirecciona a la noticia"],
     },
-    source : {
-        type: String,
-        required: [true, 'Debe ingresar una fuente'],
+    source: {
+      type: String,
+      required: [true, "Debe ingresar la fuente de la noticia"],
     },
-    avatar: {
-        data: {
-            type: Buffer,
-            required: [true, 'Debe ingresar una imagen'],
-        },
-        contentType: {
-            type: String,
-            required: [true, 'Debe ingresar una imagen'],
-        }
-    }
-});
+    image: {
+      type: String,
+      required: [true, "Debe ingresar una foto de la noticia"],
+    },
+    visible: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  { timestamps: true }
+);
 
 noticesSchema.plugin(mongoosePaginate);
 
-export default mongoose.model('Notice', noticesSchema);
+export default mongoose.model("Notice", noticesSchema);

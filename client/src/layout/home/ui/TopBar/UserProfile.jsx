@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Avatar, Dropdown } from 'antd';
 import {
 	IdcardFilled,
-	SettingFilled,
 	LockFilled,
 	LogoutOutlined,
 } from '@ant-design/icons';
@@ -45,7 +44,7 @@ export const UserProfile = () => {
 		user.role === 'admin' && {
 			key: '04',
 			label: (
-				<Link style={{ fontFamily: 'Sora, Verdana' }} to='/admin'>
+				<Link style={{ fontFamily: 'Sora, Verdana' }} to='/admin/estadisticas'>
 					Panel Admin
 				</Link>
 			),

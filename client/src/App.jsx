@@ -19,11 +19,13 @@ const App = () => {
 			clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}
 		>
 			<Toaster
-				toastOptions={{
-					style: { fontSize: 15 },
-				}}
-				position='top-right'
+				// toastOptions={{
+				// 	style: { fontSize: 15 },
+				// }}
+				position='bottom-left'
+				expand={true}
 				richColors
+				closeButton
 			/>
 			<QueryClientProvider client={queryClient}>
 			<ReactQueryDevtools initialIsOpen={false} />

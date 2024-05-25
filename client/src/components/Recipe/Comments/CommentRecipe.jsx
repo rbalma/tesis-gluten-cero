@@ -1,87 +1,113 @@
 import { useState } from 'react';
-import { Button, Form, Input, Rate } from 'antd';
+import useAuthStore from '@/store/authStore';
+import { Button, Divider, Form, Input, Rate, Space } from 'antd';
+import { useCreateReplyReview } from '@/services/queries/reviewsQueries';
 import { IconArrowBackUp } from '@/components/Icons';
+import { timeAgo } from '@/utils/format';
 import { rules } from '@/utils/rulesForm';
-import NoImage from '@/assets/images/no-avatar.png';
+import { userGetAvatar } from '@/utils/fetchData';
 
 import './CommentRecipe.css';
-import styles from '../Card/CardRecipeDetail.module.css';
 
-export const CommentRecipe = () => {
+export const CommentRecipe = ({ _id, rating, content, user, createdAt, reply, recetaId, recipeUserId }) => {
+	const { userProfile } = useAuthStore();
 	const [isReplyOpen, setIsReplyOpen] = useState(false);
+	const { isPending, mutateAsync } = useCreateReplyReview(recetaId);
+
+	const addReply = async (values) => {
+		try {
+			await mutateAsync({ values, reviewId: _id });
+			setIsReplyOpen(false);
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
 	return (
-		<>
-			<h3 className={styles.sectionTitle}>
-				COMENTARIOS <div className={styles.sectionLine} />
-			</h3>
+		<div className='comments_container'>
+			<div className='comment'>
+				<div className='comment_wrapper'>
+					<div className='content'>
+						<div className='user_photo'>
+							<img src={userGetAvatar(user.avatar)} alt='avatar' />
+						</div>
+						<div className='comment_info'>
+							<Space split={<Divider type='vertical' />}>
+								<span className='username'>
+									{user.name} {user.lastname}
+								</span>
+								<span className='date'>{timeAgo(createdAt)}</span>
+							</Space>
 
-			<div className='comments_container'>
-				<div className='comment'>
-					<div className='comment_wrapper'>
-						<div className='content'>
-							<div className='user_photo'>
-								<img src={NoImage} alt='' />
+							<div className='rate'>
+								<Rate style={{ fontSize: 12 }} disabled value={rating} />
 							</div>
-							<div className='comment_info'>
-								<div className='header'>
-									<span className='username'>Agustina Bovero</span>
-									<span className='date'>_ Hace 2 días</span>
-									<span className='rate'>
-										<Rate style={{ fontSize: 12 }} disabled value={5} />
-									</span>
-								</div>
-								<div className='text'>Excelente receta</div>
-								<div className='actions'>
+
+							<div className='text'>{content}</div>
+							<div className='actions'>
+								{(userProfile?.id === recipeUserId && !reply?._id) ? (
 									<button onClick={() => setIsReplyOpen((open) => !open)}>
 										<IconArrowBackUp size={16} />{' '}
 										{isReplyOpen ? 'Cancelar' : 'Responder'}
 									</button>
-										<div className={`addCommentFormRecipe ${isReplyOpen? 'openForm': ''}`}>
-											<Form style={{ padding: 20 }}>
-												<Form.Item name='comentario' rules={rules.message}>
-													<Input.TextArea
-														showCount
-														maxLength={150}
-														autoSize={{ minRows: 3, maxRows: 3 }}
-														placeholder='Escribe tu respuesta'
-													/>
-												</Form.Item>
-
-												<Button
-													className='btn-success'
-													shape='round'
-													style={{ marginTop: 10 }}>
-													Responder
-												</Button>
-											</Form>
-										</div>
-				
+								) : null}
+								<div
+									className={`addCommentFormRecipe ${
+										isReplyOpen ? 'openForm' : ''
+									}`}>
+									<Form
+										onFinish={addReply}
+										className='formAdmin'
+										style={{ padding: 20 }}>
+										<Form.Item name='content' rules={rules.message}>
+											<Input.TextArea
+												showCount
+												maxLength={150}
+												autoSize={{ minRows: 3, maxRows: 3 }}
+												placeholder='Escribe tu respuesta'
+											/>
+										</Form.Item>
+										
+											<Button
+												htmlType='submit'
+												className='btn-success'
+												shape='round'
+												loading={isPending}
+												style={{ marginTop: 10 }}>
+												Responder
+											</Button>
+									
+									</Form>
 								</div>
 							</div>
 						</div>
+					</div>
+
+					{reply ? (
 						<div className='replies'>
 							<div className='comment'>
 								<div className='line'></div>
 								<div className='comment_wrapper'>
 									<div className='content'>
 										<div className='user_photo'>
-											<img src={NoImage} alt='user' />
+											<img src={userGetAvatar(reply.user.avatar)} alt='user' />
 										</div>
 										<div className='comment_info'>
-											<div className='header'>
-												<span className='username'>Ignacio Paez</span>
-												<span className='date'>Hace 1 día</span>
-											</div>
-											<div className='text'>Gracias! ❤</div>
+											<Space split={<Divider type='vertical' />}>
+												<span className='username'>
+													{reply.user.name} {reply.user.lastname}
+												</span>
+												<span className='date'>{timeAgo(reply.createdAt)}</span>
+											</Space>
+											<div className='text'>{reply.content}</div>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
+					) : null}
 				</div>
 			</div>
-		</>
+		</div>
 	);
 };

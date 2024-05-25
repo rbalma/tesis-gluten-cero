@@ -1,4 +1,4 @@
-import { getAddressesOfPlaces } from '@/services/queries';
+import { getAddressesOfPlaces } from '@/services/queries/mapQueries';
 import { useQuery } from '@tanstack/react-query';
 
 export const useAddresses = (query) => {
@@ -13,6 +13,7 @@ export const useAddresses = (query) => {
 		queryFn: ({ signal }) => getAddressesOfPlaces(query, signal),
 		staleTime: 5 * 1000 * 60, // 5 minutos
 		gcTime: 2 * 1000 * 60,
+		enabled: !!query
 	});
 
 	return {

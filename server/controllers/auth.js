@@ -37,7 +37,6 @@ export const login = async (req, res, next) => {
       role: user.role,
       active: user.active,
       avatar: user.avatar,
-      dicebear: user.dicebear,
       userGoogle: user.google,
       favRecipes: user.favRecipes,
     };
@@ -120,7 +119,6 @@ export const googleSignIn = async (req, res, next) => {
       role: user.role,
       active: user.active,
       avatar: user.avatar,
-      dicebear: user.dicebear,
       userGoogle: user.google,
       favRecipes: user.favRecipes,
     };

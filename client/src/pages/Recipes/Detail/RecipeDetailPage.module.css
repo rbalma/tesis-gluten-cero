@@ -13,80 +13,6 @@
 	padding: 40px 5%;
 }
 
-.headerRecipeDetail {
-	grid-area: header;
-	text-align: center;
-	margin-bottom: 20px;
-}
-
-.headerRecipeDetail>h1 {
-	font-size: 34px;
-	font-weight: 700;
-	color: #292929;
-	border-top: 1px solid #eee;
-	padding-top: 20px;
-}
-
-.linesCategory {
-	text-transform: uppercase;
-	font-weight: 700;
-	display: block;
-	text-align: center;
-	overflow: hidden;
-	white-space: nowrap;
-}
-
-.linesCategory>span {
-	display: inline-block;
-	position: relative;
-	padding-left: 1em;
-	padding-right: 1em;
-}
-
-.linesCategory>span::before {
-	right: 100%;
-	content: "";
-	position: absolute;
-	height: 100%;
-	width: 9999px;
-	top: 50%;
-	border-top-style: solid;
-	border-top-width: 1px;
-	border-top-color: hsla(0, 0%, 93%, .9);
-	border-bottom-style: solid;
-	border-bottom-width: 1px;
-	border-bottom-color: hsla(0, 0%, 93%, .9);
-	height: 0.5em;
-	margin-top: -0.25em;
-}
-
-.linesCategory>span::after {
-	left: 100%;
-	content: "";
-	position: absolute;
-	height: 100%;
-	width: 9999px;
-	top: 50%;
-	border-top-style: solid;
-	border-top-width: 1px;
-	border-top-color: hsla(0, 0%, 93%, .9);
-	border-bottom-style: solid;
-	border-bottom-width: 1px;
-	border-bottom-color: hsla(0, 0%, 93%, .9);
-	height: 0.5em;
-	margin-top: -0.25em;
-}
-
-.linesCategory>span>a {
-	font-family: 'Montserrat', Verdana, sans-serif;
-	color: #f91942;
-}
-
-.linesCategory>span>a:hover {
-	text-decoration: underline;
-	color: #f91942;
-}
-
 .recipeDetails {
 	grid-area: recipe;
 }
@@ -98,6 +24,24 @@
 
 .commentDetails {
 	grid-area: comments;
+}
+
+.sectionTitle {
+	font-family: 'Montserrat', Georgia, Times, 'Times New Roman', serif;
+	font-weight: 600;
+	margin: 25px 0 15px;
+	text-transform: uppercase;
+	font-size: 26px;
+	color: #282828;
+	align-items: center;
+	display: flex;
+}
+
+.sectionLine {
+	margin-left: 15px;
+	height: 1px;
+	border-bottom: 2px solid #282828;
+	width: 100%;
 }
 
 @media (min-width: 1300px) {

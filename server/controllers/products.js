@@ -1,8 +1,7 @@
-import XLSX from 'xlsx';
 import multer from 'multer';
 import ErrorResponse from '../utils/errorResponse.js';
 import __dirname from '../dirnamePath.js';
-//import Products from '../models/product.js';
+import Products from '../models/product.js';
 
 //* Configuración Multer
 const pathUpload = __dirname + '/docs';
@@ -35,16 +34,14 @@ const upload = multer(configuracionMulter).single('file');
 // @desc Obtener el listado de productos aprobados por ANMAT
 // @route /api/products-anmat
 // @access Public
-export const getProducts = (req, res, next) => {
+export const getProducts = async (req, res, next) => {
   try {
-    const workbook = XLSX.readFile('./docs/listado-anmat.xlsx');
-    //const workbookSheets = workbook.SheetNames;
-    const data = XLSX.utils.sheet_to_json(
-      workbook.Sheets['Resumen Productos']
-    );
-    //const data = dataExcel.filter( d => d.tipoProducto.includes('CEREAL'));
-    data.length = 30;
-    res.json({ ok: true, data: data, count: data.length });
+    const products = await Products.find().limit(50);
+
+    res.json({
+      data: products,
+      count: products.length
+    });
   } catch (error) {
     next(error);
   }
