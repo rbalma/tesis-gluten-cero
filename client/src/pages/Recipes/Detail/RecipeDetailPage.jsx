@@ -42,7 +42,7 @@ export const RecipeDetailPage = () => {
 					</h3>
 			
 				<FormCommentRecipe recetaId={recetaId} userId={recipe.user._id} />
-				<ListCommentsRecipe recetaId={recetaId} />
+				<ListCommentsRecipe recetaId={recetaId} recipeUserId={recipe.user._id} />
 			</div>
 		</div>
 	);
