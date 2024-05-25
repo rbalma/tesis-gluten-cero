@@ -225,7 +225,7 @@ function DashboardBarChart({dataUsers}) {
 
 function DashboardDoughnutChart({dataCategories,dataRecipes}) {
 
-  const recetaCategories = dataCategories.filter(category => category.type === "Receta");
+  const recetaCategories = dataCategories.filter(category => category.type === "R");
   const recetaLabels = recetaCategories.map(category => category.name);
 
   const recetasPorCategoria = {};
@@ -288,7 +288,7 @@ function DashboardDoughnutChart({dataCategories,dataRecipes}) {
 
 function DashboardPolarAreaChart({dataCategories,dataMarkers}) {
 
-  const markersCategories = dataCategories.filter(category => category.type === "Mapa");
+  const markersCategories = dataCategories.filter(category => category.type === "M");
   const markersLabels = markersCategories.map(category => category.name);
  
   const marcadoresPorCategoria = {};
@@ -367,7 +367,10 @@ function ResumenTabla({ recetas, marcadores, publicaciones, usuarios }) {
     userData[publicacion.user._id].publicaciones++;
   });
 
-  const data = Object.values(userData);
+  const data =Object.values(userData).map(userItem => ({
+    ...userItem,
+    key: userItem.usuario._id,
+  }));
 
   const columns = [
     {
@@ -376,6 +379,8 @@ function ResumenTabla({ recetas, marcadores, publicaciones, usuarios }) {
       key: 'usuario',
       render: usuario => usuario ? `${usuario.name} ${usuario.lastname}` : '',
       className: 'custom-column',
+      sorter: (a, b) => `${a.usuario.name} ${a.usuario.lastname}`.localeCompare(`${b.usuario.name} ${b.usuario.lastname}`),
+      defaultSortOrder: 'ascend',
     },
     {
       title: 'Rol',
@@ -383,6 +388,7 @@ function ResumenTabla({ recetas, marcadores, publicaciones, usuarios }) {
       key: 'rol',
       render: usuario => usuario ? `${capitalize(usuario.role)}` : '',
       className: 'custom-column',
+      //sorter: (a, b) => `${a.usuario.role}`.localeCompare(`${b.usuario.role}`),
     },
     {
       title: 'Recetas',

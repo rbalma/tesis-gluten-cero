@@ -50,7 +50,7 @@ const recipeSchema = new Schema(
     },
     ratingAverage: {
       type: mongoose.Types.Decimal128,
-      default: 0.00,
+      default: 0.0,
     },
     ratingCount: {
       type: Number,

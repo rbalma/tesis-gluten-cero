@@ -208,7 +208,7 @@ export const PostsList = () => {
 											<EditFilled />
 										</Link>
 									}
-									{(userProfile.role === 'admin' && thread.status === 'open') &&
+									{((userProfile.role === 'admin' || userProfile.id === thread.user._id) && thread.status === 'open') &&
 										<div className='card-content__delete' onClick={deleteThread}>
 											<DeleteFilled />
 										</div>

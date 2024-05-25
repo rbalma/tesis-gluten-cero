@@ -26,6 +26,24 @@
 	grid-area: comments;
 }
 
+.sectionTitle {
+	font-family: 'Montserrat', Georgia, Times, 'Times New Roman', serif;
+	font-weight: 600;
+	margin: 25px 0 15px;
+	text-transform: uppercase;
+	font-size: 26px;
+	color: #282828;
+	align-items: center;
+	display: flex;
+}
+
+.sectionLine {
+	margin-left: 15px;
+	height: 1px;
+	border-bottom: 2px solid #282828;
+	width: 100%;
+}
+
 @media (min-width: 1300px) {
 	.containerRecipeDetail {
 		grid-template:

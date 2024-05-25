@@ -120,7 +120,8 @@
 }
 
 .profileRecipeReviewCard>img {
-  max-width: 80px;
+  width: 50px;
+  margin-top: 10px;
   border-radius: 50%;
   aspect-ratio: 1/1;
 }
@@ -144,6 +145,7 @@
   justify-content: space-between;
   align-items: center;
   margin: 5px 0 10px;
+  text-transform: capitalize;
 }
 
 .dateRate>span {
@@ -170,6 +172,7 @@
 }
 
 .profileRecipeReviewAnswer>p {
+  margin-top: 8px;
   font-size: 14px;
   font-weight: 300;
 }
