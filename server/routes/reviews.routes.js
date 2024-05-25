@@ -6,7 +6,8 @@ import {
   addReplyReview,
   deleteReplyReview,
   hasUserReview,
-  getReviewsFromAllRecipes
+  getReviewsFromAllRecipes,
+  getReviewsRecipesByUser
 } from "../controllers/reviews.controller.js";
 import { validateJWT } from "../middlewares/validateJwt.js";
 
@@ -22,7 +23,8 @@ router.post("/reply/review/:reviewId", validateJWT, addReplyReview);
 router.delete("/reply/:replyId", validateJWT, deleteReplyReview);
 
 router.get("/hasreview/user/:userId", validateJWT, hasUserReview);
-router.get("/reviews/recipe/user/:userId", validateJWT, getReviewsFromAllRecipes);
+router.get("/reviews/recipes/users", validateJWT, getReviewsFromAllRecipes);
+router.get("/reviews/recipe/user/:userId", validateJWT, getReviewsRecipesByUser);
 
 
 export default router;

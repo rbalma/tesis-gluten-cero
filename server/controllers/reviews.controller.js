@@ -43,7 +43,7 @@ export const getReviews = async (req, res, next) => {
           populate: {
             path: "user",
             select: "name lastname avatar",
-          }
+          },
         },
       ],
     };
@@ -76,16 +76,17 @@ export const getReviews = async (req, res, next) => {
 // @access Private
 export const addReview = async (req, res, next) => {
   const { recipe, market } = req.body;
-  
+  const session = await mongoose.startSession();
+  session.startTransaction();
   try {
     const review = new Reviews(req.body);
     review.user = req.id;
-    const newReview = await review.save();
+    const newReview = await review.save({ session });
 
     let newRating;
     let ratingCount;
     if (recipe) {
-      const ratingSum = await Reviews.aggregate([
+      let ratingSum = await Reviews.aggregate([
         { $match: { recipe: mongoose.Types.ObjectId(recipe) } },
         {
           $group: {
@@ -95,19 +96,27 @@ export const addReview = async (req, res, next) => {
         },
       ]);
 
+      ratingSum = (ratingSum?.[0]?.rating || 0) + review.rating;
+
       ratingCount = await Reviews.count({ recipe });
-      const ratingTotal = ratingSum[0].rating / ratingCount;
+      ratingCount += 1;
+
+      const ratingTotal = ratingSum / ratingCount;
 
       newRating = Math.round((ratingTotal + Number.EPSILON) * 10) / 10;
 
-      await Recipe.findByIdAndUpdate(recipe, {
-        ratingAverage: newRating,
-        ratingCount: ratingCount,
-      });
+      await Recipe.findByIdAndUpdate(
+        recipe,
+        {
+          ratingAverage: newRating,
+          ratingCount: ratingCount,
+        },
+        { session }
+      );
     }
 
     if (market) {
-      const ratingSum = await Reviews.aggregate([
+      let ratingSum = await Market.aggregate([
         { $match: { market: mongoose.Types.ObjectId(market) } },
         {
           $group: {
@@ -116,17 +125,26 @@ export const addReview = async (req, res, next) => {
           },
         },
       ]);
+      ratingSum = (ratingSum?.[0]?.rating || 0) + review.rating;
 
-      ratingCount = await Reviews.count({ market });
+      let ratingCount = await Market.count({ market });
+      ratingCount += 1;
+
       const ratingTotal = ratingSum[0].rating / ratingCount;
 
       newRating = Math.round((ratingTotal + Number.EPSILON) * 100) / 100;
 
-      await Market.findByIdAndUpdate(market, {
-        ratingAverage: newRating,
-        ratingCount: ratingCount,
-      });
+      await Market.findByIdAndUpdate(
+        market,
+        {
+          ratingAverage: newRating,
+          ratingCount: ratingCount,
+        },
+        { session }
+      );
     }
+
+    await session.commitTransaction();
 
     res.json({
       newReview,
@@ -136,7 +154,10 @@ export const addReview = async (req, res, next) => {
     });
   } catch (error) {
     console.log({ error });
+    await session.abortTransaction();
     next(error);
+  } finally {
+    session.endSession();
   }
 };
 
@@ -145,55 +166,81 @@ export const addReview = async (req, res, next) => {
 // @access Private
 export const deleteReview = async (req, res, next) => {
   const { reviewId } = req.params;
+  const session = await mongoose.startSession();
+  session.startTransaction();
   try {
     const review = await Reviews.findById(reviewId);
     if (!review) throw new ErrorResponse("La reseña no existe", 404);
 
-    await Reviews.findByIdAndDelete(reviewId);
+    await Reviews.findByIdAndDelete(reviewId, { session });
 
-    let newRating;
+    if (review.reply) await ReplyReview.findByIdAndDelete(reply, { session });
+
     if (review.recipe) {
-      const ratingSum = Reviews.aggregate([
-        { $match: { recipe: review.recipe } },
+      let ratingSum = await Reviews.aggregate([
+        { $match: { recipe: mongoose.Types.ObjectId(review.recipe) } },
         {
           $group: {
             _id: null,
             rating: { $sum: "$rating" },
-            count: { $count: "$_id" },
           },
         },
       ]);
 
-      newRating = ratingSum.rating / ratingSum.count;
-      await Recipe.findByIdAndUpdate(review.recipe, {
-        ratingAverage: newRating,
-        ratingCount: ratingSum.count,
-      });
+      ratingSum = ratingSum[0].rating - review.rating;
+
+      let ratingCount = await Reviews.count({ recipe: review.recipe });
+      ratingCount -= 1;
+
+      const ratingTotal = ratingSum / ratingCount;
+
+      const newRating = Math.round((ratingTotal + Number.EPSILON) * 10) / 10;
+
+      await Recipe.findByIdAndUpdate(
+        review.recipe,
+        {
+          ratingAverage: newRating,
+          ratingCount: ratingCount,
+        },
+        { session }
+      );
     }
 
     if (review.market) {
-      const ratingSum = Reviews.aggregate([
-        { $match: { market: review.market } },
+      const ratingSum = await Reviews.aggregate([
+        { $match: { market: mongoose.Types.ObjectId(review.market) } },
         {
           $group: {
             _id: null,
             rating: { $sum: "$rating" },
-            count: { $count: "$_id" },
           },
         },
       ]);
 
-      newRating = ratingSum.rating / ratingSum.count;
-      await Market.findByIdAndUpdate(review.market, {
-        ratingAverage: newRating,
-        ratingCount: ratingSum.count,
-      });
+      const ratingCount = await Reviews.count({ market: review.market });
+      const ratingTotal =
+        ratingCount > 0 ? ratingSum[0].rating / ratingCount : 0;
+
+      const newRating = Math.round((ratingTotal + Number.EPSILON) * 100) / 100;
+
+      await Market.findByIdAndUpdate(
+        review.market,
+        {
+          ratingAverage: newRating,
+          ratingCount: ratingCount,
+        },
+        { session }
+      );
     }
 
-    res.json({ reviewId, totalRating: newRating, message: "Reseña eliminada" });
+    await session.commitTransaction();
+    res.json({ reviewId, message: "Reseña eliminada" });
   } catch (error) {
     console.log({ error });
+    await session.abortTransaction();
     next(error);
+  } finally {
+    session.endSession();
   }
 };
 
@@ -205,6 +252,7 @@ export const addReplyReview = async (req, res, next) => {
   try {
     const reply = new ReplyReview(req.body);
     reply.user = req.id;
+    reply.review = reviewId;
     const replyDB = await reply.save();
 
     if (replyDB)
@@ -237,9 +285,9 @@ export const deleteReplyReview = async (req, res, next) => {
     const reply = await ReplyReview.findById(replyId);
     if (!reply) throw new ErrorResponse("La respuesta no existe", 404);
 
-    await ReplyReview.findByIdAndRemove(replyId, { reply: null });
+    await Reviews.findByIdAndUpdate(reply.review, { reply: null });
 
-    res.json({ replyId, message: "Respuesta eliminada" });
+    res.json({ replyId, reviewId: reply.review, message: "Respuesta eliminada" });
   } catch (error) {
     console.log({ error });
     next(error);
@@ -267,22 +315,14 @@ export const hasUserReview = async (req, res, next) => {
   }
 };
 
-
 // @desc Obtiene todas las reseñas que otros usuarios hicieron a las recetas o marcadores creados por el usuario logueado
 // @route /api/reviews/recipe/user/:userId
 // @access Public
 export const getReviewsFromAllRecipes = async (req, res, next) => {
-  const { userId } = req.params;
-  const { 
-    page = 1,
-    limit = 10,
-    withReply,
-    withoutReply,
-  } = req.query;
+  const { page = 1, limit = 10, withReply, withoutReply } = req.query;
 
   try {
-
-    const recipes = await Recipe.find({ user: userId }, '_id');
+    const recipes = await Recipe.find({ user: req.id }, "_id");
 
     const options = {
       page,
@@ -298,30 +338,24 @@ export const getReviewsFromAllRecipes = async (req, res, next) => {
           select: "title",
         },
         {
-          path: "market",
-          select: "title",
-        },
-        {
           path: "reply",
           populate: {
             path: "user",
             select: "name lastname avatar",
-          }
+          },
         },
       ],
     };
 
     const filters = {};
-    filters.recipe = { $in: recipes.map(recipe => recipe._id) };
-    // if (markets) filters.market = { $nin: [null, ""] };
-    // if (userId) filters.user = userId;
-    if (withReply) filters.reply = { $nin: [null] };
-    if (withoutReply) filters.reply = { $eq: null };
+    filters.recipe = { $in: recipes.map((recipe) => recipe._id) };
+    if (+withReply) filters.reply = { $nin: [null] };
+    if (+withoutReply) filters.reply = { $eq: null };
 
     const reviews = await Reviews.paginate(filters, options);
 
     res.json({
-      data: reviews.docs,
+      reviews: reviews.docs,
       totalPages: reviews.totalPages,
       count: reviews.totalDocs,
     });
@@ -331,21 +365,12 @@ export const getReviewsFromAllRecipes = async (req, res, next) => {
   }
 };
 
-
-// @desc Agrega una nueva reseña para una receta o marcador
-// @route /api/reviews/recipe/:recipeId
+// @desc Obtiene todas las reseñas de recetas de un usuario
+// @route /api/reviews/recipe/user/:userId
 // @access Private
-export const getReviewsByUser = async (req, res, next) => {
-  const { recipeId, marketId } = req.params;
-  const {
-    page = 1,
-    limit = 10,
-    ratings,
-    sortField,
-    userId,
-    withReply,
-    withoutReply,
-  } = req.query;
+export const getReviewsRecipesByUser = async (req, res, next) => {
+  const { userId } = req.params;
+  const { page = 1, limit = 10 } = req.query;
 
   try {
     const options = {
@@ -361,34 +386,17 @@ export const getReviewsByUser = async (req, res, next) => {
           path: "recipe",
           select: "title",
         },
-        {
-          path: "market",
-          select: "title",
-        },
-        {
-          path: "reply",
-          populate: {
-            path: "user",
-            select: "name lastname avatar",
-          }
-        },
       ],
     };
 
-    if (sortField) options.sort = { [sortField]: sortOrder || 1 };
-
     const filters = {};
-    if (recipeId) filters.recipe = recipeId;
-    if (marketId) filters.market = marketId;
+    filters.recipe = { $nin: [null] };
     if (userId) filters.user = userId;
-    if (ratings) filters.rating = { $in: ratings };
-    if (withReply) filters.reply = { $nin: [null, ""] };
-    if (withoutReply) filters.reply = { $eq: null };
 
     const reviews = await Reviews.paginate(filters, options);
 
     res.json({
-      data: reviews.docs,
+      reviews: reviews.docs,
       totalPages: reviews.totalPages,
       count: reviews.totalDocs,
     });
@@ -397,5 +405,3 @@ export const getReviewsByUser = async (req, res, next) => {
     next(error);
   }
 };
-
-
