@@ -29,12 +29,12 @@ export const ExtraDataRecipeCard = ({
 			<div className={styles.extraInfoItem}>
 				<IconStar size={30} strokeWidth={1.5} />{' '}
 				<div className={styles.extraInfoDivText}>
-					<span className={styles.extraInfoTitle}>Puntaje</span>
+					<a href='#comentarios' className={styles.extraInfoTitle}>Puntaje</a>
 					<span className={styles.extraInfoData}>
 						{+ratingAverage.$numberDecimal
-							? ratingAverage.$numberDecimal
+							? (+ratingAverage.$numberDecimal).toFixed(1)
 							: '--'}{' '}
-						<small>({ratingCount} opiniones)</small>
+						<small>({ratingCount} {ratingCount === 1 ? 'opinión' : 'opiniones'})</small>
 					</span>
 				</div>
 			</div>
