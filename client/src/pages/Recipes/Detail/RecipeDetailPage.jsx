@@ -5,7 +5,7 @@ import { useGetRecipeById } from '@/services/queries/recipeQueries';
 import { CardRecipeDetail } from '@/components/Recipe/Card/CardRecipeDetail';
 import { SidebarRecipeDetail } from '@/components/Recipe/Sidebar/SidebarRecipeDetail';
 import { FormCommentRecipe } from '@/components/Recipe/Comments/FormCommentRecipe';
-import { CommentRecipe } from '@/components/Recipe/Comments/CommentRecipe';
+import { ListCommentsRecipe } from '@/components/Recipe/Comments/ListCommentsRecipe';
 import { CardHeaderRecipeDetail } from '@/components/Recipe/Card/CardHeaderRecipeDetail';
 
 import styles from './RecipeDetailPage.module.css';
@@ -36,8 +36,13 @@ export const RecipeDetailPage = () => {
 				<SidebarRecipeDetail recetaId={recetaId} handlePrint={handlePrint} />
 			</aside>
 			<div className={styles.commentDetails}>
-				<FormCommentRecipe />
-				{/* <CommentRecipe /> */}
+			
+					<h3 id='comentarios' className={styles.sectionTitle}>
+						COMENTARIOS <div className={styles.sectionLine} />
+					</h3>
+			
+				<FormCommentRecipe recetaId={recetaId} userId={recipe.user._id} />
+				<ListCommentsRecipe recetaId={recetaId} />
 			</div>
 		</div>
 	);

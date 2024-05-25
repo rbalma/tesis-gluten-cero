@@ -19,7 +19,7 @@ export const RecipeCard = ({ recipeId, title, image, category, rating }) => {
 				<div className='card-info'>
 					<div className='card-about'>
 						<div className='card-tag tag-news'>{category}</div>
-						<div className='card-review'>{+rating ? rating : '-'}<StarFilledIcon size={12} /></div>
+						<div className='card-review'>{+rating ? (+rating).toFixed(1) : '-'}<StarFilledIcon size={12} /></div>
 					</div>
 					<h1 className='card-title'>{title}</h1>
 				</div>
