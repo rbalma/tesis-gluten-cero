@@ -14,6 +14,10 @@ const reviewSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "User",
     },
+    review: {
+      type: Schema.Types.ObjectId,
+      ref: "Review",
+    },
   },
   { timestamps: true }
 );
