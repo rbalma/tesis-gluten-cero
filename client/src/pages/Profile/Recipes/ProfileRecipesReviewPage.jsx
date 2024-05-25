@@ -32,8 +32,8 @@ export const ProfileRecipesReviewPage = () => {
 							defaultValue='jack'
 							bordered={false}
 							size='small'
-							dropdownStyle={{ minWidth: 120}}
-							placement='bottomRight'
+							dropdownStyle={{ minWidth: 130 }}
+							placement='bottomLeft'
 							options={[
 								{
 									value: 'jack',

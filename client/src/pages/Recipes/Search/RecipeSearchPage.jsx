@@ -106,9 +106,9 @@ export const RecipeSearchPage = () => {
 						<Select
 							defaultValue='recientes'
 							bordered={false}
-							dropdownStyle={{ minWidth: 120 }}
+							dropdownStyle={{ minWidth: 130 }}
 							onSelect={onSelectOrderBy}
-							placement='bottomRight'
+							placement='bottomLeft'
 							options={[
 								{
 									value: 'recientes',
