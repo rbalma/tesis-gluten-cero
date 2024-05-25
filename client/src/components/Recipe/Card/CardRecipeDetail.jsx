@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { IconHeart, IconHeartFilled } from '@/components/Icons';
 import { CardHeaderRecipeDetail } from './CardHeaderRecipeDetail';
 import { ExtraDataRecipeCard } from './ExtraDataRecipeCard';
+import { dateFormat } from '@/utils/format';
 
 import styles from './CardRecipeDetail.module.css';
-import { dateFormat } from '@/utils/format';
 
 const getPageMargins = () => {
 	return `@page { margin: 30px !important; }`;
@@ -52,7 +52,7 @@ export const CardRecipeDetail = ({ recipe, forwardRef }) => {
 						<em> el </em> {dateFormat(recipe.createdAt)}
 						<em>
 							{recipe.isUpdated
-								? `(última actualización ${dateFormat(recipe.updatedAt)})`
+								? ` (última actualización ${dateFormat(recipe.updatedAt)})`
 								: ''}
 						</em>
 					</div>
