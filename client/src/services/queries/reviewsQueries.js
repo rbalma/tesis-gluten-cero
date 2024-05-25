@@ -7,6 +7,8 @@ import {
 	createReplyReview,
 	deleteReplyReview,
 	userHasReview,
+	getReviewsRecipeByUser,
+	getReviewsRecipeFromUsers,
 } from '../api/reviewsApi';
 
 export const useGetReviewsRecipe = ({ recipeId, filters }) => {
@@ -33,9 +35,15 @@ export const useCreateReviewRecipe = () => {
 };
 
 export const useDeleteReview = () => {
+	const queryClient = useQueryClient();
 	return useMutation({
 		mutationFn: deleteReview,
-		onSuccess: ({ message = '' }) => {
+		onSuccess: ({ reviewId, message = '' }) => {
+			queryClient.setQueryData(['reviewsRecipesByUser'], (old) => ({
+				reviews: old.reviews.filter((review) => review._id !== reviewId),
+				totalPages: old.totalPages,
+				count: old.count,
+			}));
 			toast.success(message);
 		},
 		onError: () => toast.error('Error. Vuelva a intentarlo'),
@@ -50,14 +58,6 @@ export const useHasReviewRecipe = ({ userId, recipeId }) => {
 	});
 };
 
-export const useHasReviewMarket = ({ userId, marketId }) => {
-	return useQuery({
-		queryKey: ['hasReviewsMarket', marketId],
-		queryFn: () => userHasReview({ userId, marketId }),
-		enabled: !!userId,
-	});
-};
-
 export const useCreateReplyReview = (recipeId) => {
 	const queryClient = useQueryClient();
 	return useMutation({
@@ -66,12 +66,32 @@ export const useCreateReplyReview = (recipeId) => {
 			queryClient.setQueriesData(
 				{ queryKey: ['reviewsRecipes', recipeId], exact: false },
 				(old) => ({
-						data: old.data.map((review) =>
-							review._id === variables.reviewId ? { ...review, reply } : review
-						),
-						totalPages: old.totalPages,
-						count: old.count,
-					})
+					data: old.data.map((review) =>
+						review._id === variables.reviewId ? { ...review, reply } : review
+					),
+					totalPages: old.totalPages,
+					count: old.count,
+				})
+			);
+		},
+		onError: () => toast.error('Error. Vuelva a intentarlo'),
+	});
+};
+
+export const useCreateReplyReviewInProfile = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: createReplyReview,
+		onSuccess: ({ reply }, variables) => {
+			queryClient.setQueriesData(
+				{ queryKey: ['reviewsRecipesFromUsers'], exact: false },
+				(old) => ({
+					reviews: old.reviews.map((review) =>
+						review._id === variables.reviewId ? { ...review, reply } : review
+					),
+					totalPages: old.totalPages,
+					count: old.count,
+				})
 			);
 		},
 		onError: () => toast.error('Error. Vuelva a intentarlo'),
@@ -82,13 +102,41 @@ export const useDeleteReplyReview = () => {
 	const queryClient = useQueryClient();
 	return useMutation({
 		mutationFn: deleteReplyReview,
-		onSuccess: ({ message = '' }) => {
-			// queryClient.invalidateQueries({
-			// 	predicate: (query) =>
-			// 		query.queryKey[0] === 'users' && query.queryKey[1]?.page >= 1,
-			// });
-			toast.success(message);
+		onSuccess: ({ reviewId }) => {
+			queryClient.setQueriesData(
+				{ queryKey: ['reviewsRecipesFromUsers'], exact: false },
+				(old) => ({
+					reviews: old.reviews.map((review) =>
+						review._id === reviewId ? { ...review, reply: null } : review
+					),
+					totalPages: old.totalPages,
+					count: old.count,
+				})
+			);
 		},
 		onError: () => toast.error('Error. Vuelva a intentarlo'),
+	});
+};
+
+export const useGetReviewsRecipeFromUsers = ({ filters }) => {
+	return useQuery({
+		queryKey: ['reviewsRecipesFromUsers', filters],
+		queryFn: () => getReviewsRecipeFromUsers({ filters }),
+	});
+};
+
+export const useGetReviewsRecipeByUser = (userId) => {
+	return useQuery({
+		queryKey: ['reviewsRecipesByUser'],
+		queryFn: () => getReviewsRecipeByUser(userId),
+		enabled: !!userId,
+	});
+};
+
+export const useHasReviewMarket = ({ userId, marketId }) => {
+	return useQuery({
+		queryKey: ['hasReviewsMarket', marketId],
+		queryFn: () => userHasReview({ userId, marketId }),
+		enabled: !!userId,
 	});
 };

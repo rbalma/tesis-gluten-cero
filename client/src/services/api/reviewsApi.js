@@ -47,3 +47,16 @@ export const deleteReplyReview = async (replyId) => {
 	const { data } = await glutenCeroApi.delete(`/reply/${replyId}`);
 	return data;
 };
+
+
+export const getReviewsRecipeFromUsers = async ({ filters = {} }) => {
+	const { data } = await glutenCeroApi.get(`/reviews/recipes/users`, {
+		params: filters,
+	});
+	return data;
+};
+
+export const getReviewsRecipeByUser = async (userId) => {
+	const { data } = await glutenCeroApi.get(`/reviews/recipe/user/${userId}`);
+	return data;
+};
