@@ -2,7 +2,7 @@ import { Skeleton } from 'antd';
 import { useGetReviewsRecipe } from '@/services/queries/reviewsQueries';
 import { CommentRecipe } from './CommentRecipe';
 
-export const ListCommentsRecipe = ({ recetaId }) => {
+export const ListCommentsRecipe = ({ recetaId, recipeUserId }) => {
 	const { isFetching, isError, isSuccess, data } = useGetReviewsRecipe({
 		recipeId: recetaId,
 		filters: {
@@ -20,7 +20,7 @@ export const ListCommentsRecipe = ({ recetaId }) => {
 	return (
 		<>
 			{data.data.map((review) => (
-				<CommentRecipe key={review._id} recetaId={recetaId} {...review} />
+				<CommentRecipe key={review._id} recetaId={recetaId} recipeUserId={recipeUserId} {...review} />
 			))}
 		</>
 	);

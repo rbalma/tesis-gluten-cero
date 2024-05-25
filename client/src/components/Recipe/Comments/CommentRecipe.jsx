@@ -6,11 +6,10 @@ import { IconArrowBackUp } from '@/components/Icons';
 import { timeAgo } from '@/utils/format';
 import { rules } from '@/utils/rulesForm';
 import { userGetAvatar } from '@/utils/fetchData';
-import NoImage from '@/assets/images/no-avatar.png';
 
 import './CommentRecipe.css';
 
-export const CommentRecipe = ({ _id, rating, content, user, createdAt, reply, recetaId }) => {
+export const CommentRecipe = ({ _id, rating, content, user, createdAt, reply, recetaId, recipeUserId }) => {
 	const { userProfile } = useAuthStore();
 	const [isReplyOpen, setIsReplyOpen] = useState(false);
 	const { isPending, mutateAsync } = useCreateReplyReview(recetaId);
@@ -46,7 +45,7 @@ export const CommentRecipe = ({ _id, rating, content, user, createdAt, reply, re
 
 							<div className='text'>{content}</div>
 							<div className='actions'>
-								{!reply?._id ? (
+								{(userProfile?.id === recipeUserId && !reply?._id) ? (
 									<button onClick={() => setIsReplyOpen((open) => !open)}>
 										<IconArrowBackUp size={16} />{' '}
 										{isReplyOpen ? 'Cancelar' : 'Responder'}
@@ -68,7 +67,7 @@ export const CommentRecipe = ({ _id, rating, content, user, createdAt, reply, re
 												placeholder='Escribe tu respuesta'
 											/>
 										</Form.Item>
-										{userProfile?.id === user._id ? (
+										
 											<Button
 												htmlType='submit'
 												className='btn-success'
@@ -77,7 +76,7 @@ export const CommentRecipe = ({ _id, rating, content, user, createdAt, reply, re
 												style={{ marginTop: 10 }}>
 												Responder
 											</Button>
-										) : null}
+									
 									</Form>
 								</div>
 							</div>
