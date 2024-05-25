@@ -21,6 +21,6 @@ router
   .delete(validateJWT, deleteRecipe);
 router.put('/active-recipe/:recipeId', validateJWT, activateRecipe);
 
-router.get('/sidebar/recipes/:recipeId', validateJWT, getLastRecipesSideBar);
+router.get('/sidebar/recipes/:recipeId', getLastRecipesSideBar);
 
 export default router;
