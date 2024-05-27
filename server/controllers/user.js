@@ -248,57 +248,6 @@ export const deleteUser = async (req, res, next) => {
   }
 };
 
-// @desc Obtiene el detalle de las recetas favoritas de un usuario
-// @route /api/fav-recipes/:userId
-// @access Private
-export const getFavRecipes = async (req, res, next) => {
-  const { userId } = req.params;
-
-  try {
-    const favRecipes = await User.findById(userId).select("_id").populate({
-      path: "favRecipes",
-      select: "title category image",
-    });
-
-    if (!user) return next(new ErrorResponse("El usuario no existe"));
-
-    res.json({ ok: true, data: favRecipes, count: favRecipes.length });
-  } catch (error) {
-    next(error);
-  }
-};
-
-// @desc agrega una receta como favorita de un usuario
-// @route /api/fav-recipes/:userId
-// @access Private
-export const addFavRecipe = async (req, res, next) => {
-  const { userId } = req.params;
-  const { recipeId } = req.body;
-
-  try {
-    await User.findByIdAndUpdate(userId, { $push: { favRecipes: recipeId } });
-
-    res.json({ ok: true });
-  } catch (error) {
-    next(error);
-  }
-};
-
-// @desc elimina una receta como favorita de un usuario
-// @route /api/fav-recipes/:userId
-// @access Private
-export const deleteFavRecipe = async (req, res, next) => {
-  const { userId } = req.params;
-  const { recipeId } = req.query;
-
-  try {
-    await User.findByIdAndUpdate(userId, { $pull: { favRecipes: recipeId } });
-    res.json({ ok: true });
-  } catch (error) {
-    next(error);
-  }
-};
-
 // @desc Obtiene el detalle de los marcadores favoritos de un usuario
 // @route /api/fav-markets/:userId
 // @access Private

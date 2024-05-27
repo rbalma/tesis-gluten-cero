@@ -6,9 +6,6 @@ import {
   getUserById,
   updateUser,
   deleteUser,
-  getFavRecipes,
-  addFavRecipe,
-  deleteFavRecipe,
   getFavMarkets,
   addFavMarkets,
   deleteFavMarkets,
@@ -31,12 +28,6 @@ router
 router.post('/admin/users', [validateJWT, uploadFile], addUserPanelAdmin)
 
 router.route('/active-account/:userId').put(activeUserAccount);
-
-router
-  .route('/fav-recipes/:userId')
-  .get(validateJWT, getFavRecipes)
-  .put(validateJWT, addFavRecipe)
-  .delete(validateJWT, deleteFavRecipe);
 
 router
   .route('/fav-markets/:userId')
