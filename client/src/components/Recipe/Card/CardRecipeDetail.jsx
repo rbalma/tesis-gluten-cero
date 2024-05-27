@@ -1,23 +1,45 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IconHeart, IconHeartFilled } from '@/components/Icons';
 import { CardHeaderRecipeDetail } from './CardHeaderRecipeDetail';
 import { ExtraDataRecipeCard } from './ExtraDataRecipeCard';
+import {
+	useAddFavoriteRecipe,
+	useDeleteFavoriteRecipe,
+} from '@/services/queries/recipeQueries';
 import { dateFormat } from '@/utils/format';
 
 import styles from './CardRecipeDetail.module.css';
+import useAuthStore from '@/store/authStore';
 
 const getPageMargins = () => {
 	return `@page { margin: 30px !important; }`;
 };
 
 export const CardRecipeDetail = ({ recipe, forwardRef }) => {
+	const userAuth = useAuthStore((state) => state.userProfile);
 	const [fav, setFav] = useState(false);
+	const addFavoriteRecipe = useAddFavoriteRecipe();
+	const deleteFavoriteRecipe = useDeleteFavoriteRecipe();
 
-	const addFav = () => {
-		if (!fav) {
+	useEffect(() => {
+		if (userAuth?.favRecipes?.some((recipeId) => recipeId === recipe._id))
 			setFav(true);
-		} else {
-			setFav(false);
+	}, []);
+	
+
+	const addFav = async () => {
+		const stateInitials = fav;
+		setFav(() => !fav);
+
+		try {
+			if (!stateInitials) {
+				await addFavoriteRecipe.mutateAsync(recipe._id);
+			} else {
+				await deleteFavoriteRecipe.mutateAsync(recipe._id);
+			}
+		} catch (error) {
+			console.log(error);
+			setFav(stateInitials);
 		}
 	};
 

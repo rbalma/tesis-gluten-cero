@@ -1,10 +1,10 @@
-import Recipe from '../models/recipe.js';
+import Recipe from "../models/recipe.js";
 import User from "../models/user.js";
-import Comment from '../models/comment.js';
-import ErrorResponse from '../utils/errorResponse.js';
-import { uploadImage, deleteImage } from '../services/cloudinary.js';
-import fs from 'fs-extra';
- //https://github.com/telegraf/telegraf/discussions/1450
+import Comment from "../models/comment.js";
+import ErrorResponse from "../utils/errorResponse.js";
+import { uploadImage, deleteImage } from "../services/cloudinary.js";
+import fs from "fs-extra";
+//https://github.com/telegraf/telegraf/discussions/1450
 
 // @desc Agregar una nuevo receta
 // @route /api/recipes
@@ -14,12 +14,12 @@ export const addRecipes = async (req, res, next) => {
     const recipe = new Recipe(req.body);
     recipe.user = req.id;
 
-    if (!req.file) return next(new ErrorResponse('Debe subir una foto', 404));
+    if (!req.file) return next(new ErrorResponse("Debe subir una foto", 404));
 
-    const result = await uploadImage(req.file.path, 'recipes');
+    const result = await uploadImage(req.file.path, "recipes");
     recipe.image = {
       public_id: result.public_id,
-      secure_url: result.secure_url
+      secure_url: result.secure_url,
     };
     await fs.unlink(req.file.path);
 
@@ -28,9 +28,8 @@ export const addRecipes = async (req, res, next) => {
     res.json({
       ok: true,
       data: recipeDB,
-      message: 'Receta creada',
+      message: "Receta creada",
     });
-
   } catch (error) {
     if (req.file) await fs.unlink(req.file.path);
     console.log(error);
@@ -46,9 +45,9 @@ export const getRecipesById = async (req, res, next) => {
 
   try {
     const recipe = await Recipe.findById(recipeId)
-      .populate('user', 'name lastname')
-      .populate('category', 'name');
-    if (!recipe) throw new ErrorResponse('No existe la receta', 404);
+      .populate("user", "name lastname")
+      .populate("category", "name");
+    if (!recipe) throw new ErrorResponse("No existe la receta", 404);
 
     return res.json({ data: recipe });
   } catch (error) {
@@ -69,7 +68,7 @@ export const getRecipes = async (req, res, next) => {
     userId,
     sortField,
     sortOrder,
-    active
+    active,
   } = req.query;
 
   const options = {
@@ -97,7 +96,6 @@ export const getRecipes = async (req, res, next) => {
   if (userId) filters.user = userId;
 
   try {
-
     if (userName) {
       const users = await User.find(
         {
@@ -108,7 +106,7 @@ export const getRecipes = async (req, res, next) => {
         },
         "_id"
       );
-      if (users.length) filters.user = { $in: users.map( user => user._id) };
+      if (users.length) filters.user = { $in: users.map((user) => user._id) };
     }
 
     const recipes = await Recipe.paginate(filters, options);
@@ -137,12 +135,12 @@ export const activateRecipe = async (req, res, next) => {
       { active },
       { new: true }
     );
-    if (!recipe) return next(new ErrorResponse('No existe la receta', 404));
+    if (!recipe) return next(new ErrorResponse("No existe la receta", 404));
 
     return res.json({
       ok: true,
       data: recipe,
-      message: active ? 'Receta activada' : 'Receta desactivada',
+      message: active ? "Receta activada" : "Receta desactivada",
     });
   } catch (error) {
     next(error);
@@ -157,12 +155,12 @@ export const updateRecipe = async (req, res, next) => {
 
   try {
     const recipe = await Recipe.findById(recipeId);
-    if (!recipe) return next(new ErrorResponse('No existe la receta', 404));
+    if (!recipe) return next(new ErrorResponse("No existe la receta", 404));
 
     // Verifica que solo el usuario que creó la receta pueda actualizarlo
     if (recipe.user.toString() !== req.id)
       return next(
-        new ErrorResponse('No tiene privilegios para editar esta receta', 401)
+        new ErrorResponse("No tiene privilegios para editar esta receta", 401)
       );
 
     // En el body de la petición no viene el id del user
@@ -175,10 +173,10 @@ export const updateRecipe = async (req, res, next) => {
     };
 
     if (req.file) {
-      const result = await uploadImage(req.file.path, 'recipes');
+      const result = await uploadImage(req.file.path, "recipes");
       newRecipe.image = {
         public_id: result.public_id,
-        secure_url: result.secure_url
+        secure_url: result.secure_url,
       };
       await fs.unlink(req.file.path);
       if (recipe.image?.public_id) await deleteImage(recipe.image.public_id);
@@ -191,7 +189,7 @@ export const updateRecipe = async (req, res, next) => {
     res.json({
       ok: true,
       data: updateRecipe,
-      message: 'Receta actualizada',
+      message: "Receta actualizada",
     });
   } catch (error) {
     if (req.file) await fs.unlink(req.file.path);
@@ -207,20 +205,18 @@ export const deleteRecipe = async (req, res, next) => {
 
   try {
     const recipe = await Recipe.findById(recipeId);
-    if (!recipe) return next(new ErrorResponse('No existe la receta', 404));
+    if (!recipe) return next(new ErrorResponse("No existe la receta", 404));
 
     await Recipe.findByIdAndDelete(recipeId);
     if (recipe.image?.public_id) await deleteImage(recipe.image.public_id);
     await Comment.deleteMany({ recipe: recipeId });
     // await User.updateMany({}, { $pull: { favRecipes: id } });
 
-
-    res.json({ ok: true, data: recipeId, message: 'Receta eliminada' });
+    res.json({ ok: true, data: recipeId, message: "Receta eliminada" });
   } catch (error) {
     next(error);
   }
 };
-
 
 // @desc Obtiene las últimas recetas para mostrar en el sidebar del detalle de la receta excluyendo la receta del detalle
 // @route /api/sidebar/recipes/:recipeId
@@ -232,7 +228,7 @@ export const getLastRecipesSideBar = async (req, res, next) => {
     page: 1,
     limit: 3,
     sort: { createdAt: 1 },
-    select: ['_id', 'title', 'image'],
+    select: ["_id", "title", "image"],
     populate: [
       {
         path: "category",
@@ -250,6 +246,58 @@ export const getLastRecipesSideBar = async (req, res, next) => {
     });
   } catch (error) {
     console.log({ error });
+    next(error);
+  }
+};
+
+// @desc Obtiene el detalle de las recetas favoritas de un usuario
+// @route /api/favorites/recipes
+// @access Private
+export const getFavRecipes = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.id).select("_id").populate({
+      path: "favRecipes",
+      select: "title category image ratingAverage ratingCount createdAt",
+      populate: 'category'
+    });
+
+    if (!user._id) return next(new ErrorResponse("El usuario no existe"));
+
+    res.json({
+      favRecipes: user.favRecipes,
+      count: user.favRecipes.length,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc agrega una receta como favorita de un usuario
+// @route /api/favorites/recipes/:recipeId
+// @access Private
+export const addFavRecipe = async (req, res, next) => {
+  const { recipeId } = req.params;
+
+  try {
+    await User.findByIdAndUpdate(req.id, { $push: { favRecipes: recipeId } });
+
+    res.json({ message: "Se agregó a favoritos" });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
+// @desc elimina una receta como favorita de un usuario
+// @route /api/favorites/recipes/:recipeId
+// @access Private
+export const deleteFavRecipe = async (req, res, next) => {
+  const { recipeId } = req.params;
+
+  try {
+    await User.findByIdAndUpdate(req.id, { $pull: { favRecipes: recipeId } });
+    res.json({ message: "Se quitó de favoritos" });
+  } catch (error) {
     next(error);
   }
 };

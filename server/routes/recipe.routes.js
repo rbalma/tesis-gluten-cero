@@ -7,6 +7,9 @@ import {
   updateRecipe,
   deleteRecipe,
   getLastRecipesSideBar,
+  getFavRecipes,
+  addFavRecipe,
+  deleteFavRecipe
 } from '../controllers/recipe.js';
 import { validateJWT } from '../middlewares/validateJwt.js';
 import { uploadFile } from '../middlewares/UploadRecipe.js';
@@ -22,5 +25,12 @@ router
 router.put('/active-recipe/:recipeId', validateJWT, activateRecipe);
 
 router.get('/sidebar/recipes/:recipeId', getLastRecipesSideBar);
+
+router.get('/favorites/recipes', validateJWT, getFavRecipes);
+
+router
+  .route('/favorites/recipes/:recipeId')
+  .put(validateJWT, addFavRecipe)
+  .delete(validateJWT, deleteFavRecipe);
 
 export default router;

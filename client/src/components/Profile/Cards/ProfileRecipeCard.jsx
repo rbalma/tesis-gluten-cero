@@ -1,37 +1,47 @@
 import { Rate } from 'antd';
 import { IconClock, IconEdit, IconTrash } from '@/components/Icons';
+import { timeAgo } from '@/utils/format';
+import { Link } from 'react-router-dom';
 
 import styles from './ProfileRecipeCard.module.css';
 
-export const ProfileRecipeCard = ({ isEdit }) => {
+export const ProfileRecipeCard = ({
+	isEdit,
+	id,
+	title,
+	category,
+	ratingAverage,
+	ratingCount,
+	image,
+	date,
+}) => {
 	return (
 		<div className={styles.profileRecipeCard}>
-			<img
-				src='https://www.cocinacaserayfacil.net/wp-content/uploads/2020/03/Recetas-faciles-de-cocinar-y-sobrevivir-en-casa-al-coronavirus_2.jpg'
-				alt='recipe'
-			/>
+			<img src={image} alt='recipe' />
 
 			<div className={styles.profileRecipeContent}>
-				<h2>Burger House</h2>
-				<p>Categoria</p>
+				<Link to={`/recetas/${id}`}>
+					{title}
+				</Link>
+				<p>{category}</p>
 
 				<span className={styles.profileRecipeStarCard}>
-					<Rate disabled allowHalf value={2.4} />
+					<Rate disabled allowHalf value={+ratingAverage} />
 					<span className={styles.profileRecipeCountReviews}>
-						(8 opiniones)
+						({ratingCount} opiniones)
 					</span>
 				</span>
 
 				<span>
-					<IconClock size={15} /> Hace 2 días
+					<IconClock size={15} /> {timeAgo(date)}
 				</span>
 			</div>
 
 			<div className={styles.profileRecipeButtonContainer}>
 				{isEdit ? (
-					<button className={styles.profileRecipeButton}>
+					<Link to={`/receta-formulario/${id}`} className={styles.profileRecipeButton}>
 						<IconEdit size={16} /> Editar
-					</button>
+					</Link>
 				) : null}
 
 				<button className={styles.profileRecipeButton}>

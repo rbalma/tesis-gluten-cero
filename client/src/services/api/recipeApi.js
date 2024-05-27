@@ -59,3 +59,18 @@ export const getSideBarRecipes = async (recipeId) => {
 	const { data } = await glutenCeroApi.get(`/sidebar/recipes/${recipeId}`);
 	return data;
 };
+
+export const getFavoritesRecipes = async () => {
+	const { data } = await glutenCeroApi.get('/favorites/recipes');
+	return data;
+};
+
+export const addFavRecipe = async (recipeId) => {
+	const { data } = await glutenCeroApi.put(`/favorites/recipes/${recipeId}`);
+	return data;
+}
+
+export const deleteFavRecipe = async (recipeId) => {
+	const { data } = await glutenCeroApi.delete(`/favorites/recipes/${recipeId}`);
+	return data;
+}
