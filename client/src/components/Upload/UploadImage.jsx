@@ -5,18 +5,18 @@ import PhotoUpIcon from '@/assets/images/photo-image.svg';
 
 const { Dragger } = Upload;
 
-export const UploadImage = ({ image, onChange, value = [], aspectRatio = 1/1 }) => {
+export const UploadImage = ({ onChange, value = [], aspectRatio = 1/1 }) => {
 	const [imageUrl, setImageUrl] = useState('');
 	useEffect(() => {
-		setImageUrl(image);
-	}, [image]);
+		if (value?.[0]?.url) setImageUrl(value[0].url);
+	}, [value?.[0]?.url]);
 
 	const beforeUpload = (file) => {
 		const isJPGPNG = file.type === 'image/jpeg' || file.type === 'image/png';
 		if (!isJPGPNG) message.error('Solo puedes subir una imagen en jpg o png');
 
-		const isLt1M = file.size / 1024 / 1024 < 1;
-		if (!isLt1M) message.error('La imagen debe ser menor a 1MB');
+		const isLt1M = file.size / 1024 / 1024 < 2;
+		if (!isLt1M) message.error('La imagen debe ser menor a 2MB');
 
 		return isJPGPNG && isLt1M;
 	};
@@ -24,9 +24,15 @@ export const UploadImage = ({ image, onChange, value = [], aspectRatio = 1/1 }) 
 	const handleChange = async ({ file, fileList }) => {
 		if (file.status === 'removed') return setImageUrl('');
 
-		const isLt1M = file.size / 1024 / 1024 < 1;
+		const isLt1M = file.size / 1024 / 1024 < 2;
 		const isJPGPNG = file.type === 'image/jpeg' || file.type === 'image/png';
-		if (!isLt1M || !isJPGPNG) return;
+		if (!isLt1M || !isJPGPNG) {
+			setImageUrl('');
+			onChange([]);
+			return;
+		}
+
+		if (file.status !== "done") return onChange([]);
 
 		let src = file.url;
 		if (!src) {
@@ -62,7 +68,7 @@ export const UploadImage = ({ image, onChange, value = [], aspectRatio = 1/1 }) 
 				onChange={({ file, fileList }) => handleChange({ file, fileList })}
 				onRemove={() => onChange([])}
 				customRequest={({ _, onSuccess }) => onSuccess('ok')}
-				//fileList={value}
+				defaultFileList={value}
 				beforeUpload={false}
 				className='draggerMap'
 			>

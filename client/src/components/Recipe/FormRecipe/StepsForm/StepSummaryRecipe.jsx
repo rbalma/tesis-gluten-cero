@@ -20,6 +20,9 @@ export const StepSummaryRecipe = ({ setCurrent, formInstance }) => {
 
 	useEffect(() => {
 		const urlImage = async () => {
+			if (recipe.image[0].uid.startsWith('http'))
+				return setImage(recipe.image[0].uid);
+
 			const src = await new Promise((resolve) => {
 				const reader = new FileReader();
 				reader.readAsDataURL(recipe.image[0].originFileObj);

@@ -113,6 +113,10 @@ const routesPrivatePages = [
 		element: RecipeFormPage,
 	},
 	{
+		path: '/receta-formulario/:recetaId',
+		element: RecipeFormPage,
+	},
+	{
 		path: '/mapa-formulario',
 		element: MapFormPage,
 	},

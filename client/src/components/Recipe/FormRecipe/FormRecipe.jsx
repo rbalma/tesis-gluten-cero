@@ -1,9 +1,11 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Form, Progress } from 'antd';
 import { IconArrowNarrowLeft, IconLoading } from '@/components/Icons';
 import { StepDataRecipe, StepAddItem, StepSummaryRecipe } from './StepsForm';
 import { useCreateRecipe } from '@/services/queries/recipeQueries';
+import { useQueryClient } from '@tanstack/react-query';
+import useAuthStore from '@/store/authStore';
 
 import styles from './FormRecipe.module.css';
 
@@ -15,16 +17,55 @@ const stepDescription = {
 };
 
 export const FormRecipe = ({ setIsSuccessRecipe }) => {
-	const [form] = Form.useForm();
 	const navigate = useNavigate();
-	const { isPending, mutateAsync } = useCreateRecipe();
+	const [form] = Form.useForm();
 	const [percent, setPercent] = useState(33.3);
 	const [current, setCurrent] = useState(1);
 	const [isDisabledStepOne, setIsDisabledStepOne] = useState(true);
 	const [isDisabledStepTwo, setIsDisabledStepTwo] = useState(true);
 	const [isDisabledStepThree, setIsDisabledStepThree] = useState(true);
+	const { isPending, mutateAsync } = useCreateRecipe();
+
+	const { recetaId } = useParams();
+	const queryClient = useQueryClient();
+	const userAuth = useAuthStore((state) => state.userProfile);
+
+	useEffect(() => {
+		if (recetaId) {
+			const data = queryClient.getQueryData([
+				'recipes',
+				{ userId: userAuth.id },
+			]);
+			if (!data?.data) return navigate(-1);
+			const recipe = data.data.find((recipe) => recipe._id === recetaId);
+
+			if (recipe) {
+				form.setFieldsValue(recipe);
+
+				const file = [
+					{
+						uid: recipe.image.secure_url,
+						name: recipe.image.public_id,
+						status: 'done',
+						url: recipe.image.secure_url,
+						thumbUrl: recipe.image.secure_url,
+					},
+				];
+
+				form.setFieldValue('image', file);
+				form.setFieldValue('category', recipe.category._id);
+
+				setIsDisabledStepOne(false);
+				setIsDisabledStepTwo(false);
+				setIsDisabledStepThree(false);
+			}
+		}
+	}, [recetaId]);
 
 	const createRecipe = async () => {
+		//! Actualizar receta
+		if (recetaId) return;
+
 		try {
 			const recipe = form.getFieldsValue(true);
 			await mutateAsync(recipe);
@@ -44,7 +85,7 @@ export const FormRecipe = ({ setIsSuccessRecipe }) => {
 	};
 
 	const prev = () => {
-		if (current === 1) return navigate('/recetas');
+		if (current === 1) return navigate(-1);
 		setCurrent(current - 1);
 		let newPercent = percent - 33.3;
 		if (newPercent < 35) {
