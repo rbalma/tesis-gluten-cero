@@ -1,10 +1,9 @@
+import mongoose from "mongoose";
+import fs from "fs-extra";
 import Recipe from "../models/recipe.js";
 import User from "../models/user.js";
-import Comment from "../models/comment.js";
 import ErrorResponse from "../utils/errorResponse.js";
 import { uploadImage, deleteImage } from "../services/cloudinary.js";
-import fs from "fs-extra";
-//https://github.com/telegraf/telegraf/discussions/1450
 
 // @desc Agregar una nuevo receta
 // @route /api/recipes
@@ -122,7 +121,7 @@ export const getRecipes = async (req, res, next) => {
   }
 };
 
-// @desc Habilitar la receta de un usuario para que se vea en la web
+// @desc Habilitar o inhabilitar la receta de un usuario para que se vea en la web
 // @route /api/active-recipe/:recipeId
 // @access Private
 export const activateRecipe = async (req, res, next) => {
@@ -133,7 +132,6 @@ export const activateRecipe = async (req, res, next) => {
     const recipe = await Recipe.findByIdAndUpdate(
       recipeId,
       { active },
-      { new: true }
     );
     if (!recipe) return next(new ErrorResponse("No existe la receta", 404));
 
@@ -155,19 +153,19 @@ export const updateRecipe = async (req, res, next) => {
 
   try {
     const recipe = await Recipe.findById(recipeId);
-    if (!recipe) return next(new ErrorResponse("No existe la receta", 404));
+    if (!recipe) throw new ErrorResponse("No existe la receta", 404);
 
     // Verifica que solo el usuario que creó la receta pueda actualizarlo
     if (recipe.user.toString() !== req.id)
-      return next(
-        new ErrorResponse("No tiene privilegios para editar esta receta", 401)
+      throw new ErrorResponse(
+        "No tiene privilegios para editar esta receta",
+        401
       );
 
     // En el body de la petición no viene el id del user
     const newRecipe = {
       ...req.body,
       user: req.id,
-      date: Date.now(),
       active: false,
       isUpdated: true,
     };
@@ -187,12 +185,15 @@ export const updateRecipe = async (req, res, next) => {
     });
 
     res.json({
-      ok: true,
       data: updateRecipe,
       message: "Receta actualizada",
     });
   } catch (error) {
-    if (req.file) await fs.unlink(req.file.path);
+    try {
+      if (req.file) await fs.unlink(req.file.path);
+    } catch (error) {
+      console.log(error);
+    }
     next(error);
   }
 };
@@ -202,19 +203,25 @@ export const updateRecipe = async (req, res, next) => {
 // @access Private
 export const deleteRecipe = async (req, res, next) => {
   const { recipeId } = req.params;
+  const session = await mongoose.startSession();
+  session.startTransaction();
 
   try {
     const recipe = await Recipe.findById(recipeId);
     if (!recipe) return next(new ErrorResponse("No existe la receta", 404));
 
-    await Recipe.findByIdAndDelete(recipeId);
+    await Recipe.findByIdAndDelete(recipeId, { session });
+    
     if (recipe.image?.public_id) await deleteImage(recipe.image.public_id);
-    await Comment.deleteMany({ recipe: recipeId });
-    // await User.updateMany({}, { $pull: { favRecipes: id } });
 
-    res.json({ ok: true, data: recipeId, message: "Receta eliminada" });
+    await session.commitTransaction();
+    res.json({ recipeId, userId: recipe.user, message: "Receta eliminada" });
   } catch (error) {
+    console.log({ error });
+    await session.abortTransaction();
     next(error);
+  } finally {
+    session.endSession();
   }
 };
 

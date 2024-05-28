@@ -38,7 +38,13 @@ export const updateRecipe = async ({ recipeId, values }) => {
 	const formData = new FormData();
 
 	for (const value in values) {
-		if (value !== 'image') formData.append(value, values[value]);
+		if (['instructions', 'ingredients'].includes(value)) {
+			for (const item of values[value]) {
+				formData.append(`${value}[]`, item);
+			}
+		}
+		if (!['image', 'instructions', 'ingredients'].includes(value))
+			formData.append(value, values[value]);
 	}
 
 	const file = values.image[0]?.originFileObj;
