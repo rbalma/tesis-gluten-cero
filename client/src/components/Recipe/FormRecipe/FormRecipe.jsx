@@ -3,7 +3,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Form, Progress } from 'antd';
 import { IconArrowNarrowLeft, IconLoading } from '@/components/Icons';
 import { StepDataRecipe, StepAddItem, StepSummaryRecipe } from './StepsForm';
-import { useCreateRecipe } from '@/services/queries/recipeQueries';
+import {
+	useCreateRecipe,
+	useUpdateRecipe,
+} from '@/services/queries/recipeQueries';
 import { useQueryClient } from '@tanstack/react-query';
 import useAuthStore from '@/store/authStore';
 
@@ -24,11 +27,12 @@ export const FormRecipe = ({ setIsSuccessRecipe }) => {
 	const [isDisabledStepOne, setIsDisabledStepOne] = useState(true);
 	const [isDisabledStepTwo, setIsDisabledStepTwo] = useState(true);
 	const [isDisabledStepThree, setIsDisabledStepThree] = useState(true);
-	const { isPending, mutateAsync } = useCreateRecipe();
+	const createRecipe = useCreateRecipe();
 
 	const { recetaId } = useParams();
 	const queryClient = useQueryClient();
 	const userAuth = useAuthStore((state) => state.userProfile);
+	const updateRecipe = useUpdateRecipe();
 
 	useEffect(() => {
 		if (recetaId) {
@@ -40,7 +44,13 @@ export const FormRecipe = ({ setIsSuccessRecipe }) => {
 			const recipe = data.data.find((recipe) => recipe._id === recetaId);
 
 			if (recipe) {
-				form.setFieldsValue(recipe);
+				form.setFieldsValue({
+					title: recipe.title,
+					preparationTime: recipe.preparationTime,
+					performance: recipe.performance,
+					ingredients: recipe.ingredients,
+					instructions: recipe.instructions
+				});
 
 				const file = [
 					{
@@ -62,13 +72,14 @@ export const FormRecipe = ({ setIsSuccessRecipe }) => {
 		}
 	}, [recetaId]);
 
-	const createRecipe = async () => {
-		//! Actualizar receta
-		if (recetaId) return;
-
+	const onFinishForm = async () => {
 		try {
 			const recipe = form.getFieldsValue(true);
-			await mutateAsync(recipe);
+			if (recetaId) {
+				await updateRecipe.mutateAsync({ recipeId: recetaId, values: recipe });
+			} else {
+				await createRecipe.mutateAsync(recipe);
+			}
 			setIsSuccessRecipe(true);
 		} catch (error) {
 			console.log(error);
@@ -213,9 +224,11 @@ export const FormRecipe = ({ setIsSuccessRecipe }) => {
 				{current === 4 ? (
 					<button
 						className={styles.btnSubmit}
-						disabled={isPending}
-						onClick={createRecipe}>
-						{isPending ? (
+						disabled={
+							recetaId ? updateRecipe.isPending : createRecipe.isPending
+						}
+						onClick={onFinishForm}>
+						{(recetaId ? updateRecipe.isPending : createRecipe.isPending) ? (
 							<IconLoading />
 						) : (
 							<>

@@ -8,7 +8,7 @@ const categoriesFilters = {
 }
 
 export const StepDataRecipe = () => {
-	const { isFetching, data } = useGetCategories(categoriesFilters);
+	const { isLoading, data } = useGetCategories(categoriesFilters);
 
 	return (
 		<>
@@ -19,7 +19,7 @@ export const StepDataRecipe = () => {
 			<Space size={[32, 16]} wrap>
 				<Form.Item label='Categoría' name='category'>
 					<Select
-						loading={isFetching}
+						loading={isLoading}
 						placeholder=''
 						style={{ width: 200 }}
 						options={data}
