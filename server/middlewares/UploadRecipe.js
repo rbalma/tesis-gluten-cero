@@ -7,7 +7,7 @@ const pathUpload = __dirname + "/uploads/recipes";
 
 const configuracionMulter = {
   // 1 Mb
-  limits: { fileSize: 1 * 1000 * 1000 },
+  limits: { fileSize: 2 * 1000 * 1000 },
   storage: multer.diskStorage({
     destination: (req, file, cb) => {
       cb(null, pathUpload);
