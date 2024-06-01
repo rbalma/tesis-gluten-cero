@@ -3,14 +3,14 @@ import {
   addRecipes,
   getRecipesById,
   getRecipes,
-  activateRecipe,
+  changeStatusRecipe,
   updateRecipe,
   deleteRecipe,
   getLastRecipesSideBar,
   getFavRecipes,
   addFavRecipe,
   deleteFavRecipe
-} from '../controllers/recipe.js';
+} from '../controllers/recipe.controller.js';
 import { validateJWT } from '../middlewares/validateJwt.js';
 import { uploadFile } from '../middlewares/UploadRecipe.js';
 
@@ -21,8 +21,8 @@ router
   .route('/recipes/:recipeId')
   .get(getRecipesById)
   .put([validateJWT, uploadFile], updateRecipe)
-  .delete(validateJWT, deleteRecipe);
-router.put('/active-recipe/:recipeId', validateJWT, activateRecipe);
+  .delete(validateJWT, deleteRecipe)
+  .patch(validateJWT, changeStatusRecipe);
 
 router.get('/sidebar/recipes/:recipeId', getLastRecipesSideBar);
 

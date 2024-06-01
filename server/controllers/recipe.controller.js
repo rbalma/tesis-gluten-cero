@@ -4,6 +4,8 @@ import Recipe from "../models/recipe.js";
 import User from "../models/user.js";
 import ErrorResponse from "../utils/errorResponse.js";
 import { uploadImage, deleteImage } from "../services/cloudinary.js";
+import { createNotification } from "../services/notifications.services.js";
+import { events } from "../utils/events.js";
 
 // @desc Agregar una nuevo receta
 // @route /api/recipes
@@ -121,27 +123,43 @@ export const getRecipes = async (req, res, next) => {
   }
 };
 
-// @desc Habilitar o inhabilitar la receta de un usuario para que se vea en la web
-// @route /api/active-recipe/:recipeId
+// @desc Aprueba o rechaza la receta de un usuario para que se vea en la web
+// @route PATCH /api/recipes/:recipeId
 // @access Private
-export const activateRecipe = async (req, res, next) => {
+export const changeStatusRecipe = async (req, res, next) => {
   const { recipeId } = req.params;
   const { active } = req.body;
 
-  try {
-    const recipe = await Recipe.findByIdAndUpdate(
-      recipeId,
-      { active },
-    );
-    if (!recipe) return next(new ErrorResponse("No existe la receta", 404));
+  const session = await mongoose.startSession();
+  session.startTransaction();
 
-    return res.json({
-      ok: true,
-      data: recipe,
-      message: active ? "Receta activada" : "Receta desactivada",
+  try {
+    const recipe = await Recipe.findById(recipeId, "_id user");
+
+    if (!recipe) throw new ErrorResponse("No existe la receta", 404);
+
+    await Recipe.updateOne({ _id: recipeId }, { active }, { session });
+
+    const notification = {
+      description: active ? events["RA"] : events["RR"],
+      notifiedUser: recipe.user,
+      recipe: recipeId,
+    };
+
+    await createNotification(notification, session);
+
+    await session.commitTransaction();
+
+    res.json({
+      recipeId,
+      message: active ? "Receta aprobada" : "Receta rechazada",
     });
   } catch (error) {
+    console.log({ error });
+    await session.abortTransaction();
     next(error);
+  } finally {
+    session.endSession();
   }
 };
 
@@ -211,7 +229,7 @@ export const deleteRecipe = async (req, res, next) => {
     if (!recipe) return next(new ErrorResponse("No existe la receta", 404));
 
     await Recipe.findByIdAndDelete(recipeId, { session });
-    
+
     if (recipe.image?.public_id) await deleteImage(recipe.image.public_id);
 
     await session.commitTransaction();
@@ -265,7 +283,7 @@ export const getFavRecipes = async (req, res, next) => {
     const user = await User.findById(req.id).select("_id").populate({
       path: "favRecipes",
       select: "title category image ratingAverage ratingCount createdAt",
-      populate: 'category'
+      populate: "category",
     });
 
     if (!user._id) return next(new ErrorResponse("El usuario no existe"));
