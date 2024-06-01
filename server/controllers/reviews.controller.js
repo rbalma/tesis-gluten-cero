@@ -4,6 +4,8 @@ import ErrorResponse from "../utils/errorResponse.js";
 import Recipe from "../models/recipe.js";
 import Market from "../models/market.js";
 import mongoose from "mongoose";
+import { events } from "../utils/events.js";
+import { createNotification } from "../services/notifications.services.js";
 
 // @desc Agrega una nueva reseña para una receta o marcador
 // @route /api/reviews/recipe/:recipeId o /api/reviews/market/:marketId
@@ -76,6 +78,7 @@ export const getReviews = async (req, res, next) => {
 // @access Private
 export const addReview = async (req, res, next) => {
   const { recipe, market } = req.body;
+  let notification;
   const session = await mongoose.startSession();
   session.startTransaction();
   try {
@@ -105,14 +108,25 @@ export const addReview = async (req, res, next) => {
 
       newRating = Math.round((ratingTotal + Number.EPSILON) * 10) / 10;
 
-      await Recipe.findByIdAndUpdate(
-        recipe,
+      const recipeFound = await Recipe.findById(recipe, "_id user");
+
+      if (!recipeFound) throw new ErrorResponse("No existe la receta", 404);
+
+      await Recipe.updateOne(
+        { _id: recipe },
         {
           ratingAverage: newRating,
           ratingCount: ratingCount,
         },
         { session }
       );
+
+      notification = {
+        description: events['RV'],
+        userSends: req.id,
+        notifiedUser: recipeFound.user,
+        recipe,
+      }
     }
 
     if (market) {
@@ -134,15 +148,28 @@ export const addReview = async (req, res, next) => {
 
       newRating = Math.round((ratingTotal + Number.EPSILON) * 100) / 100;
 
-      await Market.findByIdAndUpdate(
-        market,
+      const marketFound = await Market.findById(market, "_id user");
+
+      if (!marketFound) throw new ErrorResponse("No existe el marcador", 404);
+
+      await Market.updateOne(
+        { _id: market },
         {
           ratingAverage: newRating,
           ratingCount: ratingCount,
         },
         { session }
       );
+
+      notification = {
+        description: events['MV'],
+        userSends: req.id,
+        notifiedUser: marketFound.user,
+        market,
+      }
     }
+
+    await createNotification(notification, session);
 
     await session.commitTransaction();
 
