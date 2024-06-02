@@ -22,7 +22,11 @@ const productsSchema = new Schema ({
     estado: {
         type: String,
         enum: ["VIGENTE", "BAJA PROVISORIA"],
-    }
+    },
+    likes: [{
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    }],
 });
 
 productsSchema.plugin(mongoosePaginate);

@@ -88,3 +88,34 @@ export const addFileExcel = (req, res, next) => {
 
   });
 };
+
+// @desc Actualiza un producto
+// @route PUT /api/products-anmat/:productId
+// @access Private
+export const updateProduct = async (req, res, next) => {
+    const { productId } = req.params;
+
+    //console.log(productId);
+    try {
+      const product = await Products.findById(productId);
+      if (!product) return next(new ErrorResponse('No existe el Producto', 404));
+  
+      const newProduct = {
+        ...req.body,
+        user: req.id,
+        isUpdated: true
+      };
+  
+      const updateProduct = await Products.findByIdAndUpdate(productId, newProduct, {
+        new: true,
+      });
+  
+      res.json({
+        ok: true,
+        thread: updateProduct,
+        message: 'Producto actualizado'
+      });
+    } catch (error) {
+      next(error);
+    }
+};

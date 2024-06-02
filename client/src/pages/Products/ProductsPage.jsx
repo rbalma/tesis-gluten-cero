@@ -1,41 +1,24 @@
 import { useEffect, useState } from 'react';
-import { Table, Form, Row, Col, Input, Button, message, Select } from 'antd';
+import { Table, Form, Row, Col, Input, Button, message, Select, Tag, Tooltip } from 'antd';
+import { HeartFilled, HeartOutlined } from '@ant-design/icons';
 import { Excel } from 'antd-table-saveas-excel';
 import useData from '@/hooks/useData';
+import useAuthStore from '@/store/authStore';
+import {
+	useGetProducts,
+	useUpdateProduct,
+} from '@/services/queries/productsQueries';
 
 import styles from './ProductsPage.module.css';
 
 // https://eddieup.github.io/antd-table-saveas-excel/2api
 // https://github.com/webstylepress/Fetch-Data-from-XLSX-Excel-File-in-React-JS/blob/main/src/App.js
 
-const columns = [
-	{
-		title: 'Marca',
-		dataIndex: 'marca',
-		key: 'marca',
-		align: 'center',
-	},
-	{
-		title: 'Denominación Venta',
-		dataIndex: 'denominacionVenta',
-		key: 'denominacionVenta',
-		align: 'justify',
-	},
-	{
-		title: 'Tipo Producto',
-		dataIndex: 'tipoProducto',
-		key: 'tipoProducto',
-		align: 'center',
-	},
-	{
-		title: 'Estado',
-		dataIndex: 'estado',
-		key: 'estado',
-		align: 'center',
-	},
-];
-
 export const ProductsPage = () => {
+	const { userProfile } = useAuthStore();
+	console.log(userProfile);
+	const userId = userProfile?.id;
+	console.log(userId);
 	const [dataFilter, setDataFilter] = useState([]);
 
 	const [form] = Form.useForm();
@@ -43,6 +26,31 @@ export const ProductsPage = () => {
 		1: isLoadingProducts,
 		2: dataProducts
 	} = useData('/products-anmat');
+
+	const { isPending: updateLoading, mutateAsync: putProduct } = useUpdateProduct();
+
+	const handleLikeToggle = async (record) => {
+
+		if (!userId) return; // No hacer nada si el usuario no está registrado
+
+		const hasLiked = record.likes.includes(userId);
+		const updatedLikes = hasLiked
+		  ? record.likes.filter(id => id !== userId)
+		  : [...record.likes, userId];
+
+		try {
+            await putProduct({ productId: record._id, values: { likes: updatedLikes } });
+
+			// Actualiza el estado local con los productos actualizados
+			const updatedProducts = dataFilter.map(product => 
+				product._id === record._id ? { ...product, likes: updatedLikes } : product
+			);
+			setDataFilter(updatedProducts);
+
+        } catch (error) {
+            console.error("Error updating likes:", error);
+        }
+	  };
 
 	useEffect(() => {
 		if (dataProducts) setDataFilter(dataProducts);
@@ -101,6 +109,58 @@ export const ProductsPage = () => {
 		});
 		setDataFilter(resultadosBusqueda);
 	};
+
+	const columns = [
+		{
+			title: 'Marca',
+			dataIndex: 'marca',
+			key: 'marca',
+			align: 'center',
+		},
+		{
+			title: 'Denominación Venta',
+			dataIndex: 'denominacionVenta',
+			key: 'denominacionVenta',
+			align: 'justify',
+		},
+		{
+			title: 'Tipo Producto',
+			dataIndex: 'tipoProducto',
+			key: 'tipoProducto',
+			align: 'center',
+		},
+		{
+			title: 'Estado',
+			dataIndex: 'estado',
+			key: 'estado',
+			align: 'center',
+		},
+		{
+			title: 'Favs',
+			dataIndex: 'likes',
+			key: 'likes',
+			align: 'center',
+			render: (_, record) => {
+			  const hasLiked = record.likes.includes(userId);
+			  return (
+				<>
+				{userId ? (
+				  hasLiked ? (
+					<HeartFilled onClick={() => handleLikeToggle(record)} style={{ width: '100%', color: 'red', cursor: 'pointer' }} />
+				  ) : (
+					<HeartOutlined onClick={() => handleLikeToggle(record)} style={{ width: '100%', color: 'red', cursor: 'pointer' }} />
+				  )
+				 ) : (
+					<Tooltip title="Solo los usuarios registrados pueden indicar un producto como favorito">
+						<HeartFilled style={{ width: '100%', color: 'red', cursor: 'not-allowed' }} />
+					</Tooltip>
+				)}
+				  <span>{record.likes.length}</span>
+				</>
+			  );
+			},
+		  },
+	];
 
 	const onExportFileExcel = () => {
 		const excel = new Excel();
@@ -194,7 +254,7 @@ export const ProductsPage = () => {
 				loading={isLoadingProducts}
 				columns={columns}
 				dataSource={dataFilter}
-				rowKey={(record) => record.id}
+				rowKey={(record) => record._id}
 				bordered
 				pagination={{ position: ['bottomRight'], onChange: paginationToTop }}
 			/>
