@@ -6,11 +6,8 @@ import {
   getUserById,
   updateUser,
   deleteUser,
-  getFavMarkets,
-  addFavMarkets,
-  deleteFavMarkets,
   addUserPanelAdmin,
-} from '../controllers/user.js';
+} from '../controllers/user.controller.js';
 
 import { validateJWT } from '../middlewares/validateJwt.js';
 import { uploadFile } from '../middlewares/uploadAvatar.js';
@@ -28,11 +25,5 @@ router
 router.post('/admin/users', [validateJWT, uploadFile], addUserPanelAdmin)
 
 router.route('/active-account/:userId').put(activeUserAccount);
-
-router
-  .route('/fav-markets/:userId')
-  .get(validateJWT, getFavMarkets)
-  .put(validateJWT, addFavMarkets)
-  .delete(validateJWT, deleteFavMarkets);
 
 export default router;

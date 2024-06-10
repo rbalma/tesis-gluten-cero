@@ -4,13 +4,13 @@ import ErrorResponse from '../utils/errorResponse.js';
 import __dirname from '../dirnamePath.js';
 
 
-const pathUploadMarkets = __dirname + '/uploads/markets';
+const pathUploadMarkers = __dirname + '/uploads/markers';
 
 const configuracionMulter = {
     limits: { fileSize: 1 * 1024 * 1024 }, // 1 MB
     storage: multer.diskStorage({
       destination: (req, file, cb) => {
-        cb(null, pathUploadMarkets);
+        cb(null, pathUploadMarkers);
       },
       filename: (req, file, cb) => {
         const extension = file.mimetype.split("/")[1];

@@ -133,10 +133,10 @@ export const useGetReviewsRecipeByUser = (userId) => {
 	});
 };
 
-export const useHasReviewMarket = ({ userId, marketId }) => {
+export const useHasReviewMarker = ({ userId, markerId }) => {
 	return useQuery({
-		queryKey: ['hasReviewsMarket', marketId],
-		queryFn: () => userHasReview({ userId, marketId }),
+		queryKey: ['hasReviewsMarker', markerId],
+		queryFn: () => userHasReview({ userId, markerId }),
 		enabled: !!userId,
 	});
 };

@@ -7,7 +7,7 @@ export const getReviewsRecipe = async ({ recipeId, filters = {} }) => {
 	return data;
 };
 
-export const getReviewsMarket = async (filters = {}) => {
+export const getReviewsMarker = async (filters = {}) => {
 	const { data } = await glutenCeroApi.get('/reviews', {
 		params: filters,
 	});
@@ -27,10 +27,10 @@ export const deleteReview = async (reviewId) => {
 export const userHasReview = async ({
 	userId,
 	recipeId = '',
-	marketId = '',
+	markerId = '',
 }) => {
 	const { data } = await glutenCeroApi.get(
-		`/hasreview/user/${userId}?recipeId=${recipeId}&marketId=${marketId}`
+		`/hasreview/user/${userId}?recipeId=${recipeId}&markerId=${markerId}`
 	);
 	return data;
 };

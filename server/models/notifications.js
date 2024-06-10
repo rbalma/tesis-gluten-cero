@@ -25,9 +25,9 @@ const notificationSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Recipe",
     },
-    market: {
+    marker: {
       type: Schema.Types.ObjectId,
-      ref: "Market",
+      ref: "Marker",
     },
   },
   { timestamps: true }

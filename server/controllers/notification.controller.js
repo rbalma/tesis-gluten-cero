@@ -26,7 +26,7 @@ export const getNotification = async (req, res, next) => {
         select: "_id title",
       },
       {
-        path: "market",
+        path: "marker",
         select: "_id title",
       },
     ],

@@ -1,5 +1,5 @@
 import express from 'express';
-import { getProducts, addFileExcel } from '../controllers/products.js';
+import { getProducts, addFileExcel } from '../controllers/products.controller.js';
 import { validateJWT } from '../middlewares/validateJwt.js';
 
 const router = express.Router();

@@ -14,7 +14,7 @@ import { validateJWT } from "../middlewares/validateJwt.js";
 const router = express.Router();
 
 router.get("/reviews/recipe/:recipeId", getReviews);
-router.get("/reviews/market/:marketId", getReviews);
+router.get("/reviews/marker/:markerId", getReviews);
 
 router.post("/reviews", validateJWT, addReview);
 router.delete("/reviews/:reviewId", validateJWT, deleteReview);

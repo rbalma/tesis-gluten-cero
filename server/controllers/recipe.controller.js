@@ -141,7 +141,7 @@ export const changeStatusRecipe = async (req, res, next) => {
     await Recipe.updateOne({ _id: recipeId }, { active }, { session });
 
     const notification = {
-      description: active ? events["RA"] : events["RR"],
+      description: active ? events["RECIPE_APPROVED"] : events["RECIPE_REJECTED"],
       notifiedUser: recipe.user,
       recipe: recipeId,
     };
@@ -212,6 +212,7 @@ export const updateRecipe = async (req, res, next) => {
     } catch (error) {
       console.log(error);
     }
+    console.log(error);
     next(error);
   }
 };
