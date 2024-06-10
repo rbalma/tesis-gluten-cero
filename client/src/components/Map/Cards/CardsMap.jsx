@@ -6,11 +6,12 @@ import {
 	PhoneIcon,
 } from '@/components/Icons';
 import picture from '@/assets/images/map.jpg';
-import disco from '@/assets/images/markets/disco.png';
-import sanatorio from '@/assets/images/markets/sanatorio.png';
+import disco from '@/assets/images/markers/disco.png';
+import sanatorio from '@/assets/images/markers/sanatorio.png';
 import { MapReviews } from '../Reviews/MapReviews';
 
 import styles from './CardsMap.module.css';
+import { MapReviewModal } from '../Reviews/ReviewsModal/MapReviewModal';
 
 export const CardsMap = () => {
 	const [fav, setFav] = useState(false);
@@ -44,7 +45,7 @@ export const CardsMap = () => {
 
 				<span className={styles.starCard}>
 					4.5 <Rate disabled allowHalf value={2.4} />{' '}
-					<small className={styles.countReviews} onClick={() => setIsReviews(true)}>(8 opiniones)</small>
+					<MapReviewModal />
 				</span>
 
 				{/* Like Button */}

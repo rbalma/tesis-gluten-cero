@@ -1,35 +1,36 @@
 .containerMapForm {
-  display: grid;
-  column-gap: 50px;
-  grid-template:
-    'autocomplete .' auto
-    'map formItems' 350px /
-    1fr 400px;
-  margin-bottom: 50px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 45px;
+}
+
+.mapaTitulo {
+  margin-bottom: 1rem;
+  font-size: 22px;
+  font-family: 'Montserrat', sans-serif;
+  text-align: center;
+  font-weight: 600;
 }
 
 .autocompleteItem {
-  grid-area: autocomplete;
   width: 100%;
-  margin: 20px 0px;
-}
-
-.mapContainer {
-  grid-area: map;
-}
-
-.mapForItem {
-  grid-area: formItems;
+  margin: 0px 0px 20px;
 }
 
 .helpTextMap {
-  font-size: 14px;
-  font-weight: 400;
+  font-size: 13px;
+  font-weight: 600;
+  text-wrap: pretty;
   color: #5c5c5c;
-  margin-top: 10px;
+  margin-top: 8px;
+  font-family: 'Montserrat', sans-serif;
+  text-align: center;
 }
 
 .mapTextInfo {
-  margin-bottom: 2em;
-  font-size: 20px;
+  font-family: 'Montserrat', sans-serif;
+  margin-bottom: 1em;
+  font-size: 18px;
+  font-weight: 600;
+  margin-top: 20px;
 }
