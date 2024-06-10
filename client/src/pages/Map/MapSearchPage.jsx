@@ -1,40 +1,40 @@
 import { useState } from 'react';
-import { MapContainer, TileLayer } from 'react-leaflet';
 import { useNavigate } from 'react-router-dom';
-import { Input, Tooltip, Row } from 'antd';
-import {
-	AimOutlined,
-	EnvironmentFilled,
-	SearchOutlined,
-} from '@ant-design/icons';
+import { MapContainer, TileLayer } from 'react-leaflet';
+import { Row } from 'antd';
+import { EnvironmentFilled } from '@ant-design/icons';
+import { toast } from 'sonner';
 import { mapCategories } from '@/utils/constants';
-
-import { CardsMap, CardsMapDisco, CardsMapSanatorio } from '@/components/Map/Cards/CardsMap';
-import { ChefMarkers, HospitalMarkers, ShoppingMarkers } from '@/components/Map/Pins/Markers';
+import {
+	CardsMap,
+	CardsMapDisco,
+	CardsMapSanatorio,
+} from '@/components/Map/Cards/CardsMap';
+import {
+	MarkerCurrentLocation,
+	MarkerHospital,
+	MarkerRestaurant,
+	MarkerShopping,
+} from '@/components/Map/Markers';
 import { MapFilterCategory } from '@/components/Map/Filters/MapFilterCategory';
-import Footer from '@/layout/home/ui/Footer';
-import 'leaflet/dist/leaflet.css';
 import { AutoCompleteMap } from '@/components/Map/AutoComplete/AutoCompleteMap';
+import Footer from '@/layout/home/ui/Footer';
 
+import 'leaflet/dist/leaflet.css';
 import styles from './MapSearchPage.module.css';
+
+const ubicacion = [-31.41718428534527, -64.18382740831277];
 
 export const MapSearchPage = () => {
 	const navigate = useNavigate();
 	const [map, setMap] = useState(null);
-	const ubicacion = [-31.41718428534527, -64.18382740831277];
-	const [posicion, setPosicion] = useState({
-		lat: '-31.41976',
-		lng: '-64.1881',
-	});
+	const [posicion, setPosicion] = useState(ubicacion);
 
 	const handleFlyTo = (miUbicacion) => {
-		// const { current = {} } = mapRef;
-		// const { leafletElement: map } = current;
-		// map.setView(center, zoom)
 		map.flyTo(miUbicacion, 15, {
 			duration: 4,
 		});
-		//setPosicion(miUbicacion);
+		setPosicion(miUbicacion);
 	};
 
 	const getUbicacion = () => {
@@ -45,10 +45,11 @@ export const MapSearchPage = () => {
 			},
 			(blocked) => {
 				if (blocked)
-					console.log('La geolocalización está bloqueada. Debe habilitarla');
+					toast.message('La geolocalización está bloqueada. Debe habilitarla');
 			},
 			(error) => {
 				console.log(error);
+				toast.error('No se pudo obtener la geolocalización');
 			},
 			{
 				enableHighAccuracy: true,
@@ -56,13 +57,32 @@ export const MapSearchPage = () => {
 		);
 	};
 
+	const onSelectSearch = (_, { data }) => {
+		const coordinates = {
+			lat: data.lat,
+			lng: data.lng,
+		};
+
+		//	map.panTo(coordinates);
+
+		map.flyTo(coordinates, 15, {
+			duration: 4,
+		});
+
+		setPosicion(coordinates);
+	};
+
 	return (
 		<div className={styles.containerMap}>
 			<div className={styles.listSearchMap}>
 				<section className={styles.paramSearchMap}>
 					<Row style={{ marginBottom: 20 }}>
-						<AutoCompleteMap getUbicacion={getUbicacion} />
+						<AutoCompleteMap
+							onSelectSearch={onSelectSearch}
+							getUbicacion={getUbicacion}
+						/>
 					</Row>
+
 					<div className={styles.displayCategories}>
 						{mapCategories.map((category) => (
 							<MapFilterCategory key={category.name} category={category} />
@@ -74,7 +94,7 @@ export const MapSearchPage = () => {
 					<div className={styles.resultButtonMap}>
 						<span className={styles.showingResultsMap}>14 Resultados </span>
 						<button
-							className={styles.newMarketButton}
+							className={styles.newMarkerButton}
 							onClick={() => navigate('/mapa-formulario')}>
 							{' '}
 							<EnvironmentFilled style={{ marginRight: 5 }} /> Agregar{' '}
@@ -106,11 +126,15 @@ export const MapSearchPage = () => {
 					<TileLayer
 						attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 						url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-						/>
-					<HospitalMarkers posicion={posicion} />
-					<ShoppingMarkers posicion={posicion} />
-					<ChefMarkers posicion={posicion} />
-						{/* 
+					/>
+					<MarkerCurrentLocation posicion={posicion} />
+					<MarkerHospital posicion={posicion} />
+					<MarkerShopping />
+					<MarkerRestaurant posicion={{
+							lat: '-31.41976',
+							lng: '-64.1881',
+						}} />
+					{/* 
 						Listar cards en un Drawer para mobile!
 						<button style={{ zIndex: 500, position: 'absolute', top: 20, right: 20}}
 						onClick={() => console.log('HOLA')}
