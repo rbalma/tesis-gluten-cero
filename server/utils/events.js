@@ -1,8 +1,6 @@
 export const events = {
-  RA: "Se aprobó la receta",
-  RR: "Se rechazó la receta",
-  MA: "Se aprobó el marcador",
-  MR: "Se rechazó el marcador",
-  RV: "agregó una nueva valoración en la receta",
-  MV: "agregó una nueva valoración en el marcador",
+  RECIPE_APPROVED: "Se aprobó la receta",
+  RECIPE_REJECTED: "Se rechazó la receta",
+  RECIPE_VALUED: "agregó una nueva valoración en la receta",
+  MARKER_VALUED: "agregó una nueva valoración en el marcador",
 };
