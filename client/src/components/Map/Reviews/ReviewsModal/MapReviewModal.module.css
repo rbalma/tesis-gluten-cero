@@ -1,0 +1,45 @@
+.reviewReplyModalHeader {
+  width: 100%;
+  background-color: #f6f6f6;
+  padding: 15px 40px;
+  margin-bottom: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 1px 0 0 rgba(0, 4, 17, .07), 0 0 24px 0 rgba(0, 4, 17, .15);
+  position: sticky;
+  top: 0;
+  z-index: 30;
+}
+
+.reviewReplyModalTitle {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 0px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.countReviews {
+  font-size: 12px;
+  font-weight: 300;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.countReviews:hover {
+  text-decoration: underline;
+  color: #9d9d9d;
+}
+
+.closableButton {
+  display: grid;
+  cursor: pointer;
+  place-items: center;
+  color: #f91942;
+  margin: 0;
+}
+
+.btnGroup {
+  display: flex;
+  gap: 30px;
+}

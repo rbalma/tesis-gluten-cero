@@ -12,7 +12,7 @@ export const MapReviewsFilters = () => {
 	};
 	return (
 		<>
-			<h4>Filtrar por:</h4>
+			<h4>Ordenar por:</h4>
 			<div className={styles.containerFiltersOrder}>
 				<MapReviewsFiltersButton
 					name='Más recientes'
@@ -21,17 +21,23 @@ export const MapReviewsFilters = () => {
 					onChange={onChangeOrder}
 				/>
 				<MapReviewsFiltersButton
-					name='Más antiguos'
-					value={'antiguos'}
+					name='Más alta'
+					value={'alta'}
+					selected={selected}
+					onChange={onChangeOrder}
+				/>
+				<MapReviewsFiltersButton
+					name='Más baja'
+					value={'baja'}
 					selected={selected}
 					onChange={onChangeOrder}
 				/>
 			</div>
-			<div className={styles.containerFiltersOrder}>
+			{/* <div className={styles.containerFiltersOrder}>
 				{[5, 4, 3, 2, 1].map((number) => (
 					<MapReviewsFiltersCheckBox key={number} name={number} />
 				))}
-			</div>
+			</div> */}
 		</>
 	);
 };

@@ -2,17 +2,20 @@
   display: flex;
   gap: 10px;
   justify-content: space-between;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .user {
   display: flex;
   gap: 10px;
+  font-weight: 500;
 }
 
 .user p>span {
   display: block;
   margin-top: 5px;
   font-size: 12px;
+  font-weight: 400;
 }
 
 .rate {
@@ -25,5 +28,10 @@
 }
 
 .comment {
-  margin: 10px 0px;
+  font-family: 'Montserrat', sans-serif;
+  margin: 10px 0px 25px;
+  line-height: 22px;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
 }
