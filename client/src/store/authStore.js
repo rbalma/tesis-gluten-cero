@@ -49,6 +49,24 @@ const useAuthStore = create(
 					),
 				},
 			})),
+		addFavoriteMarker: (markerId) =>
+			set((state) => ({
+				...state,
+				userProfile: {
+					...state.userProfile,
+					favMarkers: [...state.userProfile.favMarkers, markerId],
+				},
+			})),
+		deleteFavoriteMarker: (markerId) =>
+			set((state) => ({
+				...state,
+				userProfile: {
+					...state.userProfile,
+					favMarkers: state.userProfile.favMarkers.filter(
+						(favMarker) => favMarker !== markerId
+					),
+				},
+			})),
 	}))
 );
 
