@@ -277,7 +277,7 @@ export const getLastRecipesSideBar = async (req, res, next) => {
 };
 
 // @desc Obtiene el detalle de las recetas favoritas de un usuario
-// @route /api/favorites/recipes
+// @route GET /api/favorites/recipes
 // @access Private
 export const getFavRecipes = async (req, res, next) => {
   try {
@@ -299,10 +299,10 @@ export const getFavRecipes = async (req, res, next) => {
 };
 
 // @desc agrega una receta como favorita de un usuario
-// @route /api/favorites/recipes/:recipeId
+// @route PATCH /api/favorites/recipes
 // @access Private
 export const addFavRecipe = async (req, res, next) => {
-  const { recipeId } = req.params;
+  const { recipeId } = req.body;
 
   try {
     await User.findByIdAndUpdate(req.id, { $push: { favRecipes: recipeId } });
@@ -315,7 +315,7 @@ export const addFavRecipe = async (req, res, next) => {
 };
 
 // @desc elimina una receta como favorita de un usuario
-// @route /api/favorites/recipes/:recipeId
+// @route DELETE /api/favorites/recipes/:recipeId
 // @access Private
 export const deleteFavRecipe = async (req, res, next) => {
   const { recipeId } = req.params;

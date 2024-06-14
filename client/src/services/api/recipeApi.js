@@ -72,7 +72,7 @@ export const getFavoritesRecipes = async () => {
 };
 
 export const addFavRecipe = async (recipeId) => {
-	const { data } = await glutenCeroApi.put(`/favorites/recipes/${recipeId}`);
+	const { data } = await glutenCeroApi.patch(`/favorites/recipes`, { recipeId });
 	return data;
 }
 
