@@ -6,7 +6,7 @@ import { MapReviewForm } from './MapReviewForm';
 
 import styles from './MapReviewModal.module.css';
 
-export const MapReviewModal = () => {
+export const MapReviewModal = ({ countReviews }) => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	const showModal = () => {
@@ -20,7 +20,7 @@ export const MapReviewModal = () => {
 	return (
 		<>
 			<small className={styles.countReviews} onClick={showModal}>
-				(8 opiniones)
+				({countReviews} opiniones)
 			</small>
 			<Modal
 				title={null}

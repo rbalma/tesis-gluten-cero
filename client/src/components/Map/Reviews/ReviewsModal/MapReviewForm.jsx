@@ -34,7 +34,7 @@ export const MapReviewForm = ({ showModalOne, handleCancelOne }) => {
 				title={null}
 				footer={null}
 				centered
-				width={550}
+				width={580}
 				bodyStyle={{
 					height: 380,
 					padding: 25,
@@ -51,7 +51,7 @@ export const MapReviewForm = ({ showModalOne, handleCancelOne }) => {
 						</Form.Item>
 					</div>
 					<Input.TextArea
-						placeholder='Comparte tu experiencia en este lugar'
+						placeholder='¿Visitaste este lugar? Tomate un momento para dejar una calificación de estrellas y comentar.'
 						autoSize={{
 							minRows: 7,
 							maxRows: 7,
