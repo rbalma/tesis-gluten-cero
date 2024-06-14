@@ -41,7 +41,7 @@ export const uploadFile = (req, res, next) => {
         if (error.code === "LIMIT_FILE_SIZE") {
           return res
             .status(404)
-            .json({ mensaje: "La imagen es muy grande. Límite de 1 MB" });
+            .json({ mensaje: "La imagen es muy grande. Límite de 2 MB" });
         } else {
           return res.status(404).json({ mensaje: error.message });
         }

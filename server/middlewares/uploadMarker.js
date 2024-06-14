@@ -7,7 +7,7 @@ import __dirname from '../dirnamePath.js';
 const pathUploadMarkers = __dirname + '/uploads/markers';
 
 const configuracionMulter = {
-    limits: { fileSize: 1 * 1024 * 1024 }, // 1 MB
+    limits: { fileSize: 2 * 1024 * 1024 }, // 2 MB
     storage: multer.diskStorage({
       destination: (req, file, cb) => {
         cb(null, pathUploadMarkers);
@@ -27,7 +27,7 @@ const configuracionMulter = {
   };
   
   // pasar la configuración y el campo
-  const upload = multer(configuracionMulter).single('picture');
+  const upload = multer(configuracionMulter).single('image');
   
   // Sube un archivo 
   export const uploadFile = (req, res, next) => {
@@ -36,7 +36,7 @@ const configuracionMulter = {
               if(error instanceof multer.MulterError){
                   if(error.code === 'LIMIT_FILE_SIZE') {
                     return next(
-                      new ErrorResponse('La imagen es muy grande. Límite de 1 MB', 404)
+                      new ErrorResponse('La imagen es muy grande. Límite de 2 MB', 404)
                     );
                   } else {
                     return next(new ErrorResponse(error.message, 404));
