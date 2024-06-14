@@ -16,7 +16,7 @@ import useCrud from '@/hooks/useCrud';
 export const Login = () => {
 	const navigate = useNavigate();
 	const { search } = useLocation();
-	const { addUser } = useAuthStore();
+	const addUser = useAuthStore((state) => state.addUser);
 	const [formInstance] = Form.useForm();
 	const [ isLoading, postLogin ] = useCrud('/login');
 	const [ isLoadingGoogle, postGoogleLogin ] = useCrud('/login-google');

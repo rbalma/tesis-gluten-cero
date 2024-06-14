@@ -10,7 +10,7 @@ import { rules } from '@/utils/rulesForm';
 import styles from './FormCommentRecipe.module.css';
 
 export const FormCommentRecipe = ({ recetaId, userId }) => {
-	const { userProfile } = useAuthStore();
+	const userProfile = useAuthStore((state) => state.userProfile);
 	const { isLoading, isSuccess, isError, data } = useHasReviewRecipe({
 		userId: userProfile?.id,
 		recipeId: recetaId,

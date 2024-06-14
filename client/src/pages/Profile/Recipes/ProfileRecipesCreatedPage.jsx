@@ -8,7 +8,7 @@ import useAuthStore from '@/store/authStore';
 import { useGetRecipes } from '@/services/queries/recipeQueries';
 
 export const ProfileRecipesCreatedPage = () => {
-	const { userProfile } = useAuthStore();
+	const userProfile = useAuthStore((state) => state.userProfile);
 	const { data, isSuccess, isFetching } = useGetRecipes({ userId: userProfile.id });
 
 

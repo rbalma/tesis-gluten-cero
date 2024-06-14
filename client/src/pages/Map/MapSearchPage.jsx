@@ -1,15 +1,11 @@
-import { useState } from 'react';
+import { useReducer, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import { Row } from 'antd';
 import { EnvironmentFilled } from '@ant-design/icons';
 import { toast } from 'sonner';
 import { mapCategories } from '@/utils/constants';
-import {
-	CardsMap,
-	CardsMapDisco,
-	CardsMapSanatorio,
-} from '@/components/Map/Cards/CardsMap';
+import { CardMarker } from '@/components/Map/Cards/CardMarker';
 import {
 	MarkerCurrentLocation,
 	MarkerHospital,
@@ -18,23 +14,43 @@ import {
 } from '@/components/Map/Markers';
 import { MapFilterCategory } from '@/components/Map/Filters/MapFilterCategory';
 import { AutoCompleteMap } from '@/components/Map/AutoComplete/AutoCompleteMap';
+import { useGetMarkersByLocation } from '@/services/queries/mapQueries';
 import Footer from '@/layout/home/ui/Footer';
 
 import 'leaflet/dist/leaflet.css';
 import styles from './MapSearchPage.module.css';
 
-const ubicacion = [-31.41718428534527, -64.18382740831277];
+const initialLocation = [-31.41718428534527, -64.18382740831277];
 
 export const MapSearchPage = () => {
 	const navigate = useNavigate();
 	const [map, setMap] = useState(null);
-	const [posicion, setPosicion] = useState(ubicacion);
+	const [filters, setFilters] = useReducer(
+		(current, update) => ({ ...current, ...update }),
+		{
+			limit: 15,
+			active: 1,
+			meters: 1000,
+			latitude: initialLocation[0],
+			longitude: initialLocation[1],
+		}
+	);
+	const {
+		isFetching,
+		isSuccess,
+		data: markers,
+	} = useGetMarkersByLocation(filters);
 
-	const handleFlyTo = (miUbicacion) => {
-		map.flyTo(miUbicacion, 15, {
+	console.log({ markers })
+
+	const handleFlyTo = (location) => {
+		map.flyTo(location, 15, {
 			duration: 4,
 		});
-		setPosicion(miUbicacion);
+		setFilters({
+			latitude: location[0],
+			longitude: location[1],
+		});
 	};
 
 	const getUbicacion = () => {
@@ -58,18 +74,7 @@ export const MapSearchPage = () => {
 	};
 
 	const onSelectSearch = (_, { data }) => {
-		const coordinates = {
-			lat: data.lat,
-			lng: data.lng,
-		};
-
-		//	map.panTo(coordinates);
-
-		map.flyTo(coordinates, 15, {
-			duration: 4,
-		});
-
-		setPosicion(coordinates);
+		handleFlyTo([data.lat, data.lng]);
 	};
 
 	return (
@@ -100,12 +105,11 @@ export const MapSearchPage = () => {
 							<EnvironmentFilled style={{ marginRight: 5 }} /> Agregar{' '}
 						</button>
 					</div>
-					<CardsMap />
-					<CardsMapDisco />
-					<CardsMapSanatorio />
-					{/* <CardsMap />
-					<CardsMap />
-					<CardsMap /> */}
+					{!isFetching && markers.length > 0
+						? markers.map((marker) => (
+								<CardMarker key={marker._id} {...marker} />
+						  ))
+						: null}
 				</section>
 				<Footer />
 			</div>
@@ -113,7 +117,7 @@ export const MapSearchPage = () => {
 			<div className={styles.fullMap}>
 				<MapContainer
 					ref={setMap}
-					center={ubicacion}
+					center={initialLocation}
 					zoom={15}
 					scrollWheelZoom={false}
 					style={{
@@ -127,13 +131,17 @@ export const MapSearchPage = () => {
 						attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 						url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
 					/>
-					<MarkerCurrentLocation posicion={posicion} />
-					<MarkerHospital posicion={posicion} />
+					<MarkerCurrentLocation
+						posicion={[filters.latitude, filters.longitude]}
+					/>
+					<MarkerHospital />
 					<MarkerShopping />
-					<MarkerRestaurant posicion={{
+					<MarkerRestaurant
+						posicion={{
 							lat: '-31.41976',
 							lng: '-64.1881',
-						}} />
+						}}
+					/>
 					{/* 
 						Listar cards en un Drawer para mobile!
 						<button style={{ zIndex: 500, position: 'absolute', top: 20, right: 20}}

@@ -7,7 +7,7 @@ import useAuthStore from '@/store/authStore';
 import styles from './LayoutProfile.module.css';
 
 const LayoutProfile = () => {
-	const { userProfile } = useAuthStore();
+	const userProfile = useAuthStore((state) => state.userProfile);
 
 	return (
 		<>

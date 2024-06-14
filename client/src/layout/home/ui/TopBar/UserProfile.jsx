@@ -11,8 +11,9 @@ import useAuthStore from '@/store/authStore';
 import { userGetAvatar } from '@/utils/fetchData';
 
 export const UserProfile = () => {
-	const { userProfile: user, removeUser } = useAuthStore();
 	const navigate = useNavigate();
+	const user = useAuthStore((state) => state.userProfile);
+	const removeUser = useAuthStore((state) => state.removeUser);
 	const [avatar, setAvatar] = useState('');
 
 	useEffect(() => {

@@ -4,7 +4,7 @@ import useAuthStore from '@/store/authStore';
 import styles from './MobileMenu.module.css';
 
 export const MobileMenu = ({ open, closeMenu }) => {
-	const { userProfile } = useAuthStore();
+	const userProfile = useAuthStore((state) => state.userProfile);
 
 	const handleSelectItemMenu = () => {
 		setTimeout(() => {

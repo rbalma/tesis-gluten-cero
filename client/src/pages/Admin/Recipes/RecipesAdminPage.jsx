@@ -1,168 +1,143 @@
 import { useState } from 'react';
-import { Row, Col, Space, Avatar, Tabs, Tag, Dropdown, Button } from 'antd';
+import { Avatar, Space, Table } from 'antd';
 import {
-	CheckCircleTwoTone,
-	StopTwoTone,
-	DeleteTwoTone,
-	PlusSquareOutlined,
-	MoreOutlined,
-} from '@ant-design/icons';
-import { DataTable, ToolBar } from '@/components/AdminDashboard';
-/* import { userGetAvatar } from '@/utils/fetchData'; */
-import useData from '@/hooks/useData';
-import { FiltersAdminRecipes } from './FiltersAdminRecipes';
-import { format } from 'date-fns';
-import ESLocale from 'date-fns/locale/es';
+	TagNoVisible,
+	TagVisible,
+	getColumnSearchProps,
+} from '@/components/AdminDashboard';
+import { userGetAvatar } from '@/utils/fetchData';
+import { dateLongFormat } from '@/utils/format';
+import { useGetUsers } from '@/services/queries/usersQueries';
+import { DrawerDetailUsers, DrawerFormUsers } from '@/components/AdminDashboard/UsersAdmin';
 
-const items = [
-	{ label: 'Editar', key: 'item-1' },
-	{ label: 'Eliminar', key: 'item-2' },
+import styles from '../Admin.module.css';
+
+const columns = [
+	{
+		title: 'Avatar',
+		dataIndex: 'avatar',
+		width: '5%',
+		align: 'center',
+		render: (avatar) => (
+			<Avatar
+				size={40}
+				shape='circle'
+				alt='avatar'
+				src={userGetAvatar(avatar)}
+			/>
+		),
+	},
+	{
+		title: 'Nombre',
+		dataIndex: 'name',
+		width: '15%',
+		sorter: true,
+		showSorterTooltip: false,
+		...getColumnSearchProps('nombre'),
+	},
+	{
+		title: 'Apellido',
+		dataIndex: 'lastname',
+		width: '15%',
+		sorter: true,
+		showSorterTooltip: false,
+		...getColumnSearchProps('apellido'),
+	},
+	{
+		title: 'Correo',
+		dataIndex: 'email',
+		width: '25%',
+		...getColumnSearchProps('correo'),
+	},
+	{
+		title: 'Fecha Creación',
+		dataIndex: 'createdAt',
+		width: '20%',
+		sorter: true,
+		showSorterTooltip: false,
+		render: (date) => dateLongFormat(date),
+	},
+	{
+		title: 'Estado',
+		dataIndex: 'active',
+		width: '10%',
+		filters: [
+			{
+				text: 'Activos',
+				value: '1',
+			},
+			{
+				text: 'Inactivos',
+				value: '0',
+			},
+		],
+		filterMultiple: false,
+		render: (visible) =>
+			+visible === 1 ? <TagVisible isUser /> : <TagNoVisible isUser />,
+	},
+	{
+		title: '',
+		fixed: 'right',
+		width: '8%',
+		render: (_, record) => (
+			<Space size={24}>
+				<DrawerDetailUsers userId={record._id} />
+			</Space>
+		),
+	},
 ];
 
-const pageLimit = { page: 1, limit: 20 };
-//https://example.admin.refine.dev/orders?pageSize=10&current=1
-
 export const RecipesAdminPage = () => {
-	const [filters, setFilters] = useState({ ...pageLimit, active: true });
-	const [tab, setTab] = useState('1');
+	const [tableParams, setTableParams] = useState({
+		page: 1,
+		limit: 10,
+		role: 'user'
+	});
+	const { isFetching, data } = useGetUsers(tableParams);
 
-	const {
-		1: loadingData,
-		2: data,
-		4: fetchData,
-		5: searchInput,
-		6: handleChangeSearchInput,
-		7: debounceHandleSearch,
-		9: countData,
-	} = useData('/recipes', filters);
+	const handleTableChange = (pagination, filters, sorter) => {
+		const filtersQuery = {
+			page: pagination.current || 1,
+			limit: pagination.pageSize || 10,
+			role: 'user'
+		};
 
-	const columns = [
-		
-		{
-			title: 'Titulo',
-			dataIndex: 'title',
-			key: 'title',
-			width: 130,
-		},
-		{
-			title: 'Categoria',
-			dataIndex: 'category',
-			key: 'category',
-		},
-		{
-			title: 'Fecha de creacion',
-			dataIndex: 'date',
-			key: 'date',
-			width: 200
-		},
-		{
-			title: 'Imagen',
-			dataIndex: 'image',
-			key: 'image',
-			width: 130,
-			render: (nameFile, record) => {
-				/* let url = record.dicebear;
-				if (nameFile && record.google) url = nameFile;
-				if (nameFile && !record.google) url = userGetAvatar(nameFile);
-				return <Avatar src={url} />; */
+		if (sorter?.order) {
+			filtersQuery.sortField = sorter.field;
+			filtersQuery.sortOrder = sorter.order === 'descend' ? 'desc' : 'asc';
+		} else {
+			filtersQuery.sortField = undefined;
+			filtersQuery.sortOrder = undefined;
+		}
 
-			},
-		},
-		{
-			title: 'Usuario',
-			dataIndex: 'user',
-			key: 'user',
-		},
-		{
-			title: 'Estado',
-			dataIndex: 'active',
-			key: 'active',
-			render: (a) => (
-				<>
-					{a ? (
-						<Tag color='green'>Activo</Tag>
-					) : (
-						<Tag color='red'>Inactivo</Tag>
-					)}
-				</>
-			),
-		},
-		
-		{
-			title: 'Acciones',
-			fixed: 'right',
-			align: 'center',
-			key: 'actions',
-			width: 90,
-			render: (_, record) => (
-				<>
-					<Dropdown menu={{ items }} trigger={['click']}>
-						<MoreOutlined
-							onClick={(e) => e.stopPropagation()}
-							style={{
-								fontSize: 20,
-							}}
-						/>
-					</Dropdown>
-				</>
-			),
-		},
-	];
+		Object.entries(filters).forEach(([key, value]) => {
+			if (value?.[0]) filtersQuery[key] = value[0];
+		});
 
-	const handleChangeTab = (newTab) => {
-		setTab(newTab);
-		if (newTab === '1') return setFilters({ ...pageLimit, active: true });
-		if (newTab === '2') return setFilters({ ...pageLimit, active: false });
-	};
-
-	const props = {
-		count: countData,
-		columns: columns,
-		loading: loadingData,
-		data: data,
-		fetch: setFilters,
-		showHeader: true,
-		perPage: filters.limit,
+		setTableParams(filtersQuery);
 	};
 
 	return (
 		<>
-			{/* <Row>
-				<Col span={24}>
-					<ToolBar
-						onSearch={debounceHandleSearch}
-						searchValue={searchInput}
-						onChangeSearchValue={handleChangeSearchInput}
-						//handleAdd={handleAdd}
-					/>
-				</Col>
-			</Row> */}
+			<header className={styles.headerBody}>
+				<h1>Usuarios</h1>
+				<DrawerFormUsers />
+			</header>
 
-			<Row>
-				<Col
-					span={17}
-					offset={7}
-					style={{
-						display: 'flex',
-						justifyContent: 'space-between',
-						alignItems: 'center',
-						marginBottom: 10,
-					}}
-				>
-					<h2 style={{ display: 'inline-block', marginBottom: 0 }}>Recetas</h2>
-					<Button type='primary'>
-						<PlusSquareOutlined />
-						Agregar
-					</Button>
-				</Col>
-			</Row>
-
-			<Row>
-				<Col span={6}><FiltersAdminRecipes /></Col>
-				<Col span={17} offset={1}>
-					<DataTable {...props} />
-				</Col>
-			</Row>
+			<Table
+				loading={isFetching}
+				columns={columns}
+				dataSource={data?.data}
+				pagination={{
+					pageSize: tableParams.limit,
+					current: tableParams.page,
+					total: data?.totalPages,
+					hideOnSinglePage: true,
+				}}
+				locale={{ emptyText: 'Sin Datos', filterReset: 'Borrar' }}
+				rowKey={(record) => `${record._id}`}
+				onChange={handleTableChange}
+			/>
 		</>
 	);
 };

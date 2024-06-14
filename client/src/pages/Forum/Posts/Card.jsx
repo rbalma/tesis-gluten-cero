@@ -8,7 +8,7 @@ export default function Card(props) {
 
     const { thread } = props;
 
-    const { userProfile } = useAuthStore();
+    const userProfile = useAuthStore((state) => state.userProfile);
 
     const navigate = useNavigate();
 
