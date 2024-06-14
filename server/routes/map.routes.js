@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  getMarkersByLocation,
   getMarkers,
   getMarkerById,
   addMarker,
@@ -9,15 +10,17 @@ import {
   getFavMarkers,
   addFavMarkers,
   deleteFavMarkers,
-  } from "../controllers/map.controller.js";
+} from "../controllers/map.controller.js";
 import { validateJWT } from "../middlewares/validateJwt.js";
 import { uploadFile } from "../middlewares/uploadMarker.js";
 
 const router = express.Router();
 
+router.get("/location/markers", getMarkersByLocation);
+
 router
   .route("/markers")
-  .get(getMarkers)
+  .get(validateJWT, getMarkers)
   .post([validateJWT, uploadFile], addMarker);
 
 router
@@ -27,11 +30,11 @@ router
   .delete(validateJWT, deleteMarker)
   .patch(validateJWT, changeStatusMarker);
 
-  router.get('/favorites/markers', validateJWT, getFavMarkers);
+router
+  .route("/favorites/markers")
+  .get(validateJWT, getFavMarkers)
+  .patch(validateJWT, addFavMarkers);
 
-  router
-  .route('/favorites/markers/:markerId')
-  .put(validateJWT, addFavMarkers)
-  .delete(validateJWT, deleteFavMarkers);
+router.delete("/favorites/markers/:markerId", validateJWT, deleteFavMarkers);
 
 export default router;

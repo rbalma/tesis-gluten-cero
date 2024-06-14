@@ -1,0 +1,53 @@
+.pictureInfo {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.pictureInfo>img {
+  border-radius: 8px;
+}
+
+.bodyInfo {
+  background-color: #fff;
+  padding: 15px 0 5px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.bodyInfo>h2 {
+  font-size: 16px;
+  font-weight: 600;
+  padding: 0 15px;
+  text-wrap: pretty;
+}
+
+.itemInfo {
+  border-top: 2px solid #f5f5f5;
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+  padding: 10px 15px;
+  display: flex;
+  flex-wrap: nowrap;
+  font-weight: 400;
+}
+
+.itemData {
+  font-weight: 500;
+  text-wrap: pretty;
+}
+
+.itemData>svg {
+  transform: translateY(2px);
+}
+
+.btnRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 25px 15px 20px;
+}
+
+.btnRow>button {
+  font-size: 14px;
+}

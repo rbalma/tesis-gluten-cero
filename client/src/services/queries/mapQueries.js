@@ -1,26 +1,44 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import useAuthStore from '@/store/authStore';
 import { toast } from 'sonner';
-import { addFavMarker, createMarker, deleteFavMarker, deleteMarker, getFavoritesMarkers, getMarkerById, getMarkers, updateMarker } from "../api/mapApi";
+import {
+	addFavMarker,
+	createMarker,
+	deleteFavMarker,
+	deleteMarker,
+	getAddressesOfPlaces,
+	getFavoritesMarkers,
+	getMarkers,
+	getMarkerById,
+	getMarkersByLocation,
+	updateMarker,
+} from '../api/mapApi';
 
-export const useAddresses = (query) => {
+export const useGetAddresses = (query) => {
 	return useQuery({
 		queryKey: ['address', query],
-		queryFn: ({ signal }) => getAddressesOfPlaces({query, signal}),
+		queryFn: ({ signal }) => getAddressesOfPlaces({ query, signal }),
 		staleTime: 5 * 1000 * 60, // 5 minutos
 		gcTime: 2 * 1000 * 60,
-		enabled: !!query
+		enabled: !!query,
 	});
 };
 
-export const useGetRecipes = (filters) => {
+export const useGetMarkersByLocation = (filters) => {
+	return useQuery({
+		queryKey: ['markers', filters],
+		queryFn: () => getMarkersByLocation(filters),
+	});
+};
+
+export const useGetMarkers = (filters) => {
 	return useQuery({
 		queryKey: ['markers', filters],
 		queryFn: () => getMarkers(filters),
 	});
 };
 
-export const useGetRecipeById = (markerId) => {
+export const useGetMarkerById = (markerId) => {
 	return useQuery({
 		queryKey: ['markers', markerId],
 		queryFn: () => getMarkerById(markerId),
@@ -108,7 +126,9 @@ export const useDeleteFavoriteRecipe = () => {
 			queryClient.setQueryData(['markersFavorites'], (old) => {
 				if (!old) return [];
 				return {
-					favMarkers: old.favMarkers.filter((marker) => marker._id !== markerId),
+					favMarkers: old.favMarkers.filter(
+						(marker) => marker._id !== markerId
+					),
 					count: old.count - 1,
 				};
 			});

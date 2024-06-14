@@ -4,12 +4,11 @@ import Marker from "../models/marker.js";
 import User from "../models/user.js";
 import ErrorResponse from "../utils/errorResponse.js";
 import { uploadImage, deleteImage } from "../services/cloudinary.js";
-import { createNotification } from "../services/notifications.services.js";
-import { events } from "../utils/events.js";
 
-// @desc Filtrar y paginar los marcadores. Permite obtener los marcadores cercanos a una ubicación.
+
+// @desc Filtrar y paginar los marcadores.
 // @route GET /api/markers
-// @access Public
+// @access Private
 export const getMarkers = async (req, res, next) => {
   const {
     page = 1,
@@ -19,9 +18,8 @@ export const getMarkers = async (req, res, next) => {
     categoriesIds,
     userName,
     userId,
-    latitude,
-    longitude,
-    meters,
+    sortField,
+    sortOrder,
   } = req.query;
 
   try {
@@ -42,6 +40,68 @@ export const getMarkers = async (req, res, next) => {
     };
 
     if (sortField) options.sort = { [sortField]: sortOrder || 1 };
+
+    const filters = {};
+    if (active) filters.active = +active;
+    if (name) filters.name = { $regex: name, $options: "i" };
+    if (categoriesIds) filters.category = { $in: categoriesIds };
+    if (userId) filters.user = userId;
+    if (userName) {
+      const users = await User.find(
+        {
+          $or: [
+            { name: { $regex: userName, $options: "i" } },
+            { lastname: { $regex: userName, $options: "i" } },
+          ],
+        },
+        "_id"
+      );
+      if (users.length) filters.user = { $in: users.map((user) => user._id) };
+    }
+
+    const markers = await Marker.paginate(filters, options);
+
+    res.json({
+      data: markers.docs,
+      totalPages: markers.totalPages,
+      count: markers.totalDocs,
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
+// @desc Permite obtener los marcadores cercanos a una ubicación.
+// @route GET /api/location/markers
+// @access Public
+export const getMarkersByLocation = async (req, res, next) => {
+  const {
+    limit = 15,
+    name,
+    active,
+    categoriesIds,
+    userName,
+    userId,
+    latitude,
+    longitude,
+    meters = 1000,
+  } = req.query;
+
+  try {
+    const options = {
+      limit: parseInt(limit),
+      populate: [
+        {
+          path: "user",
+          select: "name lastname",
+        },
+        {
+          path: "category",
+          select: "name",
+        },
+      ],
+    };
 
     const filters = {};
     if (active) filters.active = +active;
@@ -72,12 +132,11 @@ export const getMarkers = async (req, res, next) => {
       if (users.length) filters.user = { $in: users.map((user) => user._id) };
     }
 
-    const markers = await Marker.paginate(filters, options);
+    const markers = await Marker.find(filters, null, options);
 
     res.json({
-      data: markers.docs,
-      totalPages: markers.totalPages,
-      count: markers.totalDocs,
+      markers,
+      count: markers.length,
     });
   } catch (error) {
     console.log(error);
@@ -244,14 +303,12 @@ export const deleteMarker = async (req, res, next) => {
   }
 };
 
-// @desc Obtiene el detalle de los marcadores favoritos de un usuario
+// @desc Obtiene el detalle de los marcadores favoritos del usuario logueado
 // @route /api/favorites/markers
 // @access Private
 export const getFavMarkers = async (req, res, next) => {
-  const { userId } = req.params;
-
   try {
-    const user = await User.findById(userId).select("_id").populate({
+    const user = await User.findById(req.id).select("_id").populate({
       path: "favMarkers",
       select: "name category image ratingAverage ratingCount createdAt",
       populate: "category",
@@ -266,7 +323,7 @@ export const getFavMarkers = async (req, res, next) => {
 };
 
 // @desc agrega un marcador como favorito de un usuario
-// @route /api/favorites/markers/:markerId
+// @route /api/favorites/markers
 // @access Private
 export const addFavMarkers = async (req, res, next) => {
   const { markerId } = req.body;

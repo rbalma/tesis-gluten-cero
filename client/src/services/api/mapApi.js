@@ -18,6 +18,13 @@ export const getReverseGeocoding = async ({ lat, lng }) => {
 	return data;
 };
 
+export const getMarkersByLocation = async (filters = {}) => {
+	const { data } = await glutenCeroApi.get('/location/markers', {
+		params: filters,
+	});
+	return data.markers;
+};
+
 export const getMarkers = async (filters = {}) => {
 	const { data } = await glutenCeroApi.get('/markers', {
 		params: filters,
@@ -73,7 +80,7 @@ export const getFavoritesMarkers = async () => {
 };
 
 export const addFavMarker = async (markerId) => {
-	const { data } = await glutenCeroApi.put(`/favorites/markers/${markerId}`);
+	const { data } = await glutenCeroApi.patch(`/favorites/markers`, { markerId });
 	return data;
 };
 
