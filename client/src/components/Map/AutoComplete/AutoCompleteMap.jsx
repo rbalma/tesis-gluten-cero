@@ -6,7 +6,7 @@ import {
 	SearchIcon,
 	SpinnerIcon,
 } from '../../Icons';
-import { useAddresses } from '@/services/queries/mapQueries';
+import { useGetAddresses } from '@/services/queries/mapQueries';
 import useDebounce from '@/hooks/useDebounce';
 
 import styles from './AutoCompleteMap.module.css';
@@ -19,7 +19,7 @@ export const AutoCompleteMap = ({ onSelectSearch, getUbicacion }) => {
 		isSuccess,
 		data: addresses,
 		isFetching,
-	} = useAddresses(debounceSearch);
+	} = useGetAddresses(debounceSearch);
 
 	const buscarDireccion = (value) => {
 		if (!value) return;

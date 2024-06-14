@@ -1,13 +1,14 @@
+import { categoryGetImage } from '@/utils/fetchData';
 import styles from './CategoryItem.module.css';
 
-export const CategoryItem = ({ name, icon, onChange }) => {
+export const CategoryItem = ({ id, name, image, onChange }) => {
 	return (
-		<label htmlFor={name} className={styles.radioButton}>
+		<label htmlFor={id} className={styles.radioButton}>
 			<input
 				type='radio'
 				name='radio-card'
-				id={name}
-				value={name}
+				id={id}
+				value={id}
 				onChange={(e) => {
 					onChange(e.target.value);
 				}}
@@ -15,7 +16,7 @@ export const CategoryItem = ({ name, icon, onChange }) => {
 			<div className={styles.contentWrapper}>
 				<span className={styles.checkIcon}></span>
 				<div className={styles.radioContent}>
-					{icon}
+					<img alt='category' src={categoryGetImage(image)}/>
 					<h4>{name}</h4>
 				</div>
 			</div>

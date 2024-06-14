@@ -6,9 +6,10 @@ export const CategoryList = ({ categories, onChange }) => {
 		<div className={styles.gridCategories}>
 			{categories.map((category) => (
 				<CategoryItem
-          key={category.name}
+          key={category._id}
+          id={category._id}
 					name={category.name}
-					icon={category.icon}
+					image={category.image}
 					onChange={onChange}
 				/>
 			))}

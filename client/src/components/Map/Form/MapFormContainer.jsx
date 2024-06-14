@@ -46,7 +46,7 @@ export const MapFormContainer = ({ form }) => {
 			lng: data.lng,
 		};
 
-		map.setView(cordenadas, 18);
+		map.setView(coordinates, 18);
 
 		setPosition(coordinates);
 
