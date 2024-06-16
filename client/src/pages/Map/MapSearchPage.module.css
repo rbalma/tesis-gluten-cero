@@ -6,8 +6,8 @@
 .displayCategories {
 	display: flex;
 	align-items: center;
-	justify-content: space-evenly;
-	text-transform: capitalize;
+	gap: 30px;
+	margin-left: 10px;
 }
 
 .listSearchMap {

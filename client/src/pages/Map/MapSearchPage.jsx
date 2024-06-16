@@ -1,20 +1,15 @@
 import { useReducer, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import { Row } from 'antd';
-import { EnvironmentFilled } from '@ant-design/icons';
 import { toast } from 'sonner';
-import { mapCategories } from '@/utils/constants';
 import { CardMarker } from '@/components/Map/Cards/CardMarker';
 import {
 	MarkerCurrentLocation,
-	MarkerHospital,
-	MarkerRestaurant,
-	MarkerShopping,
-} from '@/components/Map/Markers';
-import { MapFilterCategory } from '@/components/Map/Filters/MapFilterCategory';
+} from '@/components/Map/Markers/MarkerCurrentLocation';
 import { AutoCompleteMap } from '@/components/Map/AutoComplete/AutoCompleteMap';
 import { useGetMarkersByLocation } from '@/services/queries/mapQueries';
+import { MarkerPlace } from '@/components/Map/Markers/MarkerPlace';
+import { CategoriesMarkers, DistanceRadius } from '@/components/Map/Filters';
 import Footer from '@/layout/home/ui/Footer';
 
 import 'leaflet/dist/leaflet.css';
@@ -23,7 +18,6 @@ import styles from './MapSearchPage.module.css';
 const initialLocation = [-31.41718428534527, -64.18382740831277];
 
 export const MapSearchPage = () => {
-	const navigate = useNavigate();
 	const [map, setMap] = useState(null);
 	const [filters, setFilters] = useReducer(
 		(current, update) => ({ ...current, ...update }),
@@ -33,15 +27,15 @@ export const MapSearchPage = () => {
 			meters: 1000,
 			latitude: initialLocation[0],
 			longitude: initialLocation[1],
+			categoriesIds: null
 		}
 	);
+
 	const {
 		isFetching,
 		isSuccess,
 		data: markers,
 	} = useGetMarkersByLocation(filters);
-
-	console.log({ markers })
 
 	const handleFlyTo = (location) => {
 		map.flyTo(location, 15, {
@@ -89,21 +83,20 @@ export const MapSearchPage = () => {
 					</Row>
 
 					<div className={styles.displayCategories}>
-						{mapCategories.map((category) => (
-							<MapFilterCategory key={category.name} category={category} />
-						))}
+						<CategoriesMarkers setFilters={setFilters} />
+						<DistanceRadius radiusFiltered={filters.meters} setFilters={setFilters} />
 					</div>
 				</section>
 
 				<section className={styles.listCardsMap}>
 					<div className={styles.resultButtonMap}>
 						<span className={styles.showingResultsMap}>14 Resultados </span>
-						<button
+						{/* <button
 							className={styles.newMarkerButton}
 							onClick={() => navigate('/mapa-formulario')}>
 							{' '}
 							<EnvironmentFilled style={{ marginRight: 5 }} /> Agregar{' '}
-						</button>
+						</button> */}
 					</div>
 					{!isFetching && markers.length > 0
 						? markers.map((marker) => (
@@ -134,19 +127,21 @@ export const MapSearchPage = () => {
 					<MarkerCurrentLocation
 						posicion={[filters.latitude, filters.longitude]}
 					/>
-					<MarkerHospital />
-					<MarkerShopping />
-					<MarkerRestaurant
-						posicion={{
-							lat: '-31.41976',
-							lng: '-64.1881',
-						}}
-					/>
-					{/* 
-						Listar cards en un Drawer para mobile!
-						<button style={{ zIndex: 500, position: 'absolute', top: 20, right: 20}}
-						onClick={() => console.log('HOLA')}
-						>Cards</button> */}
+
+					{!isFetching && markers.length > 0
+						? markers.map((marker) => (
+								<MarkerPlace
+									key={marker._id}
+									coordinates={marker.location.coordinates}
+									image={marker.image.secure_url}
+									category={marker.category.name}
+									name={marker.name}
+									direction={marker.direction}
+									phone={marker.phone}
+									ratingAverage={marker.ratingAverage.$numberDecimal}
+								/>
+						  ))
+						: null}
 				</MapContainer>
 			</div>
 		</div>
