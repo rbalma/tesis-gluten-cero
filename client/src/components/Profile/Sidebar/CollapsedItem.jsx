@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { IconChevronDown } from '@/components/Icons';
 
@@ -24,9 +23,7 @@ export const CollapsedItem = ({
 				onClick={() => onChangeCollapsedItem(item.name)}>
 				{item.icon && (
 					<span
-						className={
-							collapsedItem === item.name ? `${styles.less}` : `${styles.more}`
-						}>
+						className={collapsedItem === item.name ? styles.less : styles.more}>
 						<IconChevronDown size={24} />
 					</span>
 				)}
@@ -35,7 +32,11 @@ export const CollapsedItem = ({
 
 			<div
 				className={`${styles.subNav} ${
-					collapsedItem === item.name ? styles.open : ''
+					collapsedItem === item.name
+						? collapsedItem === 'Marcadores'
+							? styles.openMarkers
+							: styles.open
+						: ''
 				}`}>
 				{item.items.map((subItem) => (
 					<NavLink

@@ -117,6 +117,10 @@
   height: 150px;
 }
 
+.openMarkers {
+  height: 100px;
+}
+
 .iconSize {
   font-size: 22px;
 }
