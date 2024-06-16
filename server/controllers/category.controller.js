@@ -115,10 +115,6 @@ export const deleteCategory = async (req, res, next) => {
     const category = await Category.findById(categoryId);
     if (!category) throw new ErrorResponse("La categoría no existe", 404);
 
-    // const recipe = await Recipe.findOne({ active: 1 }).populate({
-    //   path: 'Category',
-    //   _id: category._id,
-    // });
     const recipe = await Recipe.findOne({ active: 1, category: category._id });
     if (recipe)
       throw new ErrorResponse(
