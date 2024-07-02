@@ -102,26 +102,26 @@ export const useGetFavoritesMarkers = () => {
 	});
 };
 
-export const useAddFavoriteRecipe = () => {
-	const addFavoriteRecipe = useAuthStore((state) => state.addFavoriteRecipe);
+export const useAddFavoriteMarker = () => {
+	const addFavoriteMarker = useAuthStore((state) => state.addFavoriteMarker);
 	return useMutation({
 		mutationFn: addFavMarker,
-		onSuccess: (_, recipeId) => {
-			addFavoriteRecipe(recipeId);
+		onSuccess: (_, markerId) => {
+			addFavoriteMarker(markerId);
 		},
 		onError: () => toast.error('Error. Vuelva a intentarlo'),
 	});
 };
 
-export const useDeleteFavoriteRecipe = () => {
+export const useDeleteFavoriteMarker = () => {
 	const queryClient = useQueryClient();
-	const deleteFavoriteRecipe = useAuthStore(
-		(state) => state.deleteFavoriteRecipe
+	const deleteFavoriteMarker = useAuthStore(
+		(state) => state.deleteFavoriteMarker
 	);
 	return useMutation({
 		mutationFn: deleteFavMarker,
 		onSuccess: (data, markerId) => {
-			deleteFavoriteRecipe(recipeId);
+			deleteFavoriteMarker(markerId);
 
 			queryClient.setQueryData(['markersFavorites'], (old) => {
 				if (!old) return [];
