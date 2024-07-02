@@ -131,35 +131,27 @@ export const ProductsPage = () => {
 			render: (text) => <span className={styles.rowLowercase}>{text}</span>,
 		},
 		{
-			title: 'Estado',
-			dataIndex: 'estado',
-			key: 'estado',
-			align: 'center',
-			width: '10%',
-			render: (text) => <span className={styles.rowLowercase}>{text}</span>,
-		},
-		{
-			title: 'Favs',
+			title: 'Favoritos',
 			dataIndex: 'likes',
 			key: 'likes',
 			align: 'center',
 			render: (_, record) => {
 			  const hasLiked = record.likes.includes(userId);
 			  return (
-				<>
+				<div className={styles.favData}>
+					<span>{record.likes.length}</span>
 				{userId ? (
 				  hasLiked ? (
-					<HeartFilled onClick={() => handleLikeToggle(record)} style={{ width: '100%', color: 'red', cursor: 'pointer' }} />
+					<HeartFilled onClick={() => handleLikeToggle(record)} style={{ color: 'red', cursor: 'pointer' }} />
 				  ) : (
-					<HeartOutlined onClick={() => handleLikeToggle(record)} style={{ width: '100%', color: 'red', cursor: 'pointer' }} />
+					<HeartOutlined onClick={() => handleLikeToggle(record)} style={{ color: 'red', cursor: 'pointer' }} />
 				  )
 				 ) : (
 					<Tooltip title="Solo los usuarios registrados pueden indicar un producto como favorito">
 						<HeartFilled style={{ width: '100%', color: 'red', cursor: 'not-allowed' }} />
 					</Tooltip>
 				)}
-				  <span>{record.likes.length}</span>
-				</>
+				</div>
 			  );
 			},
 		  },

@@ -176,6 +176,13 @@
   max-width: 1200px;
 }
 
+.favData {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
 .rowLowercase {
   text-transform: lowercase;
 }
