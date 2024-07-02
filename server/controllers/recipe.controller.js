@@ -26,6 +26,8 @@ export const addRecipes = async (req, res, next) => {
 
     const recipeDB = await recipe.save();
 
+    //! Mandar mail
+
     res.json({
       ok: true,
       data: recipeDB,
@@ -69,7 +71,7 @@ export const getRecipes = async (req, res, next) => {
     userId,
     sortField,
     sortOrder,
-    active,
+    state,
   } = req.query;
 
   const options = {
@@ -91,7 +93,7 @@ export const getRecipes = async (req, res, next) => {
   if (sortField) options.sort = { [sortField]: sortOrder || 1 };
 
   const filters = {};
-  if (active) filters.active = +active;
+  if (state) filters.state = state;
   if (title) filters.title = { $regex: title, $options: "i" };
   if (categoriesIds) filters.category = { $in: categoriesIds };
   if (userId) filters.user = userId;
@@ -128,22 +130,24 @@ export const getRecipes = async (req, res, next) => {
 // @access Private
 export const changeStatusRecipe = async (req, res, next) => {
   const { recipeId } = req.params;
-  const { active } = req.body;
+  const { state } = req.body;
 
   const session = await mongoose.startSession();
   session.startTransaction();
 
   try {
-    const recipe = await Recipe.findById(recipeId, "_id user");
+    const recipe = await Recipe.findById(recipeId, "_id title user");
 
     if (!recipe) throw new ErrorResponse("No existe la receta", 404);
 
-    await Recipe.updateOne({ _id: recipeId }, { active }, { session });
+    await Recipe.updateOne({ _id: recipeId }, { state }, { session });
 
     const notification = {
-      description: active ? events["RECIPE_APPROVED"] : events["RECIPE_REJECTED"],
+      description: state ? events.RECIPE_APPROVED : events.RECIPE_REJECTED,
+      originUser: `${req.user.name} ${req.user.lastname}`,
       notifiedUser: recipe.user,
       recipe: recipeId,
+      recipeTitle: recipeFound.title
     };
 
     await createNotification(notification, session);
@@ -152,7 +156,7 @@ export const changeStatusRecipe = async (req, res, next) => {
 
     res.json({
       recipeId,
-      message: active ? "Receta aprobada" : "Receta rechazada",
+      message: state ? "Receta aprobada" : "Receta rechazada",
     });
   } catch (error) {
     console.log({ error });
@@ -184,7 +188,7 @@ export const updateRecipe = async (req, res, next) => {
     const newRecipe = {
       ...req.body,
       user: req.id,
-      active: false,
+      state: 'pending',
       isUpdated: true,
     };
 
@@ -201,6 +205,8 @@ export const updateRecipe = async (req, res, next) => {
     const updateRecipe = await Recipe.findByIdAndUpdate(recipeId, newRecipe, {
       new: true,
     });
+
+    //! Mandar mail
 
     res.json({
       data: updateRecipe,
@@ -264,7 +270,7 @@ export const getLastRecipesSideBar = async (req, res, next) => {
   };
 
   try {
-    const recipes = await Recipe.paginate({ _id: { $ne: recipeId } }, options);
+    const recipes = await Recipe.paginate({ _id: { $ne: recipeId }, state: 'success' }, options);
 
     res.json({
       data: recipes.docs,

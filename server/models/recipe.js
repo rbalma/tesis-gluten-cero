@@ -43,9 +43,10 @@ const recipeSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "User",
     },
-    active: {
-      type: Boolean,
-      default: false,
+    state: {
+      type: String,
+      enum: { values: ['pending', 'success', 'error'], message: '{VALUE} no es un estado válido' },
+      default: 'pending',
     },
     isUpdated: {
       type: Boolean,
