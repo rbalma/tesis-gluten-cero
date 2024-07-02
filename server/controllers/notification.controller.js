@@ -81,7 +81,7 @@ export const updateNotification = async (req, res, next) => {
 
     res.json({
       notification: notificationUpdated,
-      message: "Categoría actualizada",
+      message: "Notificación actualizada",
     });
   } catch (error) {
     next(error);
