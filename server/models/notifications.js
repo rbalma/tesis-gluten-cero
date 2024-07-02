@@ -9,11 +9,20 @@ const notificationSchema = new Schema(
       trim: true,
       required: [true, "Debe ingresar la descripción de la notificación"],
     },
+    event: {
+      type: String,
+      trim: true,
+      required: [true, "Debe ingresar el evento de la notificación"],
+      enum: {
+        values: ["RECIPE_APPROVED", "RECIPE_REJECTED", "RECIPE_VALUED"],
+        message: "{VALUE} no es un tipo de rol",
+      },
+    },
     read: {
       type: Boolean,
       default: false,
     },
-    userSends: {
+    originUser: {
       type: Schema.Types.ObjectId,
       ref: "User",
     },
@@ -24,10 +33,6 @@ const notificationSchema = new Schema(
     recipe: {
       type: Schema.Types.ObjectId,
       ref: "Recipe",
-    },
-    marker: {
-      type: Schema.Types.ObjectId,
-      ref: "Marker",
     },
   },
   { timestamps: true }
