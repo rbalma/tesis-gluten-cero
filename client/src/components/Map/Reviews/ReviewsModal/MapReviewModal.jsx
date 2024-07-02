@@ -1,13 +1,27 @@
 import { useState } from 'react';
-import { Button, Form, Input, Modal } from 'antd';
+import { Modal } from 'antd';
 import { IconX } from '@/components/Icons';
+import useAuthStore from '@/store/authStore';
 import { MapReviews } from '../MapReviews';
 import { MapReviewForm } from './MapReviewForm';
+import { useHasReviewMarker } from '@/services/queries/reviewsQueries';
 
 import styles from './MapReviewModal.module.css';
 
-export const MapReviewModal = ({ countReviews }) => {
+export const MapReviewModal = ({
+	markerId,
+	markerName,
+	countReviews,
+	ratingReviews,
+}) => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
+	const userProfile = useAuthStore((state) => state.userProfile);
+	const { isSuccess: isSuccessHasReview, data: userReview } =
+		useHasReviewMarker({
+			userId: userProfile?.id,
+			markerId,
+			isModalOpen
+		});
 
 	const showModal = () => {
 		setIsModalOpen(true);
@@ -20,7 +34,7 @@ export const MapReviewModal = ({ countReviews }) => {
 	return (
 		<>
 			<small className={styles.countReviews} onClick={showModal}>
-				({countReviews} opiniones)
+				({countReviews} {countReviews === 1 ? 'opinión' : 'opiniones'})
 			</small>
 			<Modal
 				title={null}
@@ -28,7 +42,8 @@ export const MapReviewModal = ({ countReviews }) => {
 				centered
 				bodyStyle={{
 					padding: 0,
-					height: 'calc(100dvh - 80px)',
+					height: '100%',
+					maxHeight: 'calc(100dvh - 80px)',
 					overflowY: 'auto',
 					borderRadius: 10,
 				}}
@@ -39,16 +54,25 @@ export const MapReviewModal = ({ countReviews }) => {
 				<header className={styles.reviewReplyModalHeader}>
 					<h3 className={styles.reviewReplyModalTitle}>Opiniones del sitio</h3>
 					<div className={styles.btnGroup}>
-						<MapReviewForm
-							showModalOne={showModal}
-							handleCancelOne={handleCancel}
-						/>
+						{isSuccessHasReview && !userReview.hasReview ? (
+							<MapReviewForm
+								markerId={markerId}
+								markerName={markerName}
+								showModalOne={showModal}
+								handleCancelOne={handleCancel}
+							/>
+						) : null}
 						<span className={styles.closableButton} onClick={handleCancel}>
 							<IconX size={22} />
 						</span>
 					</div>
 				</header>
-				<MapReviews />
+				<MapReviews
+					markerId={markerId}
+					markerName={markerName}
+					ratingReviews={ratingReviews}
+					countReviews={countReviews}
+				/>
 			</Modal>
 		</>
 	);

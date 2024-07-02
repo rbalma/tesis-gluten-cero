@@ -1,14 +1,30 @@
 import { useState } from 'react';
 import { MapReviewsFiltersButton } from './Items/MapReviewsFiltersRadio';
-import { MapReviewsFiltersCheckBox } from './Items/MapReviewsFiltersCheckBox';
+//import { MapReviewsFiltersCheckBox } from './Items/MapReviewsFiltersCheckBox';
 
 import styles from './MapReviewsFilters.module.css';
 
-export const MapReviewsFilters = () => {
+const sortFilter = {
+	recientes: {
+		sortField: 'createdAt',
+		sortOrder: -1,
+	},
+	alta: {
+		sortField: 'rating',
+		sortOrder: -1,
+	},
+	baja: {
+		sortField: 'rating',
+		sortOrder: 1,
+	},
+};
+
+export const MapReviewsFilters = ({ setFilters }) => {
 	const [selected, setSelected] = useState('recientes');
 
 	const onChangeOrder = (e) => {
 		setSelected(e.target.value);
+		setFilters(sortFilter[e.target.value]);
 	};
 	return (
 		<>
@@ -16,19 +32,19 @@ export const MapReviewsFilters = () => {
 			<div className={styles.containerFiltersOrder}>
 				<MapReviewsFiltersButton
 					name='Más recientes'
-					value={'recientes'}
+					value='recientes'
 					selected={selected}
 					onChange={onChangeOrder}
 				/>
 				<MapReviewsFiltersButton
 					name='Más alta'
-					value={'alta'}
+					value='alta'
 					selected={selected}
 					onChange={onChangeOrder}
 				/>
 				<MapReviewsFiltersButton
 					name='Más baja'
-					value={'baja'}
+					value='baja'
 					selected={selected}
 					onChange={onChangeOrder}
 				/>

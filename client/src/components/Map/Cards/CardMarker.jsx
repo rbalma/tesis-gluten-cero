@@ -1,12 +1,23 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Rate } from 'antd';
-import { HeartOutlined, HeartFilled } from '@ant-design/icons';
-import { LocationIcon, PhoneIcon } from '@/components/Icons';
+import {
+	IconHeart,
+	IconHeartFilled,
+	LocationIcon,
+	PhoneIcon,
+} from '@/components/Icons';
+import useAuthStore from '@/store/authStore';
 import { MapReviewModal } from '../Reviews/ReviewsModal/MapReviewModal';
+import {
+	useAddFavoriteMarker,
+	useDeleteFavoriteMarker,
+} from '@/services/queries/mapQueries';
 
 import styles from './CardMarker.module.css';
 
 export const CardMarker = ({
+	_id,
 	image,
 	name,
 	direction,
@@ -16,12 +27,30 @@ export const CardMarker = ({
 	ratingCount,
 }) => {
 	const [fav, setFav] = useState(false);
+	const navigate = useNavigate();
+	const userAuth = useAuthStore((state) => state.userProfile);
+	const addFavoriteMarker = useAddFavoriteMarker();
+	const deleteFavoriteMarker = useDeleteFavoriteMarker();
 
-	const addFav = () => {
-		if (!fav) {
+	useEffect(() => {
+		if (userAuth?.favMarkers?.some((markerId) => markerId === _id))
 			setFav(true);
-		} else {
-			setFav(false);
+	}, []);
+
+	const addFav = async () => {
+		const stateInitials = fav;
+		if (!userAuth?.id) return navigate('/ingreso');
+		setFav(() => !fav);
+
+		try {
+			if (!stateInitials) {
+				await addFavoriteMarker.mutateAsync(_id);
+			} else {
+				await deleteFavoriteMarker.mutateAsync(_id);
+			}
+		} catch (error) {
+			console.log(error);
+			setFav(stateInitials);
 		}
 	};
 
@@ -44,20 +73,23 @@ export const CardMarker = ({
 				</span>
 
 				<span className={styles.starCard}>
-					{ratingAverage.$numberDecimal}{' '}
+					{+ratingAverage.$numberDecimal
+						? (+ratingAverage.$numberDecimal).toFixed(1)
+						: ''}
 					<Rate disabled allowHalf value={+ratingAverage.$numberDecimal} />{' '}
-					<MapReviewModal countReviews={ratingCount} />
+					<MapReviewModal
+						markerId={_id}
+						markerName={name}
+						countReviews={ratingCount}
+						ratingReviews={+ratingAverage.$numberDecimal}
+					/>
 				</span>
 
 				{/* Like Button */}
 				<span
 					className={`${styles.likeMap} ${fav && styles.likeMapActive}`}
 					onClick={addFav}>
-					{!fav ? (
-						<HeartOutlined />
-					) : (
-						<HeartFilled className={styles.likediconMap} />
-					)}
+					{!fav ? <IconHeart size={20} /> : <IconHeartFilled size={20} />}
 				</span>
 			</section>
 		</div>

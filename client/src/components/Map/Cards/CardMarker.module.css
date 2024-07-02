@@ -100,21 +100,26 @@
 }
 
 .likeMap {
-	border: none;
-	cursor: pointer;
+	border: 1px solid #eee;
+	border-radius: 50px;
 	background-color: #eee;
+	color: #aeaeae;
+	cursor: pointer;
 	line-height: normal;
-	color: #9d9d9d;
-	font-size: 20px;
-	padding: 4px 7px;
-	border-radius: 50%;
-	width: min-content;
 	position: absolute;
 	right: 10px;
 	top: 10px;
+	width: 30px;
+	height: 30px;
+	display: grid;
+	place-content: center;
 }
 
-.likediconMap {
+.likeMap:hover:not(.likeMapActive) {
+	background-color: #f15f7a54;
+}
+
+.likeMapActive>svg {
 	animation: liked 0.4s ease;
 }
 
@@ -135,6 +140,7 @@
 .likeMapActive {
 	background-color: #f3103c;
 	color: #fff;
+	border-color: #f3103c;
 }
 
 @media only screen and (max-width: 1080px) {

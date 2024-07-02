@@ -1,15 +1,15 @@
 import { useReducer, useState } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
+import MarkerClusterGroup from 'react-leaflet-cluster';
 import { Row } from 'antd';
 import { toast } from 'sonner';
 import { CardMarker } from '@/components/Map/Cards/CardMarker';
-import {
-	MarkerCurrentLocation,
-} from '@/components/Map/Markers/MarkerCurrentLocation';
+import { MarkerCurrentLocation } from '@/components/Map/Markers/MarkerCurrentLocation';
 import { AutoCompleteMap } from '@/components/Map/AutoComplete/AutoCompleteMap';
 import { useGetMarkersByLocation } from '@/services/queries/mapQueries';
 import { MarkerPlace } from '@/components/Map/Markers/MarkerPlace';
 import { CategoriesMarkers, DistanceRadius } from '@/components/Map/Filters';
+import { IconCluster } from '@/components/Map/Markers/IconsMarkers';
 import Footer from '@/layout/home/ui/Footer';
 
 import 'leaflet/dist/leaflet.css';
@@ -27,7 +27,7 @@ export const MapSearchPage = () => {
 			meters: 1000,
 			latitude: initialLocation[0],
 			longitude: initialLocation[1],
-			categoriesIds: null
+			categoriesIds: null,
 		}
 	);
 
@@ -84,13 +84,22 @@ export const MapSearchPage = () => {
 
 					<div className={styles.displayCategories}>
 						<CategoriesMarkers setFilters={setFilters} />
-						<DistanceRadius radiusFiltered={filters.meters} setFilters={setFilters} />
+						<DistanceRadius
+							radiusFiltered={filters.meters}
+							setFilters={setFilters}
+						/>
 					</div>
 				</section>
 
 				<section className={styles.listCardsMap}>
 					<div className={styles.resultButtonMap}>
-						<span className={styles.showingResultsMap}>14 Resultados </span>
+						<span className={styles.showingResultsMap}>
+							{isSuccess
+								? markers.length === 1
+									? '1 Resultado'
+									: `${markers.length} Resultados`
+								: 'Sin Resultados'}{' '}
+						</span>
 						{/* <button
 							className={styles.newMarkerButton}
 							onClick={() => navigate('/mapa-formulario')}>
@@ -128,20 +137,27 @@ export const MapSearchPage = () => {
 						posicion={[filters.latitude, filters.longitude]}
 					/>
 
-					{!isFetching && markers.length > 0
-						? markers.map((marker) => (
-								<MarkerPlace
-									key={marker._id}
-									coordinates={marker.location.coordinates}
-									image={marker.image.secure_url}
-									category={marker.category.name}
-									name={marker.name}
-									direction={marker.direction}
-									phone={marker.phone}
-									ratingAverage={marker.ratingAverage.$numberDecimal}
-								/>
-						  ))
-						: null}
+					<MarkerClusterGroup
+					  spiderfyOnMaxZoom={true}
+						chunkedLoading
+						iconCreateFunction={IconCluster}
+					>
+						{!isFetching && markers.length > 0
+							? markers.map((marker) => (
+									<MarkerPlace
+										key={marker._id}
+										coordinates={marker.location.coordinates}
+										image={marker.image.secure_url}
+										category={marker.category.name}
+										name={marker.name}
+										direction={marker.direction}
+										phone={marker.phone}
+										ratingAverage={marker.ratingAverage.$numberDecimal}
+										ratingCount={marker.ratingCount}
+									/>
+							  ))
+							: null}
+					</MarkerClusterGroup>
 				</MapContainer>
 			</div>
 		</div>

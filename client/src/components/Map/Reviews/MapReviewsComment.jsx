@@ -1,27 +1,41 @@
 import { Avatar, Divider, Rate } from 'antd';
+import { userGetAvatar } from '@/utils/fetchData';
+import { dateFormat } from '@/utils/format';
+
 import styles from './MapReviewsComment.module.css';
 
-export const MapReviewsComment = () => {
+const qualification = {
+	1: 'Malo',
+	2: 'Regular',
+	3: 'Bueno',
+	4: 'Muy Bueno',
+	5: 'Excelente',
+};
+
+export const MapReviewsComment = ({
+	createdAt,
+	userName,
+	userLastName,
+	userAvatar,
+	rating,
+	content,
+}) => {
 	return (
 		<>
 			<Divider />
 			<header className={styles.header}>
 				<div className={styles.user}>
-					<Avatar size={40} />{' '}
+					<Avatar alt='userAvatar' src={userGetAvatar(userAvatar)} size={40} />{' '}
 					<p>
-						Alex Ray <span>11 dic. 2023</span>
+						{userName} {userLastName} <span>{dateFormat(createdAt)}</span>
 					</p>
 				</div>
 				<div className={styles.rate}>
-					Malo (2.0)
-					<Rate style={{ fontSize: 14 }} disabled allowHalf value={2} />
+					{qualification[rating]} ({rating.toFixed(1)})
+					<Rate style={{ fontSize: 14 }} disabled allowHalf value={rating} />
 				</div>
 			</header>
-			<p className={styles.comment}>
-				Sunt voluptate esse sunt culpa nulla cillum laboris enim ipsum
-				voluptate. Nulla qui velit aliqua anim consectetur ex. Exercitation
-				Lorem aliquip elit velit elit minim minim proident cupidatat nisi.
-			</p>
+			<p className={styles.comment}>{content}</p>
 		</>
 	);
 };
