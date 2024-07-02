@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { IconHeart, IconHeartFilled } from '@/components/Icons';
 import { CardHeaderRecipeDetail } from './CardHeaderRecipeDetail';
 import { ExtraDataRecipeCard } from './ExtraDataRecipeCard';
@@ -7,15 +8,16 @@ import {
 	useDeleteFavoriteRecipe,
 } from '@/services/queries/recipeQueries';
 import { dateFormat } from '@/utils/format';
+import useAuthStore from '@/store/authStore';
 
 import styles from './CardRecipeDetail.module.css';
-import useAuthStore from '@/store/authStore';
 
 const getPageMargins = () => {
 	return `@page { margin: 30px !important; }`;
 };
 
 export const CardRecipeDetail = ({ recipe, forwardRef }) => {
+	const navigate = useNavigate();
 	const userAuth = useAuthStore((state) => state.userProfile);
 	const [fav, setFav] = useState(false);
 	const addFavoriteRecipe = useAddFavoriteRecipe();
@@ -25,10 +27,10 @@ export const CardRecipeDetail = ({ recipe, forwardRef }) => {
 		if (userAuth?.favRecipes?.some((recipeId) => recipeId === recipe._id))
 			setFav(true);
 	}, []);
-	
 
 	const addFav = async () => {
 		const stateInitials = fav;
+		if (!userAuth?.id) return navigate('/ingreso');
 		setFav(() => !fav);
 
 		try {
