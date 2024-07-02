@@ -63,3 +63,29 @@ a.btn-success {
     }
   }
 }
+
+.success-dark {
+	color: @white-color !important;
+	background-color: darken(@success-color, 15%) !important;
+	border-color: darken(@success-color, 15%) !important;
+
+	&:hover,
+	&:focus {
+		color: @white-color !important;
+		background-color: darken(@success-color, 20%) !important;
+		border-color: darken(@success-color, 20%) !important;
+	}
+
+	&.disabled,
+	&:disabled {
+		background-color: @success-color !important;
+		border-color: @success-color !important;
+	}
+
+	&:not([disabled]):not(.disabled):active,
+	&:not([disabled]):not(.disabled).active {
+		color: @white-color !important;
+		background-color: darken(@success-color, 20%) !important;
+		border-color: darken(@success-color, 20%) !important;
+	}
+}
