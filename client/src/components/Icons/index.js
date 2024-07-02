@@ -41,3 +41,6 @@ export * from './IconNews';
 export * from './IconCircleCheck';
 export * from './IconExclamationCircle';
 export * from './IconLoading';
+export * from './IconCircleX';
+export * from './IconExternalLink';
+export * from './IconBellFilled';

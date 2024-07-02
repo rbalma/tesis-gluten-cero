@@ -67,8 +67,8 @@ export const UserProfile = () => {
 	];
 
 	return (
-		<Dropdown menu={{ items }} trigger={['click']} placement='bottom' arrow>
-			<Avatar style={{ cursor: 'pointer' }} src={avatar} size='large' />
+		<Dropdown menu={{ items }} trigger={['click']} placement='bottom'>
+			<Avatar style={{ cursor: 'pointer' }} src={avatar} size='default' />
 		</Dropdown>
 	);
 };

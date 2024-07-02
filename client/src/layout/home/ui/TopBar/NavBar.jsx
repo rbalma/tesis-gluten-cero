@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import Logo from '@/assets/images/logoBlanco.png';
 import { MobileMenu } from './MobileMenu';
 import { UserProfile } from './UserProfile';
 import useAuthStore from '@/store/authStore';
+import { NotificationMenu } from './NotificationMenu';
 
 import './NavBar.css';
 
@@ -105,6 +106,7 @@ const NavBar = () => {
 
 				{user ? (
 					<div className='icon-profile__navbar'>
+						<NotificationMenu />
 						<UserProfile />
 					</div>
 				) : (
