@@ -28,7 +28,7 @@ const reviewSchema = new Schema(
     },
     reply: {
       type: Schema.Types.ObjectId,
-      ref: "ReplyReview",
+      ref: "reply_review",
     },
   },
   { timestamps: true }

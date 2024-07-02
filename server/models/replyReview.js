@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
 
-const reviewSchema = new Schema(
+const replyReviewSchema = new Schema(
   {
     content: {
       type: String,
@@ -21,6 +21,6 @@ const reviewSchema = new Schema(
   { timestamps: true }
 );
 
-const Review = mongoose.model("ReplyReview", reviewSchema);
+const replyReview = mongoose.model("reply_review", replyReviewSchema);
 
-export default Review;
+export default replyReview;
