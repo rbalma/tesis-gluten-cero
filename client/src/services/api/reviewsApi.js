@@ -7,10 +7,15 @@ export const getReviewsRecipe = async ({ recipeId, filters = {} }) => {
 	return data;
 };
 
-export const getReviewsMarker = async (filters = {}) => {
-	const { data } = await glutenCeroApi.get('/reviews', {
+export const getReviewsMarker = async ({ markerId, filters = {} }) => {
+	const { data } = await glutenCeroApi.get(`/reviews/marker/${markerId}`, {
 		params: filters,
 	});
+	return data;
+};
+
+export const getPercentageReviewsMarker = async (markerId) => {
+	const { data } = await glutenCeroApi.get(`/reviews/percentage/markers/${markerId}`);
 	return data;
 };
 
@@ -56,7 +61,12 @@ export const getReviewsRecipeFromUsers = async ({ filters = {} }) => {
 	return data;
 };
 
-export const getReviewsRecipeByUser = async (userId) => {
-	const { data } = await glutenCeroApi.get(`/reviews/recipe/user/${userId}`);
+export const getReviewsRecipesByUser = async (userId) => {
+	const { data } = await glutenCeroApi.get(`/reviews/recipes/user/${userId}`);
+	return data;
+};
+
+export const getReviewsMarkersByUser = async (userId) => {
+	const { data } = await glutenCeroApi.get(`/reviews/markers/user/${userId}`);
 	return data;
 };

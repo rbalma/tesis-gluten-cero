@@ -7,9 +7,16 @@ import {
 	createReplyReview,
 	deleteReplyReview,
 	userHasReview,
-	getReviewsRecipeByUser,
+	getReviewsRecipesByUser,
 	getReviewsRecipeFromUsers,
+	getReviewsMarker,
+	getReviewsMarkersByUser,
+	getPercentageReviewsMarker,
 } from '../api/reviewsApi';
+
+/* 
+	*RECETAS
+*/
 
 export const useGetReviewsRecipe = ({ recipeId, filters }) => {
 	return useQuery({
@@ -52,7 +59,7 @@ export const useDeleteReview = () => {
 
 export const useHasReviewRecipe = ({ userId, recipeId }) => {
 	return useQuery({
-		queryKey: ['hasReviewRecipe', userId],
+		queryKey: ['hasReviewRecipe', recipeId],
 		queryFn: () => userHasReview({ userId, recipeId }),
 		enabled: !!userId,
 	});
@@ -128,15 +135,69 @@ export const useGetReviewsRecipeFromUsers = ({ filters }) => {
 export const useGetReviewsRecipeByUser = (userId) => {
 	return useQuery({
 		queryKey: ['reviewsRecipesByUser'],
-		queryFn: () => getReviewsRecipeByUser(userId),
+		queryFn: () => getReviewsRecipesByUser(userId),
 		enabled: !!userId,
 	});
 };
 
-export const useHasReviewMarker = ({ userId, markerId }) => {
+/* 
+	*MARCADORES
+*/
+export const useGetReviewsMarker = ({ markerId, filters }) => {
 	return useQuery({
-		queryKey: ['hasReviewsMarker', markerId],
+		queryKey: ['reviewsMarker', markerId, filters],
+		queryFn: () => getReviewsMarker({ markerId, filters }),
+	});
+};
+
+export const useGetPercentageReviewsMarker = (markerId) => {
+	return useQuery({
+		queryKey: ['percentageReviewsMarker', markerId],
+		queryFn: () => getPercentageReviewsMarker(markerId),
+	});
+};
+
+export const useCreateReviewMarker = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: createReview,
+		onSuccess: (_, variables) => {
+			queryClient.invalidateQueries(['reviewsMarker', variables.marker]);
+			queryClient.invalidateQueries(['percentageReviewsMarker', markerId]);
+			queryClient.invalidateQueries(['markers']);
+		},
+		onError: () => toast.error('Error. Vuelva a intentarlo'),
+	});
+};
+
+export const useDeleteReviewMarker = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: deleteReview,
+		onSuccess: ({ reviewId, message = '' }) => {
+			queryClient.setQueryData(['reviewsMarkersByUser'], (old) => ({
+				reviews: old.reviews.filter((review) => review._id !== reviewId),
+				totalPages: old.totalPages,
+				count: old.count,
+			}));
+			toast.success(message);
+		},
+		onError: () => toast.error('Error. Vuelva a intentarlo'),
+	});
+};
+
+export const useHasReviewMarker = ({ userId, markerId, isModalOpen }) => {
+	return useQuery({
+		queryKey: ['hasReviewMarker', markerId],
 		queryFn: () => userHasReview({ userId, markerId }),
+		enabled: !!userId && isModalOpen,
+	});
+};
+
+export const useGetReviewsMarkersByUser = (userId) => {
+	return useQuery({
+		queryKey: ['reviewsMarkersByUser'],
+		queryFn: () => getReviewsMarkersByUser(userId),
 		enabled: !!userId,
 	});
 };
