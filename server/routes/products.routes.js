@@ -1,12 +1,9 @@
-import express from 'express';
-import { getProducts, addFileExcel } from '../controllers/products.controller.js';
-import { validateJWT } from '../middlewares/validateJwt.js';
+import express from "express";
+import { getProductsTypes, getProducts } from "../controllers/products.controller.js";
 
 const router = express.Router();
 
-router
-  .route('/products-anmat')
-  .get(getProducts)
-  .post(validateJWT, addFileExcel);
+router.get("/products", getProducts);
+router.get("/products/types", getProductsTypes);
 
 export default router;
