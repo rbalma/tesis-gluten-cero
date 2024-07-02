@@ -23,6 +23,10 @@ const productsSchema = new Schema({
     trim: true,
     lowercase: true,
   },
+  likes: [{
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  }],
 });
 
 productsSchema.plugin(mongoosePaginate);

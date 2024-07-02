@@ -1,0 +1,45 @@
+  
+  .terms-modal .ant-modal-content {
+    max-height: 80vh; /* 80% of the viewport height */
+    display: flex;
+    flex-direction: column;
+  }
+
+  .terms-modal .ant-modal-body {
+    overflow-y: auto;
+    flex: 1;
+  }
+  
+  .terms-modal .ant-modal-title {
+    text-align: center;
+  }
+  
+  .modal-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #0D1A35;
+  }
+  
+  .modal-content p {
+    color: #000;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  
+  .modal-subtitle {
+    font-size: 16px;
+    font-weight: bold;
+    color: #0D1A35;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .ant-modal-footer {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .ant-modal-footer .ant-btn {
+    width: 120px;
+  }
