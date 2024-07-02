@@ -2,6 +2,7 @@ import { Modal, Rate } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import { IconClock, IconEdit, IconTrash } from '@/components/Icons';
 import { useDeleteFavoriteRecipe, useDeleteRecipe } from '@/services/queries/recipeQueries';
+import { TagStateRecipe } from '@/components/AdminDashboard';
 import { Link } from 'react-router-dom';
 import { timeAgo } from '@/utils/format';
 
@@ -14,6 +15,7 @@ export const ProfileRecipeCard = ({
 	id,
 	title,
 	category,
+	state,
 	ratingAverage,
 	ratingCount,
 	image,
@@ -62,7 +64,7 @@ export const ProfileRecipeCard = ({
 					</span>
 				</span>
 
-				<span>
+				<span> {isEdit ? <TagStateRecipe state={state} /> : null}
 					<IconClock size={15} /> {timeAgo(date)}
 				</span>
 			</div>
