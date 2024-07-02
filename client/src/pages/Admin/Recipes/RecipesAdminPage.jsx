@@ -1,79 +1,77 @@
 import { useState } from 'react';
-import { Avatar, Space, Table } from 'antd';
+import { Avatar, Button, Space, Table } from 'antd';
 import {
-	TagNoVisible,
-	TagVisible,
+	TagStateRecipe,
 	getColumnSearchProps,
 } from '@/components/AdminDashboard';
-import { userGetAvatar } from '@/utils/fetchData';
 import { dateLongFormat } from '@/utils/format';
-import { useGetUsers } from '@/services/queries/usersQueries';
-import { DrawerDetailUsers, DrawerFormUsers } from '@/components/AdminDashboard/UsersAdmin';
+import { DrawerDetailRecipes } from '@/components/AdminDashboard/RecipesAdmin';
+import { useNavigate } from 'react-router-dom';
+import { IconCirclePlus } from '@/components/Icons';
+import { useGetRecipes } from '@/services/queries/recipeQueries';
 
 import styles from '../Admin.module.css';
 
 const columns = [
 	{
-		title: 'Avatar',
-		dataIndex: 'avatar',
+		title: 'Foto',
+		dataIndex: ['image', 'secure_url'],
 		width: '5%',
 		align: 'center',
-		render: (avatar) => (
-			<Avatar
-				size={40}
-				shape='circle'
-				alt='avatar'
-				src={userGetAvatar(avatar)}
-			/>
+		render: (picture) => (
+			<Avatar size={50} shape='square' alt='marker' src={picture} />
 		),
 	},
 	{
-		title: 'Nombre',
-		dataIndex: 'name',
-		width: '15%',
+		title: 'Título',
+		dataIndex: 'title',
+		width: '20%',
 		sorter: true,
 		showSorterTooltip: false,
 		...getColumnSearchProps('nombre'),
 	},
 	{
-		title: 'Apellido',
-		dataIndex: 'lastname',
+		title: 'Categoría',
+		dataIndex: ['category', 'name'],
 		width: '15%',
-		sorter: true,
-		showSorterTooltip: false,
-		...getColumnSearchProps('apellido'),
+		...getColumnSearchProps('categoría'),
 	},
 	{
-		title: 'Correo',
-		dataIndex: 'email',
-		width: '25%',
-		...getColumnSearchProps('correo'),
+		title: 'Usuario Creador',
+		dataIndex: 'user',
+		width: '20%',
+		showSorterTooltip: false,
+		...getColumnSearchProps('nombre'),
+		render: (_, record) => `${record.user?.name} ${record.user?.lastname}`,
 	},
 	{
 		title: 'Fecha Creación',
 		dataIndex: 'createdAt',
-		width: '20%',
+		width: '18%',
 		sorter: true,
 		showSorterTooltip: false,
 		render: (date) => dateLongFormat(date),
 	},
 	{
 		title: 'Estado',
-		dataIndex: 'active',
-		width: '10%',
+		dataIndex: 'state',
+		width: '5%',
 		filters: [
 			{
-				text: 'Activos',
-				value: '1',
+				text: 'Aprobada',
+				value: 'success',
 			},
 			{
-				text: 'Inactivos',
-				value: '0',
+				text: 'Pendiente',
+				value: 'pending',
+			},
+			{
+				text: 'Rechazada',
+				value: 'error',
 			},
 		],
 		filterMultiple: false,
-		render: (visible) =>
-			+visible === 1 ? <TagVisible isUser /> : <TagNoVisible isUser />,
+		render: (state) => <TagStateRecipe state={state} />,
 	},
 	{
 		title: '',
@@ -81,25 +79,25 @@ const columns = [
 		width: '8%',
 		render: (_, record) => (
 			<Space size={24}>
-				<DrawerDetailUsers userId={record._id} />
+				<DrawerDetailRecipes recipeId={record._id} />
 			</Space>
 		),
 	},
 ];
 
 export const RecipesAdminPage = () => {
+	const navigate = useNavigate();
 	const [tableParams, setTableParams] = useState({
 		page: 1,
 		limit: 10,
-		role: 'user'
 	});
-	const { isFetching, data } = useGetUsers(tableParams);
+	const { isFetching, data } = useGetRecipes(tableParams);
 
 	const handleTableChange = (pagination, filters, sorter) => {
 		const filtersQuery = {
 			page: pagination.current || 1,
 			limit: pagination.pageSize || 10,
-			role: 'user'
+			role: 'user',
 		};
 
 		if (sorter?.order) {
@@ -120,8 +118,14 @@ export const RecipesAdminPage = () => {
 	return (
 		<>
 			<header className={styles.headerBody}>
-				<h1>Usuarios</h1>
-				<DrawerFormUsers />
+				<h1>Recetas</h1>
+				<Button
+					className='iconBtn'
+					type='primary'
+					icon={<IconCirclePlus size={18} />}
+					onClick={() => navigate('/receta-formulario')}>
+					Agregar
+				</Button>
 			</header>
 
 			<Table

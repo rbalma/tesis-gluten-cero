@@ -32,6 +32,7 @@ export const ProfileRecipesCreatedPage = () => {
 							<ProfileRecipeCard
 								key={recipe._id}
 								id={recipe._id}
+								state={recipe.state}
 								title={recipe.title}
 								category={recipe.category.name}
 								ratingAverage={recipe.ratingAverage.$numberDecimal}
