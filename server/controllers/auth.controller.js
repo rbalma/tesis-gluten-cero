@@ -39,6 +39,7 @@ export const login = async (req, res, next) => {
       avatar: user.avatar,
       userGoogle: user.google,
       favRecipes: user.favRecipes,
+      favMarkers: user.favMarkers,
     };
 
     const token = user.getSignedJwtToken(payload);
