@@ -82,7 +82,7 @@ export const useSearchRecipes = (searchTerm) => {
     queryKey: ['searchRecipes', searchTerm],
     queryFn: () => getRecipes({
 			type: 'R',
-			visible: '1',
+			state: 'success',
 			title: searchTerm
 		}),
     enabled: !!searchTerm,
