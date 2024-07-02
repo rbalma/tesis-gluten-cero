@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Table, Form, Row, Col, Input, Button, message, Select } from 'antd';
+import { Table, Form, Input, message, Select, Button } from 'antd';
+import { FileExcelOutlined } from '@ant-design/icons';
 import { Excel } from 'antd-table-saveas-excel';
+import { SearchIcon } from '@/components/Icons';
 import useData from '@/hooks/useData';
 
 import styles from './ProductsPage.module.css';
@@ -10,28 +12,33 @@ import styles from './ProductsPage.module.css';
 
 const columns = [
 	{
+		title: 'Nombre del Producto',
+		dataIndex: 'denominacionVenta',
+		key: 'denominacionVenta',
+		width: '50%',
+		render: (text) => <span className={styles.rowLowercase}>{text}</span>,
+	},
+	{
+		title: 'Tipo de Producto',
+		dataIndex: 'tipoProducto',
+		key: 'tipoProducto',
+		width: '25%',
+		render: (text) => <span className={styles.rowLowercase}>{text}</span>,
+	},
+	{
 		title: 'Marca',
 		dataIndex: 'marca',
 		key: 'marca',
-		align: 'center',
-	},
-	{
-		title: 'Denominación Venta',
-		dataIndex: 'denominacionVenta',
-		key: 'denominacionVenta',
-		align: 'justify',
-	},
-	{
-		title: 'Tipo Producto',
-		dataIndex: 'tipoProducto',
-		key: 'tipoProducto',
-		align: 'center',
+		width: '15%',
+		render: (text) => <span className={styles.rowLowercase}>{text}</span>,
 	},
 	{
 		title: 'Estado',
 		dataIndex: 'estado',
 		key: 'estado',
 		align: 'center',
+		width: '10%',
+		render: (text) => <span className={styles.rowLowercase}>{text}</span>,
 	},
 ];
 
@@ -39,10 +46,7 @@ export const ProductsPage = () => {
 	const [dataFilter, setDataFilter] = useState([]);
 
 	const [form] = Form.useForm();
-	const {
-		1: isLoadingProducts,
-		2: dataProducts
-	} = useData('/products-anmat');
+	const { 1: isLoadingProducts, 2: dataProducts } = useData('/products');
 
 	useEffect(() => {
 		if (dataProducts) setDataFilter(dataProducts);
@@ -115,89 +119,106 @@ export const ProductsPage = () => {
 		window.scrollTo(0, 220);
 	};
 
+	const onFinish = (values) => {
+		console.log({ values });
+	};
+
 	return (
 		<div className={styles.containerProducts}>
-			<Form
-				form={form}
-				name='advanced_search'
-				className={styles.searchForm}
-				style={{ padding: 25 }}
-				onFinish={handleSearch}
-			>
-				<Row gutter={24}>
-					<Col span={16}>
-						<Form.Item name='denominacionVenta' label='Denom. venta'>
-							<Input placeholder='Ej. Yogur endulzado sabor frutilla' />
-						</Form.Item>
-					</Col>
-					<Col span={8}>
-						<Form.Item name='marca' label='Marca'>
-							<Input placeholder='Ej. La Serenísima' />
-						</Form.Item>
-					</Col>
-					<Col span={16}>
-						<Form.Item name='TipoProducto' label='Tipo Producto'>
-							<Input placeholder='Ej. Yogures' />
-						</Form.Item>
-					</Col>
-					<Col span={8}>
-						<Form.Item name='estado' label='Estado'>
-							<Select
-								defaultValue='Vigente'
-								options={[
-									{
-										label: 'Vigente',
-										value: 'VIGENTE',
-									},
-									{
-										label: 'Baja provisoria',
-										value: 'BAJA PROVISORIA',
-									},
-								]}
-							/>
-						</Form.Item>
-					</Col>
-					<Col
-						span={24}
-						style={{
-							textAlign: 'right',
-						}}
-					>
-						<Button type='primary' htmlType='submit'>
-							Buscar
-						</Button>
-						<Button
-							style={{
-								margin: '0 8px',
-							}}
-							onClick={() => {
-								form.resetFields();
-								setDataFilter(data);
-							}}
-						>
-							Limpiar
-						</Button>
+			<section className={styles.bannerSection}>
+				<div className={styles.titlesGroup}>
+					<h2>Productos Sin Tacc</h2>
+					<h4>Explora el listado de productos aprobados por la ANMAT</h4>
+					<Form onFinish={onFinish}>
+						<div className={styles.mainSearchInput}>
+							<div className={styles.searchInputName}>
+								<Form.Item name='denominacion' noStyle>
+									<Input
+										bordered={false}
+										placeholder='¿Qué producto estás buscando?'
+									/>
+								</Form.Item>
+							</div>
+							<div className={styles.searchInputProductType}>
+								<Form.Item name='tipo' noStyle>
+									<Select
+										bordered={false}
+										allowClear
+										className={styles.searchSelect}
+										placeholder='Tipo de producto'
+										options={[
+											{
+												label: 'Vigente',
+												value: 'VIGENTE',
+											},
+											{
+												label: 'Baja provisoria',
+												value: 'BAJA PROVISORIA',
+											},
+										]}
+									/>
+								</Form.Item>
+							</div>
+							<div className={styles.searchInputBrand}>
+								<Form.Item name='marca' noStyle>
+									<Input bordered={false} placeholder='Todas las marcas' />
+								</Form.Item>
+							</div>
+							<button type='submit' className={styles.btnSearch}>
+								<SearchIcon />
+							</button>
+						</div>
+					</Form>
+				</div>
+			</section>
 
-						<Button
-							style={{ backgroundColor: 'green', color: '#fff' }}
-							onClick={onExportFileExcel}
-						>
-							Exportar
-						</Button>
-					</Col>
-				</Row>
-			</Form>
+			<div className={styles.totalExports}>
+				<span>Total de Productos: {dataFilter.length}</span>
+				<div className={styles.exportSort}>
+					<div>
+						Ordenar por:
+						<Select
+							defaultValue='product'
+							bordered={false}
+							dropdownStyle={{ minWidth: 130 }}
+							placement='bottomLeft'
+							options={[
+								{
+									value: 'product',
+									label: 'Producto',
+								},
+								{
+									value: 'brand',
+									label: 'Marca',
+								},
+								{
+									value: 'fav',
+									label: 'Favoritos',
+								},
+							]}
+						/>
+					</div>
+					<Button
+						icon={<FileExcelOutlined />}
+						shape='round'
+						size='small'
+						style={{ backgroundColor: 'transparent' }}
+						danger>
+						Exportar Productos
+					</Button>
+				</div>
+			</div>
 
-			<p className={styles.countProducts}>Cantidad de productos: {dataFilter.length}</p>
-
-			<Table
-				loading={isLoadingProducts}
-				columns={columns}
-				dataSource={dataFilter}
-				rowKey={(record) => record.id}
-				bordered
-				pagination={{ position: ['bottomRight'], onChange: paginationToTop }}
-			/>
+			<div className={styles.tableContainer}>
+				<Table
+					loading={isLoadingProducts}
+					columns={columns}
+					dataSource={dataFilter}
+					rowKey={(record) => record.id}
+					bordered
+					pagination={{ position: ['bottomRight'], onChange: paginationToTop }}
+				/>
+			</div>
 		</div>
 	);
 };
