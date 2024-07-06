@@ -7,7 +7,7 @@ import styles from './CardRecipeDetail.module.css';
 export const CardHeaderRecipeDetail = ({ title, category }) => {
 	return (
 		<header className={styles.headerRecipeDetail}>
-			<ApproveRejectRecipeBanner />
+			{/* <ApproveRejectRecipeBanner /> */}
 			{/* <RejectRecipeAlert /> */}
 			<h1>{ title }</h1>
 			<span className={styles.linesCategory}>
