@@ -172,6 +172,8 @@ export const addReview = async (req, res, next) => {
         recipe,
         recipeTitle: recipeFound.title
       };
+
+      await createNotification(notification, session);
     }
 
     if (marker) {
@@ -206,8 +208,6 @@ export const addReview = async (req, res, next) => {
         { session }
       );
     }
-
-    await createNotification(notification, session);
 
     await session.commitTransaction();
 
