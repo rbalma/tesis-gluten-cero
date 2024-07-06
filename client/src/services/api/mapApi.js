@@ -5,7 +5,7 @@ const API_Access_Token = import.meta.env.VITE_LOCATIONIQ_TOKEN;
 
 export const getAddressesOfPlaces = async ({ query, signal }) => {
 	const { data } = await axios.get(
-		`https://api.locationiq.com/v1/autocomplete?key=${API_Access_Token}&q=${query}&limit=5&dedupe=1&country=Argentina`,
+		`https://api.locationiq.com/v1/autocomplete?key=${API_Access_Token}&q=${query}&countrycodes=ar&accept-language=es`,
 		{ signal }
 	);
 	return data;
