@@ -163,7 +163,7 @@ export const useCreateReviewMarker = () => {
 		mutationFn: createReview,
 		onSuccess: (_, variables) => {
 			queryClient.invalidateQueries(['reviewsMarker', variables.marker]);
-			queryClient.invalidateQueries(['percentageReviewsMarker', markerId]);
+			queryClient.invalidateQueries(['percentageReviewsMarker', variables.marker]);
 			queryClient.invalidateQueries(['markers']);
 		},
 		onError: () => toast.error('Error. Vuelva a intentarlo'),
