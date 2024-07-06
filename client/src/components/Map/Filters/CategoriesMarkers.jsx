@@ -65,7 +65,7 @@ export const CategoriesCheckboxGroup = ({ setFilters }) => {
 				className={styles.itemCategory}
 				onChange={onChangeAllOptions}
 				checked={isAllOptions}>
-				Todos
+				Todas
 			</Checkbox>
 			<Checkbox.Group
 				style={{
