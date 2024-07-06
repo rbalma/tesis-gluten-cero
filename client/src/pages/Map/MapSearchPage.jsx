@@ -38,8 +38,8 @@ export const MapSearchPage = () => {
 	} = useGetMarkersByLocation(filters);
 
 	const handleFlyTo = (location) => {
-		map.flyTo(location, 15, {
-			duration: 4,
+		map.flyTo(location, 17, {
+			duration: 6,
 		});
 		setFilters({
 			latitude: location[0],
