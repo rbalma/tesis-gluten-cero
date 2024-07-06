@@ -7,7 +7,7 @@ import { SuccessMessageForm } from '@/components/SuccessForm/SuccessMessageForm'
 import styles from './RecipeFormPage.module.css';
 
 export const RecipeFormPage = () => {
-	const [isSuccessRecipe, setIsSuccessRecipe] = useState();
+	const [isSuccessRecipe, setIsSuccessRecipe] = useState(false);
 
 	return (
 		<>
