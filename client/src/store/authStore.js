@@ -67,6 +67,24 @@ const useAuthStore = create(
 					),
 				},
 			})),
+		addFavoriteProduct: (productId) =>
+			set((state) => ({
+				...state,
+				userProfile: {
+					...state.userProfile,
+					favProducts: [...state.userProfile.favProducts, productId],
+				},
+			})),
+		deleteFavoriteProduct: (productId) =>
+			set((state) => ({
+				...state,
+				userProfile: {
+					...state.userProfile,
+					favProducts: state.userProfile.favProducts.filter(
+						(favProduct) => favProduct !== productId
+					),
+				},
+			})),
 	}))
 );
 
