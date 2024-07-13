@@ -50,104 +50,6 @@
   line-height: 32px;
 }
 
-.mainSearchInput {
-  align-items: flex-start;
-  background-color: #fff;
-  border-radius: 50px;
-  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.12);
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: 30px;
-  max-height: 68px;
-  padding: 9px;
-  width: 100%;
-  font-weight: 500;
-}
-
-.searchInputName {
-  border-right: 1px solid #e9e9e9;
-  color: #707070;
-  flex: 1;
-  font-size: 15px;
-  line-height: 27px;
-  margin-top: 3px;
-  padding-left: 30px;
-  padding-right: 30px;
-  position: relative;
-}
-
-.searchInputName input,
-.searchInputBrand input {
-  background: #fff;
-  border: none;
-  box-shadow: none;
-  font-size: 15px;
-  height: 44px;
-  margin: 0;
-  padding: 0;
-}
-
-.searchInputProductType {
-  border-right: 1px solid #e9e9e9;
-  color: #707070;
-  flex: 1;
-  line-height: 27px;
-  margin-top: 7px;
-  padding-left: 15px;
-  padding-right: 15px;
-  position: relative;
-}
-
-.searchInputBrand {
-  border-right: none;
-  color: #707070;
-  flex: 1;
-  font-size: 15px;
-  line-height: 27px;
-  margin-top: 3px;
-  padding-left: 30px;
-  padding-right: 30px;
-  position: relative;
-}
-
-.searchSelect {
-  width: 100%;
-}
-
-.searchSelect>div {
-  background: #fff;
-  border: none;
-  box-shadow: none;
-  font-size: 15px;
-  height: 44px;
-  line-height: 44px;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-}
-
-.btnSearch {
-  display: grid;
-  place-content: center;
-  background-color: #F5222D;
-  border-radius: 50px;
-  border: none;
-  color: #fff;
-  cursor: pointer;
-  height: 50px;
-  margin-left: auto;
-  transition: background-color 0.2s ease-in-out;
-  width: 50px;
-}
-
-.btnSearch:hover {
-  background-color: #f8254c;
-}
-
-.btnSearch>span {
-  transform: translateY(2px);
-}
-
 .totalExports {
   align-items: baseline;
   display: flex;
@@ -158,9 +60,10 @@
   width: 100%;
 }
 
-.totalExports>span {
-  font-weight: 600;
+.totalProducts {
+  font-weight: 500;
   font-size: 16px;
+  color: #6b6b6b;
 }
 
 .exportSort {
@@ -171,16 +74,16 @@
 
 .tableContainer {
   margin: 20px auto;
-  padding-bottom: 20px;
   width: 100%;
   max-width: 1200px;
+  padding-bottom: 10px;
 }
 
 .favData {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .rowLowercase {
@@ -189,4 +92,10 @@
 
 td::first-letter {
   text-transform: uppercase;
+}
+
+@media (min-width: 1400px) {
+  .bannerSection {
+    background-position: center;
+  }
 }

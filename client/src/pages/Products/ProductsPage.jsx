@@ -1,112 +1,27 @@
-import { useEffect, useState } from 'react';
-import { Table, Form, Row, Col, Input, Button, message, Select, Tag, Tooltip } from 'antd';
-import { HeartFilled, HeartOutlined, FileExcelOutlined } from '@ant-design/icons';
-import { Excel } from 'antd-table-saveas-excel';
-import { SearchIcon } from '@/components/Icons';
-import useData from '@/hooks/useData';
-import useAuthStore from '@/store/authStore';
+import { useReducer } from 'react';
+import { Table, Form } from 'antd';
 import {
-	useGetProducts,
-	useUpdateProduct,
-} from '@/services/queries/productsQueries';
+	ExportsProducts,
+	CleanFiltersProducts,
+	SortProducts,
+	SearchBarProducts,
+	LikeProducts,
+} from '@/components/Products';
+import { useGetProducts } from '@/services/queries/productsQueries';
 
 import styles from './ProductsPage.module.css';
 
-// https://eddieup.github.io/antd-table-saveas-excel/2api
-// https://github.com/webstylepress/Fetch-Data-from-XLSX-Excel-File-in-React-JS/blob/main/src/App.js
-
 export const ProductsPage = () => {
-	const { userProfile } = useAuthStore();
-	console.log(userProfile);
-	const userId = userProfile?.id;
-	console.log(userId);
-	const [dataFilter, setDataFilter] = useState([]);
-
 	const [form] = Form.useForm();
-	const { 1: isLoadingProducts, 2: dataProducts } = useData('/products');
-
-	const { isPending: updateLoading, mutateAsync: putProduct } = useUpdateProduct();
-
-	const handleLikeToggle = async (record) => {
-
-		if (!userId) return; // No hacer nada si el usuario no está registrado
-
-		const hasLiked = record.likes.includes(userId);
-		const updatedLikes = hasLiked
-		  ? record.likes.filter(id => id !== userId)
-		  : [...record.likes, userId];
-
-		try {
-            await putProduct({ productId: record._id, values: { likes: updatedLikes } });
-
-			// Actualiza el estado local con los productos actualizados
-			const updatedProducts = dataFilter.map(product => 
-				product._id === record._id ? { ...product, likes: updatedLikes } : product
-			);
-			setDataFilter(updatedProducts);
-
-        } catch (error) {
-            console.error("Error updating likes:", error);
-        }
-	  };
-
-	useEffect(() => {
-		if (dataProducts) setDataFilter(dataProducts);
-	}, [dataProducts]);
-
-	const handleSearch = (values) => {
-		if (
-			!values.rnpa &&
-			!values.marca &&
-			!values.denominacionVenta &&
-			!values.TipoProducto
-		) {
-			message.error('Todos los campos están vacios');
-			return;
+	const [filters, setFilters] = useReducer(
+		(current, update) => ({ ...current, ...update }),
+		{
+			limit: 50,
+			page: 1,
+			sortField: 'denominacionVenta',
 		}
-
-		if (!values.rnpa) {
-			values.rnpa = '$';
-		}
-
-		if (!values.marca) {
-			values.marca = '$';
-		}
-
-		if (!values.denominacionVenta) {
-			values.denominacionVenta = '$';
-		}
-
-		if (!values.TipoProducto) {
-			values.TipoProducto = '$';
-		}
-
-		//console.log("Received values of form: ", values);
-
-		let resultadosBusqueda = dataProducts.filter((elemento) => {
-			if (
-				elemento.marca
-					.toLowerCase()
-					.normalize('NFD')
-					.replace(/[\u0300-\u036f]/g, '')
-					.includes(values.marca.toLowerCase()) ||
-				elemento.TipoProducto.toLowerCase().includes(
-					values.TipoProducto.toLowerCase()
-				) ||
-				elemento.denominacionventa
-					.toLowerCase()
-					.includes(values.denominacionVenta.toLowerCase()) ||
-				elemento.rnpa
-					.toString()
-					.toLowerCase()
-					.includes(values.rnpa.toLowerCase())
-			) {
-				return elemento;
-			}
-			return null;
-		});
-		setDataFilter(resultadosBusqueda);
-	};
+	);
+	const { isFetching, data } = useGetProducts(filters);
 
 	const columns = [
 		{
@@ -132,46 +47,51 @@ export const ProductsPage = () => {
 		},
 		{
 			title: 'Favoritos',
-			dataIndex: 'likes',
-			key: 'likes',
+			dataIndex: 'likesCount',
+			key: 'likesCount',
+			width: '10%',
 			align: 'center',
-			render: (_, record) => {
-			  const hasLiked = record.likes.includes(userId);
-			  return (
-				<div className={styles.favData}>
-					<span>{record.likes.length}</span>
-				{userId ? (
-				  hasLiked ? (
-					<HeartFilled onClick={() => handleLikeToggle(record)} style={{ color: 'red', cursor: 'pointer' }} />
-				  ) : (
-					<HeartOutlined onClick={() => handleLikeToggle(record)} style={{ color: 'red', cursor: 'pointer' }} />
-				  )
-				 ) : (
-					<Tooltip title="Solo los usuarios registrados pueden indicar un producto como favorito">
-						<HeartFilled style={{ width: '100%', color: 'red', cursor: 'not-allowed' }} />
-					</Tooltip>
-				)}
-				</div>
-			  );
-			},
-		  },
+			render: (count, record) => (
+				<LikeProducts filters={filters} count={count} productId={record._id} />
+			),
+		},
 	];
 
-	const onExportFileExcel = () => {
-		const excel = new Excel();
-		excel
-			.addSheet('productos')
-			.addColumns(columns)
-			.addDataSource(dataFilter)
-			.saveAs('Productos-Anmat.xlsx');
+	const cleanFilters = () => {
+		form.resetFields();
+		setFilters({
+			limit: 50,
+			page: 1,
+			sortField: 'denominacionVenta',
+			name: '',
+			type: '',
+			brand: '',
+		});
 	};
 
-	const paginationToTop = () => {
-		window.scrollTo(0, 220);
+	const handleChangePagination = (page, pageSize) => {
+		setFilters({
+			page,
+			limit: pageSize,
+		});
 	};
 
-	const onFinish = (values) => {
-		console.log({ values });
+	const handleChangeSort = (value) => {
+		setFilters({
+			sortField: value,
+			page: 1
+		});
+	};
+
+	const onFinishSearch = (values) => {
+		const { name = '', type = '', brand = '' } = values;
+		if (!name && !type && !brand) return;
+		setFilters({
+			type,
+			name: name.trim().toUpperCase(),
+			brand: brand.trim().toUpperCase(),
+			page: 1
+		});
 	};
 
 	return (
@@ -180,94 +100,53 @@ export const ProductsPage = () => {
 				<div className={styles.titlesGroup}>
 					<h2>Productos Sin Tacc</h2>
 					<h4>Explora el listado de productos aprobados por la ANMAT</h4>
-					<Form onFinish={onFinish}>
-						<div className={styles.mainSearchInput}>
-							<div className={styles.searchInputName}>
-								<Form.Item name='denominacion' noStyle>
-									<Input
-										bordered={false}
-										placeholder='¿Qué producto estás buscando?'
-									/>
-								</Form.Item>
-							</div>
-							<div className={styles.searchInputProductType}>
-								<Form.Item name='tipo' noStyle>
-									<Select
-										bordered={false}
-										allowClear
-										className={styles.searchSelect}
-										placeholder='Tipo de producto'
-										options={[
-											{
-												label: 'Vigente',
-												value: 'VIGENTE',
-											},
-											{
-												label: 'Baja provisoria',
-												value: 'BAJA PROVISORIA',
-											},
-										]}
-									/>
-								</Form.Item>
-							</div>
-							<div className={styles.searchInputBrand}>
-								<Form.Item name='marca' noStyle>
-									<Input bordered={false} placeholder='Todas las marcas' />
-								</Form.Item>
-							</div>
-							<button type='submit' className={styles.btnSearch}>
-								<SearchIcon />
-							</button>
-						</div>
+					<Form onFinish={onFinishSearch} form={form}>
+						<SearchBarProducts />
 					</Form>
 				</div>
 			</section>
 
 			<div className={styles.totalExports}>
-				<span>Total de Productos: {dataFilter.length}</span>
+				<div>
+					<span className={styles.totalProducts}>{data?.count} Productos</span>{' '}
+					<CleanFiltersProducts filters={filters} cleanFilters={cleanFilters} />
+				</div>
 				<div className={styles.exportSort}>
-					<div>
-						Ordenar por:
-						<Select
-							defaultValue='product'
-							bordered={false}
-							dropdownStyle={{ minWidth: 130 }}
-							placement='bottomLeft'
-							options={[
-								{
-									value: 'product',
-									label: 'Producto',
-								},
-								{
-									value: 'brand',
-									label: 'Marca',
-								},
-								{
-									value: 'fav',
-									label: 'Favoritos',
-								},
-							]}
-						/>
-					</div>
-					<Button
-						icon={<FileExcelOutlined />}
-						shape='round'
-						size='small'
-						style={{ backgroundColor: 'transparent' }}
-						danger>
-						Exportar Productos
-					</Button>
+					<SortProducts handleChange={handleChangeSort} />
+					<ExportsProducts filters={filters} />
 				</div>
 			</div>
 
 			<div className={styles.tableContainer}>
 				<Table
-					loading={isLoadingProducts}
+					loading={isFetching}
 					columns={columns}
-					dataSource={dataFilter}
-					rowKey={(record) => record.id}
+					dataSource={data?.products}
+					rowKey={(record) => record._id}
 					bordered
-					pagination={{ position: ['bottomRight'], onChange: paginationToTop }}
+					scroll={{
+						y: 'calc(100dvh - 200px)',
+					}}
+					pagination={{
+						position: ['bottomRight'],
+						onChange: handleChangePagination,
+						pageSize: filters.limit,
+						current: filters.pageSize,
+						size: 'small',
+						hideOnSinglePage: true,
+						total: data?.count,
+						showQuickJumper: true,
+						locale: {
+							items_per_page: '/ página',
+							prev_page: 'Página anterior',
+							next_page: 'Página siguiente',
+							prev_5: '5 páginas previas',
+							next_5: '5 páginas siguientes',
+							jump_to: 'Ir a',
+							jump_to_confirm: 'confirmar',
+							page: 'Página',
+						},
+					}}
 				/>
 			</div>
 		</div>

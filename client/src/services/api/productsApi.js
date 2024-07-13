@@ -1,15 +1,18 @@
 import glutenCeroApi from '../glutenCeroApi';
 
 export const getProducts = async (filters = {}) => {
-	const { data } = await glutenCeroApi.get('/products-anmat', {
+	const { data } = await glutenCeroApi.get('/products', {
 		params: filters,
 	});
 	return data;
 };
 
-export const updateProduct = async ({ productId, values }) => {
-	const { data } = await glutenCeroApi.put(`/products-anmat/${productId}`, values, {
-		headers: { 'Content-Type': 'application/json' },
-	});
+export const getProductsTypes = async () => {
+	const { data } = await glutenCeroApi.get('/types/products');
+	return data.productsTypes;
+};
+
+export const updateProduct = async ({ productId, isLiked }) => {
+	const { data } = await glutenCeroApi.put(`/favorites/products/${productId}`, { isLiked });
 	return data;
 };
