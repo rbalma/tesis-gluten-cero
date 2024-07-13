@@ -40,6 +40,7 @@ export const login = async (req, res, next) => {
       userGoogle: user.google,
       favRecipes: user.favRecipes,
       favMarkers: user.favMarkers,
+      favProducts: user.favProducts,
     };
 
     const token = user.getSignedJwtToken(payload);
