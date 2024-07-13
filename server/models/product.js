@@ -6,27 +6,29 @@ const productsSchema = new Schema({
   marca: {
     type: String,
     trim: true,
-    lowercase: true,
+    uppercase: true,
   },
   denominacionVenta: {
     type: String,
     trim: true,
-    lowercase: true,
+    uppercase: true,
   },
   tipoProducto: {
     type: String,
     trim: true,
-    lowercase: true,
+    uppercase: true,
   },
   estado: {
     type: String,
     trim: true,
-    lowercase: true,
+    uppercase: true,
   },
-  likes: [{
-    type: Schema.Types.ObjectId,
-    ref: "User",
-  }],
+  likesCount: {
+    type: Number,
+    default: 0,
+  },
+}, {
+  collation: { locale: 'en' }
 });
 
 productsSchema.plugin(mongoosePaginate);
