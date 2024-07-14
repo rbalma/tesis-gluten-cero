@@ -6,8 +6,8 @@
 .displayCategories {
 	display: flex;
 	align-items: center;
-	justify-content: space-evenly;
-	text-transform: capitalize;
+	gap: 30px;
+	margin-left: 10px;
 }
 
 .listSearchMap {
@@ -54,7 +54,7 @@
 	margin-top: 20px;
 }
 
-.newMarketButton {
+.newMarkerButton {
 	border-radius: 4px;
 	background: #26A69A;
 	padding: 5px 8px;
@@ -67,7 +67,7 @@
 	font-family: Sora Light, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.newMarketButton:hover {
+.newMarkerButton:hover {
 	background: #4a6458;
 }
 

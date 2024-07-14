@@ -1,3 +1,7 @@
+.containerMapReview {
+  padding: 0px 40px;
+}
+
 .btnBack {
   display: flex;
   align-items: center;
@@ -9,27 +13,24 @@
 .header {
   display: flex;
   flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  margin: 0 auto;
+  width: 600px;
+}
+
+.header>h2 {
   font-size: 24px;
-  font-family: 'NoirPro', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   font-weight: 800;
-  justify-content: space-around;
-  gap: 20px;
-  margin-top: 15px;
 }
 
 .averageContainer {
-  background-color: #FFF;
-  width: min-content;
-  padding: 10px 25px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  flex-wrap: nowrap;
   font-size: 14px;
-  text-align: center;
+  text-align: end;
   font-weight: 400;
+  font-family: 'Montserrat', sans-serif;
 }
 
 .averageContainer>span {
@@ -46,6 +47,8 @@
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
+  margin: 40px auto;
+  width: 500px;
 }
 
 .reviewsContainer>span {

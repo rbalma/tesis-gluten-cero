@@ -2,7 +2,7 @@ import { Navigate } from 'react-router-dom';
 import useAuthStore from '@/store/authStore';
 
 export const ProtectedAdminRoute = ({ children }) => {
-	const { userProfile } = useAuthStore();
+	const userAuth = useAuthStore((state) => state.userProfile);
 
-	return userProfile?.role === 'admin' ? children : <Navigate to='/inicio' />;
+	return userAuth?.role === 'admin' ? children : <Navigate to='/' />;
 };

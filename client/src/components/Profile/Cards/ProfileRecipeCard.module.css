@@ -22,7 +22,7 @@
   justify-content: space-evenly;
 }
 
-.profileRecipeContent>h2 {
+.profileRecipeContent>a {
   color: rgba(0, 0, 0, .65);
   font-size: 18px;
   margin-bottom: 2px;

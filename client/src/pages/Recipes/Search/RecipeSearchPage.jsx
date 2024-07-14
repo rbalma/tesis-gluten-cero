@@ -39,7 +39,7 @@ const filtersCategories = {
 };
 
 const initialFiltersRecipes = {
-	// active: '1',
+	state: 'success',
 	sortField: 'createdAt',
 	sortOrder: 'desc',
 	categoriesIds: [],
@@ -100,7 +100,13 @@ export const RecipeSearchPage = () => {
 
 			<div className={styles.containerFiltersRecipe}>
 				<div className={styles.totalSort}>
-					<h3>{recipes?.count || ''} Recetas</h3>
+					<h3>
+						{isSuccess
+							? recipes.count === 1
+								? '1 Receta'
+								: `${recipes.count} Recetas`
+							: 'Sin Recetas'}
+					</h3>
 					<div>
 						Ordenar por:
 						<Select

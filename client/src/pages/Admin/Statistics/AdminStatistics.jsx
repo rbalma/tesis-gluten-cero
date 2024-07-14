@@ -64,7 +64,7 @@ export const AdminStatistics = () => {
 		2: dataMarkers,
 		4: fetchMarkers,
 		9: countMarkers,
-	} = useData('/markets', null);
+	} = useData('/markers', null);
 
   const {
 		1: loadingDataCategories,

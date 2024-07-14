@@ -24,7 +24,7 @@ const options = {
 };
 
 export const ProfileRecipesReviewPage = () => {
-	const { userProfile } = useAuthStore();
+	const userProfile = useAuthStore((state) => state.userProfile);
 	const [filters, setFilters] = useState({
 		withReply: '0',
 		withoutReply: '0',

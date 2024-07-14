@@ -38,7 +38,13 @@ export const updateRecipe = async ({ recipeId, values }) => {
 	const formData = new FormData();
 
 	for (const value in values) {
-		if (value !== 'image') formData.append(value, values[value]);
+		if (['instructions', 'ingredients'].includes(value)) {
+			for (const item of values[value]) {
+				formData.append(`${value}[]`, item);
+			}
+		}
+		if (!['image', 'instructions', 'ingredients'].includes(value))
+			formData.append(value, values[value]);
 	}
 
 	const file = values.image[0]?.originFileObj;
@@ -59,3 +65,18 @@ export const getSideBarRecipes = async (recipeId) => {
 	const { data } = await glutenCeroApi.get(`/sidebar/recipes/${recipeId}`);
 	return data;
 };
+
+export const getFavoritesRecipes = async () => {
+	const { data } = await glutenCeroApi.get('/favorites/recipes');
+	return data;
+};
+
+export const addFavRecipe = async (recipeId) => {
+	const { data } = await glutenCeroApi.patch(`/favorites/recipes`, { recipeId });
+	return data;
+}
+
+export const deleteFavRecipe = async (recipeId) => {
+	const { data } = await glutenCeroApi.delete(`/favorites/recipes/${recipeId}`);
+	return data;
+}

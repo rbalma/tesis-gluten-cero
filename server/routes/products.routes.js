@@ -1,12 +1,25 @@
-import express from 'express';
-import { getProducts, addFileExcel } from '../controllers/products.js';
-import { validateJWT } from '../middlewares/validateJwt.js';
+import express from "express";
+import {
+  getProductsTypes,
+  getProducts,
+  putProduct,
+  setCountLikeProduct,
+  deleteProduct,
+} from "../controllers/products.controller.js";
+import { validateJWT } from "../middlewares/validateJwt.js";
 
 const router = express.Router();
 
+router.get("/products", getProducts);
+router.get("/types/products", getProductsTypes);
+
 router
-  .route('/products-anmat')
-  .get(getProducts)
-  .post(validateJWT, addFileExcel);
+  .route("/favorites/products/:productId")
+  .put(validateJWT, setCountLikeProduct);
+
+router
+  .route("/products/:productId")
+  .put(validateJWT, putProduct)
+  .delete(validateJWT, deleteProduct);
 
 export default router;

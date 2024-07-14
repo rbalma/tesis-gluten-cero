@@ -1,203 +1,154 @@
-import { useEffect, useState } from 'react';
-import { Table, Form, Row, Col, Input, Button, message, Select } from 'antd';
-import { Excel } from 'antd-table-saveas-excel';
-import useData from '@/hooks/useData';
+import { useReducer } from 'react';
+import { Table, Form } from 'antd';
+import {
+	ExportsProducts,
+	CleanFiltersProducts,
+	SortProducts,
+	SearchBarProducts,
+	LikeProducts,
+} from '@/components/Products';
+import { useGetProducts } from '@/services/queries/productsQueries';
 
 import styles from './ProductsPage.module.css';
 
-// https://eddieup.github.io/antd-table-saveas-excel/2api
-// https://github.com/webstylepress/Fetch-Data-from-XLSX-Excel-File-in-React-JS/blob/main/src/App.js
-
-const columns = [
-	{
-		title: 'Marca',
-		dataIndex: 'marca',
-		key: 'marca',
-		align: 'center',
-	},
-	{
-		title: 'Denominación Venta',
-		dataIndex: 'denominacionVenta',
-		key: 'denominacionVenta',
-		align: 'justify',
-	},
-	{
-		title: 'Tipo Producto',
-		dataIndex: 'tipoProducto',
-		key: 'tipoProducto',
-		align: 'center',
-	},
-	{
-		title: 'Estado',
-		dataIndex: 'estado',
-		key: 'estado',
-		align: 'center',
-	},
-];
-
 export const ProductsPage = () => {
-	const [dataFilter, setDataFilter] = useState([]);
-
 	const [form] = Form.useForm();
-	const {
-		1: isLoadingProducts,
-		2: dataProducts
-	} = useData('/products-anmat');
-
-	useEffect(() => {
-		if (dataProducts) setDataFilter(dataProducts);
-	}, [dataProducts]);
-
-	const handleSearch = (values) => {
-		if (
-			!values.rnpa &&
-			!values.marca &&
-			!values.denominacionVenta &&
-			!values.TipoProducto
-		) {
-			message.error('Todos los campos están vacios');
-			return;
+	const [filters, setFilters] = useReducer(
+		(current, update) => ({ ...current, ...update }),
+		{
+			limit: 50,
+			page: 1,
+			sortField: 'denominacionVenta',
 		}
+	);
+	const { isFetching, data } = useGetProducts(filters);
 
-		if (!values.rnpa) {
-			values.rnpa = '$';
-		}
+	const columns = [
+		{
+			title: 'Nombre del Producto',
+			dataIndex: 'denominacionVenta',
+			key: 'denominacionVenta',
+			width: '50%',
+			render: (text) => <span className={styles.rowLowercase}>{text}</span>,
+		},
+		{
+			title: 'Tipo de Producto',
+			dataIndex: 'tipoProducto',
+			key: 'tipoProducto',
+			width: '25%',
+			render: (text) => <span className={styles.rowLowercase}>{text}</span>,
+		},
+		{
+			title: 'Marca',
+			dataIndex: 'marca',
+			key: 'marca',
+			width: '15%',
+			render: (text) => <span className={styles.rowLowercase}>{text}</span>,
+		},
+		{
+			title: 'Favoritos',
+			dataIndex: 'likesCount',
+			key: 'likesCount',
+			width: '10%',
+			align: 'center',
+			render: (count, record) => (
+				<LikeProducts filters={filters} count={count} productId={record._id} />
+			),
+		},
+	];
 
-		if (!values.marca) {
-			values.marca = '$';
-		}
-
-		if (!values.denominacionVenta) {
-			values.denominacionVenta = '$';
-		}
-
-		if (!values.TipoProducto) {
-			values.TipoProducto = '$';
-		}
-
-		//console.log("Received values of form: ", values);
-
-		let resultadosBusqueda = dataProducts.filter((elemento) => {
-			if (
-				elemento.marca
-					.toLowerCase()
-					.normalize('NFD')
-					.replace(/[\u0300-\u036f]/g, '')
-					.includes(values.marca.toLowerCase()) ||
-				elemento.TipoProducto.toLowerCase().includes(
-					values.TipoProducto.toLowerCase()
-				) ||
-				elemento.denominacionventa
-					.toLowerCase()
-					.includes(values.denominacionVenta.toLowerCase()) ||
-				elemento.rnpa
-					.toString()
-					.toLowerCase()
-					.includes(values.rnpa.toLowerCase())
-			) {
-				return elemento;
-			}
-			return null;
+	const cleanFilters = () => {
+		form.resetFields();
+		setFilters({
+			limit: 50,
+			page: 1,
+			sortField: 'denominacionVenta',
+			name: '',
+			type: '',
+			brand: '',
 		});
-		setDataFilter(resultadosBusqueda);
 	};
 
-	const onExportFileExcel = () => {
-		const excel = new Excel();
-		excel
-			.addSheet('productos')
-			.addColumns(columns)
-			.addDataSource(dataFilter)
-			.saveAs('Productos-Anmat.xlsx');
+	const handleChangePagination = (page, pageSize) => {
+		setFilters({
+			page,
+			limit: pageSize,
+		});
 	};
 
-	const paginationToTop = () => {
-		window.scrollTo(0, 220);
+	const handleChangeSort = (value) => {
+		setFilters({
+			sortField: value,
+			page: 1
+		});
+	};
+
+	const onFinishSearch = (values) => {
+		const { name = '', type = '', brand = '' } = values;
+		if (!name && !type && !brand) return;
+		setFilters({
+			type,
+			name: name.trim().toUpperCase(),
+			brand: brand.trim().toUpperCase(),
+			page: 1
+		});
 	};
 
 	return (
 		<div className={styles.containerProducts}>
-			<Form
-				form={form}
-				name='advanced_search'
-				className={styles.searchForm}
-				style={{ padding: 25 }}
-				onFinish={handleSearch}
-			>
-				<Row gutter={24}>
-					<Col span={16}>
-						<Form.Item name='denominacionVenta' label='Denom. venta'>
-							<Input placeholder='Ej. Yogur endulzado sabor frutilla' />
-						</Form.Item>
-					</Col>
-					<Col span={8}>
-						<Form.Item name='marca' label='Marca'>
-							<Input placeholder='Ej. La Serenísima' />
-						</Form.Item>
-					</Col>
-					<Col span={16}>
-						<Form.Item name='TipoProducto' label='Tipo Producto'>
-							<Input placeholder='Ej. Yogures' />
-						</Form.Item>
-					</Col>
-					<Col span={8}>
-						<Form.Item name='estado' label='Estado'>
-							<Select
-								defaultValue='Vigente'
-								options={[
-									{
-										label: 'Vigente',
-										value: 'VIGENTE',
-									},
-									{
-										label: 'Baja provisoria',
-										value: 'BAJA PROVISORIA',
-									},
-								]}
-							/>
-						</Form.Item>
-					</Col>
-					<Col
-						span={24}
-						style={{
-							textAlign: 'right',
-						}}
-					>
-						<Button type='primary' htmlType='submit'>
-							Buscar
-						</Button>
-						<Button
-							style={{
-								margin: '0 8px',
-							}}
-							onClick={() => {
-								form.resetFields();
-								setDataFilter(data);
-							}}
-						>
-							Limpiar
-						</Button>
+			<section className={styles.bannerSection}>
+				<div className={styles.titlesGroup}>
+					<h2>Productos Sin Tacc</h2>
+					<h4>Explora el listado de productos aprobados por la ANMAT</h4>
+					<Form onFinish={onFinishSearch} form={form}>
+						<SearchBarProducts />
+					</Form>
+				</div>
+			</section>
 
-						<Button
-							style={{ backgroundColor: 'green', color: '#fff' }}
-							onClick={onExportFileExcel}
-						>
-							Exportar
-						</Button>
-					</Col>
-				</Row>
-			</Form>
+			<div className={styles.totalExports}>
+				<div>
+					<span className={styles.totalProducts}>{data?.count} Productos</span>{' '}
+					<CleanFiltersProducts filters={filters} cleanFilters={cleanFilters} />
+				</div>
+				<div className={styles.exportSort}>
+					<SortProducts handleChange={handleChangeSort} />
+					<ExportsProducts filters={filters} />
+				</div>
+			</div>
 
-			<p className={styles.countProducts}>Cantidad de productos: {dataFilter.length}</p>
-
-			<Table
-				loading={isLoadingProducts}
-				columns={columns}
-				dataSource={dataFilter}
-				rowKey={(record) => record.id}
-				bordered
-				pagination={{ position: ['bottomRight'], onChange: paginationToTop }}
-			/>
+			<div className={styles.tableContainer}>
+				<Table
+					loading={isFetching}
+					columns={columns}
+					dataSource={data?.products}
+					rowKey={(record) => record._id}
+					bordered
+					scroll={{
+						y: 'calc(100dvh - 200px)',
+					}}
+					pagination={{
+						position: ['bottomRight'],
+						onChange: handleChangePagination,
+						pageSize: filters.limit,
+						current: filters.pageSize,
+						size: 'small',
+						hideOnSinglePage: true,
+						total: data?.count,
+						showQuickJumper: true,
+						locale: {
+							items_per_page: '/ página',
+							prev_page: 'Página anterior',
+							next_page: 'Página siguiente',
+							prev_5: '5 páginas previas',
+							next_5: '5 páginas siguientes',
+							jump_to: 'Ir a',
+							jump_to_confirm: 'confirmar',
+							page: 'Página',
+						},
+					}}
+				/>
+			</div>
 		</div>
 	);
 };

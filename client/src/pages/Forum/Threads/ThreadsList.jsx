@@ -74,7 +74,7 @@ export const ThreadsList = () => {
 		fetchData();
 	}, []);
 
-	const { userProfile } = useAuthStore();
+	const userProfile = useAuthStore((state) => state.userProfile);
 
 	return ( 
 		<div className='foro-container'>

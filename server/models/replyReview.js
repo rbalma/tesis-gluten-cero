@@ -1,9 +1,8 @@
 import mongoose from "mongoose";
-import mongoosePaginate from "mongoose-paginate-v2";
 
 const Schema = mongoose.Schema;
 
-const reviewSchema = new Schema(
+const replyReviewSchema = new Schema(
   {
     content: {
       type: String,
@@ -22,7 +21,6 @@ const reviewSchema = new Schema(
   { timestamps: true }
 );
 
-reviewSchema.plugin(mongoosePaginate);
-const Review = mongoose.model("ReplyReview", reviewSchema);
+const replyReview = mongoose.model("reply_review", replyReviewSchema);
 
-export default Review;
+export default replyReview;

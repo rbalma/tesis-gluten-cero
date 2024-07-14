@@ -1,10 +1,14 @@
 import { Modal, Rate } from 'antd';
 import { Link } from 'react-router-dom';
 import { dateFormat } from '@/utils/format';
+import useAuthStore from '@/store/authStore';
 import { IconTrash } from '@/components/Icons';
 import { ReviewReplyModal } from '../Modal/ReviewReplyModal';
 import { userGetAvatar } from '@/utils/fetchData';
-import { useDeleteReplyReview, useDeleteReview } from '@/services/queries/reviewsQueries';
+import {
+	useDeleteReplyReview,
+	useDeleteReview,
+} from '@/services/queries/reviewsQueries';
 
 import styles from './ProfileRecipeCard.module.css';
 
@@ -20,6 +24,7 @@ export const ProfileRecipeReviewCard = ({
 	reply,
 	isUserRecipe = false,
 }) => {
+	const userAuth = useAuthStore((state) => state.userProfile);
 	const mutateReview = useDeleteReview();
 	const mutateReply = useDeleteReplyReview();
 
@@ -86,7 +91,7 @@ export const ProfileRecipeReviewCard = ({
 					</button>
 				) : null}
 
-				{reply ? (
+				{reply && user._id !== userAuth.id ? (
 					<div className={styles.profileRecipeReviewAnswer}>
 						<span>Tu Respuesta</span>
 						<p>{reply.content}</p>

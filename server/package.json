@@ -1,6 +1,6 @@
 {
   "name": "glutencero",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "server para tesis gluten cero",
   "main": "index.js",
   "type": "module",

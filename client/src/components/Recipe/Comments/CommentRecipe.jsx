@@ -10,7 +10,7 @@ import { userGetAvatar } from '@/utils/fetchData';
 import './CommentRecipe.css';
 
 export const CommentRecipe = ({ _id, rating, content, user, createdAt, reply, recetaId, recipeUserId }) => {
-	const { userProfile } = useAuthStore();
+	const userProfile = useAuthStore((state) => state.userProfile);
 	const [isReplyOpen, setIsReplyOpen] = useState(false);
 	const { isPending, mutateAsync } = useCreateReplyReview(recetaId);
 

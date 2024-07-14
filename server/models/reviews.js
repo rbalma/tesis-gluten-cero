@@ -22,13 +22,13 @@ const reviewSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "Recipe",
     },
-    market: {
+    marker: {
       type: Schema.Types.ObjectId,
-      ref: "Market",
+      ref: "Marker",
     },
     reply: {
       type: Schema.Types.ObjectId,
-      ref: "ReplyReview",
+      ref: "reply_review",
     },
   },
   { timestamps: true }

@@ -1,20 +1,19 @@
-import { IconClock, IconToolsKitchen } from '@/components/Icons';
+import { IconCircleCheck, IconClock } from '@/components/Icons';
 
 import styles from './ProfileNotificationCard.module.css';
 
 export const ProfileNotificationCard = () => {
 	return (
 		<div className={styles.profileNotificationCard}>
-			<IconToolsKitchen />
+			<IconCircleCheck />
 
 			<div className={styles.profileNotificationContent}>
 					<h3>Tu receta fue aprobada</h3>
 				<p>
-					La receta 'xxxx' fue agregada a Gluten Cero y ya puede ser visitada
-					por cualquier usuario.
+				La receta "Arroz al horno" fue agregada a Gluten Cero y ya puede ser visitada por cualquier usuario.
 				</p>
         <span>
-						<IconClock size={16} /> Hace 2 días
+						<IconClock size={16} /> Hace 3 horas
 					</span>
 			</div>
 

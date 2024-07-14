@@ -11,8 +11,9 @@ import useAuthStore from '@/store/authStore';
 import { userGetAvatar } from '@/utils/fetchData';
 
 export const UserProfile = () => {
-	const { userProfile: user, removeUser } = useAuthStore();
 	const navigate = useNavigate();
+	const user = useAuthStore((state) => state.userProfile);
+	const removeUser = useAuthStore((state) => state.removeUser);
 	const [avatar, setAvatar] = useState('');
 
 	useEffect(() => {
@@ -66,8 +67,8 @@ export const UserProfile = () => {
 	];
 
 	return (
-		<Dropdown menu={{ items }} trigger={['click']} placement='bottom' arrow>
-			<Avatar style={{ cursor: 'pointer' }} src={avatar} size='large' />
+		<Dropdown menu={{ items }} trigger={['click']} placement='bottom'>
+			<Avatar style={{ cursor: 'pointer' }} src={avatar} size='default' />
 		</Dropdown>
 	);
 };

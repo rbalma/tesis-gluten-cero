@@ -7,7 +7,7 @@ import useAuthStore from '@/store/authStore';
 import styles from './Profile.module.css';
 
 export const ProfileSettingPage = () => {
-	const { userProfile } = useAuthStore();
+	const userProfile = useAuthStore((state) => state.userProfile);
 
 	return (
 		<div className={styles.profileContainer}>

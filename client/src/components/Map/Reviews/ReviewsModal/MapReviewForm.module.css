@@ -1,0 +1,28 @@
+.rowRate {
+  display: flex;
+  justify-content: center;
+}
+
+.rateMarker>li {
+  padding-right: 10px;
+  font-size: 30px;
+  margin-bottom: 10px;
+}
+
+.titleMarker {
+  font-size: 20px;
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+  margin-bottom: 30px;
+}
+
+.btnFooter {
+  display: flex;
+  gap: 20px;
+  justify-content: flex-end;
+  margin-top: 35px;
+}
+
+.btnForm {
+  width: 100px;
+}

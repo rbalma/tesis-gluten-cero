@@ -35,7 +35,7 @@ function CardPost(props) {
 
 	const [postCopy, setPostCopy] = useState(post);
 
-	const { userProfile } = useAuthStore();
+	const userProfile = useAuthStore((state) => state.userProfile);
 
 	const token = localStorage.getItem('token');
 

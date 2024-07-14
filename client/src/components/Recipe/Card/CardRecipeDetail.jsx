@@ -1,8 +1,14 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { IconHeart, IconHeartFilled } from '@/components/Icons';
 import { CardHeaderRecipeDetail } from './CardHeaderRecipeDetail';
 import { ExtraDataRecipeCard } from './ExtraDataRecipeCard';
+import {
+	useAddFavoriteRecipe,
+	useDeleteFavoriteRecipe,
+} from '@/services/queries/recipeQueries';
 import { dateFormat } from '@/utils/format';
+import useAuthStore from '@/store/authStore';
 
 import styles from './CardRecipeDetail.module.css';
 
@@ -11,13 +17,31 @@ const getPageMargins = () => {
 };
 
 export const CardRecipeDetail = ({ recipe, forwardRef }) => {
+	const navigate = useNavigate();
+	const userAuth = useAuthStore((state) => state.userProfile);
 	const [fav, setFav] = useState(false);
+	const addFavoriteRecipe = useAddFavoriteRecipe();
+	const deleteFavoriteRecipe = useDeleteFavoriteRecipe();
 
-	const addFav = () => {
-		if (!fav) {
+	useEffect(() => {
+		if (userAuth?.favRecipes?.some((recipeId) => recipeId === recipe._id))
 			setFav(true);
-		} else {
-			setFav(false);
+	}, []);
+
+	const addFav = async () => {
+		const stateInitials = fav;
+		if (!userAuth?.id) return navigate('/ingreso');
+		setFav(() => !fav);
+
+		try {
+			if (!stateInitials) {
+				await addFavoriteRecipe.mutateAsync(recipe._id);
+			} else {
+				await deleteFavoriteRecipe.mutateAsync(recipe._id);
+			}
+		} catch (error) {
+			console.log(error);
+			setFav(stateInitials);
 		}
 	};
 

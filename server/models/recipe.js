@@ -1,5 +1,8 @@
 import mongoose from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
+import User from "./user.js";
+import Reviews from "./reviews.js";
+import ReplyReview from "./replyReview.js";
 
 const Schema = mongoose.Schema;
 
@@ -40,9 +43,10 @@ const recipeSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "User",
     },
-    active: {
-      type: Boolean,
-      default: false,
+    state: {
+      type: String,
+      enum: { values: ['pending', 'success', 'error'], message: '{VALUE} no es un estado válido' },
+      default: 'pending',
     },
     isUpdated: {
       type: Boolean,
@@ -59,6 +63,22 @@ const recipeSchema = new Schema(
   },
   { timestamps: true }
 );
+
+recipeSchema.post("findOneAndDelete", async (doc, next) => {
+  // elimino la receta del array de favoritos para los usuarios
+  await User.updateMany({}, { $pull: { favRecipes: doc._id } });
+
+  const reviewsToDelete = await Reviews.find({ recipe: doc._id }, "_id");
+  const reviewsIds = reviewsToDelete.map((review) => review._id);
+
+  // elimino las reseñas de las recetas
+  await Reviews.deleteMany({ _id: { $in: reviewsIds } });
+
+  // elimino las respuestas de esas reseñas en caso de que existan
+  await ReplyReview.deleteMany({ review: { $in: reviewsIds } });
+
+  next();
+});
 
 recipeSchema.plugin(mongoosePaginate);
 const Recipe = mongoose.model("Recipe", recipeSchema);

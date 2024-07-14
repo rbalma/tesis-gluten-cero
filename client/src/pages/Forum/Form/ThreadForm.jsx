@@ -9,7 +9,7 @@ export const ThreadForm = () => {
   const navigate = useNavigate();
 
   const token = localStorage.getItem('token');
-  const { userProfile } = useAuthStore();
+  const userProfile = useAuthStore((state) => state.userProfile);
 
   const [formData, setFormData] = useState({
     title: '',

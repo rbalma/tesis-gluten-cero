@@ -160,6 +160,14 @@
 	display: none;
 }
 
+.icon-profile__navbar {
+	display: flex;
+	gap: 25px;
+	align-items: center;
+	flex-wrap: nowrap;
+	margin-block: auto;
+}
+
 @media screen and (max-width: 1120px) {
 	.main__navbar {
 		justify-content: space-between;

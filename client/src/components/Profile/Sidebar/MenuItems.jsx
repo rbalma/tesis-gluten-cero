@@ -47,11 +47,11 @@ export const menuItems = [
 		name: 'Marcadores',
 		icon: <IconChevronDown />,
 		items: [
-			{
-				name: 'Creados',
-				link: '/marcadores',
-				icon: <MapPinIcon />,
-			},
+			// {
+			// 	name: 'Creados',
+			// 	link: '/marcadores',
+			// 	icon: <MapPinIcon />,
+			// },
 			{
 				name: 'Favoritos',
 				link: '/marcadores/favoritos',

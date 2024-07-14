@@ -5,7 +5,7 @@ import {
   getNoticeById,
   updateNotice,
   deleteNotice,
-} from '../controllers/notice.js';
+} from '../controllers/notice.controller.js';
 
 import { validateJWT } from '../middlewares/validateJwt.js';
 import { uploadFile } from '../middlewares/uploadAvatar.js';

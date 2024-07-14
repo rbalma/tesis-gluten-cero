@@ -1,41 +1,92 @@
-import { Rate } from 'antd';
+import { Modal, Rate } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 import { IconClock, IconEdit, IconTrash } from '@/components/Icons';
+import { useDeleteFavoriteRecipe, useDeleteRecipe } from '@/services/queries/recipeQueries';
+import { TagStateRecipe } from '@/components/AdminDashboard';
+import { Link } from 'react-router-dom';
+import { timeAgo } from '@/utils/format';
 
 import styles from './ProfileRecipeCard.module.css';
 
-export const ProfileRecipeCard = ({ isEdit }) => {
+const { confirm } = Modal;
+
+export const ProfileRecipeCard = ({
+	isEdit,
+	id,
+	title,
+	category,
+	state,
+	ratingAverage,
+	ratingCount,
+	image,
+	date,
+}) => {
+
+	const deleteRecipe = useDeleteRecipe();
+	const deleteFavoriteRecipe = useDeleteFavoriteRecipe();
+
+	const showDeleteConfirmRecipe = () => {
+		confirm({
+			title: `¿Está seguro de eliminar la receta?`,
+			okText: 'Confirmar',
+			okType: 'danger',
+			cancelText: 'Cancelar',
+			onOk: async () => {
+				try {
+					await deleteRecipe.mutateAsync(id);
+				} catch (error) {
+					console.log(error);
+				}
+			},
+		});
+	};
+
+	const handleDeleteFav = async () => {
+		try {
+			await deleteFavoriteRecipe.mutateAsync(id);
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
 	return (
 		<div className={styles.profileRecipeCard}>
-			<img
-				src='https://www.cocinacaserayfacil.net/wp-content/uploads/2020/03/Recetas-faciles-de-cocinar-y-sobrevivir-en-casa-al-coronavirus_2.jpg'
-				alt='recipe'
-			/>
+			<img src={image} alt='recipe' />
 
 			<div className={styles.profileRecipeContent}>
-				<h2>Burger House</h2>
-				<p>Categoria</p>
+				<Link to={`/recetas/${id}`}>{title}</Link>
+				<p>{category}</p>
 
 				<span className={styles.profileRecipeStarCard}>
-					<Rate disabled allowHalf value={2.4} />
+					<Rate disabled allowHalf value={+ratingAverage} />
 					<span className={styles.profileRecipeCountReviews}>
-						(8 opiniones)
+						({ratingCount} opiniones)
 					</span>
 				</span>
 
-				<span>
-					<IconClock size={15} /> Hace 2 días
+				<span> {isEdit ? <TagStateRecipe state={state} /> : null}
+					<IconClock size={15} /> {timeAgo(date)}
 				</span>
 			</div>
 
 			<div className={styles.profileRecipeButtonContainer}>
 				{isEdit ? (
-					<button className={styles.profileRecipeButton}>
+					<Link
+						to={`/receta-formulario/${id}`}
+						className={styles.profileRecipeButton}>
 						<IconEdit size={16} /> Editar
-					</button>
+					</Link>
 				) : null}
 
-				<button className={styles.profileRecipeButton}>
-					<IconTrash size={16} /> Eliminar
+				<button
+					className={styles.profileRecipeButton}
+					onClick={isEdit ? showDeleteConfirmRecipe : handleDeleteFav}>
+					{deleteFavoriteRecipe.isPending ? (
+						<LoadingOutlined />
+					) : (
+						<IconTrash size={16} />
+					)}{' '}
+					Eliminar
 				</button>
 			</div>
 		</div>

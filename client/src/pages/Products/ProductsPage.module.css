@@ -1,16 +1,101 @@
-.searchForm {
-  background: #fbfbfb;
-  border: 1px solid #d9d9d9;
-  border-radius: 2px;
-}
-
 .containerProducts {
-  min-height: calc(100vh - 170px);
+  min-height: calc(100dvh - 80px);
   height: 100%;
-  padding: 20px 5% 40px;
+  scrollbar-gutter: stable;
+  width: 100%;
 }
 
-.countProducts {
-  padding: 20px 0px 5px;
+.bannerSection {
+  height: 300px;
+  display: block;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-image: url('@/assets/images/restaurant.jpg');
+  font-family: 'Montserrat', sans-serif;
+}
+
+.bannerSection::before {
+  content: "";
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  display: block;
+  background: rgba(46, 47, 50, 0.55);
+}
+
+.titlesGroup {
+  position: relative;
+  width: 1200px;
+  margin: 0 auto;
+}
+
+.titlesGroup>h2 {
+  font-size: 32px;
+  color: #fff;
+  margin-bottom: 10px;
   font-weight: 500;
+  line-height: 1.1;
+}
+
+.titlesGroup>h4 {
+  font-size: 20px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 32px;
+}
+
+.totalExports {
+  align-items: baseline;
+  display: flex;
+  justify-content: space-between;
+  font-family: 'Montserrat', sans-serif;
+  margin: 20px auto 15px;
+  max-width: 1200px;
+  width: 100%;
+}
+
+.totalProducts {
+  font-weight: 500;
+  font-size: 16px;
+  color: #6b6b6b;
+}
+
+.exportSort {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+}
+
+.tableContainer {
+  margin: 20px auto;
+  width: 100%;
+  max-width: 1200px;
+  padding-bottom: 10px;
+}
+
+.favData {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.rowLowercase {
+  text-transform: lowercase;
+}
+
+td::first-letter {
+  text-transform: uppercase;
+}
+
+@media (min-width: 1400px) {
+  .bannerSection {
+    background-position: center;
+  }
 }

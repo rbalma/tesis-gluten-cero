@@ -2,19 +2,22 @@ import Reviews from "../models/reviews.js";
 import ReplyReview from "../models/replyReview.js";
 import ErrorResponse from "../utils/errorResponse.js";
 import Recipe from "../models/recipe.js";
-import Market from "../models/market.js";
+import Marker from "../models/marker.js";
 import mongoose from "mongoose";
+import { events } from "../utils/events.js";
+import { createNotification } from "../services/notifications.services.js";
 
 // @desc Agrega una nueva reseña para una receta o marcador
-// @route /api/reviews/recipe/:recipeId o /api/reviews/market/:marketId
+// @route /api/reviews/recipe/:recipeId o /api/reviews/marker/:markerId
 // @access Public
 export const getReviews = async (req, res, next) => {
-  const { recipeId, marketId } = req.params;
+  const { recipeId, markerId } = req.params;
   const {
     page = 1,
-    limit = 10,
+    limit = 20,
     ratings,
     sortField,
+    sortOrder,
     userId,
     withReply,
     withoutReply,
@@ -35,7 +38,7 @@ export const getReviews = async (req, res, next) => {
           select: "title",
         },
         {
-          path: "market",
+          path: "marker",
           select: "title",
         },
         {
@@ -52,7 +55,7 @@ export const getReviews = async (req, res, next) => {
 
     const filters = {};
     if (recipeId) filters.recipe = recipeId;
-    if (marketId) filters.market = marketId;
+    if (markerId) filters.marker = markerId;
     if (userId) filters.user = userId;
     if (ratings) filters.rating = { $in: ratings };
     if (withReply) filters.reply = { $nin: [null, ""] };
@@ -71,11 +74,55 @@ export const getReviews = async (req, res, next) => {
   }
 };
 
+// @desc Cálcula el porcentaje de cada puntaje de un marcador
+// @route /api/reviews/percentage/markers/:markerId
+// @access Public
+export const getPercentageReviews = async (req, res, next) => {
+  const { markerId } = req.params;
+  try {
+    const p1 = Reviews.count({ marker: markerId, rating: 1 });
+    const p2 = Reviews.count({ marker: markerId, rating: 2 });
+    const p3 = Reviews.count({ marker: markerId, rating: 3 });
+    const p4 = Reviews.count({ marker: markerId, rating: 4 });
+    const p5 = Reviews.count({ marker: markerId, rating: 5 });
+
+    const [ratingOne, ratingTwo, ratingThree, ratingFour, ratingFive] =
+      await Promise.all([p1, p2, p3, p4, p5]);
+
+    const ratingTotal =
+      ratingOne + ratingTwo + ratingThree + ratingFour + ratingFive;
+
+    const percentageOne =
+      Math.round(((ratingOne * 100) / ratingTotal + Number.EPSILON) * 10) / 10;
+    const percentageTwo =
+      Math.round(((ratingTwo * 100) / ratingTotal + Number.EPSILON) * 10) / 10;
+    const percentageThree =
+      Math.round(((ratingThree * 100) / ratingTotal + Number.EPSILON) * 10) /
+      10;
+    const percentageFour =
+      Math.round(((ratingFour * 100) / ratingTotal + Number.EPSILON) * 10) / 10;
+    const percentageFive =
+      Math.round(((ratingFive * 100) / ratingTotal + Number.EPSILON) * 10) / 10;
+
+    res.json({
+      percentageOne,
+      percentageTwo,
+      percentageThree,
+      percentageFour,
+      percentageFive,
+    });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
 // @desc Agregar una nueva reseña para una receta o marcador
 // @route /api/reviews
 // @access Private
 export const addReview = async (req, res, next) => {
-  const { recipe, market } = req.body;
+  const { recipe, marker } = req.body;
+  let notification;
   const session = await mongoose.startSession();
   session.startTransaction();
   try {
@@ -105,19 +152,33 @@ export const addReview = async (req, res, next) => {
 
       newRating = Math.round((ratingTotal + Number.EPSILON) * 10) / 10;
 
-      await Recipe.findByIdAndUpdate(
-        recipe,
+      const recipeFound = await Recipe.findById(recipe, "_id title user");
+
+      if (!recipeFound) throw new ErrorResponse("No existe la receta", 404);
+
+      await Recipe.updateOne(
+        { _id: recipe },
         {
           ratingAverage: newRating,
           ratingCount: ratingCount,
         },
         { session }
       );
+
+      notification = {
+        event: events.RECIPE_VALUED,
+        originUser: `${req.user.name} ${req.user.lastname}`,
+        notifiedUser: recipeFound.user,
+        recipe,
+        recipeTitle: recipeFound.title
+      };
+
+      await createNotification(notification, session);
     }
 
-    if (market) {
-      let ratingSum = await Market.aggregate([
-        { $match: { market: mongoose.Types.ObjectId(market) } },
+    if (marker) {
+      let ratingSum = await Reviews.aggregate([
+        { $match: { marker: mongoose.Types.ObjectId(marker) } },
         {
           $group: {
             _id: null,
@@ -127,15 +188,19 @@ export const addReview = async (req, res, next) => {
       ]);
       ratingSum = (ratingSum?.[0]?.rating || 0) + review.rating;
 
-      let ratingCount = await Market.count({ market });
+      ratingCount = await Reviews.count({ marker });
       ratingCount += 1;
 
-      const ratingTotal = ratingSum[0].rating / ratingCount;
+      const ratingTotal = ratingSum / ratingCount;
 
-      newRating = Math.round((ratingTotal + Number.EPSILON) * 100) / 100;
+      newRating = Math.round((ratingTotal + Number.EPSILON) * 10) / 10;
 
-      await Market.findByIdAndUpdate(
-        market,
+      const markerFound = await Marker.findById(marker, "_id user");
+
+      if (!markerFound) throw new ErrorResponse("No existe el marcador", 404);
+
+      await Marker.updateOne(
+        { _id: marker },
         {
           ratingAverage: newRating,
           ratingCount: ratingCount,
@@ -206,9 +271,9 @@ export const deleteReview = async (req, res, next) => {
       );
     }
 
-    if (review.market) {
+    if (review.marker) {
       const ratingSum = await Reviews.aggregate([
-        { $match: { market: mongoose.Types.ObjectId(review.market) } },
+        { $match: { marker: mongoose.Types.ObjectId(review.marker) } },
         {
           $group: {
             _id: null,
@@ -217,14 +282,14 @@ export const deleteReview = async (req, res, next) => {
         },
       ]);
 
-      const ratingCount = await Reviews.count({ market: review.market });
+      const ratingCount = await Reviews.count({ marker: review.marker });
       const ratingTotal =
         ratingCount > 0 ? ratingSum[0].rating / ratingCount : 0;
 
       const newRating = Math.round((ratingTotal + Number.EPSILON) * 100) / 100;
 
-      await Market.findByIdAndUpdate(
-        review.market,
+      await Marker.findByIdAndUpdate(
+        review.marker,
         {
           ratingAverage: newRating,
           ratingCount: ratingCount,
@@ -287,7 +352,11 @@ export const deleteReplyReview = async (req, res, next) => {
 
     await Reviews.findByIdAndUpdate(reply.review, { reply: null });
 
-    res.json({ replyId, reviewId: reply.review, message: "Respuesta eliminada" });
+    res.json({
+      replyId,
+      reviewId: reply.review,
+      message: "Respuesta eliminada",
+    });
   } catch (error) {
     console.log({ error });
     next(error);
@@ -299,12 +368,12 @@ export const deleteReplyReview = async (req, res, next) => {
 // @access Private
 export const hasUserReview = async (req, res, next) => {
   const { userId } = req.params;
-  const { recipeId, marketId } = req.query;
+  const { recipeId, markerId } = req.query;
 
   try {
     const filters = { user: userId };
     if (recipeId) filters.recipe = recipeId;
-    if (marketId) filters.market = marketId;
+    if (markerId) filters.marker = markerId;
 
     const review = await Reviews.findOne(filters);
 
@@ -366,7 +435,7 @@ export const getReviewsFromAllRecipes = async (req, res, next) => {
 };
 
 // @desc Obtiene todas las reseñas de recetas de un usuario
-// @route /api/reviews/recipe/user/:userId
+// @route /api/reviews/recipes/user/:userId
 // @access Private
 export const getReviewsRecipesByUser = async (req, res, next) => {
   const { userId } = req.params;
@@ -391,6 +460,47 @@ export const getReviewsRecipesByUser = async (req, res, next) => {
 
     const filters = {};
     filters.recipe = { $nin: [null] };
+    if (userId) filters.user = userId;
+
+    const reviews = await Reviews.paginate(filters, options);
+
+    res.json({
+      reviews: reviews.docs,
+      totalPages: reviews.totalPages,
+      count: reviews.totalDocs,
+    });
+  } catch (error) {
+    console.log({ error });
+    next(error);
+  }
+};
+
+// @desc Obtiene todas las reseñas de recetas de un usuario
+// @route /api/reviews/recipe/user/:userId
+// @access Private
+export const getReviewsMarkersByUser = async (req, res, next) => {
+  const { userId } = req.params;
+  const { page = 1, limit = 10 } = req.query;
+
+  try {
+    const options = {
+      page,
+      limit: parseInt(limit),
+      sort: { createdAt: -1 },
+      populate: [
+        {
+          path: "user",
+          select: "name lastname avatar",
+        },
+        {
+          path: "marker",
+          select: "title",
+        },
+      ],
+    };
+
+    const filters = {};
+    filters.marker = { $nin: [null] };
     if (userId) filters.user = userId;
 
     const reviews = await Reviews.paginate(filters, options);

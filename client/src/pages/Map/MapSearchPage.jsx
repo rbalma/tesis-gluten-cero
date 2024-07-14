@@ -1,40 +1,50 @@
-import { useState } from 'react';
+import { useReducer, useState } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
-import { useNavigate } from 'react-router-dom';
-import { Input, Tooltip, Row } from 'antd';
-import {
-	AimOutlined,
-	EnvironmentFilled,
-	SearchOutlined,
-} from '@ant-design/icons';
-import { mapCategories } from '@/utils/constants';
-
-import { CardsMap, CardsMapDisco, CardsMapSanatorio } from '@/components/Map/Cards/CardsMap';
-import { ChefMarkers, HospitalMarkers, ShoppingMarkers } from '@/components/Map/Pins/Markers';
-import { MapFilterCategory } from '@/components/Map/Filters/MapFilterCategory';
-import Footer from '@/layout/home/ui/Footer';
-import 'leaflet/dist/leaflet.css';
+import MarkerClusterGroup from 'react-leaflet-cluster';
+import { Row } from 'antd';
+import { toast } from 'sonner';
+import { CardMarker } from '@/components/Map/Cards/CardMarker';
+import { MarkerCurrentLocation } from '@/components/Map/Markers/MarkerCurrentLocation';
 import { AutoCompleteMap } from '@/components/Map/AutoComplete/AutoCompleteMap';
+import { useGetMarkersByLocation } from '@/services/queries/mapQueries';
+import { MarkerPlace } from '@/components/Map/Markers/MarkerPlace';
+import { CategoriesMarkers, DistanceRadius } from '@/components/Map/Filters';
+import { IconCluster } from '@/components/Map/Markers/IconsMarkers';
+import Footer from '@/layout/home/ui/Footer';
 
+import 'leaflet/dist/leaflet.css';
 import styles from './MapSearchPage.module.css';
 
-export const MapSearchPage = () => {
-	const navigate = useNavigate();
-	const [map, setMap] = useState(null);
-	const ubicacion = [-31.41718428534527, -64.18382740831277];
-	const [posicion, setPosicion] = useState({
-		lat: '-31.41976',
-		lng: '-64.1881',
-	});
+const initialLocation = [-31.41718428534527, -64.18382740831277];
 
-	const handleFlyTo = (miUbicacion) => {
-		// const { current = {} } = mapRef;
-		// const { leafletElement: map } = current;
-		// map.setView(center, zoom)
-		map.flyTo(miUbicacion, 15, {
-			duration: 4,
+export const MapSearchPage = () => {
+	const [map, setMap] = useState(null);
+	const [filters, setFilters] = useReducer(
+		(current, update) => ({ ...current, ...update }),
+		{
+			limit: 15,
+			active: 1,
+			meters: 1000,
+			latitude: initialLocation[0],
+			longitude: initialLocation[1],
+			categoriesIds: null,
+		}
+	);
+
+	const {
+		isFetching,
+		isSuccess,
+		data: markers,
+	} = useGetMarkersByLocation(filters);
+
+	const handleFlyTo = (location) => {
+		map.flyTo(location, 17, {
+			duration: 6,
 		});
-		//setPosicion(miUbicacion);
+		setFilters({
+			latitude: location[0],
+			longitude: location[1],
+		});
 	};
 
 	const getUbicacion = () => {
@@ -45,10 +55,11 @@ export const MapSearchPage = () => {
 			},
 			(blocked) => {
 				if (blocked)
-					console.log('La geolocalización está bloqueada. Debe habilitarla');
+					toast.message('La geolocalización está bloqueada. Debe habilitarla');
 			},
 			(error) => {
 				console.log(error);
+				toast.error('No se pudo obtener la geolocalización');
 			},
 			{
 				enableHighAccuracy: true,
@@ -56,36 +67,51 @@ export const MapSearchPage = () => {
 		);
 	};
 
+	const onSelectSearch = (_, { data }) => {
+		handleFlyTo([data.lat, data.lng]);
+	};
+
 	return (
 		<div className={styles.containerMap}>
 			<div className={styles.listSearchMap}>
 				<section className={styles.paramSearchMap}>
 					<Row style={{ marginBottom: 20 }}>
-						<AutoCompleteMap getUbicacion={getUbicacion} />
+						<AutoCompleteMap
+							onSelectSearch={onSelectSearch}
+							getUbicacion={getUbicacion}
+						/>
 					</Row>
+
 					<div className={styles.displayCategories}>
-						{mapCategories.map((category) => (
-							<MapFilterCategory key={category.name} category={category} />
-						))}
+						<CategoriesMarkers setFilters={setFilters} />
+						<DistanceRadius
+							radiusFiltered={filters.meters}
+							setFilters={setFilters}
+						/>
 					</div>
 				</section>
 
 				<section className={styles.listCardsMap}>
 					<div className={styles.resultButtonMap}>
-						<span className={styles.showingResultsMap}>14 Resultados </span>
-						<button
-							className={styles.newMarketButton}
+						<span className={styles.showingResultsMap}>
+							{isSuccess
+								? markers.length === 1
+									? '1 Resultado'
+									: `${markers.length} Resultados`
+								: 'Sin Resultados'}{' '}
+						</span>
+						{/* <button
+							className={styles.newMarkerButton}
 							onClick={() => navigate('/mapa-formulario')}>
 							{' '}
 							<EnvironmentFilled style={{ marginRight: 5 }} /> Agregar{' '}
-						</button>
+						</button> */}
 					</div>
-					<CardsMap />
-					<CardsMapDisco />
-					<CardsMapSanatorio />
-					{/* <CardsMap />
-					<CardsMap />
-					<CardsMap /> */}
+					{!isFetching && markers.length > 0
+						? markers.map((marker) => (
+								<CardMarker key={marker._id} {...marker} />
+						  ))
+						: null}
 				</section>
 				<Footer />
 			</div>
@@ -93,7 +119,7 @@ export const MapSearchPage = () => {
 			<div className={styles.fullMap}>
 				<MapContainer
 					ref={setMap}
-					center={ubicacion}
+					center={initialLocation}
 					zoom={15}
 					scrollWheelZoom={false}
 					style={{
@@ -106,15 +132,32 @@ export const MapSearchPage = () => {
 					<TileLayer
 						attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 						url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-						/>
-					<HospitalMarkers posicion={posicion} />
-					<ShoppingMarkers posicion={posicion} />
-					<ChefMarkers posicion={posicion} />
-						{/* 
-						Listar cards en un Drawer para mobile!
-						<button style={{ zIndex: 500, position: 'absolute', top: 20, right: 20}}
-						onClick={() => console.log('HOLA')}
-						>Cards</button> */}
+					/>
+					<MarkerCurrentLocation
+						posicion={[filters.latitude, filters.longitude]}
+					/>
+
+					<MarkerClusterGroup
+					  spiderfyOnMaxZoom={true}
+						chunkedLoading
+						iconCreateFunction={IconCluster}
+					>
+						{!isFetching && markers.length > 0
+							? markers.map((marker) => (
+									<MarkerPlace
+										key={marker._id}
+										coordinates={marker.location.coordinates}
+										image={marker.image.secure_url}
+										category={marker.category.name}
+										name={marker.name}
+										direction={marker.direction}
+										phone={marker.phone}
+										ratingAverage={marker.ratingAverage.$numberDecimal}
+										ratingCount={marker.ratingCount}
+									/>
+							  ))
+							: null}
+					</MarkerClusterGroup>
 				</MapContainer>
 			</div>
 		</div>

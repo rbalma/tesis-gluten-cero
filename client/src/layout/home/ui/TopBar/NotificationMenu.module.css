@@ -1,0 +1,25 @@
+.iconNotification>svg {
+  color: #fff;
+  transform: rotate(35deg);
+}
+
+.iconNotification {
+  cursor: pointer;
+  display: grid;
+  place-content: center;
+  border-radius: 50%;
+  height: 38px;
+  width: 38px;
+}
+
+.iconNotification:hover {
+  background-color: #666262;
+}
+
+.iconNotificationOpen>svg {
+  color: #ffab00;
+}
+
+.iconNotificationOpen {
+  background-color: #464627;
+}

@@ -14,7 +14,9 @@ import { ProtectedAdminRoute } from './ProtectedAdminRoute';
 import LayoutProfile from '../layout/home/LayoutProfile';
 
 const AppRoutes = () => {
-	const { checking, startChecking, finishChecking } = useAuthStore();
+	const checking = useAuthStore((state) => state.checking);
+	const startChecking = useAuthStore((state) => state.startChecking);
+	const finishChecking = useAuthStore((state) => state.finishChecking);
 
 	useEffect(() => {
 		let token = localStorage.getItem('token');

@@ -8,7 +8,7 @@ import './PostList.css';
 
 export const PostsList = () => {
 
-	const { userProfile } = useAuthStore();
+	const userProfile = useAuthStore((state) => state.userProfile);
 
 	const navigate = useNavigate();
 

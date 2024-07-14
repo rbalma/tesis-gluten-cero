@@ -4,6 +4,7 @@ import { IconArrowBackUp, IconX } from '@/components/Icons';
 import { useCreateReplyReviewInProfile } from '@/services/queries/reviewsQueries';
 
 import styles from './ReviewReplyModal.module.css';
+import { rules } from '@/utils/rulesForm';
 
 export const ReviewReplyModal = ({ reviewId }) => {
 	const [isModalOpen, setIsModalOpen] = useState(false);
@@ -49,7 +50,7 @@ export const ReviewReplyModal = ({ reviewId }) => {
 					<h3 className={styles.reviewReplyModalTitle}>Responder reseña</h3>
 				</header>
 				<Form style={{ padding: '0 40px 30px' }} onFinish={addReply}>
-					<Form.Item name='content'>
+					<Form.Item name='content' rules={rules.message}>
 						<Input.TextArea
 							type='string'
 							autoSize={{

@@ -40,7 +40,6 @@ export const ProfileNotificationsPage = () => {
 
 			<div className={styles.notificationsList}>
 				<ProfileNotificationCard />
-				<ProfileNotificationCard />
 			</div>
 		</div>
 	);

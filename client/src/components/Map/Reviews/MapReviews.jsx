@@ -1,74 +1,97 @@
-import { Progress, Collapse, Input, Button, Rate } from 'antd';
-import {
-	IconArrowNarrowLeft,
-	IconCirclePlus,
-	StarFilledIcon,
-} from '@/components/Icons';
-
-import styles from './MapReviews.module.css';
+import { useReducer } from 'react';
+import { StarFilledIcon } from '@/components/Icons';
 import { MapReviewsFilters } from './Filters/MapReviewsFilters';
 import { MapReviewsComment } from './MapReviewsComment';
+import { ReviewProgressBar } from './ProgressBar/ReviewProgressBar';
+import {
+	useGetPercentageReviewsMarker,
+	useGetReviewsMarker,
+} from '@/services/queries/reviewsQueries';
 
-export const MapReviews = ({ setIsReviews }) => {
+import styles from './MapReviews.module.css';
+
+export const MapReviews = ({
+	markerId,
+	markerName,
+	ratingReviews,
+	countReviews,
+}) => {
+	const [filters, setFilters] = useReducer(
+		(current, update) => ({ ...current, ...update }),
+		{
+			page: 1,
+			limit: 20,
+			sortField: 'createdAt',
+			sortOrder: -1,
+		}
+	);
+	const {
+		isFetching,
+		data: reviews,
+		isSuccess,
+	} = useGetReviewsMarker({
+		markerId,
+		filters
+	});
+	const {
+		isLoading,
+		data: percentajes,
+		isSuccess: isPercentajesSuccess,
+	} = useGetPercentageReviewsMarker(markerId);
+
 	return (
-		<>
-			<a className={styles.btnBack} onClick={() => setIsReviews(false)}>
-				<IconArrowNarrowLeft /> Volver
-			</a>
+		<div className={styles.containerMapReview}>
 			<div className={styles.header}>
-				<h2>Patio Olmos Shopping</h2>
+				<h2>{markerName}</h2>
 				<div className={styles.averageContainer}>
 					<span>
-						<StarFilledIcon size={36} /> 4.8
+						<StarFilledIcon size={36} />{' '}
+						{ratingReviews ? ratingReviews.toFixed(1) : '-'}
 					</span>
-					8 opiniones
+					{countReviews} {countReviews === 1 ? 'opinión' : 'opiniones'}
 				</div>
 			</div>
-			<div className={styles.reviewsContainer}>
-				<p>Opiniones</p>
-				<span>
-					<strong>5</strong>
-					<StarFilledIcon />{' '}
-					<Progress
-						percent={30}
-						strokeColor='#FADB14'
-						trailColor='#ddd'
-						format={(percent) => percent}
-					/>
-				</span>
-			</div>
-			<Collapse
-				ghost
-				expandIcon={({ isActive }) => (
-					<span
-						style={{
-							transform: isActive ? 'rotate(45deg)' : 'rotate(0deg)',
-							display: 'flex',
-						}}>
-						<IconCirclePlus size={22} />
-					</span>
-				)}>
-				<Collapse.Panel
-					collapsible='header'
-					style={{ fontSize: 16 }}
-					header='Escribir una opinión'
-					key='1'>
-					<Rate allowHalf defaultValue={0} />
-					<Input.TextArea
-						placeholder='Comparte tu experiencia en este lugar'
-						autoSize={{
-							minRows: 2,
-							maxRows: 4,
-						}}
-					/>
-					{/* Habilitar botón para publicar una vez que haya seleccionado cantidad de estrellas */}
-					<Button>Confirmar</Button>
-				</Collapse.Panel>
-			</Collapse>
 
-			<MapReviewsFilters />
+			{!isLoading && isPercentajesSuccess ? (
+				<div className={styles.reviewsContainer}>
+					<ReviewProgressBar
+						star={5}
+						percent={percentajes.percentageFive || 0}
+					/>
+					<ReviewProgressBar
+						star={4}
+						percent={percentajes.percentageFour || 0}
+					/>
+					<ReviewProgressBar
+						star={3}
+						percent={percentajes.percentageThree || 0}
+					/>
+					<ReviewProgressBar
+						star={2}
+						percent={percentajes.percentageTwo || 0}
+					/>
+					<ReviewProgressBar
+						star={1}
+						percent={percentajes.percentageOne || 0}
+					/>
+				</div>
+			) : null}
 
-			<MapReviewsComment />
-		</>
+			{countReviews > 0 ? <MapReviewsFilters setFilters={setFilters} /> : null}
+
+			{!isFetching && isSuccess
+				? reviews.data.map((review) => (
+						<MapReviewsComment
+							key={review._id}
+							createdAt={review.createdAt}
+							userName={review.user.name}
+							userLastName={review.user.lastname}
+							userAvatar={review.user.avatar}
+							rating={review.rating}
+							content={review.content}
+						/>
+				  ))
+				: null}
+		</div>
 	);
 };

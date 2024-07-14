@@ -28,7 +28,7 @@ export const ThreadEditForm = () => {
 
   const token = localStorage.getItem('token');
 
-  const { userProfile } = useAuthStore();
+  const userProfile = useAuthStore((state) => state.userProfile);
 
   const handleChange = (event) => {
     setFormData({

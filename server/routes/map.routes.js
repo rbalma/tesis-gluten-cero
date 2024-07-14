@@ -1,13 +1,40 @@
-import express from 'express';
+import express from "express";
+import {
+  getMarkersByLocation,
+  getMarkers,
+  getMarkerById,
+  addMarker,
+  changeStatusMarker,
+  updateMarker,
+  deleteMarker,
+  getFavMarkers,
+  addFavMarkers,
+  deleteFavMarkers,
+} from "../controllers/map.controller.js";
+import { validateJWT } from "../middlewares/validateJwt.js";
+import { uploadFile } from "../middlewares/uploadMarker.js";
+
 const router = express.Router();
 
-import { marketsByLocation, getMarkets, getMarketById, addMarket, activateMarket, updateMarket, deleteMarket } from '../controllers/map.js';
-import { validateJWT } from '../middlewares/validateJwt.js';
-import { uploadFile } from "../middlewares/uploadMarket.js";
+router.get("/location/markers", getMarkersByLocation);
 
-router.get('/searching-map', marketsByLocation);
-router.route('/markets').get(getMarkets).post([validateJWT, uploadFile], addMarket);
-router.route('/active-market/:marketId').put(validateJWT, activateMarket);
-router.route('/markets/:marketId').get(validateJWT, getMarketById).put([validateJWT, uploadFile], updateMarket).delete(validateJWT, deleteMarket);
+router
+  .route("/markers")
+  .get(validateJWT, getMarkers)
+  .post([validateJWT, uploadFile], addMarker);
+
+router
+  .route("/markers/:markerId")
+  .get(validateJWT, getMarkerById)
+  .put([validateJWT, uploadFile], updateMarker)
+  .delete(validateJWT, deleteMarker)
+  .patch(validateJWT, changeStatusMarker);
+
+router
+  .route("/favorites/markers")
+  .get(validateJWT, getFavMarkers)
+  .patch(validateJWT, addFavMarkers);
+
+router.delete("/favorites/markers/:markerId", validateJWT, deleteFavMarkers);
 
 export default router;

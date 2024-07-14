@@ -1,5 +1,5 @@
 import express from 'express';
-import { login, googleSignIn, forgotPassword, resetPassword, renewToken } from '../controllers/auth.js';
+import { login, googleSignIn, forgotPassword, resetPassword, renewToken } from '../controllers/auth.controller.js';
 import { validateJWT } from '../middlewares/validateJwt.js';
 
 const router = express.Router();

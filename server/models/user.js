@@ -53,10 +53,16 @@ const UserSchema = new mongoose.Schema({
       ref: "Recipe",
     },
   ],
-  favMarkets: [
+  favMarkers: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Market",
+      ref: "Marker",
+    },
+  ],
+  favProducts: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Product",
     },
   ],
   resetPasswordToken: String,

@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+// import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { Toaster } from 'sonner';
 import AppRoutes from './routes/AppRoutes';
@@ -28,7 +28,7 @@ const App = () => {
 				closeButton
 			/>
 			<QueryClientProvider client={queryClient}>
-			<ReactQueryDevtools initialIsOpen={false} />
+			{/* <ReactQueryDevtools initialIsOpen={false} /> */}
 				<AppRoutes />
 			</QueryClientProvider>
 		</GoogleOAuthProvider>
