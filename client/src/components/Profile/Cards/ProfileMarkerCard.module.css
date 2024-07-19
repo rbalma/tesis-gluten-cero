@@ -1,0 +1,165 @@
+.profileMarkerCard {
+  background-color: #fff;
+  display: flex;
+  gap: 20px;
+  padding: 30px;
+}
+
+.profileMarkerCard:hover {
+  background-color: #fbfbfb;
+}
+
+.profileMarkerCard>img {
+  object-fit: cover;
+  border-radius: 4px;
+  height: 115px;
+  width: 150px;
+}
+
+.profileMarkerContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.profileMarkerContent>a {
+  color: rgba(0, 0, 0, .65);
+  font-size: 18px;
+  margin-bottom: 2px;
+  cursor: pointer;
+}
+
+.profileMarkerContent>h2:hover {
+  text-decoration: underline;
+}
+
+.profileMarkerContent>p {
+  color: rgba(0, 0, 0, .65);
+  font-size: 16px;
+  font-weight: 300;
+  margin-bottom: 8px;
+}
+
+.profileMarkerContent>span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(0, 0, 0, .45);
+  font-size: 14px;
+  line-height: 1.5715;
+}
+
+.profileMarkerStarCard {
+  font-family: 'Sora', sans-serif;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 5px;
+}
+
+.profileMarkerStarCard>ul {
+  font-size: 16px;
+}
+
+.profileMarkerCountReviews {
+  font-size: 12px;
+  font-weight: 400;
+}
+
+
+.profileMarkerButtonContainer {
+  display: none;
+  gap: 8px;
+  margin-block: auto;
+  margin-left: auto;
+}
+
+.profileMarkerCard:hover>.profileMarkerButtonContainer {
+  display: flex;
+}
+
+.profileMarkerButton {
+  align-items: center;
+  background-color: #e9e9e9;
+  border-radius: 50px;
+  border: none;
+  color: #666666;
+  cursor: pointer;
+  display: flex;
+  font-family: 'Sora', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  gap: 8px;
+  line-height: 20px;
+  margin: 0;
+  padding: 6px 10px;
+  width: fit-content;
+}
+
+.profileMarkerButton:hover {
+  background-color: #f91942;
+  color: #fff;
+}
+
+/*
+  Reviews
+*/
+
+.profileMarkerReviewCard {
+  padding: 23px 30px;
+  background-color: #fff;
+  transition: background-color 0.3s;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 20px;
+}
+
+.profileMarkerReviewCard:hover {
+  background-color: #fbfbfb;
+}
+
+.profileMarkerReviewCard>img {
+  width: 50px;
+  margin-top: 10px;
+  border-radius: 50%;
+  aspect-ratio: 1/1;
+}
+
+.profileMarkerReviewContent {
+  margin-top: 10px;
+}
+
+.profileMarkerReviewContent>span {
+  font-size: 15px;
+  font-family: 'Sora', sans-serif;
+}
+
+.profileMarkerReviewContent>span>b {
+  font-weight: 500;
+  color: #888888;
+}
+
+.titleCard {
+  font-size: 18px;
+  margin-bottom: 2px;
+}
+
+.dateRate {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  margin: 5px 0 10px;
+  text-transform: capitalize;
+}
+
+.dateRate>span {
+  color: #888888;
+  font-weight: 300;
+}
+
+.profileMarkerReviewContent>p {
+  font-size: 15px;
+  font-weight: 300;
+  color: #666666;
+}

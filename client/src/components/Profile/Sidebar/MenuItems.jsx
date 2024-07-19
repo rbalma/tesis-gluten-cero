@@ -1,4 +1,5 @@
 import {
+	BuildingStoreIcon,
 	IconBell,
 	IconBookmark,
 	IconChevronDown,
@@ -6,8 +7,7 @@ import {
 	IconMessage,
 	IconStar,
 	IconToolsKitchen,
-	IconUserCircle,
-	MapPinIcon,
+	IconUsers,
 } from '@/components/Icons';
 import { IconMessages } from '@/components/Icons/IconMessages';
 
@@ -15,7 +15,7 @@ export const menuItems = [
 	{
 		name: 'Perfil',
 		link: '',
-		icon: <IconUserCircle />,
+		icon: <IconUsers />,
 	},
 	{
 		name: 'Notificaciones',
@@ -84,5 +84,10 @@ export const menuItems = [
 				icon: <IconMessages />,
 			},
 		],
+	},
+	{
+		name: 'Productos',
+		icon: <BuildingStoreIcon />,
+		link: '/productos',
 	},
 ];
