@@ -123,6 +123,7 @@ export const ProductsPage = () => {
 					columns={columns}
 					dataSource={data?.products}
 					rowKey={(record) => record._id}
+					className={styles.tableProducts}
 					bordered
 					scroll={{
 						y: 'calc(100dvh - 200px)',
@@ -131,7 +132,7 @@ export const ProductsPage = () => {
 						position: ['bottomRight'],
 						onChange: handleChangePagination,
 						pageSize: filters.limit,
-						current: filters.pageSize,
+						current: filters.page,
 						size: 'small',
 						hideOnSinglePage: true,
 						total: data?.count,
