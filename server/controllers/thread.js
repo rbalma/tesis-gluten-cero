@@ -136,6 +136,35 @@ export const updateThread = async (req, res, next) => {
     }
 };
 
+// @desc Like
+// @route PUT /api/threads/like/:threadId
+// @access Private
+export const likeThread = async (req, res, next) => {
+  const { threadId } = req.params;
+
+  try {
+    const thread = await Thread.findById(threadId);
+    if (!thread) return next(new ErrorResponse('No existe el hilo', 404));
+
+    const newThread = {
+      ...req.body,
+      isUpdated: true
+    };
+
+    const updateThread = await Thread.findByIdAndUpdate(threadId, newThread, {
+      new: true,
+    });
+
+    res.json({
+      ok: true,
+      thread: updateThread,
+      message: 'Hilo actualizado'
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // @desc Elimina un hilo
 // @route DELETE /api/threads/threadId
 // @access Private
