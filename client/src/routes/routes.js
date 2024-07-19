@@ -1,5 +1,5 @@
 import HomePage from '@/pages/Home/HomePage';
-import { Login, SignUp, ForgotPassword, ResetPassword } from '@/pages/Auth';
+import { Login, SignUp, ForgotPassword, ResetPassword, ActiveAccount } from '@/pages/Auth';
 
 import {
 	AdminStatistics,
@@ -23,6 +23,7 @@ import {
 	ProfileTheardsCreatedPage,
 	ProfileTheardsFavPage,
 	ProfilePostsCreatedPage,
+	ProfileProductsFavPage,
 } from '@/pages/Profile';
 
 import NotFoundScreen from '@/pages/NotFound/NotFoundScreen';
@@ -49,6 +50,10 @@ const routesAuth = [
 	{
 		path: '/cambiar-password/:resetToken',
 		element: ResetPassword,
+	},
+	{
+		path: '/activar-cuenta/:id',
+		element: ActiveAccount,
 	},
 ];
 
@@ -205,6 +210,10 @@ const routesProfile = [
 	{
 		path: 'posteos',
 		element: ProfilePostsCreatedPage,
+	},
+	{
+		path: 'productos',
+		element: ProfileProductsFavPage,
 	},
 	{
 		path: '*',
