@@ -44,9 +44,9 @@ export const getThread = async (req, res, next) => {
       },
       {
         path: "posts",
-        select: "date user",
+        select: "date user content",
         sort: { date: -1 },
-        populate: { path: "user", select: "name lastname" },
+        populate: { path: "user", select: "name lastname"},
       },
     ],
   };
