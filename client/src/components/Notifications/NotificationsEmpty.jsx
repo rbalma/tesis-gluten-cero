@@ -5,7 +5,7 @@ export const NotificationsEmpty = () => {
 	return (
 		<div className={styles.empty}>
 			<span>
-				<IconBell size={70} />
+				<IconBell size={50} />
 			</span>
 			<p className={styles.emptyText}>No tienes notificaciones pendientes</p>
 		</div>

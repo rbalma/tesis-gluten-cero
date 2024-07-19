@@ -14,11 +14,7 @@ const router = express.Router();
 
 router.use(validateJWT);
 
-router
-  .route("/notifications")
-  .get(getNotification)
-  .post(addNotification)
-  .patch(checkAllNotification);
+router.route("/notifications").get(getNotification).post(addNotification);
 
 router
   .route("/notifications/:notificationId")
@@ -27,6 +23,9 @@ router
   .patch(checkOrUncheckNotification)
   .delete(deleteNotification);
 
-router.get("/notifications/unread/user/:userId", getUnreadNotifications);
+router
+  .route("/notifications/unread/user/:userId")
+  .get(getUnreadNotifications)
+  .patch(checkAllNotification);
 
 export default router;
