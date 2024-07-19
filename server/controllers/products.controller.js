@@ -27,7 +27,7 @@ export const getProducts = async (req, res, next) => {
         : ["-estado"],
     };
 
-    if (sortField) options.sort = { [sortField]: 1 };
+    if (sortField) options.sort = { [sortField]: sortField === 'likesCount' ? -1 : 1 };
 
     const filters = {};
     if (name) filters.denominacionVenta = { $regex: name, $options: "i" };
