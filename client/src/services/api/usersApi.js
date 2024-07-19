@@ -48,3 +48,8 @@ export const deleteUser = async (userId) => {
 	const { data } = await glutenCeroApi.delete(`/users/${userId}`);
 	return data;
 };
+
+export const changeStatusUser = async ({ userId, values }) => {
+	const { data } = await glutenCeroApi.patch(`/active-account/${userId}`, values);
+	return data;
+};

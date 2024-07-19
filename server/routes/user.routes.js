@@ -24,6 +24,6 @@ router
 
 router.post('/admin/users', [validateJWT, uploadFile], addUserPanelAdmin)
 
-router.route('/active-account/:userId').put(activeUserAccount);
+router.route('/active-account/:userId').patch(activeUserAccount);
 
 export default router;
