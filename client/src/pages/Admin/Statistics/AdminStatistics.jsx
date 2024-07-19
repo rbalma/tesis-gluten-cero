@@ -307,8 +307,8 @@ function DashboardPolarAreaChart({dataCategories,dataMarkers}) {
     datasets: [
       {
         label: 'Cantidad de Marcadores',
-        //data: markersLabels.map(label => marcadoresPorCategoria[label] || 0),
-        data: [1,2,3],
+        data: markersLabels.map(label => marcadoresPorCategoria[label] || 0),
+        //data: [1,2,3],
         backgroundColor: [
          
           'rgba(255, 206, 86, 1)',
