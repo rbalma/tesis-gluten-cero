@@ -88,8 +88,7 @@ export const Login = () => {
 						requiredMark={false}
 						validateTrigger='onSubmit'
 						autoComplete='off'
-						form={formInstance}
-					>
+						form={formInstance}>
 						<Form.Item
 							name='email'
 							rules={[
@@ -101,8 +100,7 @@ export const Login = () => {
 									type: 'email',
 									message: 'Debe ingresar un correo válido',
 								},
-							]}
-						>
+							]}>
 							<Input placeholder='Correo' />
 						</Form.Item>
 
@@ -113,16 +111,17 @@ export const Login = () => {
 									required: true,
 									message: 'La contraseña es obligatoria',
 								},
-							]}
-						>
-							<Input.Password placeholder='Contraseña' />
+							]}>
+							<Input.Password
+								placeholder='Contraseña'
+								autoComplete='new-password'
+							/>
 						</Form.Item>
 
 						<button
 							disabled={isLoading && true}
 							type='submit'
-							className={styles.btnLogin}
-						>
+							className={styles.btnLogin}>
 							{isLoading ? 'Ingresando...' : 'Iniciar Sesión'}
 						</button>
 
@@ -132,9 +131,8 @@ export const Login = () => {
 								disabled={isLoadingGoogle}
 								type='button'
 								onClick={onGoogleLoginClick}
-								className={`${styles.btnLogin} ${styles.btnGoogle}`}
-							>
-								{isLoadingGoogle ? "Ingresando..." : "Ingresar con Google"}
+								className={`${styles.btnLogin} ${styles.btnGoogle}`}>
+								{isLoadingGoogle ? 'Ingresando...' : 'Ingresar con Google'}
 							</button>
 							<small className='gx-mt-2'>
 								<Link to={'/password-perdida'}>¿Olvidaste tu contraseña?</Link>
