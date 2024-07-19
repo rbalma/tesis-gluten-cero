@@ -1,14 +1,13 @@
-import { Link } from "react-router-dom";
-import { Button } from "antd";
-import { MenuOutlined } from "@ant-design/icons";
-import { UserProfile } from "@/layout/home/ui/TopBar/UserProfile";
-import Logo from "@/assets/images/logoGlutenCero.png";
+import { Link } from 'react-router-dom';
+import { Button } from 'antd';
+import { MenuOutlined } from '@ant-design/icons';
+import { UserProfile } from '@/layout/home/ui/TopBar/UserProfile';
+import Logo from '@/assets/images/logoGlutenCero.png';
 
 import styles from './TopBar.module.css';
 
 export const TopBar = ({ showDrawer }) => {
-
-  return (
+	return (
 		<div className={styles.menuTop}>
 			<div className={styles.logoBtnMenu}>
 				<Button type='link'>
@@ -20,10 +19,9 @@ export const TopBar = ({ showDrawer }) => {
 				</Link>
 			</div>
 
-<div className={styles.profileAvatar}>
-			<UserProfile />
-
-</div>
+			<div className={styles.profileAvatar}>
+				<UserProfile overlayClassName='profileDropdownWhite' />
+			</div>
 		</div>
 	);
-}
+};

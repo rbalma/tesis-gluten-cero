@@ -1,30 +1,18 @@
-import { useEffect, useState } from 'react';
 import { Avatar, Dropdown } from 'antd';
-import {
-	IdcardFilled,
-	LockFilled,
-	LogoutOutlined,
-} from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
 import { googleLogout } from '@react-oauth/google';
 import useAuthStore from '@/store/authStore';
 import { userGetAvatar } from '@/utils/fetchData';
+import {
+	IconLockSquareRounded,
+	IconLogout,
+	IconUserCircle,
+} from '@/components/Icons';
 
-export const UserProfile = () => {
+export const UserProfile = ({ overlayClassName = 'profileDropdown' }) => {
 	const navigate = useNavigate();
 	const user = useAuthStore((state) => state.userProfile);
 	const removeUser = useAuthStore((state) => state.removeUser);
-	const [avatar, setAvatar] = useState('');
-
-	useEffect(() => {
-		if (user.avatar && user.userGoogle) {
-			setAvatar(user.avatar);
-		} else if (user.avatar && !user.userGoogle) {
-			setAvatar(userGetAvatar(user.avatar));
-		} else {
-			setAvatar(user?.dicebear);
-		}
-	}, [user]);
 
 	const logoutUser = () => {
 		removeUser();
@@ -35,40 +23,38 @@ export const UserProfile = () => {
 	const items = [
 		{
 			key: '01',
-			label: (
-				<Link style={{ fontFamily: 'Sora, Verdana' }} to={`/perfil/${user.id}`}>
-					Perfil
-				</Link>
-			),
-			icon: <IdcardFilled />,
+			label: <Link to={`/perfil/${user.id}`}>Mi Perfil</Link>,
+			icon: <IconUserCircle />,
 		},
-		user.role === 'admin' && {
-			key: '04',
-			label: (
-				<Link style={{ fontFamily: 'Sora, Verdana' }} to='/admin/estadisticas'>
-					Panel Admin
-				</Link>
-			),
-			icon: <LockFilled />,
-		},
+		user.role === 'admin'
+			? {
+					key: '04',
+					label: <Link to='/admin/estadisticas'>Panel Admin</Link>,
+					icon: <IconLockSquareRounded />,
+			  }
+			: null,
 		{
 			type: 'divider',
 		},
 		{
 			key: '03',
-			label: (
-				<div style={{ fontFamily: 'Sora, Verdana' }} onClick={logoutUser}>
-					Cerrar Sesión
-				</div>
-			),
-			icon: <LogoutOutlined />,
+			label: <span onClick={logoutUser}>Cerrar Sesión</span>,
+			icon: <IconLogout />,
 			danger: true,
 		},
 	];
 
 	return (
-		<Dropdown menu={{ items }} trigger={['click']} placement='bottom'>
-			<Avatar style={{ cursor: 'pointer' }} src={avatar} size='default' />
+		<Dropdown
+			overlayClassName={overlayClassName}
+			menu={{ items, inlineIndent: 45 }}
+			trigger={['click']}
+			placement='bottomRight'>
+			<Avatar
+				style={{ cursor: 'pointer' }}
+				src={userGetAvatar(user.avatar)}
+				size='default'
+			/>
 		</Dropdown>
 	);
 };

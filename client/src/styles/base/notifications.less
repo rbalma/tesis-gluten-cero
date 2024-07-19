@@ -3,3 +3,47 @@
     padding: 0px;
   }
 }
+
+.profileDropdown {
+  & .ant-dropdown-menu {
+    background-color: #282828;
+    border-radius: 10px;
+    padding: 10px 0px;
+  }
+
+  & .ant-dropdown-menu-item:hover {
+    background-color: #383737;
+  }
+
+  & .ant-dropdown-menu-item {
+    // color: #383737;
+    color: #fff;
+    padding: 8px 12px;
+    font-weight: 200;
+    display: flex;
+    gap: 8px;
+
+    &.ant-dropdown-menu-item-danger:hover {
+      background-color: #f5222d;
+    }
+  }
+}
+
+.profileDropdownWhite {
+  & .ant-dropdown-menu {
+    border-radius: 10px;
+    padding: 8px 0px;
+  }
+
+  & .ant-dropdown-menu-item {
+    padding: 8px 12px;
+    font-weight: 300;
+    display: flex;
+    gap: 8px;
+
+    svg {
+      stroke-width: 1.2;
+    }
+  }
+  
+}
