@@ -6,6 +6,7 @@ import ErrorResponse from "../utils/errorResponse.js";
 import { uploadImage, deleteImage } from "../services/cloudinary.js";
 import { createNotification } from "../services/notifications.services.js";
 import { events } from "../utils/events.js";
+import RejectedRecipes from "../models/rejectedRecipes.js";
 
 // @desc Agregar una nuevo receta
 // @route /api/recipes
@@ -130,7 +131,7 @@ export const getRecipes = async (req, res, next) => {
 // @access Private
 export const changeStatusRecipe = async (req, res, next) => {
   const { recipeId } = req.params;
-  const { state } = req.body;
+  const { state, rejectedDescription } = req.body;
 
   const session = await mongoose.startSession();
   session.startTransaction();
@@ -142,8 +143,17 @@ export const changeStatusRecipe = async (req, res, next) => {
 
     await Recipe.updateOne({ _id: recipeId }, { state }, { session });
 
+    if (state === "error") {
+      const rejectedRecipes = new RejectedRecipes({
+        description: rejectedDescription,
+        recipe: recipeId,
+        admin: req.id
+      });
+      await rejectedRecipes.save({ session });
+    }
+
     const notification = {
-      description: state ? events.RECIPE_APPROVED : events.RECIPE_REJECTED,
+      description: state === 'success' ? events.RECIPE_APPROVED : events.RECIPE_REJECTED,
       originUser: `${req.user.name} ${req.user.lastname}`,
       notifiedUser: recipe.user,
       recipe: recipeId,
@@ -164,6 +174,25 @@ export const changeStatusRecipe = async (req, res, next) => {
     next(error);
   } finally {
     session.endSession();
+  }
+};
+
+// @desc Obtiene el motivo del rechazo de una receta
+// @route GET /api/rejected/recipes/:recipeId
+// @access Private
+export const getRejectedRecipeInfo = async (req, res, next) => {
+  const { recipeId } = req.params;
+  try {
+    const rejected = await RejectedRecipes.findOne({ recipe: recipeId }).sort(
+      "-createdAt"
+    );
+
+    res.json({
+      rejected,
+    });
+  } catch (error) {
+    console.log({ error });
+    next(error);
   }
 };
 

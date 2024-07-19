@@ -1,12 +1,21 @@
-import { Alert } from "antd"
+import { useGetRejectedRecipeInfo } from '@/services/queries/recipeQueries';
+import { Alert, Skeleton } from 'antd';
 
-export const RejectRecipeAlert = () => {
-  return (
-    <Alert
-    message="Receta Rechazada"
-    description="La receta contiene errores de ortografía."
-    type="error"
-    showIcon
-  />
-  )
-}
+export const RejectRecipeAlert = ({ recipeId }) => {
+	const { isLoading, isSuccess, data } = useGetRejectedRecipeInfo(recipeId);
+
+	if (isLoading)
+		return <Skeleton.Input active={true} block={true} style={{ height: 79 }} />;
+
+	if (isSuccess)
+		return (
+			<Alert
+				message='Receta Rechazada'
+				description={data.description}
+				type='error'
+				showIcon
+			/>
+		);
+
+	return null;
+};
