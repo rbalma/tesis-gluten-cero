@@ -47,6 +47,7 @@ export const MapReviewModal = ({
 					overflowY: 'auto',
 					borderRadius: 10,
 				}}
+				destroyOnClose
 				width={810}
 				closable={false}
 				open={isModalOpen}
