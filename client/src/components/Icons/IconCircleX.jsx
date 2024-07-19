@@ -1,4 +1,4 @@
-export const IconCircleX = ({ size = 24 }) => {
+export const IconCircleX = ({ size = 24, color = 'currentColor' }) => {
 	return (
 		<svg
 			xmlns='http://www.w3.org/2000/svg'
@@ -6,7 +6,7 @@ export const IconCircleX = ({ size = 24 }) => {
 			height={size}
 			viewBox='0 0 24 24'
 			fill='none'
-			stroke='currentColor'
+			stroke={color}
 			strokeWidth={1.5}
 			strokeLinecap='round'
 			strokeLinejoin='round'

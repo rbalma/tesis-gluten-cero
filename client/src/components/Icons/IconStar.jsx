@@ -1,4 +1,4 @@
-export const IconStar = ({ size = 24, strokeWidth = 2 }) => {
+export const IconStar = ({ size = 24, strokeWidth = 2, color = 'currentColor' }) => {
 	return (
 		<svg
 			xmlns='http://www.w3.org/2000/svg'
@@ -7,7 +7,7 @@ export const IconStar = ({ size = 24, strokeWidth = 2 }) => {
 			height={size}
 			viewBox='0 0 24 24'
 			strokeWidth={strokeWidth}
-			stroke='currentColor'
+			stroke={color}
 			fill='none'
 			strokeLinecap='round'
 			strokeLinejoin='round'>
