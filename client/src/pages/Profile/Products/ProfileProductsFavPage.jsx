@@ -2,10 +2,13 @@ import { Breadcrumb } from 'antd';
 import { Link } from 'react-router-dom';
 import { IconChevronDown } from '@/components/Icons';
 import { ProfileProductsFavCard } from '@/components/Profile/Cards';
+import { useGetProductsByUser } from '@/services/queries/productsQueries';
 
 import styles from './ProfileProducts.module.css';
 
 export const ProfileProductsFavPage = () => {
+	const { data, isLoading, isSuccess } = useGetProductsByUser();
+
 	return (
 		<div className={styles.profileContainer}>
 			<header className={styles.profileHeader}>
@@ -24,22 +27,16 @@ export const ProfileProductsFavPage = () => {
 			</header>
 
 			<div className={styles.productsList}>
-				<ProfileProductsFavCard />
-
-				{/* {isSuccess && !isFetching
-					? data.favRecipes.map((recipe) => (
-							<ProfileRecipeCard
-								key={recipe._id}
-								id={recipe._id}
-								title={recipe.title}
-								category={recipe.category.name}
-								ratingAverage={recipe.ratingAverage.$numberDecimal}
-								ratingCount={recipe.ratingCount}
-								image={recipe.image.secure_url}
-								date={recipe.createdAt}
+				{isSuccess && !isLoading
+					? data.map((product) => (
+							<ProfileProductsFavCard
+								key={product._id}
+								id={product._id}
+								product={product.denominacionVenta}
+								brand={product.marca}
 							/>
 					  ))
-					: null} */}
+					: null}
 			</div>
 		</div>
 	);
