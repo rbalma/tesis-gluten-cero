@@ -23,8 +23,8 @@ const notificationSchema = new Schema(
       default: false,
     },
     originUser: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
+      type: String,
+      trim: true,
     },
     notifiedUser: {
       type: Schema.Types.ObjectId,
