@@ -6,11 +6,11 @@ import { IconHeart, IconHeartFilled } from '../Icons';
 
 import styles from './FiltersProducts.module.css';
 
-export const LikeProducts = ({ filters, productId, count }) => {
+export const LikeProducts = ({ productId, count }) => {
 	const navigate = useNavigate();
   const userAuth = useAuthStore((state) => state.userProfile);
 	const [fav, setFav] = useState(false);
-	const { mutateAsync } = useLikeProduct(filters);
+	const { mutateAsync } = useLikeProduct();
 
 	useEffect(() => {
 		if (userAuth?.favProducts?.some((favProductId) => favProductId === productId))

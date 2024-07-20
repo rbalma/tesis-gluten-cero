@@ -11,6 +11,41 @@ import { useGetProducts } from '@/services/queries/productsQueries';
 
 import styles from './ProductsPage.module.css';
 
+
+const columns = [
+	{
+		title: 'Nombre del Producto',
+		dataIndex: 'denominacionVenta',
+		key: 'denominacionVenta',
+		width: '50%',
+		render: (text) => <span className={styles.rowLowercase}>{text}</span>,
+	},
+	{
+		title: 'Tipo de Producto',
+		dataIndex: 'tipoProducto',
+		key: 'tipoProducto',
+		width: '25%',
+		render: (text) => <span className={styles.rowLowercase}>{text}</span>,
+	},
+	{
+		title: 'Marca',
+		dataIndex: 'marca',
+		key: 'marca',
+		width: '15%',
+		render: (text) => <span className={styles.rowLowercase}>{text}</span>,
+	},
+	{
+		title: 'Favoritos',
+		dataIndex: 'likesCount',
+		key: 'likesCount',
+		width: '10%',
+		align: 'center',
+		render: (count, record) => (
+			<LikeProducts count={count} productId={record._id} />
+		),
+	},
+];
+
 export const ProductsPage = () => {
 	const [form] = Form.useForm();
 	const [filters, setFilters] = useReducer(
@@ -22,40 +57,6 @@ export const ProductsPage = () => {
 		}
 	);
 	const { isFetching, data } = useGetProducts(filters);
-
-	const columns = [
-		{
-			title: 'Nombre del Producto',
-			dataIndex: 'denominacionVenta',
-			key: 'denominacionVenta',
-			width: '50%',
-			render: (text) => <span className={styles.rowLowercase}>{text}</span>,
-		},
-		{
-			title: 'Tipo de Producto',
-			dataIndex: 'tipoProducto',
-			key: 'tipoProducto',
-			width: '25%',
-			render: (text) => <span className={styles.rowLowercase}>{text}</span>,
-		},
-		{
-			title: 'Marca',
-			dataIndex: 'marca',
-			key: 'marca',
-			width: '15%',
-			render: (text) => <span className={styles.rowLowercase}>{text}</span>,
-		},
-		{
-			title: 'Favoritos',
-			dataIndex: 'likesCount',
-			key: 'likesCount',
-			width: '10%',
-			align: 'center',
-			render: (count, record) => (
-				<LikeProducts filters={filters} count={count} productId={record._id} />
-			),
-		},
-	];
 
 	const cleanFilters = () => {
 		form.resetFields();

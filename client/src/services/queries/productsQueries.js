@@ -7,6 +7,7 @@ import {
 } from '@tanstack/react-query';
 import {
 	getProducts,
+	getProductsByUser,
 	getProductsTypes,
 	updateProduct,
 } from '../api/productsApi';
@@ -29,7 +30,7 @@ export const useGetTypesProducts = () => {
 	});
 };
 
-export const useLikeProduct = (filters) => {
+export const useLikeProduct = () => {
 	const queryClient = useQueryClient();
 	const addFavoriteProduct = useAuthStore((state) => state.addFavoriteProduct);
 	const deleteFavoriteProduct = useAuthStore(
@@ -39,20 +40,34 @@ export const useLikeProduct = (filters) => {
 		mutationFn: updateProduct,
 		onSuccess: (data, { productId, isLiked }) => {
 			queryClient.setQueriesData(
-				{ queryKey: ['products', filters] },
+				{ queryKey: ['products'], type: 'active' },
 				(old) => ({
 					products: old.products.map((product) =>
-						product._id === productId ? { ...product, likesCount: data.product.likesCount } : product
+						product._id === productId
+							? { ...product, likesCount: data.product.likesCount }
+							: product
 					),
 					totalPages: old.totalPages,
 					count: old.count,
 				})
 			);
+
+			queryClient.invalidateQueries({ queryKey: ['products'], type: 'inactive' });
+
 			isLiked
 				? addFavoriteProduct(productId)
 				: deleteFavoriteProduct(productId);
+
+			queryClient.invalidateQueries({ queryKey: ['favProductsUser'] });
 			toast.success(data?.message);
 		},
 		onError: () => toast.error('Error. Vuelva a intentarlo'),
+	});
+};
+
+export const useGetProductsByUser = () => {
+	return useQuery({
+		queryKey: ['favProductsUser'],
+		queryFn: getProductsByUser,
 	});
 };

@@ -166,3 +166,22 @@ export const setCountLikeProduct = async (req, res, next) => {
     session.endSession();
   }
 };
+
+
+// @desc Obtiene los productos favoritos del usuario logueado
+// @route GET /api/favorites/user/products
+// @access Private
+export const getProductsByUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.id).select("_id").populate({
+      path: "favProducts",
+      select: "_id denominacionVenta marca",
+    });
+    if (!user._id) throw new ErrorResponse("El usuario no existe");
+
+    res.json({ favProducts: user.favProducts, count: user.favProducts.length });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
