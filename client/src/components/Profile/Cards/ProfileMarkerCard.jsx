@@ -1,47 +1,24 @@
-import { Modal, Rate } from 'antd';
+import { Rate } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import { IconTrash, PhoneIcon } from '@/components/Icons';
-import {
-	useDeleteFavoriteRecipe,
-	useDeleteRecipe,
-} from '@/services/queries/recipeQueries';
+import { useDeleteFavoriteMarker } from '@/services/queries/mapQueries';
+
 import styles from './ProfileMarkerCard.module.css';
 
-const { confirm } = Modal;
-
 export const ProfileMarkerCard = ({
-	isEdit,
 	id,
-	title,
-	category,
-	state,
-	ratingAverage,
-	ratingCount,
+	name,
+	phone,
 	image,
-	date,
+	ratingAverage,
+	direction,
+	ratingCount,
 }) => {
-	const deleteRecipe = useDeleteRecipe();
-	const deleteFavoriteRecipe = useDeleteFavoriteRecipe();
-
-	const showDeleteConfirmRecipe = () => {
-		confirm({
-			title: `¿Está seguro de eliminar la receta?`,
-			okText: 'Confirmar',
-			okType: 'danger',
-			cancelText: 'Cancelar',
-			onOk: async () => {
-				try {
-					await deleteRecipe.mutateAsync(id);
-				} catch (error) {
-					console.log(error);
-				}
-			},
-		});
-	};
+	const deleteFavoriteMarker = useDeleteFavoriteMarker();
 
 	const handleDeleteFav = async () => {
 		try {
-			await deleteFavoriteRecipe.mutateAsync(id);
+			await deleteFavoriteMarker.mutateAsync(id);
 		} catch (error) {
 			console.log(error);
 		}
@@ -49,28 +26,20 @@ export const ProfileMarkerCard = ({
 
 	return (
 		<div className={styles.profileMarkerCard}>
-			<img
-				src={
-					'https://tiotomar.vtexassets.com/arquivos/ids/223252-800-800?v=638349017454700000&width=800&height=800&aspect=true'
-				}
-				alt='marker'
-			/>
+			<img src={image} alt='marker' />
 
 			<div className={styles.profileMarkerContent}>
-				<h2 className={styles.titleCard}>
-					{'Sanatorio Allende Nueva Córdoba'}
-				</h2>
-				<p>{'Obispo Oro 42'}</p>
+				<h2 className={styles.titleCard}>{name}</h2>
+				<p>{direction}</p>
 
 				<span>
-					<PhoneIcon size={15} /> {'(0810) 555-2553'}
+					<PhoneIcon size={15} /> {phone}
 				</span>
 
 				<span className={styles.profileMarkerStarCard}>
-					{/* <Rate disabled allowHalf value={+ratingAverage} /> */}
-					<Rate disabled allowHalf value={3} />
+					<Rate disabled allowHalf value={ratingAverage} />
 					<span className={styles.profileMarkerCountReviews}>
-						({'2'} opiniones)
+						({ratingCount} opiniones)
 					</span>
 				</span>
 			</div>
@@ -78,8 +47,8 @@ export const ProfileMarkerCard = ({
 			<div className={styles.profileMarkerButtonContainer}>
 				<button
 					className={styles.profileMarkerButton}
-					onClick={isEdit ? showDeleteConfirmRecipe : handleDeleteFav}>
-					{deleteFavoriteRecipe.isPending ? (
+					onClick={handleDeleteFav}>
+					{deleteFavoriteMarker.isPending ? (
 						<LoadingOutlined />
 					) : (
 						<IconTrash size={16} />

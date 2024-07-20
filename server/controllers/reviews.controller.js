@@ -494,7 +494,7 @@ export const getReviewsMarkersByUser = async (req, res, next) => {
         },
         {
           path: "marker",
-          select: "title",
+          select: "name",
         },
       ],
     };
