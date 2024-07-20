@@ -2,46 +2,46 @@ import { Breadcrumb } from 'antd';
 import { Link } from 'react-router-dom';
 import { IconChevronDown } from '@/components/Icons';
 import { ProfileMarkerCard } from '@/components/Profile/Cards';
+import { useGetFavoritesMarkers } from '@/services/queries/mapQueries';
 
 import styles from './ProfileMarkers.module.css';
 
 export const ProfileMarkersFavPage = () => {
-  return (
-    <div className={styles.profileContainer}>
-    <header className={styles.profileHeader}>
-      <h1>Marcadores Favoritos</h1>
-      <Breadcrumb
-        className={styles.profileBreadcrumb}
-        separator={<IconChevronDown size={16} />}>
-        <Breadcrumb.Item>
-          <Link to='/'>Inicio</Link>
-        </Breadcrumb.Item>
-        <Breadcrumb.Item>
-          <Link to='/mapa'>Marcadores</Link>
-        </Breadcrumb.Item>
-        <Breadcrumb.Item>Favoritas</Breadcrumb.Item>
-      </Breadcrumb>
-    </header>
+	const { isLoading, data, isSuccess } = useGetFavoritesMarkers();
 
-    <div className={styles.markersList}>
+	return (
+		<div className={styles.profileContainer}>
+			<header className={styles.profileHeader}>
+				<h1>Marcadores Favoritos</h1>
+				<Breadcrumb
+					className={styles.profileBreadcrumb}
+					separator={<IconChevronDown size={16} />}>
+					<Breadcrumb.Item>
+						<Link to='/'>Inicio</Link>
+					</Breadcrumb.Item>
+					<Breadcrumb.Item>
+						<Link to='/mapa'>Marcadores</Link>
+					</Breadcrumb.Item>
+					<Breadcrumb.Item>Favoritos</Breadcrumb.Item>
+				</Breadcrumb>
+			</header>
 
-<ProfileMarkerCard />
-
-				{/* {isSuccess && !isFetching
-					? data.favRecipes.map((recipe) => (
-							<ProfileRecipeCard
-								key={recipe._id}
-								id={recipe._id}
-								title={recipe.title}
-								category={recipe.category.name}
-								ratingAverage={recipe.ratingAverage.$numberDecimal}
-								ratingCount={recipe.ratingCount}
-								image={recipe.image.secure_url}
-								date={recipe.createdAt}
+			<div className={styles.markersList}>
+				{isSuccess && !isLoading
+					? data.favMarkers.map((marker) => (
+							<ProfileMarkerCard
+								key={marker._id}
+								id={marker._id}
+								image={marker.image.secure_url}
+								name={marker.name}
+								phone={marker.phone}
+                direction={marker.direction}
+								ratingCount={marker.ratingCount}
+								ratingAverage={+marker.ratingAverage.$numberDecimal}
 							/>
 					  ))
-					: null} */}
+					: null}
 			</div>
 		</div>
-  )
-}
+	);
+};
