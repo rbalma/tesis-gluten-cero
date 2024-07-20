@@ -170,7 +170,7 @@ export const addReview = async (req, res, next) => {
         originUser: `${req.user.name} ${req.user.lastname}`,
         notifiedUser: recipeFound.user,
         recipe,
-        recipeTitle: recipeFound.title
+        description: `La receta "${recipeFound.title}" tiene una nueva valoración por parte de ${req.user.name} ${req.user.lastname}`,
       };
 
       await createNotification(notification, session);
