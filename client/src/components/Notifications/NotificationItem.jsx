@@ -5,14 +5,14 @@ import { useCheckNotification } from '@/services/queries/notificationsQueries';
 
 import styles from './NotificationItem.module.css';
 
-
 const NotificationItem = ({
 	_id,
 	description,
+	event,
 	read,
 	recipe,
 	createdAt,
-	onClose
+	onClose,
 }) => {
 	const navigate = useNavigate();
 	const { mutate } = useCheckNotification();
@@ -22,33 +22,32 @@ const NotificationItem = ({
 		if (!read) {
 			mutate({
 				notificationId: _id,
-				values: { read: true }
+				values: { read: true },
 			});
 		}
 		onClose();
 	};
 
+	const Icon = eventsNotifications[event].icon;
+
 	return (
 		<Badge dot={!read} offset={[-30, 20]} status='warning'>
 			<div className={styles.containerNotification} onClick={onItemSelected}>
 				<span className={styles.successNotification}>
-					{/* <IconCircleX /> */}
-					<eventsNotifications.RECIPE_VALUED.icon color={eventsNotifications.RECIPE_VALUED.color} />
+					<Icon color={eventsNotifications[event].color} />
 				</span>
 
 				<div className={styles.contentBox}>
 					<p>
 						<span className={styles.titleNotification}>
-							{eventsNotifications.RECIPE_VALUED.title}
+							{eventsNotifications[event].title}
 						</span>{' '}
-						<span className={styles.dateNotification}>{timeAgo(createdAt)}</span>
+						<span className={styles.dateNotification}>
+							{timeAgo(createdAt)}
+						</span>
 					</p>
 
-					<p className={styles.descriptionNotification}>
-						{/* La receta "Arroz al horno" fue agregada a Gluten Cero y ya puede ser
-						visitada por cualquier usuario. */}
-						{ description }
-					</p>
+					<p className={styles.descriptionNotification}>{description}</p>
 				</div>
 			</div>
 		</Badge>

@@ -30,7 +30,7 @@ export const getNotification = async (req, res, next) => {
 
   try {
     const filters = {};
-    if (userId) filters.user = userId;
+    if (userId) filters.notifiedUser = userId;
 
     const notifications = await Notifications.paginate(filters, options);
 

@@ -6,13 +6,13 @@ import {
 	useCheckAllNotification,
 	useGetNotifications,
 } from '@/services/queries/notificationsQueries';
+import { SkeletonListScroll } from './SkeletonListScroll';
 
 import styles from './NotificationList.module.css';
-import { SkeletonListScroll } from './SkeletonListScroll';
 
 export const NotificationList = ({ userId, onClose }) => {
 	const navigate = useNavigate();
-	const { isFetching, isSuccess, isError, data } = useGetNotifications(userId);
+	const { isFetching, isSuccess, isError, data } = useGetNotifications({userId});
 	const { mutate } = useCheckAllNotification();
 
 	const checkAllNotifications = () => {
