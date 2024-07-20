@@ -1,36 +1,32 @@
-import { useEffect } from 'react';
-import { Button, Form, Input, Row, Spin } from 'antd';
+import { Button, Form, Input, Row } from 'antd';
 import { UploadAvatar } from '@/components/Upload/UploadAvatar';
-import { useGetUserById } from '@/services/queries/usersQueries';
 import { userGetAvatar } from '@/utils/fetchData';
+import useAuthStore from '@/store/authStore';
 import { rules } from '@/utils/rulesForm';
 
 import styles from './ProfileForm.module.css';
 
-export const ProfileDetailForm = ({ userId }) => {
-	const [formInstance] = Form.useForm();
-	const { isFetching, data } = useGetUserById(userId);
-
-	useEffect(() => {
-		if (!isFetching && data?._id) {
-			formInstance.setFieldsValue(data);
-			const file = [
-				{
-					uid: data.avatar,
-					name: data.avatar,
-					status: 'done',
-					url: userGetAvatar(data.avatar),
-					thumbUrl: userGetAvatar(data.avatar),
-				},
-			];
-
-			formInstance.setFieldValue('image', file);
-		}
-	}, [isFetching]);
+export const ProfileDetailForm = () => {
+	const user = useAuthStore((state) => state.userProfile);
 
 	return (
-		<Spin spinning={isFetching} tip='Cargando'>
-		<Form form={formInstance} autoComplete='off' layout='vertical'>
+		<Form
+			initialValues={{
+				image: [
+					{
+						uid: user.avatar,
+						name: user.avatar,
+						status: 'done',
+						url: userGetAvatar(user.avatar),
+						thumbUrl: userGetAvatar(user.avatar),
+					},
+				],
+				name: user.name,
+				lastname: user.lastname,
+				email: user.email,
+			}}
+			autoComplete='off'
+			layout='vertical'>
 			<Row justify='center'>
 				<Form.Item name='image' style={{ position: 'relative' }}>
 					<UploadAvatar />
@@ -58,6 +54,5 @@ export const ProfileDetailForm = ({ userId }) => {
 				Guardar Cambios
 			</Button>
 		</Form>
-		</Spin>
 	);
 };
