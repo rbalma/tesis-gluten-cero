@@ -82,11 +82,11 @@ export const deleteFavRecipe = async (recipeId) => {
 }
 
 export const changeStatusRecipe = async ({ recipeId, values }) => {
-	const { data } = await glutenCeroApi.patch(`/recipes/${recipeId }`, values);
+	const { data } = await glutenCeroApi.patch(`/recipes/${recipeId}`, values);
 	return data;
 }
 
 export const rejectedRecipeInfo = async (recipeId) => {
-	const { data } = await glutenCeroApi.get(`/rejected/recipes/${recipeId }`);
+	const { data } = await glutenCeroApi.get(`/rejected/recipes/${recipeId}`);
 	return data.rejected;
 }

@@ -7,6 +7,10 @@ import { uploadImage, deleteImage } from "../services/cloudinary.js";
 import { createNotification } from "../services/notifications.services.js";
 import { events } from "../utils/events.js";
 import RejectedRecipes from "../models/rejectedRecipes.js";
+import handlebars from "handlebars";
+import dirnamePath from "../dirnamePath.js";
+import { URL_FRONT } from "../config/config.js";
+import sendEmail from "../services/sendEmail.js";
 
 // @desc Agregar una nuevo receta
 // @route /api/recipes
@@ -27,7 +31,34 @@ export const addRecipes = async (req, res, next) => {
 
     const recipeDB = await recipe.save();
 
-    //! Mandar mail
+    try {
+      fs.readFile(
+        dirnamePath + "/utils/templatesMails/recipePending.html",
+        { encoding: "utf-8" },
+        function (err, html) {
+          if (err) {
+            throw new Error(err);
+          } else {
+            const template = handlebars.compile(html);
+            const replacements = {
+              url: `${URL_FRONT}`,
+              name: req.user.name,
+              lastName: req.user.lastname,
+              recipeName: recipeDB.title,
+              recipeId: recipeDB._id,
+            };
+            const htmlToSend = template(replacements);
+            sendEmail({
+              to: 'glutencerooficial@gmail.com',
+              subject: "Nueva receta para revisar",
+              text: htmlToSend,
+            });
+          }
+        }
+      );
+    } catch (error) {
+      return next(new ErrorResponse("El correo no pudo ser enviado", 500));
+    }
 
     res.json({
       ok: true,
@@ -147,17 +178,19 @@ export const changeStatusRecipe = async (req, res, next) => {
       const rejectedRecipes = new RejectedRecipes({
         description: rejectedDescription,
         recipe: recipeId,
-        admin: req.id
+        admin: req.id,
       });
       await rejectedRecipes.save({ session });
     }
 
     const notification = {
-      description: state === 'success' ? events.RECIPE_APPROVED : events.RECIPE_REJECTED,
+      event:
+        state === "success" ? events.RECIPE_APPROVED : events.RECIPE_REJECTED,
       originUser: `${req.user.name} ${req.user.lastname}`,
       notifiedUser: recipe.user,
       recipe: recipeId,
-      recipeTitle: recipeFound.title
+      description: state === "success" ? `La receta "${recipe.title}" fue agregada a Gluten Cero y ya puede ser visitada por cualquier usuario.` : 
+      `La receta "${recipe.title}" no cumple con todos los requisitos para ser agregada a Gluten Cero.`,
     };
 
     await createNotification(notification, session);
@@ -217,7 +250,7 @@ export const updateRecipe = async (req, res, next) => {
     const newRecipe = {
       ...req.body,
       user: req.id,
-      state: 'pending',
+      state: "pending",
       isUpdated: true,
     };
 
@@ -234,8 +267,6 @@ export const updateRecipe = async (req, res, next) => {
     const updateRecipe = await Recipe.findByIdAndUpdate(recipeId, newRecipe, {
       new: true,
     });
-
-    //! Mandar mail
 
     res.json({
       data: updateRecipe,
@@ -299,7 +330,10 @@ export const getLastRecipesSideBar = async (req, res, next) => {
   };
 
   try {
-    const recipes = await Recipe.paginate({ _id: { $ne: recipeId }, state: 'success' }, options);
+    const recipes = await Recipe.paginate(
+      { _id: { $ne: recipeId }, state: "success" },
+      options
+    );
 
     res.json({
       data: recipes.docs,

@@ -146,10 +146,10 @@ export const useChangeStateRecipe = () => {
 	const queryClient = useQueryClient();
 	return useMutation({
 		mutationFn: changeStatusRecipe,
-		onSuccess: (_, { recipeId, values }) => {
+		onSuccess: (_, { recipeId, state }) => {
 			queryClient.setQueryData(['recipes', recipeId], (old) => ({
 				...old,
-				state: values.state
+				state
 			}))
 		},
 		onError: () => toast.error('Error. Vuelva a intentarlo'),

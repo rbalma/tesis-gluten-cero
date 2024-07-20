@@ -9,7 +9,7 @@ export const ApproveRejectRecipeBanner = ({ recipeId }) => {
 	const { isPending, mutate } = useChangeStateRecipe();
 
 	const approveRecipe = () => {
-		mutate({ recipeId, state: 'success' });
+		mutate({ recipeId, values: { state: 'success' } });
 	};
 
 	return (
