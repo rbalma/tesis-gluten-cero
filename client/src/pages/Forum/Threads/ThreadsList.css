@@ -1,5 +1,5 @@
 .foro-container {
-	min-height: calc(100vh - 170px);
+	min-height: calc(100vh - 80px);
     height: 100%;
     background: url(/src/assets/images/fondoForo.jpg) center;
     background-repeat: no-repeat;
@@ -7,7 +7,7 @@
 }
 
 .foro-container-background {
-    min-height: calc(100vh - 170px);
+    min-height: calc(100vh - 80px);
     height: 100%;
     background-color: rgba(246, 216, 107, 0.50);
 }
