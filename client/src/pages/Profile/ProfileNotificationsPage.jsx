@@ -1,11 +1,16 @@
-import { Breadcrumb, Card, Row, Select } from 'antd';
+import { Breadcrumb } from 'antd';
 import { Link } from 'react-router-dom';
 import { IconChevronDown } from '@/components/Icons';
 import { ProfileNotificationCard } from '@/components/Profile/Cards/ProfileNotificationCard';
+import { useGetNotifications } from '@/services/queries/notificationsQueries';
+import useAuthStore from '@/store/authStore';
 
 import styles from './Profile.module.css';
 
 export const ProfileNotificationsPage = () => {
+	const user = useAuthStore((state) => state.userProfile);
+	const { isLoading, isSuccess, data } = useGetNotifications({ userId: user.id });
+
 	return (
 		<div className={styles.profileContainer}>
 			<header className={styles.profileHeader}>
@@ -20,26 +25,16 @@ export const ProfileNotificationsPage = () => {
 				</Breadcrumb>
 			</header>
 
-			{/* <Row justify='space-between' wrap>
-				<span>Marcar todo como leido</span>
-				<Select
-					defaultValue='lucy'
-					bordered={false}
-					options={[
-						{
-							value: 'jack',
-							label: 'Más antiguos',
-						},
-						{
-							value: 'lucy',
-							label: 'Más recientes',
-						},
-					]}
-				/>
-			</Row> */}
-
 			<div className={styles.notificationsList}>
-				<ProfileNotificationCard />
+
+			{!isLoading && isSuccess
+				? data.notifications.map((notification) => (
+						<ProfileNotificationCard
+							key={notification._id}
+							{...notification}
+						/>
+				  ))
+				: null}
 			</div>
 		</div>
 	);
