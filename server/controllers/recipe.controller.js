@@ -189,8 +189,7 @@ export const changeStatusRecipe = async (req, res, next) => {
       originUser: `${req.user.name} ${req.user.lastname}`,
       notifiedUser: recipe.user,
       recipe: recipeId,
-      description: state === "success" ? `La receta "${recipe.title}" fue agregada a Gluten Cero y ya puede ser visitada por cualquier usuario.` : 
-      `La receta "${recipe.title}" no cumple con todos los requisitos para ser agregada a Gluten Cero.`,
+      recipeTitle: recipe.title,
     };
 
     await createNotification(notification, session);

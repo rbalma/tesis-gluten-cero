@@ -152,7 +152,7 @@ export const addReview = async (req, res, next) => {
 
       newRating = Math.round((ratingTotal + Number.EPSILON) * 10) / 10;
 
-      const recipeFound = await Recipe.findById(recipe, "_id title user");
+      const recipeFound = await Recipe.findById(recipe, "_id title user", { session });
 
       if (!recipeFound) throw new ErrorResponse("No existe la receta", 404);
 
@@ -170,7 +170,7 @@ export const addReview = async (req, res, next) => {
         originUser: `${req.user.name} ${req.user.lastname}`,
         notifiedUser: recipeFound.user,
         recipe,
-        description: `La receta "${recipeFound.title}" tiene una nueva valoración por parte de ${req.user.name} ${req.user.lastname}`,
+        recipeTitle: recipeFound.title,
       };
 
       await createNotification(notification, session);
