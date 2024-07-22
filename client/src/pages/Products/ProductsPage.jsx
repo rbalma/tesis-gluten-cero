@@ -113,7 +113,7 @@ export const ProductsPage = () => {
 					<CleanFiltersProducts filters={filters} cleanFilters={cleanFilters} />
 				</div>
 				<div className={styles.exportSort}>
-					<SortProducts handleChange={handleChangeSort} />
+					<SortProducts handleChange={handleChangeSort} value={filters.sortField} />
 					<ExportsProducts filters={filters} />
 				</div>
 			</div>

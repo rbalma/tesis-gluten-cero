@@ -1,11 +1,12 @@
 import { Select } from 'antd';
 
-export const SortProducts = ({ handleChange }) => {
+export const SortProducts = ({ handleChange, value }) => {
 	return (
 		<div>
 			Ordenar por:
 			<Select
 				defaultValue='denominacionVenta'
+				value={value}
 				bordered={false}
 				dropdownStyle={{ minWidth: 130 }}
 				placement='bottomLeft'
