@@ -10,7 +10,6 @@ import { useGetMarkersByLocation } from '@/services/queries/mapQueries';
 import { MarkerPlace } from '@/components/Map/Markers/MarkerPlace';
 import { CategoriesMarkers, DistanceRadius } from '@/components/Map/Filters';
 import { IconCluster } from '@/components/Map/Markers/IconsMarkers';
-import Footer from '@/layout/home/ui/Footer';
 
 import 'leaflet/dist/leaflet.css';
 import styles from './MapSearchPage.module.css';
@@ -113,7 +112,6 @@ export const MapSearchPage = () => {
 						  ))
 						: null}
 				</section>
-				<Footer />
 			</div>
 
 			<div className={styles.fullMap}>
