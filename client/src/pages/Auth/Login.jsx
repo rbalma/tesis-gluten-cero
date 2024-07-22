@@ -20,7 +20,11 @@ export const Login = () => {
 		if (data?.ok) {
 			addUser(data.user, data.token);
 			//toast.success('Bienvenido a Gluten Cero');
-			navigate('/');
+			if (window.history.state && window.history.state.idx > 0) {
+				navigate(-1);
+			} else {
+				navigate('/', { replace: true });
+			}
 		}
 
 		if (data?.error) {
