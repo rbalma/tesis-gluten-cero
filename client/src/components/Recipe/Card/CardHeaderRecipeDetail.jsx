@@ -9,7 +9,7 @@ export const CardHeaderRecipeDetail = ({ recipeId, title, category, state, userI
 	const userAuth = useAuthStore((state) => state.userProfile);
 
 	if ((state === 'pending' && userAuth?.role !== 'admin'))
-		return <Navigate to='/recetas' />;
+		return userAuth?.id ? <Navigate to='/recetas' /> : <Navigate to='/ingreso' />;
 
 	if (
 		(state ===

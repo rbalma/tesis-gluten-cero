@@ -17,7 +17,7 @@ export const UserProfile = ({ overlayClassName = 'profileDropdown' }) => {
 	const logoutUser = () => {
 		removeUser();
 		googleLogout();
-		navigate('/');
+		navigate('/ingreso');
 	};
 
 	const items = [
