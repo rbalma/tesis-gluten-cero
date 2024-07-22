@@ -11,7 +11,7 @@ export const NoticesSection = () => {
 
 	return (
 		<section className={styles.container} id='noticias'>
-			<h4 className={styles.title}>Últimas Noticias</h4>
+			<h4 className={styles.title}>Últimas <span>Noticias</span></h4>
 			{ !isFetching && data?.notices?.length === 0 ? (
 				<>
 				<img

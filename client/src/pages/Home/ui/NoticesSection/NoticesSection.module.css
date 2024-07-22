@@ -1,7 +1,7 @@
 .container {
 	text-align: center;
-	padding-top: 2rem;
-	padding-bottom: 2rem;
+	padding-top: 4rem;
+	padding-bottom: 4rem;
 	background-color: #fff;
 }
 
@@ -15,11 +15,25 @@
 }
 
 .title {
-	margin: 0;
-	font-size: 35px;
-	font-weight: 600;
-	font-family: 'NoirPro', sans-serif; /* Montserrat */
+	margin-bottom: 20px;
+	font-size: 40px;
+	font-weight: 700;
+	font-family: 'Sora', sans-serif;
+	/* Montserrat */
 }
+
+.container h4 span {
+	font-family: 'Sora', sans-serif;
+	font-weight: 700;
+	font-size: 38px;
+	display: inline-block;
+	transform: translate(0, 0) rotate(0) skewX(-12deg) skewY(0) scaleX(1) scaleY(1);
+	background-color: #ff5630;
+	padding-left: 14px;
+	padding-right: 14px;
+	color: rgb(247 250 252 / 1);
+}
+
 
 .notFound {
 	font-family: 'Sora', sans-serif;

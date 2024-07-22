@@ -1,11 +1,8 @@
 .container {
 	padding-top: 10px;
 	width: 100%;
-	height: 250px;
-	background: url('@/assets/images/map-section.jpg') top left;
-	background-size: cover;
+	height: 280px;
 	position: relative;
-	background-attachment: fixed;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -21,23 +18,54 @@
 	right: 0;
 }
 
+.videoContainer {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: -10;
+	background-color: rgba(0, 0, 0, 0.514);
+	overflow-y: hidden;
+}
+
+.videoContainer>video {
+	object-fit: cover;
+	width: 100%;
+	height: 100%;
+}
+
 .info {
 	position: relative;
 	padding: 0px 20px;
 }
 
 .title {
-	margin: 0;
+	margin-bottom: 15px;
 	font-size: 40px;
 	font-weight: 700;
 	line-height: 56px;
 	text-align: center;
 	color: #fff;
-	font-family: 'NoirPro', sans-serif; /* Montserrat */
+	font-family: 'Sora', sans-serif;
+	/* Montserrat */
 }
 
+.info h3 span {
+	font-family: 'Sora', sans-serif;
+	font-weight: 700;
+	font-size: 38px;
+	display: inline-block;
+	transform: translate(0, 0) rotate(0) skewX(-12deg) skewY(0) scaleX(1) scaleY(1);
+	background-color: #fa8c15;
+	padding-left: 14px;
+	padding-right: 14px;
+	color: rgb(247 250 252 / 1);
+}
+
+
 .text {
-	font-size: 20px;
+	font-size: 18px;
 	text-align: center;
 	color: #fff;
 	font-family: 'Sora', sans-serif;
@@ -47,6 +75,7 @@
 	.container {
 		height: 30vh;
 	}
+
 	.title {
 		font-size: 28px;
 	}

@@ -1,22 +1,30 @@
-import recipe1 from '@/assets/images/recipes/recipe1.jpg';
-import recipe2 from '@/assets/images/recipes/recipe2.jpg';
-import recipe3 from '@/assets/images/recipes/recipe3.jpg';
-import { RecipeCardSection } from './RecipeCardSection';
+import { IconArrowNarrowLeft } from '@/components/Icons';
+import picture from '@/assets/images/recetas.jpg';
 
 import styles from './RecipesSection.module.css';
 
 export const RecipesSection = () => {
 	return (
-		<>
-			<h2 className={styles.title}>Recetas por Categorías</h2>
-			<div className={styles.cardGrid}>
-				<RecipeCardSection title={'Postre'} image={recipe1} />
-				<RecipeCardSection title={'Dulces'} image={recipe2} />
-				<RecipeCardSection title={'Ensaladas'} image={recipe3} />
-				<div className={styles.lastRecipe}>
-					<RecipeCardSection title={'Ensaladas'} image={recipe3} />
-				</div>
+		<div className={styles.recipesContainer}>
+			<img src={picture} alt='recipes' className={styles.recipeImage} />
+
+			<div className={styles.recipesInfo}>
+				<h2 className={styles.title}>
+					Tenemos las mejores <br /> <span>Recetas</span>
+				</h2>
+				<p>
+					Deliciosas recetas sin gluten para saborear cada día con alegría y
+					salud.
+				</p>
+				<p>
+					Incluye algunas populares y favoritas entre la comunidad celíaca,
+					asegurándote de proporcionar instrucciones claras y precisas.
+				</p>
+
+				<button className={styles.btnRecipe}>
+					Ir a las Recetas <IconArrowNarrowLeft />
+				</button>
 			</div>
-		</>
+		</div>
 	);
 };

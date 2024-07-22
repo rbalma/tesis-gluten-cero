@@ -8,7 +8,7 @@ const HomePage = () => {
 		<>
 			<ScrollToAnchor />
 			<Banner />
-			<IntroductionSection />
+			{/* <IntroductionSection /> */}
 			<InformationSection />
 			<ServicesSection />
 			<NoticesSection />

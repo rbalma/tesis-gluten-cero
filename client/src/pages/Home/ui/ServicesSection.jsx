@@ -12,7 +12,7 @@ export const ServicesSection = () => {
 	return (
 		<section className={styles.sectionBg}>
 			<header className={styles.header}>
-				<h3>Servicios</h3>
+				<h3>Increíbles <span>Servicios</span></h3>
 				<p>
 					A través de Gluten Cero se podrá acceder a diferentes funcionalidades
 					para brindar el mejor apoyo a la comunidad.
