@@ -32,11 +32,11 @@ export const AutoCompleteMap = ({ onSelectSearch, getUbicacion }) => {
 				isFetching && !isSuccess
 					? []
 					: addresses?.map((address) => {
-							const fullDirection = `${address.address?.road || '-'} ${
-								address.address?.house_number || '-'
-							}, ${address.address?.suburb || '-'}, ${
+							const fullDirection = `${address.address?.road || ''} ${
+								address.address?.house_number || ''
+							} ${address.address?.suburb || ''} ${
 								address.address?.state
-							}, ${address.address?.country}`;
+							} ${address.address?.country}`;
 							return {
 								label: (
 									<span className={styles.optionsAutoComplete}>
