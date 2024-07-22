@@ -32,7 +32,7 @@ export const addThread = async (req, res, next) => {
 // @route GET /api/threads
 // @access Public
 export const getThread = async (req, res, next) => {
-  const { page = 1, limit = 15, search = "", status, user } = req.query;
+  const { page = 1, limit = 15, search = "", status, user, likedBy } = req.query;
 
   const options = {
     page,
@@ -54,6 +54,7 @@ export const getThread = async (req, res, next) => {
   let filters = {};
   if (status) filters = { status };
   if (user) filters = { ...filters, user };
+  if (likedBy) filters = { ...filters, likes: likedBy };
 
   try {
     if (search) {

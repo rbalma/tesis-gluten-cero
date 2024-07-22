@@ -65,7 +65,6 @@ export const useDeleteThreads = () => {
 };
 
 // Una vez eliminado el post se hace el fetch de Threads en este caso para recargar todos los hilos
-
 export const useDeletePosts = () => {
 	const queryClient = useQueryClient();
 	return useMutation({

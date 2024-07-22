@@ -41,6 +41,10 @@ export const getPosts = async (req, res, next) => {
         select: 'name lastname avatar',
       },
       {
+        path: 'thread',
+        select: 'title description',
+      },
+      {
         path: 'postMother',
         select: 'content date user',
         populate: {

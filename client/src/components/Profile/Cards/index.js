@@ -4,3 +4,6 @@ export * from './ProfileRecipeReviewCard';
 export * from './ProfileMarkerCard';
 export * from './ProfileMarkerReviewCard';
 export * from './ProfileProductsFavCard';
+export * from './ProfileThreadsCard';
+export * from './ProfilePostsCard';
+export * from './ProfileLikeThreadsCard';
