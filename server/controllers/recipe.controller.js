@@ -110,6 +110,7 @@ export const getRecipes = async (req, res, next) => {
     page,
     limit: parseInt(limit),
     sort: { createdAt: 1 },
+    select: '-ingredients -instructions',
     populate: [
       {
         path: "user",
