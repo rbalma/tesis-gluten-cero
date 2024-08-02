@@ -39,9 +39,7 @@ ChartJS.register(
 export const AdminStatistics = () => {
 
   const {
-		1: loadingDataUsers,
 		2: dataUsers,
-		4: fetchUsers,
 		9: countUsers,
 	} = useData('/users', null);
 
@@ -355,16 +353,20 @@ function ResumenTabla({ recetas, marcadores, publicaciones, usuarios }) {
     userData[usuario._id] = { usuario, recetas: 0, marcadores: 0, publicaciones: 0 };
   });
 
- recetas.forEach(receta => {
-  userData[receta.user._id].recetas++;
-});
-
-  marcadores.forEach(marcador => {
-    userData[marcador.user._id].marcadores++;
+  recetas.forEach(receta => {
+    if (userData[receta.user._id]) {
+      userData[receta.user._id].recetas++;
+    } else {
+      console.warn(`Usuario con id ${receta.user._id} no encontrado en userData`);
+    }
   });
 
-  publicaciones.forEach(publicacion => {
-    userData[publicacion.user._id].publicaciones++;
+   publicaciones.forEach(publicacion => {
+    if (userData[publicacion.user._id]) {
+      userData[publicacion.user._id].publicaciones++;
+    } else {
+      console.warn(`Usuario con id ${receta.user._id} no encontrado en userData`);
+    }
   });
 
   const data =Object.values(userData).map(userItem => ({
@@ -395,13 +397,6 @@ function ResumenTabla({ recetas, marcadores, publicaciones, usuarios }) {
       dataIndex: 'recetas',
       key: 'recetas',
       render: recetas => <Tag color="rgba(0,255,0,0.5)" className="custom-tag">{recetas}</Tag>,
-      className: 'custom-column',
-    },
-    {
-      title: 'Marcadores',
-      dataIndex: 'marcadores',
-      key: 'marcadores',
-      render: marcadores => <Tag color="rgba(255,0,255,0.5)" className="custom-tag">{marcadores}</Tag>,
       className: 'custom-column',
     },
     {

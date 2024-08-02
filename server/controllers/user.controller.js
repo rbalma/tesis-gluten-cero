@@ -13,7 +13,7 @@ import dirnamePath from "../dirnamePath.js";
 export const getUsers = async (req, res, next) => {
   const {
     page = 1,
-    limit = 10,
+    limit = 20,
     name,
     lastname,
     email,
