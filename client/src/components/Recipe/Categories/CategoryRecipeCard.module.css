@@ -25,7 +25,6 @@
 .categoryRecipeItem>img {
   width: 75px;
   height: 75px;
-  border-radius: 50px;
   aspect-ratio: 1/1;
 }
 
