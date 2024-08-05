@@ -12,17 +12,20 @@ export default function Aportes() {
   const [donacion, setDonacion] = useState(undefined);
   const [isTermsModalVisible, setIsTermsModalVisible] = useState(false);
   const [isTermsAccepted, setIsTermsAccepted] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const close = () => {
     setShowOptions(false);
     setDonacion(undefined);
     setPaymentMethod(undefined);
+    setIsModalOpen(false);
   };
 
   const handleTermsAccept = () => {
     setIsTermsAccepted(true);
     setIsTermsModalVisible(false);
     setShowOptions(true); // Abre las opciones de pago después de aceptar los términos
+    setIsModalOpen(true);
   };
 
   const handleTermsDecline = () => {
@@ -158,7 +161,7 @@ export default function Aportes() {
             </div>
             <div className="aportes-body_btn">
               <div className="btn-donar-container">
-                <button className="btn-donar" onClick={() => setIsTermsModalVisible(true)}>Donar</button>
+                <button className="btn-donar" onClick={() => setIsTermsModalVisible(true)} disabled={isModalOpen}>Donar</button>
               </div>
             </div>
           </div>

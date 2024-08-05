@@ -32,7 +32,7 @@ export const addThread = async (req, res, next) => {
 // @route GET /api/threads
 // @access Public
 export const getThread = async (req, res, next) => {
-  const { page = 1, limit = 15, search = "", status, user } = req.query;
+  const { page = 1, limit = 15, search = "", status, user, likedBy } = req.query;
 
   const options = {
     page,
@@ -44,9 +44,9 @@ export const getThread = async (req, res, next) => {
       },
       {
         path: "posts",
-        select: "date user",
+        select: "date user content",
         sort: { date: -1 },
-        populate: { path: "user", select: "name lastname" },
+        populate: { path: "user", select: "name lastname"},
       },
     ],
   };
@@ -54,6 +54,7 @@ export const getThread = async (req, res, next) => {
   let filters = {};
   if (status) filters = { status };
   if (user) filters = { ...filters, user };
+  if (likedBy) filters = { ...filters, likes: likedBy };
 
   try {
     if (search) {
@@ -134,6 +135,35 @@ export const updateThread = async (req, res, next) => {
     } catch (error) {
       next(error);
     }
+};
+
+// @desc Like
+// @route PUT /api/threads/like/:threadId
+// @access Private
+export const likeThread = async (req, res, next) => {
+  const { threadId } = req.params;
+
+  try {
+    const thread = await Thread.findById(threadId);
+    if (!thread) return next(new ErrorResponse('No existe el hilo', 404));
+
+    const newThread = {
+      ...req.body,
+      isUpdated: true
+    };
+
+    const updateThread = await Thread.findByIdAndUpdate(threadId, newThread, {
+      new: true,
+    });
+
+    res.json({
+      ok: true,
+      thread: updateThread,
+      message: 'Hilo actualizado'
+    });
+  } catch (error) {
+    next(error);
+  }
 };
 
 // @desc Elimina un hilo

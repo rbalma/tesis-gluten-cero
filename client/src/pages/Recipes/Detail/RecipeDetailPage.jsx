@@ -28,6 +28,9 @@ export const RecipeDetailPage = () => {
 			<CardHeaderRecipeDetail
 				title={recipe.title}
 				category={recipe.category.name}
+				state={recipe.state}
+				userId={recipe.user._id}
+				recipeId={recipe._id}
 			/>
 			<main className={styles.recipeDetails}>
 				<CardRecipeDetail recipe={recipe} forwardRef={componentRef} />

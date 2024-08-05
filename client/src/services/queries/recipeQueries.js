@@ -2,6 +2,7 @@ import { toast } from 'sonner';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
 	addFavRecipe,
+	changeStatusRecipe,
 	createRecipe,
 	deleteFavRecipe,
 	deleteRecipe,
@@ -9,6 +10,7 @@ import {
 	getRecipeById,
 	getRecipes,
 	getSideBarRecipes,
+	rejectedRecipeInfo,
 	updateRecipe,
 } from '../api/recipeApi';
 import useAuthStore from '@/store/authStore';
@@ -137,5 +139,26 @@ export const useDeleteFavoriteRecipe = () => {
 			toast.success(data?.message);
 		},
 		onError: () => toast.error('Error. Vuelva a intentarlo'),
+	});
+};
+
+export const useChangeStateRecipe = () => {
+	const queryClient = useQueryClient();
+	return useMutation({
+		mutationFn: changeStatusRecipe,
+		onSuccess: (_, { recipeId, state }) => {
+			queryClient.setQueryData(['recipes', recipeId], (old) => ({
+				...old,
+				state
+			}))
+		},
+		onError: () => toast.error('Error. Vuelva a intentarlo'),
+	});
+};
+
+export const useGetRejectedRecipeInfo = (recipeId) => {
+	return useQuery({
+		queryKey: ['rejected', recipeId],
+		queryFn: () => rejectedRecipeInfo(recipeId),
 	});
 };

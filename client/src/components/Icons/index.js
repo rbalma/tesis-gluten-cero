@@ -44,3 +44,5 @@ export * from './IconLoading';
 export * from './IconCircleX';
 export * from './IconExternalLink';
 export * from './IconBellFilled';
+export * from './IconLogout';
+export * from './IconLockSquareRounded';

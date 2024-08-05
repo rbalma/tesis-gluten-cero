@@ -1,21 +1,21 @@
 import { Button, Modal } from 'antd';
 import { IconTrash } from '@/components/Icons';
-import { useDeleteUsers } from '@/services/queries/usersQueries';
+import { useDeleteRecipe } from '@/services/queries/recipeQueries';
 
 const { confirm } = Modal;
 
-export const ModalDeleteRecipes = ({ userId, userName, onCloseDrawer }) => {
-	const { mutateAsync } = useDeleteUsers();
+export const ModalDeleteRecipes = ({ recipeId, recipeName, onCloseDrawer }) => {
+	const { mutateAsync } = useDeleteRecipe();
 
 	const showDeleteConfirm = () => {
 		confirm({
-			title: `¿Está seguro qué quiere eliminar a ${userName}?`,
+			title: `¿Está seguro qué quiere eliminar a la receta ${recipeName}?`,
 			okText: 'Confirmar',
 			okType: 'danger',
 			cancelText: 'Cancelar',
 			onOk: async () => {
 				try {
-					await mutateAsync(userId);
+					await mutateAsync(recipeId);
 					onCloseDrawer();
 				} catch (error) {
 					console.log(error);

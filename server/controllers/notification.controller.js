@@ -14,7 +14,7 @@ export const getNotification = async (req, res, next) => {
     sort: { createdAt: -1 },
     populate: [
       {
-        path: "userSends",
+        path: "originUser",
         select: "name lastname avatar",
       },
       {
@@ -25,21 +25,17 @@ export const getNotification = async (req, res, next) => {
         path: "recipe",
         select: "_id title",
       },
-      {
-        path: "marker",
-        select: "_id title",
-      },
     ],
   };
 
   try {
     const filters = {};
-    if (userId) filters.user = userId;
+    if (userId) filters.notifiedUser = userId;
 
     const notifications = await Notifications.paginate(filters, options);
 
     res.json({
-      notices: notifications.docs,
+      notifications: notifications.docs,
       totalPages: notifications.totalPages,
       count: notifications.totalDocs,
     });
@@ -113,7 +109,7 @@ export const getUnreadNotifications = async (req, res, next) => {
   const { userId } = req.params;
   try {
     const countUnread = await Notifications.count({
-      user: userId,
+      notifiedUser: userId,
       read: false,
     });
     res.json({ count: countUnread });
@@ -123,14 +119,14 @@ export const getUnreadNotifications = async (req, res, next) => {
 };
 
 // @desc Marca todas las notificaciones de un usuario como leídas
-// @route PATCH /api/notifications
+// @route PATCH /api//notifications/unread/user/:userId
 // @access Private
 export const checkAllNotification = async (req, res, next) => {
   const { userId } = req.params;
   try {
     await Notifications.updateMany(
-      { read: true },
-      { where: { notifiedUser: userId } }
+      { notifiedUser: userId },
+      { read: true }
     );
     res.json({
       ok: true,

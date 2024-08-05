@@ -5,6 +5,7 @@ import {
   getThreadById,
   updateThread,
   deleteThread,
+  likeThread,
 } from '../controllers/thread.js';
 import {
   addPost,
@@ -27,6 +28,7 @@ router
   .get(validateJWT, getThreadById)
   .put(validateJWT, updateThread)
   .delete(validateJWT, deleteThread);
+router.route('/threads/like/:threadId').put(validateJWT, likeThread);
 
 /*
     POSTS

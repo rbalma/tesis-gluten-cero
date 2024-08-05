@@ -3,6 +3,9 @@ import User from "../models/user.js";
 import ErrorResponse from "../utils/errorResponse.js";
 import { fsUnlink } from "../utils/fsUnlink.js";
 import sendEmail from "../services/sendEmail.js";
+import handlebars from "handlebars";
+import fs from "fs";
+import dirnamePath from "../dirnamePath.js";
 
 // @desc Obtener los usuarios paginados
 // @route /api/users
@@ -10,7 +13,7 @@ import sendEmail from "../services/sendEmail.js";
 export const getUsers = async (req, res, next) => {
   const {
     page = 1,
-    limit = 10,
+    limit = 20,
     name,
     lastname,
     email,
@@ -94,45 +97,39 @@ export const addUsers = async (req, res, next) => {
 
     const user = await User.create(newUser);
 
-    const confirmUrl = `${URL_FRONT}/ingreso?q=${user._id}`;
-
-    const message = `
-    <h1 style='
-    text-align: center;
-    font-family: Arial, Helvetica;
-    '>Confirma tu Cuenta</h1>
-    <p style='font-family: Arial, Helvetica; text-align: center;'>Ya estás a un solo paso de convertirte en miembro de Gluten Cero. Solo debes
-      presionar el siguiente botón: </p>
-    <a style='
-    display: flex;
-    font-family: Arial, Helvetica;
-    padding: 1rem;
-    background-color: #00C897;
-    color: white;
-    margin: 10px auto;
-    text-transform: uppercase;
-    text-align: center;
-    text-decoration: none;
-    width: max-content;
-    ' href=${confirmUrl}>Confirmar cuenta</a>
-    <p style='font-family: Arial, Helvetica; text-align: center;'>Si no puedes acceder a este enlace, vísita : ${confirmUrl}</p>
-    `;
-
     try {
-      const result = await sendEmail({
-        to: email,
-        subject: "Activar cuenta de Gluten Cero",
-        text: message,
-      });
-
-      if (result)
-        return res.status(201).json({
-          data: user,
-          message: "Usuario creado y correo enviado",
-        });
+      fs.readFile(
+        dirnamePath + "/utils/templatesMails/accountActive.html",
+        { encoding: "utf-8" },
+        function (err, html) {
+          if (err) {
+            throw new Error(err);
+          } else {
+            const template = handlebars.compile(html);
+            const replacements = {
+              url: `${URL_FRONT}`,
+              name: user.name,
+              mail: user.email,
+              id: user._id,
+            };
+            const htmlToSend = template(replacements);
+            sendEmail({
+              to: user.email,
+              subject: "Activar cuenta de Gluten Cero",
+              text: htmlToSend,
+            });
+          }
+        }
+      );
     } catch (error) {
       return next(new ErrorResponse("El correo no pudo ser enviado", 500));
     }
+
+    res.status(201).json({
+      ok: true,
+      data: user,
+      message: "Usuario creado",
+    });
   } catch (error) {
     next(error);
   }
@@ -143,7 +140,6 @@ export const addUsers = async (req, res, next) => {
 // @access Private
 export const addUserPanelAdmin = async (req, res, next) => {
   try {
-
     if (req.file) {
       req.body.avatar = req.file.filename;
     }
@@ -151,7 +147,7 @@ export const addUserPanelAdmin = async (req, res, next) => {
     const newUser = new User(req.body);
     const savedUser = await newUser.save();
 
-    res.json({ user: savedUser, message: "Usuario agregado"  });
+    res.json({ user: savedUser, message: "Usuario agregado" });
   } catch (error) {
     if (req.file) fsUnlink(`/avatar/${req.file.filename}`);
     console.log(error);
@@ -160,7 +156,7 @@ export const addUserPanelAdmin = async (req, res, next) => {
 };
 
 // @desc Activar la cuenta de un usuario registrado
-// @route /api/active-account/:userId
+// @route PATCH /api/active-account/:userId
 // @access Private
 export const activeUserAccount = async (req, res, next) => {
   const { userId } = req.params;

@@ -1,10 +1,13 @@
-import { URL_FRONT, JWT_SECRET } from '../config/config.js';
+import { URL_FRONT, JWT_SECRET } from "../config/config.js";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import User from "../models/user.js";
 import ErrorResponse from "../utils/errorResponse.js";
 import sendEmail from "../services/sendEmail.js";
 import { googleVerify } from "../services/google-verify.js";
+import handlebars from "handlebars";
+import fs from "fs";
+import dirnamePath from "../dirnamePath.js";
 
 // @desc Autenticación
 // @route /api/login
@@ -110,7 +113,8 @@ export const googleSignIn = async (req, res, next) => {
     }
 
     // Si user active es false
-    if (!user.active) return next(new ErrorResponse('El usuario está inactivo', 401));
+    if (!user.active)
+      return next(new ErrorResponse("El usuario está inactivo", 401));
 
     // Generar el JWT
     const payload = {
@@ -151,37 +155,30 @@ export const forgotPassword = async (req, res, next) => {
 
     await user.save();
 
-    const resetUrl = `${URL_FRONT}/cambiar-password/${resetToken}`;
-
-    const message = `
-      <h1 style='
-      text-align: center;
-      font-family: Arial, Helvetica;
-      '>Reestablecer contraseña</h1>
-      <p style='font-family: Arial, Helvetica;'>Usted ha solicitado un cambio de contraseña. Puede realizar el cambio ingresando al siguiente enlace: </p>
-      <a style='
-      display: block;
-      font-family: Arial, Helvetica;
-      padding: 1rem;
-      background-color: #00C897;
-      color: white;
-      text-transform: uppercase;
-      text-align: center;
-      text-decoration: none;
-      'href=${resetUrl}>Cambiar contraseña</a>
-      <p style='font-family: Arial, Helvetica;'>Sino puedes acceder a este enlace, vísita : ${resetUrl}</p>
-      <p style='font-family: Arial, Helvetica;'><b>Este enlace es temporal, si se vence vuelve a solicitarlo.</b></p>
-      <p style='font-family: Arial, Helvetica;'>Si no solicitaste este e-mail puedes ignorarlo</p>
-    `;
-
     try {
-      const result = await sendEmail({
-        to: user.email,
-        subject: "Pedido de cambio de contraseña",
-        text: message,
-      });
-
-      if (result) return res.json({ ok: true, message: "Correo enviado" });
+      fs.readFile(
+        dirnamePath + "/utils/templatesMails/forgotPassword.html",
+        { encoding: "utf-8" },
+        async function (err, html) {
+          if (err) {
+            throw new Error(err);
+          } else {
+            const template = handlebars.compile(html);
+            const replacements = {
+              url: `${URL_FRONT}`,
+              resetToken: resetToken,
+            };
+            const htmlToSend = template(replacements);
+            const result = await sendEmail({
+              to: user.email,
+              subject: "Pedido de cambio de contraseña",
+              text: htmlToSend,
+            });
+            if (result)
+              return res.json({ ok: true, message: "Correo enviado" });
+          }
+        }
+      );
     } catch (error) {
       user.resetPasswordToken = undefined;
       user.resetPasswordExpire = undefined;

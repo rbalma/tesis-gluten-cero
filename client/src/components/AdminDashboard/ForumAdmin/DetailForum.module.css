@@ -1,0 +1,45 @@
+.pictureInfo {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.pictureInfo>h2 {
+  font-size: 18px;
+  font-weight: 600;
+  padding: 0 15px;
+  text-wrap: pretty;
+}
+
+.bodyInfo {
+  background-color: #fff;
+  padding: 15px 0 5px;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.itemInfo {
+  border-top: 2px solid #f5f5f5;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 10px 15px;
+  display: flex;
+  flex-wrap: wrap;
+  font-weight: 400;
+}
+
+.itemData {
+  font-weight: 500;
+  text-wrap: pretty;
+}
+
+.btnRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 25px 15px 0px;
+}
+
+.btnRow>button {
+  font-size: 14px;
+}

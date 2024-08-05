@@ -16,3 +16,8 @@ export const updateProduct = async ({ productId, isLiked }) => {
 	const { data } = await glutenCeroApi.put(`/favorites/products/${productId}`, { isLiked });
 	return data;
 };
+
+export const getProductsByUser = async () => {
+	const { data } = await glutenCeroApi.get('/favorites/user/products');
+	return data.favProducts;
+};

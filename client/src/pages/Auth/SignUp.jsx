@@ -114,6 +114,7 @@ export const SignUp = () => {
 							<Input.Password
 								prefix={<LockOutlined className='margin-icon' />}
 								placeholder='Contraseña'
+								autoComplete='new-password'
 							/>
 						</Form.Item>
 

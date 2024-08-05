@@ -4,6 +4,7 @@ import {
   getRecipesById,
   getRecipes,
   changeStatusRecipe,
+  getRejectedRecipeInfo,
   updateRecipe,
   deleteRecipe,
   getLastRecipesSideBar,
@@ -36,5 +37,7 @@ router
   .patch(validateJWT, addFavRecipe);
 
 router.delete("/favorites/recipes/:recipeId", validateJWT, deleteFavRecipe);
+
+router.get("/rejected/recipes/:recipeId", validateJWT, getRejectedRecipeInfo);
 
 export default router;

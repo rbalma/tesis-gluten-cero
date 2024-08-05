@@ -44,11 +44,11 @@ export const MapReviews = ({
 			<div className={styles.header}>
 				<h2>{markerName}</h2>
 				<div className={styles.averageContainer}>
-					<span>
+					<span className={styles.averageStar}>
 						<StarFilledIcon size={36} />{' '}
 						{ratingReviews ? ratingReviews.toFixed(1) : '-'}
 					</span>
-					{countReviews} {countReviews === 1 ? 'opinión' : 'opiniones'}
+					<span>{countReviews} {countReviews === 1 ? 'opinión' : 'opiniones'}</span>
 				</div>
 			</div>
 

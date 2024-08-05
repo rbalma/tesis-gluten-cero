@@ -11,6 +11,41 @@ import { useGetProducts } from '@/services/queries/productsQueries';
 
 import styles from './ProductsPage.module.css';
 
+
+const columns = [
+	{
+		title: 'Nombre del Producto',
+		dataIndex: 'denominacionVenta',
+		key: 'denominacionVenta',
+		width: '50%',
+		render: (text) => <span className={styles.rowLowercase}>{text}</span>,
+	},
+	{
+		title: 'Tipo de Producto',
+		dataIndex: 'tipoProducto',
+		key: 'tipoProducto',
+		width: '25%',
+		render: (text) => <span className={styles.rowLowercase}>{text}</span>,
+	},
+	{
+		title: 'Marca',
+		dataIndex: 'marca',
+		key: 'marca',
+		width: '15%',
+		render: (text) => <span className={styles.rowLowercase}>{text}</span>,
+	},
+	{
+		title: 'Favoritos',
+		dataIndex: 'likesCount',
+		key: 'likesCount',
+		width: '10%',
+		align: 'center',
+		render: (count, record) => (
+			<LikeProducts count={count} productId={record._id} />
+		),
+	},
+];
+
 export const ProductsPage = () => {
 	const [form] = Form.useForm();
 	const [filters, setFilters] = useReducer(
@@ -22,40 +57,6 @@ export const ProductsPage = () => {
 		}
 	);
 	const { isFetching, data } = useGetProducts(filters);
-
-	const columns = [
-		{
-			title: 'Nombre del Producto',
-			dataIndex: 'denominacionVenta',
-			key: 'denominacionVenta',
-			width: '50%',
-			render: (text) => <span className={styles.rowLowercase}>{text}</span>,
-		},
-		{
-			title: 'Tipo de Producto',
-			dataIndex: 'tipoProducto',
-			key: 'tipoProducto',
-			width: '25%',
-			render: (text) => <span className={styles.rowLowercase}>{text}</span>,
-		},
-		{
-			title: 'Marca',
-			dataIndex: 'marca',
-			key: 'marca',
-			width: '15%',
-			render: (text) => <span className={styles.rowLowercase}>{text}</span>,
-		},
-		{
-			title: 'Favoritos',
-			dataIndex: 'likesCount',
-			key: 'likesCount',
-			width: '10%',
-			align: 'center',
-			render: (count, record) => (
-				<LikeProducts filters={filters} count={count} productId={record._id} />
-			),
-		},
-	];
 
 	const cleanFilters = () => {
 		form.resetFields();
@@ -112,7 +113,7 @@ export const ProductsPage = () => {
 					<CleanFiltersProducts filters={filters} cleanFilters={cleanFilters} />
 				</div>
 				<div className={styles.exportSort}>
-					<SortProducts handleChange={handleChangeSort} />
+					<SortProducts handleChange={handleChangeSort} value={filters.sortField} />
 					<ExportsProducts filters={filters} />
 				</div>
 			</div>
@@ -123,6 +124,7 @@ export const ProductsPage = () => {
 					columns={columns}
 					dataSource={data?.products}
 					rowKey={(record) => record._id}
+					className={styles.tableProducts}
 					bordered
 					scroll={{
 						y: 'calc(100dvh - 200px)',
@@ -131,7 +133,7 @@ export const ProductsPage = () => {
 						position: ['bottomRight'],
 						onChange: handleChangePagination,
 						pageSize: filters.limit,
-						current: filters.pageSize,
+						current: filters.page,
 						size: 'small',
 						hideOnSinglePage: true,
 						total: data?.count,

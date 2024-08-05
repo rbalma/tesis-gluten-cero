@@ -134,7 +134,7 @@ export const PostsList = () => {
 			};
 
 			try {
-				await fetch(`http://localhost:5000/api/threads/${localParams.hiloId}`, {
+				const response = await fetch(`http://localhost:5000/api/threads/like/${localParams.hiloId}`, {
 					method: 'PUT',
 					headers: {
 						'Accept': 'application/json',
@@ -145,6 +145,8 @@ export const PostsList = () => {
 						likes: likesCopy,
 					}),
 				});
+				const data = await response.json();
+    			console.log(data)
 			} catch(error) {
 				console.log(error)
 			};

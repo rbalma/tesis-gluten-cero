@@ -214,16 +214,19 @@
 /*  MODAL  */
 
 .modal-opciones-pago-container {
-    position: absolute;
+    position: fixed;
+    display: flex;
+    top: 50%; /* Centra verticalmente en la ventana del navegador */
+    left: 50%; /* Centra horizontalmente en la ventana del navegador */
+    transform: translate(-50%, -50%); /* Ajusta la posición para centrar el modal */
     display: flex;
     justify-content: center;
     align-items: center;
-    /*min-height: calc(100vh - 170px);*/
-    height: 100%;
+    min-height: calc(100vh - 170px); /* Ajusta este valor según tu header */
     width: 100%;
-    margin-top: 350px;
     background-color: rgba(0,0,0,.5);
     z-index: 1;
+    overflow: auto; /* Permite el scroll si es necesario */
 }
 
 .modal-opciones-pago {

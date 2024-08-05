@@ -16,6 +16,12 @@ import {
 
 import styles from './CardMarker.module.css';
 
+const colorTag = {
+	Hospital: '#f91942',
+	Restaurante: '#A67D53',
+	Comercio: '#ff5630'
+}
+
 export const CardMarker = ({
 	_id,
 	image,
@@ -25,6 +31,7 @@ export const CardMarker = ({
 	category,
 	ratingAverage,
 	ratingCount,
+	handleFlyTo
 }) => {
 	const [fav, setFav] = useState(false);
 	const navigate = useNavigate();
@@ -61,11 +68,11 @@ export const CardMarker = ({
 				alt='restaurante'
 				className={styles.imagenCard}
 			/>
-			<span className={styles.tagCard}>{category.name}</span>
+			<span className={styles.tagCard} style={{ backgroundColor: colorTag[category.name]}}>{category.name}</span>
 			<section className={styles.bodyCard}>
-				<p className={styles.titleCard}>{name}</p>
+				<p className={styles.titleCard} onClick={handleFlyTo}>{name}</p>
 
-				<span className={styles.infoCardMap}>
+				<span className={styles.infoCardMap} style={{ marginBottom: 5 }}>
 					<LocationIcon /> {direction}
 				</span>
 				<span className={styles.infoCardMap}>

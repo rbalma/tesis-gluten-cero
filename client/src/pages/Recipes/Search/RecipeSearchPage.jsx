@@ -9,6 +9,7 @@ import { useGetCategories } from '@/services/queries/categoryQueries';
 import { useGetRecipes } from '@/services/queries/recipeQueries';
 
 import styles from './RecipeSearchPage.module.css';
+import { SkeletonCardsRecipes } from '@/components/Recipe/Skeleton/SkeletonCardsRecipes';
 
 const orderBy = {
 	recientes: {
@@ -49,7 +50,7 @@ export const RecipeSearchPage = () => {
 	const navigate = useNavigate();
 	const { data } = useGetCategories(filtersCategories);
 	const [filtersRecipes, setFiltersRecipes] = useState(initialFiltersRecipes);
-	const { isSuccess, data: recipes } = useGetRecipes(filtersRecipes);
+	const { isSuccess, isFetching, data: recipes } = useGetRecipes(filtersRecipes);
 
 	const onClickCategory = (newCategoryId) => {
 		if (
@@ -83,9 +84,13 @@ export const RecipeSearchPage = () => {
 	return (
 		<div className={styles.containerRecipe}>
 			<section className={styles.bannerRecipe}>
-				<h2>¡Hora de cocinar!</h2>
-				{/* <p>Encuentra las mejores comidas y te invitamos a compartir las que conoces</p> */}
+				<div className={styles.bannerContent}>
+				<h2>Come sano, vive mejor</h2>
+				<p>Encuentra las mejores recetas y te invitamos a compartir las que conoces</p>
 				<AutoCompleteRecipe />
+				</div>
+
+				<div className={styles.imageBg} />
 			</section>
 
 			<section className={styles.containerCategoryRecipes}>
@@ -99,7 +104,6 @@ export const RecipeSearchPage = () => {
 			</section>
 
 			<div className={styles.containerFiltersRecipe}>
-				<div className={styles.totalSort}>
 					<h3>
 						{isSuccess
 							? recipes.count === 1
@@ -107,6 +111,7 @@ export const RecipeSearchPage = () => {
 								: `${recipes.count} Recetas`
 							: 'Sin Recetas'}
 					</h3>
+				<div className={styles.sortAdd}>
 					<div>
 						Ordenar por:
 						<Select
@@ -139,16 +144,16 @@ export const RecipeSearchPage = () => {
 							]}
 						/>
 					</div>
-				</div>
 				<button
 					className={styles.buttonAddRecipe}
 					onClick={() => navigate('/receta-formulario')}>
-					Agregar Receta <IconCirclePlus size={20} strokeWidth={1} />
+					<IconCirclePlus size={20} strokeWidth={1.2} /> Agregar Receta 
 				</button>
+				</div>
 			</div>
 
 			<div className={styles.recipesGrid}>
-				{isSuccess
+				{!isFetching && isSuccess
 					? recipes.data.map((recipe) => (
 							<RecipeCard
 								key={recipe._id}
@@ -160,6 +165,8 @@ export const RecipeSearchPage = () => {
 							/>
 					  ))
 					: null}
+
+					{isFetching ? <SkeletonCardsRecipes /> : null}
 			</div>
 		</div>
 	);

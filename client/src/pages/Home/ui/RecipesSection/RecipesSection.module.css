@@ -1,19 +1,70 @@
+.recipesContainer {
+	display: flex;
+	justify-content: center;
+	gap: 8%;
+	margin: 100px 0;
+}
+
+.recipeImage {
+	width: 550px;
+	border-radius: 32px;
+}
+
 .title {
-	text-align: center;
 	font-family: 'Sora', sans-serif;
-	margin-top: 35px;
+	font-size: 40px;
+	font-weight: 700;
 }
 
-.cardGrid {
-	padding: 50px 10%;
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-	grid-gap: 30px;
-	margin: 22px 0 50px;
+.recipesInfo {
+	width: 500px;
 }
 
-@media screen and (max-width: 1613px) and (min-width: 1200px) {
+.recipesInfo {
+	font-size: 16px;
+	line-height: 1.5;
+}
+
+.recipesInfo h2 span {
+	font-family: 'Sora', sans-serif;
+	font-weight: 700;
+	font-size: 38px;
+	display: inline-block;
+	transform: translate(0, 0) rotate(0) skewX(-12deg) skewY(0) scaleX(1) scaleY(1);
+	background-color: #f91942;
+	padding-left: 14px;
+	padding-right: 14px;
+	color: rgb(247 250 252 / 1);
+}
+
+.btnRecipe {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	background-color: #E72533;
+	width: max-content;
+	padding: 0 25px;
+	color: #FFF;
+	height: 40px;
+	outline: none;
+	border: none;
+	cursor: pointer;
+	border-radius: 8px;
+	margin-top: 40px;
+}
+
+.btnRecipe>svg {
+	transform: rotate(180deg);
+	transition: transform 500ms ease;
+}
+
+.btnRecipe:hover>svg {
+	transform: rotate(180deg) translateX(-5px);
+}
+
+/* @media screen and (max-width: 1613px) and (min-width: 1200px) {
 	.lastRecipe {
 		display: none;
 	}
-}
+} */

@@ -33,7 +33,7 @@
   font-family: 'Montserrat', sans-serif;
 }
 
-.averageContainer>span {
+.averageStar {
   font-size: 24px;
   font-family: 'Sora', sans-serif;
   font-weight: 800;
@@ -41,6 +41,10 @@
   gap: 5px;
   align-items: flex-end;
   margin-bottom: 5px;
+}
+
+.averageContainer>span {
+  text-wrap: nowrap;
 }
 
 .reviewsContainer {

@@ -310,7 +310,7 @@ export const getFavMarkers = async (req, res, next) => {
   try {
     const user = await User.findById(req.id).select("_id").populate({
       path: "favMarkers",
-      select: "name category image ratingAverage ratingCount createdAt",
+      select: "name phone image direction ratingAverage ratingCount createdAt",
       populate: "category",
     });
     if (!user._id) throw new ErrorResponse("El usuario no existe");

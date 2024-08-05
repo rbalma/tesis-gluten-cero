@@ -17,6 +17,10 @@ export const ProfileSidebar = () => {
 			return setItemActive('Notificaciones');
 		}
 
+		if (path === 'productos') {
+			return setItemActive('Productos');
+		}
+
 		menuItems.forEach((item) => {
 			if (item?.items) {
 				item.items.forEach((i) => {

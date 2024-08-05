@@ -10,7 +10,6 @@ import { useGetMarkersByLocation } from '@/services/queries/mapQueries';
 import { MarkerPlace } from '@/components/Map/Markers/MarkerPlace';
 import { CategoriesMarkers, DistanceRadius } from '@/components/Map/Filters';
 import { IconCluster } from '@/components/Map/Markers/IconsMarkers';
-import Footer from '@/layout/home/ui/Footer';
 
 import 'leaflet/dist/leaflet.css';
 import styles from './MapSearchPage.module.css';
@@ -39,8 +38,16 @@ export const MapSearchPage = () => {
 
 	const handleFlyTo = (location) => {
 		map.flyTo(location, 17, {
-			duration: 6,
+			duration: 5,
 		});
+		setFilters({
+			latitude: location[0],
+			longitude: location[1],
+		});
+	};
+
+	const setViewMap = (location) => {
+		map.flyTo(location, 16);
 		setFilters({
 			latitude: location[0],
 			longitude: location[1],
@@ -109,11 +116,19 @@ export const MapSearchPage = () => {
 					</div>
 					{!isFetching && markers.length > 0
 						? markers.map((marker) => (
-								<CardMarker key={marker._id} {...marker} />
+								<CardMarker
+									key={marker._id}
+									{...marker}
+									handleFlyTo={() =>
+										setViewMap([
+											marker.location.coordinates[1],
+											marker.location.coordinates[0],
+										])
+									}
+								/>
 						  ))
 						: null}
 				</section>
-				<Footer />
 			</div>
 
 			<div className={styles.fullMap}>
@@ -138,10 +153,9 @@ export const MapSearchPage = () => {
 					/>
 
 					<MarkerClusterGroup
-					  spiderfyOnMaxZoom={true}
+						spiderfyOnMaxZoom={true}
 						chunkedLoading
-						iconCreateFunction={IconCluster}
-					>
+						iconCreateFunction={IconCluster}>
 						{!isFetching && markers.length > 0
 							? markers.map((marker) => (
 									<MarkerPlace

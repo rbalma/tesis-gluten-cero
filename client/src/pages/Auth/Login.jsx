@@ -1,77 +1,76 @@
-import { useMemo, useState } from 'react';
 import { useGoogleLogin } from '@react-oauth/google';
 import { Form, Input } from 'antd';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Logo from '@/assets/images/logoGlutenCero.png';
-
+import useCrud from '@/hooks/useCrud';
 import useAuthStore from '@/store/authStore';
-import axiosInstance from '../../utils/axiosInstance';
 import { toast } from 'sonner';
 
 import styles from './Login.module.css';
-import { AlertActiveAccount } from './ui';
-import useCrud from '@/hooks/useCrud';
-
 
 export const Login = () => {
 	const navigate = useNavigate();
-	const { search } = useLocation();
 	const addUser = useAuthStore((state) => state.addUser);
 	const [formInstance] = Form.useForm();
-	const [ isLoading, postLogin ] = useCrud('/login');
-	const [ isLoadingGoogle, postGoogleLogin ] = useCrud('/login-google');
-	
-	const userId = useMemo(() => search.split('=')[1], []);
+	const [isLoading, postLogin] = useCrud('/login');
+	const [isLoadingGoogle, postGoogleLogin] = useCrud('/login-google');
 
 	const onSubmit = async (values) => {
 		const data = await postLogin({ ...values });
 		if (data?.ok) {
 			addUser(data.user, data.token);
 			//toast.success('Bienvenido a Gluten Cero');
-			navigate('/');
+			if (window.history.state && window.history.state.idx > 0) {
+				navigate(-1);
+			} else {
+				navigate('/', { replace: true });
+			}
 		}
 
 		if (data?.error) {
 			const messageError = data.error;
-			if (!messageError.includes('correo') && !messageError.includes('contraseña')) return toast.error(messageError);
+			if (
+				!messageError.includes('correo') &&
+				!messageError.includes('contraseña') &&
+				!messageError.includes('cuenta')
+			)
+				return toast.error(messageError);
 
 			formInstance.setFields([
 				{
 					name: 'email',
-					errors: messageError.includes('correo')
-						? [messageError]
-						: '',
+					errors: messageError.includes('correo') ? [messageError] : '',
 				},
 				{
 					name: 'password',
-					errors: messageError.includes('contraseña')
-						? [messageError]
-						: '',
+					errors: messageError.includes('contraseña') ? [messageError] : '',
+				},
+				{
+					name: 'email',
+					errors: messageError.includes('cuenta') ? [messageError] : '',
 				},
 			]);
 		}
 	};
 
 	const onGoogleLoginClick = useGoogleLogin({
-		onSuccess: ({ code })  => handleGoogleLogin(code),
+		onSuccess: ({ code }) => handleGoogleLogin(code),
 		onError: () => {
 			toast.error('No se pudo autenticar con Google');
 		},
 		flow: 'auth-code',
 	});
-	
-	
-	const handleGoogleLogin = async (code ) => {
+
+	const handleGoogleLogin = async (code) => {
 		const data = await postGoogleLogin({ code });
 		if (data?.ok) {
 			addUser(data.user, data.token);
 			navigate('/');
 		}
-	}
+	};
 
 	return (
 		<div className={styles.container}>
-			{userId ? <AlertActiveAccount userId={userId} /> : null}
 			<div className={styles.box}>
 				<div className={styles.form}>
 					<div className={styles.divLogo}>
@@ -88,8 +87,7 @@ export const Login = () => {
 						requiredMark={false}
 						validateTrigger='onSubmit'
 						autoComplete='off'
-						form={formInstance}
-					>
+						form={formInstance}>
 						<Form.Item
 							name='email'
 							rules={[
@@ -101,8 +99,7 @@ export const Login = () => {
 									type: 'email',
 									message: 'Debe ingresar un correo válido',
 								},
-							]}
-						>
+							]}>
 							<Input placeholder='Correo' />
 						</Form.Item>
 
@@ -113,16 +110,14 @@ export const Login = () => {
 									required: true,
 									message: 'La contraseña es obligatoria',
 								},
-							]}
-						>
+							]}>
 							<Input.Password placeholder='Contraseña' />
 						</Form.Item>
 
 						<button
 							disabled={isLoading && true}
 							type='submit'
-							className={styles.btnLogin}
-						>
+							className={styles.btnLogin}>
 							{isLoading ? 'Ingresando...' : 'Iniciar Sesión'}
 						</button>
 
@@ -132,9 +127,8 @@ export const Login = () => {
 								disabled={isLoadingGoogle}
 								type='button'
 								onClick={onGoogleLoginClick}
-								className={`${styles.btnLogin} ${styles.btnGoogle}`}
-							>
-								{isLoadingGoogle ? "Ingresando..." : "Ingresar con Google"}
+								className={`${styles.btnLogin} ${styles.btnGoogle}`}>
+								{isLoadingGoogle ? 'Ingresando...' : 'Ingresar con Google'}
 							</button>
 							<small className='gx-mt-2'>
 								<Link to={'/password-perdida'}>¿Olvidaste tu contraseña?</Link>

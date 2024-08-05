@@ -6,6 +6,7 @@ import {
 	getUsers,
 	getUserById,
 	updateUser,
+	changeStatusUser,
 } from '../api/usersApi';
 
 export const useGetUsers = (filters) => {
@@ -67,5 +68,14 @@ export const useDeleteUsers = () => {
 			toast.success(data?.message);
 		},
 		onError: () => toast.error('Error. Vuelva a intentarlo'),
+	});
+};
+
+
+
+export const useChangeStatusUser = () => {
+	return useMutation({
+		mutationFn: changeStatusUser,
+		onError: (error) => console.error(error),
 	});
 };

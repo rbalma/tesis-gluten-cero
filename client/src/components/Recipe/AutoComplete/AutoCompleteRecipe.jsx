@@ -28,7 +28,7 @@ export const AutoCompleteRecipe = () => {
 
 	return (
 		<AutoComplete
-			style={{ maxWidth: 750, width: '100%' }}
+			style={{ maxWidth: 750, width: '100%', fontWeight: 300 }}
 			options={data?.data?.map((r) => ({
 				label: (
 					<span className={styles.optionsRecipe}>

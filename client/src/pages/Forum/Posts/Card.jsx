@@ -16,8 +16,12 @@ export default function Card(props) {
         navigate(thread._id);
     };
 
+    const toLogin = () => {
+        navigate('/ingreso');
+    };
+
     return(
-        <div className={userProfile === null ? 'card-container' : 'card-container card-container-active'} onClick={userProfile === null ? ()=>{}:  toDetails}>
+        <div className={'card-container card-container-active'} onClick={userProfile === null ? toLogin : toDetails}>
             <div className='card-user' data-user={`${thread.user.name} ${thread.user.lastname}`}>
                 <AvatarIcon user={thread.user}/>
             </div>
