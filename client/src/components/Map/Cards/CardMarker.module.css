@@ -3,7 +3,7 @@
 	height: 200px;
 	width: 100%;
 	background-color: #ffffff;
-	cursor: pointer;
+	/* cursor: pointer; */
 	margin-bottom: 2em;
 	transition: 900ms box-shadow;
 	border-radius: 15px;
@@ -12,11 +12,11 @@
 	margin-left: auto;
 }
 
-.containerCard:hover {
-	/* box-shadow: rgba(0, 0, 0, 0.2) 0px 10px 20px 0px;
-	transform: translateY(-5px); */
+/* .containerCard:hover {
+	box-shadow: rgba(0, 0, 0, 0.2) 0px 10px 20px 0px;
+	transform: translateY(-5px);
 	outline: 1.5px solid #546e2aff;
-}
+} */
 
 
 .imagenCard {
@@ -30,13 +30,12 @@
 }
 
 .tagCard {
-	background-color: #A67D53;
 	border-radius: 10px;
 	box-shadow: rgba(0, 0, 0, 0.2) 0px 10px 20px 0px;
 	color: #fff;
 	font-size: 12px;
 	font-weight: 400;
-	left: 7px;
+	left: 10px;
 	letter-spacing: 1px;
 	line-height: 10px;
 	line-height: normal;
@@ -44,34 +43,39 @@
 	padding: 5px 10px;
 	position: absolute;
 	text-align: center;
-	top: 7px;
+	top: 10px;
 	width: min-content;
 }
 
 .bodyCard {
 	margin: 35px 4%;
 	height: auto;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 }
 
 .titleCard {
-	font-family: 'NoirPro', sans-serif;
-	font-size: 20px;
+	font-family: 'Montserrat', sans-serif;
+	font-size: 18px;
 	font-weight: 500;
-	margin-bottom: 8px;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
+	margin-bottom: 6px;
+	cursor: pointer;
+}
+
+.titleCard:hover {
+	text-decoration: underline;
 }
 
 .infoCardMap {
+	font-family: 'Montserrat', sans-serif;
 	align-items: center;
 	color: #808080;
 	display: flex;
-	font-size: 16px;
-	font-weight: 300;
+	font-size: 15px;
+	font-weight: 400;
 	gap: 10px;
 	line-height: normal;
-	margin-bottom: 5px;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
@@ -84,7 +88,7 @@
 	display: flex;
 	align-items: baseline;
 	gap: 5px;
-	margin-top: 10px;
+	margin-top: 8px;
 }
 
 .countReviews {
