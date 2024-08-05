@@ -1,7 +1,7 @@
 .recipesContainer {
 	display: flex;
 	justify-content: center;
-	gap: 10%;
+	gap: 8%;
 	margin: 100px 0;
 }
 
@@ -56,6 +56,11 @@
 
 .btnRecipe>svg {
 	transform: rotate(180deg);
+	transition: transform 500ms ease;
+}
+
+.btnRecipe:hover>svg {
+	transform: rotate(180deg) translateX(-5px);
 }
 
 /* @media screen and (max-width: 1613px) and (min-width: 1200px) {

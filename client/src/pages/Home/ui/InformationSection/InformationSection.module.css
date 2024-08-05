@@ -10,7 +10,8 @@
   margin: 60px;
   display: flex;
   align-items: center;
-  width: 38%;
+  width: 500px;
+  height: 420px;
   background: url('@/assets/images/home/SinTacc-logo.jpg');
   background-size: cover;
   position: relative;

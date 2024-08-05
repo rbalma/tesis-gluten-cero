@@ -2,19 +2,27 @@ import { Col, Form, Input, Row } from 'antd';
 import styles from './ContactForm.module.css';
 import { MailOutlined } from '@ant-design/icons';
 import { rules } from '@/utils/rulesForm';
+import { Slide } from 'react-awesome-reveal';
 
 export const ContactForm = () => {
 	return (
 		<div className={styles.contactContainer} id='contacto'>
 			<div className={styles.contactFlex}>
 				<div className={styles.contactInfo}>
-					<h1 className={styles.contactTitle}>Formulario de <br /> <span>Contacto</span></h1>
-					<p>
-						Si tienes alguna pregunta o sugerencia sobre cualquier tema, no
-						dudes en escribirnos. Estamos a tu disposición.
-					</p>
+					<Slide direction='left' triggerOnce>
+						<h1 className={styles.contactTitle}>
+							Formulario de <br /> <span>Contacto</span>
+						</h1>
+						<p>
+							Si tienes alguna pregunta o sugerencia sobre cualquier tema, no
+							dudes en escribirnos. Estamos a tu disposición.
+						</p>
 
-				<span><MailOutlined style={{ marginRight: 8 }}/> glutencerooficial@gmail.com</span>
+						<span>
+							<MailOutlined style={{ marginRight: 8 }} />{' '}
+							glutencerooficial@gmail.com
+						</span>
+					</Slide>
 				</div>
 
 				<div className={styles.formBody}>

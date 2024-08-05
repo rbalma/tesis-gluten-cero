@@ -1,11 +1,18 @@
+import { Slide } from 'react-awesome-reveal';
+import photo from '@/assets/images/home/SinTacc-logo.jpg';
 import styles from './InformationSection.module.css';
 
 export const InformationSection = () => {
 	return (
 		<section className={styles.sectionContainer}>
-			<div className={styles.imageContainer} />
+			<img src={photo} className={styles.imageContainer} />
+
 			<div className={styles.textContainer}>
-				<h1>¿Qué es la <span>Celiaquía ?</span></h1>
+				<Slide direction='left' triggerOnce>
+					<h1>
+						¿Qué es la <span>Celiaquía ?</span>
+					</h1>
+				</Slide>
 				<p>
 					La celiaquía es una enfermedad autoinmune que se produce cuando el
 					cuerpo reacciona al gluten, una proteína que se encuentra en el trigo,
