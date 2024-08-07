@@ -16,13 +16,13 @@ export const MapReviewForm = ({
 	const { isPending, mutateAsync } = useCreateReviewMarker();
 
 	const showModal = () => {
-		handleCancelOne();
-		setIsModalOpen(true);
+		//handleCancelOne();
+		setIsModalOpen(() => true);
 	};
 
 	const handleCancel = () => {
-		showModalOne();
 		setIsModalOpen(false);
+		//showModalOne();
 	};
 
 	const addMarkerReview = async (values) => {
