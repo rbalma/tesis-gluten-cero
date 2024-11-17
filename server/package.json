@@ -27,7 +27,8 @@
     "mongoose-paginate-v2": "^1.7.1",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.7.8",
-    "shortid": "^2.2.16"
+    "shortid": "^2.2.16",
+    "web-push": "^3.6.7"
   },
   "devDependencies": {
     "nodemon": "^2.0.19",

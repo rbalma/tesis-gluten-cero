@@ -1,5 +1,7 @@
 import ErrorResponse from "../utils/errorResponse.js";
 import Notifications from "../models/notifications.js";
+import webPushSubscription from "../models/webPushSubscription.js";
+import webpush from '../utils/webpush.js';
 
 
 // @desc Obtener una o más notificaciones
@@ -33,6 +35,29 @@ export const getNotification = async (req, res, next) => {
     if (userId) filters.notifiedUser = userId;
 
     const notifications = await Notifications.paginate(filters, options);
+
+    const payload = JSON.stringify({
+      title: 'Nueva notificación',
+      message: 'El web push funciona!!!',
+    });
+
+    const data = await webPushSubscription.findOne(
+      { user: userId }, 'endpoint p256dh auth',
+      { sort: { createdAt: -1 } }
+    );
+
+    if (data) {
+      const pushSubscripton = {
+        endpoint: data.endpoint,
+        keys: {
+          p256dh: data.p256dh,
+          auth: data.auth,
+        },
+      };
+     
+      await webpush.sendNotification(pushSubscripton, payload);
+ 
+    }
 
     res.json({
       notifications: notifications.docs,
@@ -150,6 +175,49 @@ export const checkOrUncheckNotification = async (req, res, next) => {
       notificationId,
       message: "Notificación marcada como leída",
     });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
+/**
+  @desc Suscribe al usuario al servicio de notificaciones push
+  @route POST /api/subscription
+  @access Private
+*/
+export const createSubscription = async (req, res, next) => {
+  try {
+   const pushSubscripton = req.body;
+
+    const auth = await webPushSubscription.findOne({ auth: pushSubscripton.keys.auth } );
+    if (!auth) await webPushSubscription.create({ 
+      endpoint: pushSubscripton.endpoint,
+      p256dh: pushSubscripton.keys.p256dh,
+      auth: pushSubscripton.keys.auth,
+      user: req.id
+     });
+
+   // console.log({ pushSubscripton });
+    res.status(201).json({ message: 'subscribe' });
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+};
+
+/**
+  @desc Elimina al usuario del servicio de notificaciones push
+  @route DELETE /api/subscription/:authId
+  @access Private
+*/
+export const deleteSubscription = async (req, res, next) => {
+  try {
+    const { authId } = req.params;
+
+    await webPushSubscription.deleteOne({ auth: authId });
+
+    res.json({ message: "unsubscribe" });
   } catch (error) {
     console.log(error);
     next(error);

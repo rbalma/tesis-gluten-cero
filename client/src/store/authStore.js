@@ -1,6 +1,7 @@
 import create from 'zustand';
 import zustymiddleware from 'zustymiddleware';
 import axiosInstance from '@/utils/axiosInstance';
+import { deleteSubscription, sendSubscription } from '@/utils/notificacionesPush';
 
 const useAuthStore = create(
 	zustymiddleware((set) => ({
@@ -9,10 +10,15 @@ const useAuthStore = create(
 		addUser: (user, token) => {
 			localStorage.setItem('token', token);
 			localStorage.setItem('token-init-date', new Date().getTime());
+			// Service Worker Push Notifications Support
+			if ("serviceWorker" in navigator) {
+				sendSubscription().catch(err => console.log(err));
+			}
 			set((state) => ({ ...state, userProfile: user }));
 		},
 		removeUser: () => {
 			localStorage.clear();
+			deleteSubscription().catch(err => console.log(err));
 			set({ userProfile: null });
 		},
 		finishChecking: () => set((state) => ({ ...state, checking: false })),
@@ -23,6 +29,10 @@ const useAuthStore = create(
 				if (body.ok) {
 					localStorage.setItem('token', body.token);
 					localStorage.setItem('token-init-date', new Date().getTime());
+					// Service Worker Push Notifications Support
+			if ("serviceWorker" in navigator) {
+				sendSubscription().catch(err => console.log(err));
+			}
 					set(() => ({ userProfile: body.user, checking: false }));
 				}
 			} catch (error) {
