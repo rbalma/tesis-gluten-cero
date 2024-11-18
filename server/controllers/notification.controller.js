@@ -63,6 +63,7 @@ export const getNotification = async (req, res, next) => {
       notifications: notifications.docs,
       totalPages: notifications.totalPages,
       count: notifications.totalDocs,
+      payload
     });
   } catch (error) {
     console.log({ error });
