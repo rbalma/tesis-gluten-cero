@@ -16,6 +16,7 @@ export default defineConfig({
 			workbox: {
 				navigateFallbackDenylist: [/^\/api*/],
 				maximumFileSizeToCacheInBytes: 3000000,
+				importScripts: ['/service-worker/push.js'],
 				runtimeCaching: [
 					{
 						urlPattern: ({ url }) => url.pathname.startsWith('/api'),

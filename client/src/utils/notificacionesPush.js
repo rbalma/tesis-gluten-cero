@@ -2,31 +2,40 @@ import axiosInstance from './axiosInstance';
 let subscription;
 
 const sendSubscription = async () => {
-	const register = await navigator.serviceWorker.register('/sw.js');
+	const register = await navigator.serviceWorker.ready;
 
-	// Listen Push Notifications
-	subscription = await register.pushManager.subscribe({
-		userVisibleOnly: true,
-		applicationServerKey: urlBase64ToUint8Array(
-			import.meta.env.VITE_PUBLIC_VAPID_KEY
-		),
-	});
+	try {
+		// Listen Push Notifications
+		subscription = await register.pushManager.subscribe({
+			userVisibleOnly: true,
+			applicationServerKey: urlBase64ToUint8Array(
+				import.meta.env.VITE_PUBLIC_VAPID_KEY
+			),
+		});
 
-	const permission = await Notification.requestPermission();
-	if (permission === 'granted') {
-		console.log("Notificaciones permitidas");
-	} else {
-		console.log("Notificaciones no permitidas");
+		const permission = await Notification.requestPermission();
+		if (permission === 'granted') {
+			console.log('Notificaciones permitidas');
+		} else {
+			console.log('Notificaciones no permitidas');
+		}
+
+		// Envía la suscripción al servidor
+		await axiosInstance.post('/subscription', JSON.stringify(subscription));
+		console.log('User is subscribed:', subscription);
+	} catch (error) {
+		console.log('Failed to subscribe the user: ', err);
 	}
 
-	// Envía la suscripción al servidor
-	await axiosInstance.post('/subscription', JSON.stringify(subscription));
-	console.log('Subscribed!');
+	// Listen for messages from the service worker
+	navigator.serviceWorker.addEventListener('message', (event) => {
+		console.log('Received a message from service worker:', event.data);
+	});
 };
 
 function urlBase64ToUint8Array(base64String) {
-	const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
-	const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
+	const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
+	const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
 
 	const rawData = window.atob(base64);
 	const outputArray = new Uint8Array(rawData.length);
@@ -42,13 +51,10 @@ const deleteSubscription = async () => {
 	const data = JSON.stringify(subscription);
 	const { keys } = JSON.parse(data);
 	await subscription.unsubscribe();
-	
-	await axiosInstance.delete(`/subscription/${keys.auth}`, );
-	
+
+	await axiosInstance.delete(`/subscription/${keys.auth}`);
+
 	console.log('Unsubscribed!');
 };
 
-export {
-    sendSubscription,
-    deleteSubscription,
-}
+export { sendSubscription, deleteSubscription };
